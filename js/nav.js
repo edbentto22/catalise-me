@@ -134,7 +134,7 @@ function animateCounter(el) {
   if (!items.length || !detail) return;
 
   const phases = {
-    O: { title: 'Organização', weeks: 'Semanas 1–2', desc: 'Diagnóstico profundo da operação atual. Mapeamos cada processo — do primeiro contato do cliente até o pós-venda. Identificamos e classificamos todos os gargalos por impacto financeiro real.' },
+    O: { title: 'Organização', weeks: 'Semanas 1–2', desc: 'Diagnóstico profundo da operação atual. Mapeamos cada processo: do primeiro contato do cliente até o pós-venda. Identificamos e classificamos todos os gargalos por impacto financeiro real.' },
     P: { title: 'Planejamento', weeks: 'Semanas 2–3', desc: 'Com os gargalos mapeados, definimos o escopo completo do OperaOS. Priorizamos por impacto financeiro imediato e viabilidade técnica, garantindo ROI desde as primeiras semanas.' },
     E: { title: 'Estratégia', weeks: 'Semanas 3–4', desc: 'Blueprint técnico e operacional de todos os sistemas. IA sem estratégia é automação de caos. Aqui definimos quais agentes, quais automações, como tudo se conecta.' },
     R: { title: 'Realização', weeks: 'Semanas 4–8', desc: 'A fase mais intensa. Construímos, integramos e ativamos todos os sistemas. Site vai ao ar, agente de IA entra em operação, automações começam a rodar.' },
