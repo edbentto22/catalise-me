@@ -103,12 +103,13 @@
         // Dev mode: simulate success after 1s
         await new Promise(resolve => setTimeout(resolve, 1000));
       } else {
-        const res = await fetch(LARK_ENDPOINT, {
+        await fetch(LARK_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors', // Ignora política de CORS do navegador
+          headers: { 'Content-Type': 'text/plain' }, // Evita preflight do navegador
           body: JSON.stringify(data),
         });
-        if (!res.ok) throw new Error('Erro ao enviar');
+        // Opaque response returns status 0 (res.ok is false), we assume success se não houver erro de rede
       }
 
       // Show success
