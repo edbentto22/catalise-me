@@ -711,7 +711,7 @@
 
 @media (max-width: 640px) {
   .stats-grid { grid-template-columns: 1fr 1fr; }
-  .hero-heading { font-size: clamp(1.4rem, 5vw, 2.3rem); }
+  .hero-heading { font-size: clamp(2.8rem, 8vw, 3.8rem); }
 }
 
 @media (max-width: 480px) {
