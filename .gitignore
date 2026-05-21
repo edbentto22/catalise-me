@@ -7,3 +7,4 @@ dist/
 .claude/
 .trae/
 _bmad-output/
+package-lock.json
