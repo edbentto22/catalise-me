@@ -88,6 +88,11 @@
       message: getField('message')?.value.trim(),
       phone: getField('phone')?.value.trim() || '',
       source: getField('source')?.value || '',
+      page_url: window.location.href,
+      referrer: document.referrer || '',
+      utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+      utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+      utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
       submitted_at: new Date().toISOString(),
     };
 
