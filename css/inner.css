@@ -1,0 +1,330 @@
+/* =========================================
+   CATALISE.ME — INNER PAGES (Sobre, OperaOS, Contato)
+   ========================================= */
+
+/* ─── Page Hero ─── */
+.page-hero {
+  padding-top: calc(var(--nav-height) + var(--space-20));
+  padding-bottom: var(--space-20);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: var(--grad-hero);
+  pointer-events: none;
+}
+
+.page-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.page-hero-title {
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.07;
+  margin-bottom: var(--space-6);
+  max-width: 900px;
+}
+
+.page-hero-title em {
+  font-weight: 200; /* Thin */
+  font-style: normal;
+  color: var(--text-muted); /* Adds a subtle contrast */
+  display: inline-block;
+  line-height: 1.1;
+}
+
+.page-hero-lede {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-width: 700px;
+  margin-bottom: var(--space-4);
+}
+
+.page-hero-sub {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 640px;
+  margin-bottom: var(--space-10);
+}
+
+/* Hero CTAs (reused) */
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* Hero pills (OperaOS) */
+.hero-pills {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-top: var(--space-8);
+}
+
+.hero-pill {
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.hero-pill-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.hero-pill-value {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: -0.01em;
+}
+
+/* ─── Prose (long text) ─── */
+.prose p {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--space-5);
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─── Principles list ─── */
+.principles-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── OperaOS Timeline phases ─── */
+.opera-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.opera-phase {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color var(--duration-base) var(--ease-out);
+}
+
+.opera-phase:hover {
+  border-color: var(--border-green);
+}
+
+.opera-phase-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-8);
+  background: var(--bg-card);
+  cursor: default;
+}
+
+.opera-phase-letter {
+  font-size: 3rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--green);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  text-shadow: var(--glow-green-sm);
+  flex-shrink: 0;
+  width: 48px;
+  text-align: center;
+}
+
+.opera-phase-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+  letter-spacing: -0.01em;
+}
+
+.opera-phase-weeks {
+  color: var(--green);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+}
+
+.opera-phase-body {
+  padding: var(--space-6) var(--space-8);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.opera-phase-body p {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-5);
+}
+
+.deliverable {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding: var(--space-4) var(--space-5);
+  background: var(--green-dim);
+  border-left: 3px solid var(--green);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  line-height: 1.6;
+}
+
+.deliverable-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+/* ─── Nao somos ─── */
+.nao-somos {
+  padding: var(--space-8);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.nao-somos-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.nao-somos-item {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.somos-item {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  padding: var(--space-4) var(--space-5);
+  background: var(--green-dim);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-green);
+  line-height: 1.6;
+}
+
+/* ─── Contato page layout ─── */
+.contato-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-16);
+  align-items: flex-start;
+}
+
+.contato-form-col {
+  min-width: 0;
+}
+
+.form-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
+}
+
+.form-header {
+  margin-bottom: var(--space-10);
+}
+
+.form-header h2 {
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-3);
+}
+
+.form-header p {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.contato-sidebar {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-8));
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .contato-layout {
+    grid-template-columns: 1fr;
+  }
+  .contato-sidebar {
+    position: static;
+    margin-top: var(--space-12);
+  }
+  .channel-cards {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-hero {
+    padding-top: calc(var(--nav-height) + var(--space-12));
+    padding-bottom: var(--space-12);
+  }
+  .page-hero-title {
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
+  }
+  .hero-pills {
+    flex-direction: column;
+  }
+  .hero-ctas {
+    flex-wrap: wrap;
+  }
+  .form-wrapper {
+    padding: var(--space-6);
+  }
+  .opera-phase-body {
+    padding: var(--space-5) var(--space-5);
+  }
+  .opera-phase-header {
+    padding: var(--space-5) var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .channel-cards {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-ctas .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

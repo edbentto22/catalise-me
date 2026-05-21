@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalise.me — Manifesto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & ROOT ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --void: #050505;
+  --void-2: #0d0d0d;
+  --void-3: #141414;
+  --void-4: #1c1c1c;
+  --smoke: #2a2a2a;
+  --ash: #444;
+  --mist: #888;
+  --fog: #bbb;
+  --ghost: #e8e8e8;
+  --white: #f5f5f3;
+  --acid: #c8f135;
+  --acid-dim: #9db82a;
+  --acid-pale: #e8f9a0;
+  --ember: #ff4d1a;
+  --ember-dim: #cc3d14;
+  --gold: #d4a843;
+
+  --display: 'Bebas Neue', sans-serif;
+  --serif: 'Playfair Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--acid);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1px solid rgba(200,241,53,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.25s ease;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.35;
+}
+
+/* ── PROGRESS BAR ── */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--acid);
+  z-index: 8000;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 700;
+  padding: 1.5rem clamp(1.5rem, 5vw, 5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: difference;
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo em { color: var(--acid); font-style: normal; }
+
+.nav-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+/* ── SECTIONS BASE ── */
+section { position: relative; }
+.pad { padding: clamp(5rem, 10vw, 11rem) clamp(1.5rem, 5vw, 5rem); }
+.pad-sm { padding: clamp(3rem, 6vw, 7rem) clamp(1.5rem, 5vw, 5rem); }
+
+/* ── UTILITY ── */
+.mono {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--acid);
+}
+.rule { border: none; border-top: 1px solid var(--smoke); }
+.rule--acid { border-color: var(--acid); opacity: 0.3; }
+.max-w { max-width: 1200px; margin: 0 auto; }
+.max-w-text { max-width: 720px; }
+
+/* ════════════════════════════════
+   SECTION 0 — COLD OPEN
+════════════════════════════════ */
+#cold-open {
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--void);
+  position: relative;
+  overflow: hidden;
+}
+
+.cold-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,241,53,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,241,53,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: gridDrift 20s linear infinite;
+}
+@keyframes gridDrift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(80px, 80px); }
+}
+
+.cold-content { position: relative; z-index: 1; }
+
+.cold-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.3s forwards;
+}
+
+.cold-title {
+  font-family: var(--display);
+  font-size: clamp(4rem, 14vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.6s forwards;
+}
+
+.cold-title .accent { color: var(--acid); }
+.cold-title .strike {
+  position: relative;
+  color: var(--ash);
+}
+.cold-title .strike::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 3px;
+  background: var(--ember);
+  transform: scaleX(0);
+  animation: strikeThrough 0.5s ease 2s forwards;
+}
+@keyframes strikeThrough {
+  to { transform: scaleX(1); }
+}
+
+.cold-sub {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-style: italic;
+  color: var(--fog);
+  margin-top: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1.2s forwards;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 2s forwards;
+}
+.scroll-hint span {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--acid), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ════════════════════════════════
+   SECTION 1 — PROVOCAÇÃO
+════════════════════════════════ */
+#provocacao {
+  background: var(--void-2);
+  border-top: 1px solid var(--smoke);
+}
+
+.provoc-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5rem;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.provoc-number {
+  font-family: var(--display);
+  font-size: clamp(8rem, 15vw, 16rem);
+  line-height: 0.8;
+  color: var(--void-4);
+  user-select: none;
+  -webkit-text-stroke: 1px var(--smoke);
+}
+
+.provoc-text h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.provoc-text h2 em {
+  color: var(--acid);
+  font-style: italic;
+}
+
+.provoc-text p {
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  color: var(--fog);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.provoc-text p strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* ════════════════════════════════
+   SECTION 2 — MANIFESTO CORE
+════════════════════════════════ */
+#manifesto-core {
+  background: var(--void);
+  overflow: hidden;
+  position: relative;
+}
+
+.manifesto-bg-text {
+  position: absolute;
+  top: 50%;
+  left: -2%;
+  transform: translateY(-50%);
+  font-family: var(--display);
+  font-size: clamp(12rem, 25vw, 32rem);
+  color: rgba(200,241,53,0.02);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  animation: bgDrift 30s linear infinite;
+}
+@keyframes bgDrift {
+  0% { transform: translateY(-50%) translateX(0); }
+  100% { transform: translateY(-50%) translateX(-10%); }
+}
+
+.manifesto-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.manifesto-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.manifesto-line {
+  width: 4px;
+  height: clamp(60px, 8vw, 100px);
+  background: var(--acid);
+}
+
+.manifesto-header h2 {
+  font-family: var(--display);
+  font-size: clamp(3rem, 8vw, 8rem);
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  color: var(--white);
+}
+.manifesto-header h2 span { color: var(--acid); }
+
+.tenet-list { display: flex; flex-direction: column; gap: 0; }
+
+.tenet {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 2rem;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--smoke);
+  transition: background 0.3s ease;
+  cursor: default;
+}
+.tenet:first-child { border-top: 1px solid var(--smoke); }
+.tenet:hover { background: rgba(200,241,53,0.02); }
+.tenet:hover .tenet-num { color: var(--acid); }
+
+.tenet-num {
+  font-family: var(--display);
+  font-size: 3.5rem;
+  color: var(--smoke);
+  line-height: 1;
+  transition: color 0.3s ease;
+  padding-top: 0.2rem;
+}
+
+.tenet-content {}
+.tenet-title {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.7rem;
+  line-height: 1.2;
+}
+.tenet-title em { color: var(--acid); font-style: italic; }
+.tenet-body {
+  font-size: 0.95rem;
+  color: var(--fog);
+  line-height: 1.85;
+  max-width: 680px;
+}
+.tenet-body strong { color: var(--white); font-weight: 500; }
+
+/* ════════════════════════════════
+   SECTION 3 — NUMBERS BREAK
+════════════════════════════════ */
+#numbers {
+  background: var(--acid);
+  color: var(--void);
+  overflow: hidden;
+  position: relative;
+}
+
+#numbers::before {
+  content: 'CATALISE';
+  position: absolute;
+  right: -3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--display);
+  font-size: clamp(10rem, 20vw, 26rem);
+  color: rgba(0,0,0,0.07);
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.numbers-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.numbers-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--void);
+  opacity: 0.5;
+  margin-bottom: 3rem;
+}
+
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 3rem;
+}
+
+.stat {}
+.stat-value {
+  font-family: var(--display);
+  font-size: clamp(4rem, 8vw, 7rem);
+  line-height: 0.85;
+  color: var(--void);
+  margin-bottom: 0.8rem;
+}
+.stat-value sup {
+  font-family: var(--mono);
+  font-size: 0.35em;
+  vertical-align: super;
+}
+.stat-label {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: rgba(5,5,5,0.65);
+  line-height: 1.5;
+}
+.stat-label strong {
+  display: block;
+  font-weight: 500;
+  color: var(--void);
+  margin-bottom: 0.2rem;
+}
+
+/* ════════════════════════════════
+   SECTION 4 — O QUE SOMOS
+════════════════════════════════ */
+#o-que-somos {
+  background: var(--void-2);
+}
+
+.somos-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 8rem);
+  align-items: start;
+}
+
+.somos-left {}
+
+.somos-left h2 {
+  font-family: var(--display);
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  margin-bottom: 2.5rem;
+}
+.somos-left h2 .not {
+  color: var(--ember);
+  text-decoration: line-through;
+  text-decoration-color: var(--ember);
+  text-decoration-thickness: 3px;
+}
+.somos-left h2 .yes { color: var(--acid); }
+
+.somos-left p {
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  color: var(--fog);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.somos-right {}
+
+.capability-list { list-style: none; }
+.capability {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--smoke);
+  transition: all 0.25s ease;
+}
+.capability:first-child { border-top: 1px solid var(--smoke); }
+.capability:hover { padding-left: 0.5rem; }
+
+.cap-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  width: 2rem;
+  padding-top: 0.1rem;
+}
+.cap-content {}
+.cap-title {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.cap-desc {
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════
+   SECTION 5 — NICHO
+════════════════════════════════ */
+#nicho {
+  background: var(--void);
+  border-top: 1px solid var(--smoke);
+  overflow: hidden;
+  position: relative;
+}
+
+.nicho-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(200,241,53,0.04) 0%, transparent 70%);
+}
+
+.nicho-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.nicho-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  margin-bottom: 5rem;
+}
+
+.nicho-top h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.nicho-top h2 em { color: var(--acid); font-style: italic; }
+
+.nicho-top p {
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  color: var(--fog);
+  line-height: 1.85;
+}
+.nicho-top p + p { margin-top: 1rem; }
+
+.pain-ticker {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--smoke);
+}
+
+.pain-tick {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--smoke);
+  transition: background 0.2s ease;
+}
+.pain-tick:last-child { border-bottom: none; }
+.pain-tick:hover { background: rgba(200,241,53,0.03); }
+
+.pain-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ember);
+  flex-shrink: 0;
+  margin-top: 0.45rem;
+  animation: pulseRed 2s ease infinite;
+}
+@keyframes pulseRed {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,77,26,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(255,77,26,0); }
+}
+
+.pain-tick-text {
+  font-size: 0.875rem;
+  color: var(--fog);
+  line-height: 1.5;
+}
+.pain-tick-text strong { color: var(--white); font-weight: 500; }
+
+/* ECOSYSTEM */
+.ecosystem {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--smoke);
+  border: 1px solid var(--smoke);
+}
+
+.eco-item {
+  background: var(--void);
+  padding: 2.5rem 2rem;
+  transition: background 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.eco-item:hover { background: var(--void-3); }
+.eco-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--acid);
+  transform: scaleX(0);
+  transition: transform 0.35s ease;
+  transform-origin: left;
+}
+.eco-item:hover::before { transform: scaleX(1); }
+
+.eco-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 1rem;
+}
+.eco-title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.7rem;
+  line-height: 1.2;
+}
+.eco-desc {
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.65;
+}
+
+/* ════════════════════════════════
+   SECTION 6 — CREDO
+════════════════════════════════ */
+#credo {
+  background: var(--void-2);
+  border-top: 1px solid var(--smoke);
+}
+
+.credo-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.credo-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+.credo-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--acid);
+  flex-shrink: 0;
+  animation: credoPulse 3s ease infinite;
+}
+@keyframes credoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,241,53,0.5); }
+  50% { box-shadow: 0 0 0 12px rgba(200,241,53,0); }
+}
+
+.credo-header h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: 0.02em;
+  color: var(--white);
+}
+
+.credo-stanzas { display: flex; flex-direction: column; gap: 3rem; }
+
+.stanza {}
+.stanza-num {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 1rem;
+}
+.stanza-text {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--white);
+}
+.stanza-text em {
+  color: var(--acid);
+  font-style: italic;
+}
+.stanza-text .cross {
+  color: var(--ash);
+  text-decoration: line-through;
+  text-decoration-color: var(--ember);
+}
+
+.credo-divider {
+  width: 3rem;
+  height: 1px;
+  background: var(--smoke);
+  margin: 0;
+}
+
+/* ════════════════════════════════
+   SECTION 7 — CLOSING
+════════════════════════════════ */
+#closing {
+  background: var(--void);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--smoke);
+}
+
+.closing-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200,241,53,0.08);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ringExpand 6s ease-out infinite;
+}
+.ring:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
+.ring:nth-child(2) { width: 400px; height: 400px; animation-delay: 1.5s; }
+.ring:nth-child(3) { width: 650px; height: 650px; animation-delay: 3s; }
+.ring:nth-child(4) { width: 950px; height: 950px; animation-delay: 4.5s; }
+@keyframes ringExpand {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.closing-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+
+.closing-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.closing-title {
+  font-family: var(--display);
+  font-size: clamp(4rem, 13vw, 13rem);
+  line-height: 0.88;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.2s;
+}
+.closing-title .c-acid { color: var(--acid); }
+
+.closing-sub {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-style: italic;
+  color: var(--fog);
+  margin-top: 2.5rem;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.4s;
+}
+
+.closing-url {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--acid);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,241,53,0.3);
+  padding-bottom: 0.3rem;
+  transition: border-color 0.25s ease;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.6s, border-color 0.25s ease;
+}
+.closing-url:hover { border-color: var(--acid); }
+
+.closing-content.visible .closing-eyebrow,
+.closing-content.visible .closing-title,
+.closing-content.visible .closing-sub,
+.closing-content.visible .closing-url { opacity: 1; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--void);
+  border-top: 1px solid var(--smoke);
+  padding: 2rem clamp(1.5rem, 5vw, 5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-mark {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.footer-mark em { color: var(--acid); font-style: normal; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.45s; }
+.reveal-delay-5 { transition-delay: 0.6s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .provoc-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .provoc-number { font-size: 6rem; }
+  .somos-layout { grid-template-columns: 1fr; }
+  .nicho-top { grid-template-columns: 1fr; gap: 3rem; }
+  .ecosystem { grid-template-columns: 1fr; }
+  .tenet { grid-template-columns: 3rem 1fr; gap: 1.5rem; }
+  .cursor, .cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- PROGRESS -->
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADTAxMDASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAcIBQYJBAMCAf/EAFcQAAEDAgMEBAUMDQoGAgMAAAEAAgMEBQYHEQgSITETQVFhIjdxdYEUMjRSVmJykZShsbMVFhcYI0JVc5KytNLTMzU2OENUgoSi0QkkJZXB4WNlk8Pw/8QAGwEBAAMBAQEBAAAAAAAAAAAAAAQFBgcDAgH/xABBEQACAgECAgYFCQcDBAMAAAAAAQIDBAURITEGEkFRcbETYYGRoRQVIjIzNMHR4SNCUlNykvAWNfFDVIKyYmNz/9oADAMBAAIRAxEAPwCmSIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIi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TK+gpqLpm1EMMZkMkmmjC5oO6RujiCCeR0UhbV2HapuHYKfGeMYpWB7dHUNpjc2Rp0ILH7wOo5HXitEotsaz1l5o8L4hqq+G0vdLX0FPK7oaZ+6GvILeprhqN3mNe5RZa6vKL/GVFHd38f36lrj4OJSuufm+3fuI7yzy6rMaZkW272qOiuFOGmrkhjDISBujeadSQ0HTee08QNNO3qxG0hniLdmDQ3R0sVstNZJLHHAzRgkD26gdoaST5VcHIbZuXMJl5RHFWH6UtqKyrb6mrr5GadJOe17g08B4IPALj5k5k3vMjEBuGIKiB8kbBFFHTR9HFGwdQ4k6knmSSe1V13StS1CzRPtjJ4/fBd3n3eY9MNK0yCxHPbde6C53LHkrjwXn5FO+Km/wCGLBjuhrLnhmnqrTVsMZqoqcl0LyfxrWMPrPa8/wCo9iifZbzd+3eGrpQ4hpH3fBNc0RsoqiXfbRzu9c9mvGN51Hha49pI6yroKxuAdo/AePoaWjrtY/DVQ7dv+FaqV9NJIN6WEn8HKPd8AoPkWFSdqVEuiXKXZ3+nz3LHIovqjLjP/PcYXaLvFZiXbEu04oy9xe2sxbhOrlj3HFjSNhLhqHBoJA7CoeRWl6UUKqeHKvJLfl7zCfJbFb49sV3kRERXxJCIiAIiIAiIgCkiLETMssiEREaaSIiAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREB//9k=" alt="Catalise.me" style="height:28px; display:block;"></a>
+  <span class="nav-tag">Manifesto · 2026</span>
+</nav>
+
+<!-- ════════════════════════════════
+     COLD OPEN
+════════════════════════════════ -->
+<section id="cold-open">
+  <div class="cold-grid"></div>
+  <div class="cold-content">
+    <p class="cold-eyebrow">Catalise.me — Growth IA para Hotelaria</p>
+    <h1 class="cold-title" style="font-size:clamp(2.6rem,7vw,8.5rem); line-height:1.08; letter-spacing:-0.01em;">
+      Checkout às 12:00.<br>
+      <span style="color:var(--fog); font-size:0.85em;">Sua cabeça se hospeda</span><br>
+      <span style="color:var(--fog); font-size:0.85em;">na </span><span class="accent" style="font-size:0.85em;">ansiedade.</span><br>
+      <span style="color:var(--ash); font-size:0.42em; letter-spacing:0.18em; font-family:var(--mono); text-transform:uppercase;">todo dia.</span>
+    </h1>
+    <p class="cold-sub">
+      Não precisa ser assim.<br>Nunca precisou.
+    </p>
+  </div>
+  <div class="scroll-hint">
+    <span>Continue</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     PROVOCAÇÃO
+════════════════════════════════ -->
+<section id="provocacao">
+  <div class="pad max-w">
+    <div class="provoc-layout">
+      <div class="provoc-number reveal">01</div>
+      <div class="provoc-text">
+        <p class="mono reveal reveal-delay-1">O diagnóstico</p>
+        <h2 class="reveal reveal-delay-2">
+          Sua pousada está<br>
+          trabalhando para<br>
+          <em>enriquecer a OTA.</em>
+        </h2>
+        <p class="reveal reveal-delay-3">
+          De cada R$100 que um hóspede paga, <strong>R$45 somem</strong> antes de chegar ao seu caixa. Comissão de plataforma. Taxa de cartão. Imposto em cima de imposto. Você faz a cama. Eles ficam com quase metade da diária.
+        </p>
+        <p class="reveal reveal-delay-4">
+          Enquanto isso, sua equipe responde as mesmas perguntas 60 vezes por dia. Seu follow-up depende da memória de um atendente. Seus dados de performance chegam no fim do mês — quando mudar algo já não adianta nada.
+        </p>
+        <p class="reveal reveal-delay-5">
+          <strong>Isso não é azar. É arquitetura.</strong> Uma arquitetura construída para que você continue dependente — de plataformas, de intermediários, de processos que não escalam. A Catalise.me existe para destruir essa arquitetura e construir outra no lugar.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ════════════════════════════════
+     MANIFESTO CORE
+════════════════════════════════ -->
+<section id="manifesto-core">
+  <div class="pad">
+    <div class="manifesto-inner">
+
+      <div class="manifesto-header reveal">
+        <div class="manifesto-line"></div>
+        <h2>NOSSO<br><span>MANIFESTO</span></h2>
+      </div>
+
+      <div class="tenet-list">
+
+        <div class="tenet reveal">
+          <div class="tenet-num">I</div>
+          <div class="tenet-content">
+            <div class="tenet-title">IA não é ferramenta. <em>É alavanca.</em></div>
+            <p class="tenet-body">
+              Ferramenta você usa quando tem tempo. Alavanca você instala uma vez e ela multiplica tudo que você já faz. <strong>A diferença entre as duas é a diferença entre trabalhar mais e crescer mais.</strong> Nós não vendemos ferramentas. Nós instalamos alavancas — agentes que atendem, sistemas que vendem, fluxos que operam enquanto você dorme.
+            </p>
+          </div>
+        </div>
+
+        <div class="tenet reveal">
+          <div class="tenet-num">II</div>
+          <div class="tenet-content">
+            <div class="tenet-title">Crescimento sem <em>caos operacional</em> é possível.</div>
+            <p class="tenet-body">
+              A maioria das pousadas que cresce, quebra por dentro. Mais hóspedes, mais reclamações. Mais reservas, mais overbooking. Mais receita, mais custo. <strong>Crescer assim não é crescer — é acelerar o colapso.</strong> O que construímos não aumenta sua demanda de trabalho. Automatiza, orquestra e escala — para que o crescimento seja consequência de sistemas, não de esforço.
+            </p>
+          </div>
+        </div>
+
+        <div class="tenet reveal">
+          <div class="tenet-num">III</div>
+          <div class="tenet-content">
+            <div class="tenet-title">O hóspede decide em <em>90 segundos.</em></div>
+            <p class="tenet-body">
+              Não respondeu em 15 minutos? A probabilidade de conversão caiu 80%. Não tinha resposta no WhatsApp às 23h? Ele reservou pelo Booking às 23h03. <strong>O tempo de resposta não é detalhe operacional — é a variável que mais impacta sua receita.</strong> Nós eliminamos o tempo de resposta. Agentes de IA treinados no DNA do seu negócio — não genéricos, não robotizados. Hospitaleiros, precisos, incansáveis.
+            </p>
+          </div>
+        </div>
+
+        <div class="tenet reveal">
+          <div class="tenet-num">IV</div>
+          <div class="tenet-content">
+            <div class="tenet-title">Dados são o novo <em>dinheiro vivo.</em></div>
+            <p class="tenet-body">
+              Você não pode gerenciar o que não vê. E hoje, a maioria dos hoteleiros brasileiros toma decisões com dados de semanas atrás — quando ainda dava para mudar algo. <strong>Revenue Management deixou de ser privilégio de rede global.</strong> É o que vai separar quem sobrevive de quem prospera em 2026. Nós construímos o painel de controle que você deveria ter tido desde o início.
+            </p>
+          </div>
+        </div>
+
+        <div class="tenet reveal">
+          <div class="tenet-num">V</div>
+          <div class="tenet-content">
+            <div class="tenet-title">Educação que <em>vira receita.</em></div>
+            <p class="tenet-body">
+              O hoteleiro que entende o sistema compra o sistema. Por isso ensinamos antes de vender — não como estratégia de marketing, mas porque <strong>acreditamos que conhecimento é a catálise mais poderosa que existe.</strong> Quem passa pelo nosso curso chega ao nosso produto entendendo o porquê. E quem entende o porquê não cancela. Evolui.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     NUMBERS BREAK
+════════════════════════════════ -->
+<section id="numbers">
+  <div class="pad">
+    <div class="numbers-inner">
+      <p class="numbers-label reveal">O mercado em números reais</p>
+      <div class="numbers-grid">
+        <div class="stat reveal reveal-delay-1">
+          <div class="stat-value">45<sup>%</sup></div>
+          <div class="stat-label">
+            <strong>Da sua diária vai embora</strong>
+            antes de chegar ao caixa. Comissão, taxa, imposto. Você trabalha — a OTA embolsa.
+          </div>
+        </div>
+        <div class="stat reveal reveal-delay-2">
+          <div class="stat-value">80<sup>%</sup></div>
+          <div class="stat-label">
+            <strong>Queda na conversão</strong>
+            quando o lead não é respondido em 15 minutos. Cada minuto de silêncio custa reserva.
+          </div>
+        </div>
+        <div class="stat reveal reveal-delay-3">
+          <div class="stat-value">286<sup>h</sup></div>
+          <div class="stat-label">
+            <strong>Perdidas por ano</strong>
+            alternando entre sistemas desconectados. Mais de 7 semanas de trabalho jogadas fora.
+          </div>
+        </div>
+        <div class="stat reveal reveal-delay-4">
+          <div class="stat-value">13<sup>x</sup></div>
+          <div class="stat-label">
+            <strong>Crescimento do mercado de IA</strong>
+            em turismo até 2030. De US$3,3bi para US$13,8bi. O bonde já saiu.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     O QUE SOMOS
+════════════════════════════════ -->
+<section id="o-que-somos">
+  <div class="pad">
+    <div class="somos-layout">
+      <div class="somos-left">
+        <p class="mono reveal" style="margin-bottom:1.5rem;">Nossa identidade</p>
+        <h2 class="reveal reveal-delay-1">
+          <span class="not">Agência</span><br>
+          <span class="not">Consultoria</span><br>
+          <span class="not">Software house</span><br>
+          <span class="yes">Growth IA.</span>
+        </h2>
+        <p class="reveal reveal-delay-2">
+          Não existia uma categoria para o que fazemos. Então criamos uma. <strong>Growth IA</strong> é o cruzamento entre estratégia de crescimento, inteligência artificial aplicada e produto proprietário — tudo voltado para um único resultado: mais receita, menos esforço operacional, crescimento que escala.
+        </p>
+        <p class="reveal reveal-delay-3">
+          Não somos a empresa que vende o chatbot e some. Somos o parceiro que instala o sistema, treina a equipe, monitora os dados e evolui a inteligência junto com o seu negócio — mês após mês.
+        </p>
+      </div>
+      <div class="somos-right">
+        <p class="mono reveal" style="margin-bottom:1.5rem;">O que entregamos</p>
+        <ul class="capability-list">
+          <li class="capability reveal reveal-delay-1">
+            <div class="cap-icon">🤖</div>
+            <div class="cap-content">
+              <div class="cap-title">Agentes de IA Customizados</div>
+              <div class="cap-desc">Atendimento, vendas e qualificação — treinados no DNA do seu negócio. Não genéricos. Não robotizados.</div>
+            </div>
+          </li>
+          <li class="capability reveal reveal-delay-2">
+            <div class="cap-icon">⚡</div>
+            <div class="cap-content">
+              <div class="cap-title">Automação de Workflows</div>
+              <div class="cap-desc">Fluxos inteligentes que eliminam trabalho manual, erros e retrabalho. Cada processo repetitivo vira automação.</div>
+            </div>
+          </li>
+          <li class="capability reveal reveal-delay-3">
+            <div class="cap-icon">🔗</div>
+            <div class="cap-content">
+              <div class="cap-title">Orquestração de Sistemas</div>
+              <div class="cap-desc">PMS, CRM, OTAs, WhatsApp, e-mail — tudo conectado e conversando. Zero fragmentação.</div>
+            </div>
+          </li>
+          <li class="capability reveal reveal-delay-4">
+            <div class="cap-icon">📊</div>
+            <div class="cap-content">
+              <div class="cap-title">Matika — CRM Nativo</div>
+              <div class="cap-desc">Nosso produto proprietário. O único CRM comercial construído especificamente para a hotelaria brasileira.</div>
+            </div>
+          </li>
+          <li class="capability reveal reveal-delay-5">
+            <div class="cap-icon">🎓</div>
+            <div class="cap-content">
+              <div class="cap-title">Education Led Growth</div>
+              <div class="cap-desc">Cursos que ensinam, sistemas que implementam, consultoria que opera. Três portas. Um destino.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     NICHO
+════════════════════════════════ -->
+<section id="nicho">
+  <div class="nicho-bg"></div>
+  <div class="pad">
+    <div class="nicho-inner">
+
+      <div class="nicho-top">
+        <div class="reveal">
+          <p class="mono" style="margin-bottom:1.5rem;">Onde atuamos</p>
+          <h2>
+            Pousadas e hotéis<br>
+            que recusam ser<br>
+            <em>invisíveis, lentos<br>
+            e reféns.</em>
+          </h2>
+        </div>
+        <div>
+          <p class="reveal" style="color:var(--fog); font-size:1rem; line-height:1.85; margin-bottom:1.2rem;">
+            Escolhemos a hotelaria independente brasileira — não por acaso, mas por convicção. É onde a dor é mais real, o potencial mais inexplorado e o impacto mais imediato. É também onde operamos: a Pousada Mirante de Lençóis, na Chapada Diamantina, é nosso laboratório vivo há anos.
+          </p>
+          <p class="reveal reveal-delay-1" style="color:var(--fog); font-size:1rem; line-height:1.85;">
+            Não ensinamos o que não testamos. Não vendemos o que não usamos. Cada sistema que implementamos no seu negócio já passou pela nossa própria operação — com dados reais, hóspedes reais, erros reais corrigidos.
+          </p>
+        </div>
+      </div>
+
+      <p class="mono reveal" style="margin-bottom:1.5rem;">As dores que eliminamos</p>
+      <div class="pain-ticker reveal reveal-delay-1" style="margin-bottom:4rem;">
+        <div class="pain-tick">
+          <div class="pain-indicator"></div>
+          <div class="pain-tick-text"><strong>Sangramento silencioso por OTA</strong> — até 45% da receita bruta desaparece antes de você ver.</div>
+        </div>
+        <div class="pain-tick">
+          <div class="pain-indicator"></div>
+          <div class="pain-tick-text"><strong>Atendimento que dorme</strong> — leads chegam às 22h, ninguém responde, o hóspede reserva no concorrente às 22h03.</div>
+        </div>
+        <div class="pain-tick">
+          <div class="pain-indicator"></div>
+          <div class="pain-tick-text"><strong>Follow-up que não acontece</strong> — 50% dos orçamentos enviados nunca recebem retorno. Receita evaporada.</div>
+        </div>
+        <div class="pain-tick">
+          <div class="pain-indicator"></div>
+          <div class="pain-tick-text"><strong>Decisão no feeling</strong> — dados chegam no fim do mês. Quando chegam, já é tarde para mudar qualquer coisa.</div>
+        </div>
+        <div class="pain-tick">
+          <div class="pain-indicator"></div>
+          <div class="pain-tick-text"><strong>Operação que não escala</strong> — mais hóspedes = mais caos. A solução não pode ser contratar mais gente.</div>
+        </div>
+      </div>
+
+      <p class="mono reveal" style="margin-bottom:1.5rem;">O ecossistema Catalise.me</p>
+      <div class="ecosystem reveal reveal-delay-1">
+        <div class="eco-item">
+          <div class="eco-label">Aprenda</div>
+          <div class="eco-title">Education Led Growth</div>
+          <div class="eco-desc">Cursos intensivos que transformam o hoteleiro em operador inteligente. A educação que catalisa a venda do sistema.</div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-label">Use</div>
+          <div class="eco-title">Matika Kanban</div>
+          <div class="eco-desc">O CRM comercial nativo da hotelaria. Kanban de reservas, agente de IA, automações, dashboard. Um ambiente. Zero fragmentação.</div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-label">Delega</div>
+          <div class="eco-title">Implementação & Operação</div>
+          <div class="eco-desc">A Catalise.me constrói, configura e opera os sistemas por você. Diagnóstico, implementação, retainer. Resultado garantido.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CREDO
+════════════════════════════════ -->
+<section id="credo">
+  <div class="pad">
+    <div class="credo-inner">
+
+      <div class="credo-header reveal">
+        <div class="credo-dot"></div>
+        <h2>O QUE ACREDITAMOS</h2>
+      </div>
+
+      <div class="credo-stanzas">
+
+        <div class="stanza reveal">
+          <div class="stanza-num">// 01</div>
+          <div class="stanza-text">
+            Acreditamos que <em>inteligência artificial não substitui hospitalidade</em> — ela libera a equipe para exercê-la no nível mais alto. A IA faz o repetitivo. Os humanos fazem o inesquecível.
+          </div>
+        </div>
+        <div class="credo-divider reveal"></div>
+
+        <div class="stanza reveal">
+          <div class="stanza-num">// 02</div>
+          <div class="stanza-text">
+            Acreditamos que <span class="cross">vender serviços</span> é o modelo do passado. O futuro pertence a quem instala <em>sistemas que geram receita mesmo quando você não está trabalhando.</em>
+          </div>
+        </div>
+        <div class="credo-divider reveal"></div>
+
+        <div class="stanza reveal">
+          <div class="stanza-num">// 03</div>
+          <div class="stanza-text">
+            Acreditamos que o hoteleiro independente brasileiro merece a mesma inteligência operacional que as grandes redes têm — <em>sem o preço de uma grande rede.</em>
+          </div>
+        </div>
+        <div class="credo-divider reveal"></div>
+
+        <div class="stanza reveal">
+          <div class="stanza-num">// 04</div>
+          <div class="stanza-text">
+            Acreditamos que <em>crescimento real é previsível.</em> Não depende de sorte, de alta temporada ou de uma avaliação viral. Depende de sistemas bem construídos e dados bem lidos.
+          </div>
+        </div>
+        <div class="credo-divider reveal"></div>
+
+        <div class="stanza reveal">
+          <div class="stanza-num">// 05</div>
+          <div class="stanza-text">
+            Acreditamos que a catálise mais poderosa que existe é <em>colocar a tecnologia certa nas mãos certas.</em> Não basta ter IA. É preciso saber onde instalar, como medir e quando evoluir.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CLOSING
+════════════════════════════════ -->
+<section id="closing">
+  <div class="closing-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="closing-content" id="closingContent">
+    <p class="closing-eyebrow">A reação já começou</p>
+    <h2 class="closing-title">
+      SEJA A<br>
+      <span class="c-acid">CATÁLISE</span><br>
+      DO SEU<br>
+      MERCADO.
+    </h2>
+    <p class="closing-sub">
+      Enquanto seus concorrentes esperam o futuro chegar,<br>
+      você já pode estar operando nele.
+    </p>
+    <a href="https://catalise.me" class="closing-url">catalise.me</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-mark">© 2026 — Catalise<em>.me</em> — Growth IA para Hotelaria</span>
+  <span class="footer-mark">Bahia, Brasil — <em>catalise.me</em></span>
+</footer>
+
+<script>
+// ── CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+    ring.style.borderColor = 'rgba(200,241,53,0.8)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.borderColor = 'rgba(200,241,53,0.4)';
+  });
+});
+
+// ── PROGRESS BAR
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  progress.style.width = pct + '%';
+});
+
+// ── REVEAL ON SCROLL
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => revealObs.observe(el));
+
+// ── CLOSING REVEAL
+const closingContent = document.getElementById('closingContent');
+const closingObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    closingContent.classList.add('visible');
+  }
+}, { threshold: 0.3 });
+closingObs.observe(closingContent);
+
+// ── TENET HOVER TEXT SCRAMBLE
+const tenetTitles = document.querySelectorAll('.tenet-title');
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&';
+tenetTitles.forEach(el => {
+  const original = el.textContent;
+  let interval = null;
+  el.addEventListener('mouseenter', () => {
+    let iter = 0;
+    clearInterval(interval);
+    interval = setInterval(() => {
+      el.innerHTML = original.split('').map((c, i) => {
+        if (i < iter) return c === '<' ? '<' : c;
+        if (c === ' ' || c === '.') return c;
+        if (c === '<') return '<';
+        return chars[Math.floor(Math.random() * chars.length)];
+      }).join('');
+      if (iter >= original.length) {
+        clearInterval(interval);
+        el.innerHTML = original;
+      }
+      iter += 2;
+    }, 40);
+  });
+  el.addEventListener('mouseleave', () => {
+    clearInterval(interval);
+    el.innerHTML = original;
+  });
+});
+</script>
+
+</body>
+</html>

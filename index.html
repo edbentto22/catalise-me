@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>Catalise.me — Catalise. O sistema neural centralizado da sua empresa.</title>
+  <meta name="description"
+    content="Empresas têm corpo. A Catalise instala o sistema nervoso. Sistema operacional agêntico com IA que conecta setores, aprende sozinho e otimiza sua operação — em 10 a 12 semanas.">
+  <meta name="keywords"
+    content="sistema operacional agêntico, IA empresarial, automação operacional, agentes de IA, Opera AIAS, transformação digital">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Catalise.me — Catalise. O sistema opera.">
+  <meta property="og:description"
+    content="Empresas têm corpo. A Catalise instala o sistema nervoso. Sistema operacional agêntico com IA em 10-12 semanas.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://catalise.me/">
+  <meta property="og:image" content="https://catalise.me/assets/og-home.jpg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Catalise.me — Catalise. O Sistema Nervoso Central da sua empresa.">
+  <meta name="twitter:description" content="Empresas têm corpo. A Catalise.me instala o sistema nervoso.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://catalise.me/">
+
+  <!-- Preload critical font -->
+  <link rel="preload" href="FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-book.otf" as="font" type="font/otf"
+    crossorigin>
+  <link rel="preload" href="FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-bold.otf" as="font" type="font/otf"
+    crossorigin>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/home.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+
+<body>
+
+  <!-- ══════════════ NAV ══════════════ -->
+  <nav class="nav" role="navigation" aria-label="Navegação principal">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Catalise.me — Página inicial">
+        <img src="assets/logo.png" alt="Catalise.me" class="nav-logo-img" width="420" height="84">
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="opera-os.html">Opera AIAS</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="contato.html" class="btn btn-primary btn-sm">Diagnóstico gratuito</a>
+      </div>
+
+      <button class="nav-hamburger" aria-label="Abrir menu" aria-expanded="false" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <nav class="nav-mobile" aria-label="Menu mobile" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="opera-os.html">Opera AIAS</a>
+    <a href="contato.html">Contato</a>
+    <a href="contato.html" class="btn btn-primary" style="margin-top: 8px; justify-content: center;">Diagnóstico
+      gratuito</a>
+  </nav>
+
+  <main>
+
+    <!-- ══════════════ HERO ══════════════ -->
+    <section class="hero-section bg-glow-top" aria-labelledby="hero-heading">
+      <div class="hero-bg-grid"></div>
+
+      <div class="container">
+        <div class="hero-layout">
+          <div class="hero-content">
+            <p class="eyebrow hero-animate-1">Sistema operacional agêntico com IA</p>
+
+            <h1 id="hero-heading" class="hero-heading hero-animate-2">
+              Empresas têm corpo.<br>
+              <em>A Catalise.me instala<br>o sistema nervoso central.</em>
+            </h1>
+
+            <p class="hero-lede hero-animate-3">
+              Sua operação cresceu até onde dava sozinha. Cada setor desenvolveu seu próprio cérebro — marketing tem sua
+              planilha, vendas tem seu CRM, operação tem seu ERP. Inteligentes, separadamente. <strong>Cegos, em
+                conjunto.</strong>
+            </p>
+
+            <p class="hero-sub hero-animate-3" style="transition-delay: 0.2s;">
+              Em 10 a 12 semanas, instalamos a camada agêntica que conecta tudo. Os setores compartilham dados, aprendem
+              juntos, e a operação inteira se otimiza sozinha.
+            </p>
+
+            <div class="hero-ctas hero-animate-4">
+              <a href="contato.html" class="btn btn-primary btn-lg" id="hero-cta-primary">
+                Quero meu diagnóstico gratuito
+                <span class="btn-arrow">→</span>
+              </a>
+              <a href="opera-os.html" class="btn btn-secondary btn-lg" id="hero-cta-secondary">
+                Conhecer o método OPERA
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-visual hero-animate-symbol">
+            <div class="hero-symbol-wrapper">
+              <div class="hero-symbol-glow"></div>
+              <div class="hero-symbol-rings">
+                <div class="radar-ring radar-ring-1"></div>
+                <div class="radar-ring radar-ring-2"></div>
+                <div class="radar-ring radar-ring-3"></div>
+              </div>
+
+              <!-- Sector nodes -->
+              <div class="hero-node node-mkt" title="Marketing">MKT</div>
+              <div class="hero-node node-crm" title="Vendas / CRM">CRM</div>
+              <div class="hero-node node-ops" title="Operação">OPS</div>
+              <div class="hero-node node-fin" title="Financeiro">FIN</div>
+
+              <img src="assets/simbolo-catalise-me.svg" alt="" class="symbol-animate" width="600" height="600"
+                aria-hidden="true">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ TICKER DE MÉTRICAS ══════════════ -->
+    <div class="metrics-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <!-- Duplicate for seamless loop -->
+        <div class="ticker-item">
+          <strong>286h</strong><span class="ticker-sep"></span><span>por ano recuperadas por empresa</span>
+        </div>
+        <div class="ticker-item">
+          <strong>80%</strong><span class="ticker-sep"></span><span>queda na conversão após 15min sem resposta</span>
+        </div>
+        <div class="ticker-item">
+          <strong>10–12 semanas</strong><span class="ticker-sep"></span><span>para sistema completo rodando</span>
+        </div>
+        <div class="ticker-item">
+          <strong>24/7</strong><span class="ticker-sep"></span><span>agentes de IA operando enquanto você dorme</span>
+        </div>
+        <div class="ticker-item">
+          <strong>60–90 dias</strong><span class="ticker-sep"></span><span>retorno médio do investimento</span>
+        </div>
+        <div class="ticker-item">
+          <strong>67%</strong><span class="ticker-sep"></span><span>dos gestores decidem sem dado atualizado</span>
+        </div>
+        <div class="ticker-item">
+          <strong>51%</strong><span class="ticker-sep"></span><span>do tempo de operação em tarefas coordenáveis</span>
+        </div>
+        <!-- Duplicate -->
+        <div class="ticker-item" aria-hidden="true">
+          <strong>286h</strong><span class="ticker-sep"></span><span>por ano recuperadas por empresa</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>80%</strong><span class="ticker-sep"></span><span>queda na conversão após 15min sem resposta</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>10–12 semanas</strong><span class="ticker-sep"></span><span>para sistema completo rodando</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>24/7</strong><span class="ticker-sep"></span><span>agentes de IA operando enquanto você dorme</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>60–90 dias</strong><span class="ticker-sep"></span><span>retorno médio do investimento</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>67%</strong><span class="ticker-sep"></span><span>dos gestores decidem sem dado atualizado</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>51%</strong><span class="ticker-sep"></span><span>do tempo de operação em tarefas coordenáveis</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ PROBLEMA (Stats) ══════════════ -->
+    <section id="problema" aria-labelledby="problema-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">O Problema</p>
+          <h2 id="problema-heading">
+            Sua empresa não tem problema de equipe.<br>
+            Tem problema de <em>coordenação</em>.
+          </h2>
+          <p>Você já sentiu isso. O time é bom. As ferramentas funcionam. Mas marketing roda campanha sem vendas saber.
+            Finanças aprova orçamento sem operação ter input. Atendimento promete coisa que produção não consegue
+            entregar.</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card reveal reveal-delay-1">
+            <span class="stat-number" data-target="286" data-suffix="h">286h</span>
+            <span class="stat-label">por ano perdidas em sistemas desconectados — gerentes refazendo trabalho já
+              feito</span>
+          </div>
+          <div class="stat-card reveal reveal-delay-2">
+            <span class="stat-number" data-target="51" data-suffix="%">51%</span>
+            <span class="stat-label">do tempo do seu time de operação gasto em tarefas que poderiam estar
+              coordenadas</span>
+          </div>
+          <div class="stat-card reveal reveal-delay-3">
+            <span class="stat-number" data-target="67" data-suffix="%">67%</span>
+            <span class="stat-label">dos gestores tomam decisão sem dado atualizado — porque o dado está em outro
+              sistema</span>
+          </div>
+          <div class="stat-card reveal reveal-delay-4">
+            <span class="stat-number" data-target="80" data-suffix="%">80%</span>
+            <span class="stat-label">de queda na conversão se o lead esperar mais de 15 minutos por resposta</span>
+          </div>
+        </div>
+
+        <p class="problema-conclusion reveal">
+          Esse é o limite oculto do seu crescimento. <em>Não é o produto. Não é o mercado. É a operação que ficou maior
+            que a inteligência dela.</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════ SOLUÇÃO ══════════════ -->
+    <section id="solucao" class="solucao-section" aria-labelledby="solucao-heading">
+      <video class="solucao-bg-video" autoplay loop muted playsinline aria-hidden="true">
+        <source src="assets/video-bg.mp4" type="video/mp4">
+      </video>
+      <div class="container solucao-content-wrapper">
+        <div class="section-header reveal">
+          <p class="eyebrow">A Solução</p>
+          <h2 id="solucao-heading">
+            A Catalise.me instala o <em>sistema nervoso</em><br>que estava faltando.
+          </h2>
+          <p>Não trocamos seus sistemas. Não substituímos sua equipe. Construímos uma <strong>camada agêntica</strong>
+            sobre o que você já tem — onde os setores compartilham dados, aprendem juntos, e se otimizam sozinhos.</p>
+          <p style="margin-top: 12px;">A gente chama essa camada de <strong>Opera AIAS — Artificial Intelligence Agentic
+              System</strong>. É a infraestrutura de inteligência operacional que faltava na sua empresa.</p>
+        </div>
+
+        <div class="solucao-cards reveal">
+          <div class="card">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7CFF00" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <h3>Marketing decide</h3>
+            <p>...e vendas, finanças e operação são notificados automaticamente. Antes da próxima reunião.</p>
+          </div>
+          <div class="card reveal-delay-1">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7CFF00" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4l3 3" />
+              </svg>
+            </div>
+            <h3>Operação detecta gargalo</h3>
+            <p>...e o sistema reorganiza prioridades de toda a empresa. Sem reunião, sem ata, sem fricção.</p>
+          </div>
+          <div class="card reveal-delay-2">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7CFF00" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                <path d="M21 3v9h-9" />
+              </svg>
+            </div>
+            <h3>Cliente reclama</h3>
+            <p>...e a inteligência inteira aprende com isso. Próximo cliente não passa pelo mesmo problema.</p>
+          </div>
+        </div>
+
+        <!-- Diagrama camada agêntica -->
+        <div class="agentic-diagram reveal" style="transition-delay: 200ms;">
+          <p class="agentic-diagram-title">— como a camada agêntica conecta sua empresa —</p>
+          <div class="agentic-system">
+            
+            <div class="agentic-layer top-layer">
+              <div class="agentic-node">Marketing</div>
+              <div class="agentic-node">Vendas / CRM</div>
+              <div class="agentic-node">Atendimento</div>
+            </div>
+
+            <div class="agentic-core-wrapper">
+              <div class="agentic-core-glow"></div>
+              <div class="agentic-core">
+                <span class="core-pulse"></span>
+                Opera AIAS
+              </div>
+            </div>
+
+            <div class="agentic-layer bottom-layer">
+              <div class="agentic-node">Operação</div>
+              <div class="agentic-node">Financeiro</div>
+              <div class="agentic-node">Dashboard</div>
+            </div>
+            
+          </div>
+        </div>
+
+        <p class="solucao-metafora reveal" style="margin-top: var(--space-12);">
+          É como ter o reflexo de tirar a mão do fogo — sem o cérebro precisar pensar. <em>Sua empresa decide na
+            velocidade do reflexo, não na velocidade da próxima reunião.</em>
+        </p>
+
+        <div class="reveal" style="text-align: center; margin-top: 48px;">
+          <a href="opera-os.html" class="btn btn-secondary">
+            Como funciona, na prática <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ MÉTODO OPERA ══════════════ -->
+    <section id="opera" aria-labelledby="opera-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">O Método</p>
+          <h2 id="opera-heading">Cinco fases. <em>10 a 12 semanas.</em><br>Resultado certo.</h2>
+          <p>Cada implementação segue o <strong>OPERA</strong> — nossa metodologia proprietária de 5 fases. Você sabe o
+            que acontece em cada semana, o que recebe em cada fase, e qual é o critério de "pronto".</p>
+        </div>
+
+        <div class="opera-grid reveal">
+          <div class="opera-item active" data-phase="O" id="opera-item-o">
+            <img src="assets/ORGANIZAÇÃO.png" alt="O" class="opera-icon">
+            <span class="opera-title">Organização</span>
+            <span class="opera-weeks">Sem 1–2</span>
+          </div>
+          <div class="opera-item" data-phase="P" id="opera-item-p">
+            <img src="assets/PLANEJAMENTO.png" alt="P" class="opera-icon">
+            <span class="opera-title">Planejamento</span>
+            <span class="opera-weeks">Sem 2–3</span>
+          </div>
+          <div class="opera-item" data-phase="E" id="opera-item-e">
+            <img src="assets/ESTRATÉGIA.png" alt="E" class="opera-icon">
+            <span class="opera-title">Estratégia</span>
+            <span class="opera-weeks">Sem 3–4</span>
+          </div>
+          <div class="opera-item" data-phase="R" id="opera-item-r">
+            <img src="assets/REALIZAÇÃO.png" alt="R" class="opera-icon">
+            <span class="opera-title">Realização</span>
+            <span class="opera-weeks">Sem 4–8</span>
+          </div>
+          <div class="opera-item" data-phase="A" id="opera-item-a">
+            <img src="assets/AFINAMENTO.png" alt="A" class="opera-icon">
+            <span class="opera-title">Afinação</span>
+            <span class="opera-weeks">Sem 8–10</span>
+          </div>
+        </div>
+
+        <div class="opera-detail reveal" id="opera-detail" aria-live="polite">
+          <p class="opera-detail-weeks text-mono text-green">Semanas 1–2</p>
+          <h3 class="opera-detail-title">O · Organização</h3>
+          <p class="opera-detail-desc">Diagnóstico profundo da operação atual. Mapeamos cada processo — do primeiro
+            contato do cliente até o pós-venda. Identificamos e classificamos todos os gargalos por impacto financeiro
+            real.</p>
+        </div>
+
+        <div class="reveal" style="text-align: center; margin-top: 48px;">
+          <a href="opera-os.html#metodo" class="btn btn-secondary" id="opera-detail-link">
+            Ver cada fase em detalhe <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ANTES / DEPOIS ══════════════ -->
+    <section id="resultados" aria-labelledby="resultados-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">O Que Muda</p>
+          <h2 id="resultados-heading">O que acontece quando a operação <em>fica catalisada</em>.</h2>
+          <p>A maioria dos nossos clientes recupera o investimento em 60 a 90 dias — em conversão, em horas liberadas,
+            em decisões que antes ficavam paradas.</p>
+        </div>
+
+        <div class="before-after reveal">
+          <div class="before-col">
+            <div class="before-after-label">
+              <span>✕</span> Antes da Catalise.me
+            </div>
+            <ul class="before-after-list">
+              <li><span class="list-icon">✕</span> Dono no WhatsApp 14 horas por dia</li>
+              <li><span class="list-icon">✕</span> Lead à noite morre — concorrente responde antes</li>
+              <li><span class="list-icon">✕</span> Cada setor com sua planilha, ninguém sabe o todo</li>
+              <li><span class="list-icon">✕</span> Review fica 5 dias sem resposta</li>
+              <li><span class="list-icon">✕</span> Decisão de pricing sai de feeling</li>
+              <li><span class="list-icon">✕</span> Não sabe qual canal traz mais ROI</li>
+            </ul>
+          </div>
+          <div class="after-col">
+            <div class="before-after-label">
+              <span>✓</span> Depois da Catalise.me (90 dias)
+            </div>
+            <ul class="before-after-list">
+              <li><span class="list-icon">✓</span> Agentes de IA operam 24/7, dono volta a ter noite</li>
+              <li><span class="list-icon">✓</span> Lead à meia-noite recebe resposta em 15 segundos</li>
+              <li><span class="list-icon">✓</span> Setores compartilham inteligência em tempo real</li>
+              <li><span class="list-icon">✓</span> Review respondida em até 1 hora, automaticamente</li>
+              <li><span class="list-icon">✓</span> Pricing dinâmico ajustado por demanda</li>
+              <li><span class="list-icon">✓</span> Dashboard mostra ROI por canal, em tempo real</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════ PARA QUEM ══════════════ -->
+    <section id="para-quem" aria-labelledby="para-quem-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Para Quem</p>
+          <h2 id="para-quem-heading">Quem está <em>pronto</em> para essa solução</h2>
+        </div>
+
+        <div class="qual-grid reveal">
+          <div class="qual-col yes">
+            <div class="qual-header">
+              <span class="qual-badge">É para você</span>
+            </div>
+            <ul class="qual-list">
+              <li><span>Seu negócio fatura <strong class="text-white">R$ 100.000 ou mais por mês</strong> e tem operação consolidada</span></li>
+              <li><span>Você é dono, gestor ou diretor de uma <strong class="text-white">empresa de serviços</strong> (hotelaria, clínica,
+                autoescola, imobiliária, jurídico, educação)</span></li>
+              <li><span>Sua operação cresceu até onde dava pelo esforço da equipe — agora precisa de <strong class="text-white">sistema</strong></span>
+              </li>
+              <li><span>Você está disposto a investir em <strong class="text-white">transformação real</strong>, não em mais uma ferramenta solta</span>
+              </li>
+              <li><span>Você consegue esperar <strong class="text-white">10 a 12 semanas</strong> para ver o sistema completo rodando</span></li>
+            </ul>
+          </div>
+          <div class="qual-col no">
+            <div class="qual-header">
+              <span class="qual-badge">Não é para você</span>
+            </div>
+            <ul class="qual-list">
+              <li><span>Ainda está validando modelo de negócio</span></li>
+              <li><span>Precisa de resultado em 2 semanas</span></li>
+              <li><span>Quer comprar só software sem transformação de processo</span></li>
+            </ul>
+            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); margin-top: 24px; line-height: 1.7;">
+              Tudo bem — somos honestos sobre quando não somos a melhor opção.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ CTA FINAL ══════════════ -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container" style="position: relative; z-index: 1;">
+        <p class="eyebrow" style="justify-content: center;">Próximo passo</p>
+        <h2 id="cta-heading">
+          Sua empresa <em>já tem corpo</em>.<br>
+          Vamos instalar o sistema nervoso.
+        </h2>
+        <p>O diagnóstico inicial é gratuito para perfis qualificados. Em 45 min, mapeamos sua operação,
+          identificamos os gargalos por impacto financeiro e apresentamos o plano OPERA personalizado. Sem compromisso.
+          Sem letra miúda.</p>
+        <div class="cta-buttons">
+          <a href="contato.html" class="btn btn-primary btn-lg" id="final-cta-primary">
+            Agendar diagnóstico gratuito
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="https://wa.me/5575991879786?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20diagnóstico%20gratuito%20da%20Catalise.me"
+            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp">
+            Falar pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="Catalise.me">
+            <img src="assets/logo.png" alt="Catalise.me" class="logo-img" width="120" height="24">
+          </a>
+          <p>Sistema operacional agêntico com IA para empresas de serviços.</p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Páginas</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="opera-os.html">Opera AIAS</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Contato</h4>
+          <ul>
+            <li><a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a href="mailto:contato@catalise.me">contato@catalise.me</a></li>
+            <li><a href="https://linkedin.com/company/catalise-me" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        
+        <p class="footer-copy">© 2026 Catalise.me · Todos os direitos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./js/nav.js"></script>
+</body>
+
+</html>

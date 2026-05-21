@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservas Diretas com IA — Trivium Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0d0b;
+    --ink-soft: #2a2925;
+    --ink-muted: #6b6860;
+    --paper: #f5f2ec;
+    --paper-warm: #ede9e1;
+    --paper-dark: #e2ddd4;
+    --gold: #b8974a;
+    --gold-light: #d4b06a;
+    --gold-pale: #f0e8d5;
+    --danger: #8b2e2e;
+    --danger-pale: #f5e8e8;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h1, h2, h3, h4 { font-family: var(--serif); font-weight: 300; line-height: 1.15; }
+  h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+  h2 { font-size: clamp(2rem, 4vw, 3.4rem); }
+  h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+  p { font-size: clamp(0.95rem, 1.5vw, 1.05rem); color: var(--ink-soft); }
+
+  em { font-style: italic; color: var(--gold); }
+  strong { font-weight: 500; color: var(--ink); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
+  .container--narrow { max-width: 760px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
+
+  section { padding: clamp(4rem, 8vw, 9rem) 0; }
+
+  /* ── DIVIDER ── */
+  .rule { border: none; border-top: 1px solid var(--paper-dark); margin: 0; }
+  .rule--gold { border-color: var(--gold); opacity: 0.4; }
+
+  /* ── LABEL ── */
+  .label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: inline-block;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-block;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+  }
+  .btn--primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1rem 2.8rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn--primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-101%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .btn--primary:hover::after { transform: translateX(0); }
+  .btn--primary span { position: relative; z-index: 1; }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    padding: 0.85rem 2.2rem;
+    border: 1px solid var(--ink);
+  }
+  .btn--ghost:hover { background: var(--ink); color: var(--paper); }
+
+  /* ────────────────────────────────
+     NAV
+  ──────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    padding: 1.2rem 0;
+    background: rgba(245,242,236,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--paper-dark);
+    transition: padding 0.3s ease;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-cta { font-size: 0.82rem; }
+
+  /* ────────────────────────────────
+     HERO
+  ──────────────────────────────── */
+  #hero {
+    padding-top: clamp(8rem, 14vw, 13rem);
+    padding-bottom: clamp(5rem, 9vw, 10rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: -10%; right: -5%;
+    width: 55%;
+    height: 120%;
+    background: linear-gradient(135deg, var(--paper-warm) 0%, var(--paper-dark) 100%);
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.8rem;
+  }
+  .hero-eyebrow .rule { flex: 1; max-width: 3rem; }
+
+  .hero-title { margin-bottom: 1.6rem; }
+  .hero-title em { display: block; }
+
+  .hero-sub {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+  .hero-proof {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    margin-top: 1.5rem;
+  }
+
+  /* HERO CARD */
+  .hero-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem;
+    position: relative;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -6px; left: -6px;
+    right: 6px; bottom: 6px;
+    border: 1px solid var(--gold);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .calc-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.9rem;
+  }
+  .calc-row:last-of-type { border-bottom: none; }
+  .calc-row .val { font-family: var(--mono); }
+  .calc-row .val--danger { color: #e07070; }
+  .calc-row .val--gold { color: var(--gold-light); font-size: 1.2rem; }
+
+  .calc-total {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    background: rgba(184,151,74,0.12);
+    border: 1px solid rgba(184,151,74,0.3);
+  }
+  .calc-total-label { font-size: 0.78rem; color: var(--gold-light); margin-bottom: 0.3rem; }
+  .calc-total-value { font-family: var(--serif); font-size: 2.2rem; color: var(--gold-light); }
+  .calc-total-sub { font-size: 0.72rem; color: rgba(245,242,236,0.5); margin-top: 0.2rem; }
+
+  .calc-note {
+    margin-top: 1.2rem;
+    font-size: 0.75rem;
+    color: rgba(245,242,236,0.45);
+    font-style: italic;
+  }
+
+  /* ────────────────────────────────
+     PAIN SECTION
+  ──────────────────────────────── */
+  #pain { background: var(--ink); color: var(--paper); }
+  #pain p { color: rgba(245,242,236,0.7); }
+  #pain h2 { color: var(--paper); }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 4rem;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .pain-item {
+    padding: 2.2rem;
+    background: var(--ink);
+    transition: background 0.25s ease;
+  }
+  .pain-item:hover { background: var(--ink-soft); }
+
+  .pain-number {
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    color: var(--gold);
+    opacity: 0.35;
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+
+  .pain-title {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--paper);
+    margin-bottom: 0.5rem;
+  }
+
+  .pain-desc { font-size: 0.875rem; color: rgba(245,242,236,0.55); }
+
+  /* ────────────────────────────────
+     QUOTE BREAK
+  ──────────────────────────────── */
+  #quote-break {
+    background: var(--gold-pale);
+    padding: clamp(3rem, 6vw, 6rem) 0;
+    border-top: 1px solid var(--paper-dark);
+    border-bottom: 1px solid var(--paper-dark);
+  }
+
+  blockquote {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--ink);
+    position: relative;
+    padding-left: 2rem;
+  }
+  blockquote::before {
+    content: '"';
+    position: absolute;
+    left: -0.5rem;
+    top: -1rem;
+    font-size: 8rem;
+    color: var(--gold);
+    opacity: 0.2;
+    font-family: var(--serif);
+    line-height: 1;
+  }
+  .quote-attr {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  /* ────────────────────────────────
+     WHAT YOU LEARN
+  ──────────────────────────────── */
+  #curriculum { background: var(--paper); }
+
+  .curriculum-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .curriculum-sticky {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .module-list { margin-top: 3rem; }
+
+  .module {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1.2rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--paper-dark);
+    transition: all 0.2s ease;
+  }
+  .module:first-child { border-top: 1px solid var(--paper-dark); }
+  .module:hover { padding-left: 0.5rem; }
+
+  .module-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--gold);
+    padding-top: 0.15rem;
+  }
+
+  .module-title {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+  }
+
+  .module-desc { font-size: 0.855rem; color: var(--ink-muted); }
+
+  .module-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--danger);
+    background: var(--danger-pale);
+    padding: 0.2rem 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ────────────────────────────────
+     OFFER SECTION
+  ──────────────────────────────── */
+  #offer { background: var(--paper-warm); }
+
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    margin-top: 3.5rem;
+  }
+
+  .offer-card {
+    background: var(--paper);
+    padding: 2.5rem;
+    border: 1px solid var(--paper-dark);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .offer-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  .offer-card--featured {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .offer-card--featured p { color: rgba(245,242,236,0.65); }
+
+  .offer-badge {
+    position: absolute;
+    top: -1px; right: 2rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .offer-name {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .offer-card--featured .offer-name { color: var(--gold-light); }
+
+  .offer-price {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    margin: 0.5rem 0 0.3rem;
+  }
+  .offer-card--featured .offer-price { color: var(--paper); }
+
+  .offer-price-from {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    text-decoration: line-through;
+    margin-bottom: 0.2rem;
+  }
+  .offer-card--featured .offer-price-from { color: rgba(245,242,236,0.4); }
+
+  .offer-period { font-size: 0.78rem; color: var(--ink-muted); }
+  .offer-card--featured .offer-period { color: rgba(245,242,236,0.5); }
+
+  .offer-divider {
+    border: none;
+    border-top: 1px solid var(--paper-dark);
+    margin: 1.5rem 0;
+  }
+  .offer-card--featured .offer-divider { border-color: rgba(255,255,255,0.1); }
+
+  .offer-features { list-style: none; }
+  .offer-features li {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    padding: 0.4rem 0;
+    padding-left: 1.4rem;
+    position: relative;
+  }
+  .offer-card--featured .offer-features li { color: rgba(245,242,236,0.7); }
+  .offer-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.8rem;
+  }
+
+  .offer-cta { margin-top: 2rem; display: block; text-align: center; }
+
+  /* ────────────────────────────────
+     AUTHORITY
+  ──────────────────────────────── */
+  #authority { background: var(--paper); }
+
+  .authority-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .authority-image {
+    position: relative;
+  }
+  .authority-img-frame {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: var(--paper-dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .authority-img-frame::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem; right: -1rem;
+    width: 60%;
+    height: 60%;
+    border: 2px solid var(--gold);
+    opacity: 0.3;
+    z-index: -1;
+  }
+
+  .authority-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: linear-gradient(160deg, var(--paper-warm), var(--paper-dark));
+  }
+  .authority-placeholder-icon { font-size: 3rem; opacity: 0.2; }
+  .authority-placeholder-text {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+  }
+
+  .credential-list { list-style: none; margin-top: 2rem; }
+  .credential-list li {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--paper-dark);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .credential-list li::before {
+    content: '—';
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* ────────────────────────────────
+     MATIKA BRIDGE
+  ──────────────────────────────── */
+  #matika-bridge {
+    background: var(--ink-soft);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  #matika-bridge::before {
+    content: 'MATIKA';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--serif);
+    font-size: clamp(8rem, 18vw, 20rem);
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .matika-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .matika-tag {
+    background: var(--gold);
+    color: var(--ink);
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #matika-bridge h2 { color: var(--paper); }
+  #matika-bridge p { color: rgba(245,242,236,0.65); }
+
+  .matika-features {
+    list-style: none;
+    margin-top: 2rem;
+  }
+  .matika-features li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.9rem;
+    color: rgba(245,242,236,0.7);
+  }
+  .matika-features li .icon {
+    color: var(--gold-light);
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 1.5rem;
+  }
+
+  .matika-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    padding: 2rem;
+  }
+
+  .matika-modules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 1.5rem;
+  }
+
+  .matika-module {
+    background: rgba(14,13,11,0.5);
+    padding: 1.2rem;
+    transition: background 0.2s;
+  }
+  .matika-module:hover { background: rgba(14,13,11,0.8); }
+
+  .matika-module-icon { font-size: 1.2rem; margin-bottom: 0.4rem; }
+  .matika-module-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--paper);
+    margin-bottom: 0.2rem;
+  }
+  .matika-module-desc { font-size: 0.72rem; color: rgba(245,242,236,0.4); }
+
+  /* ────────────────────────────────
+     FAQ
+  ──────────────────────────────── */
+  #faq { background: var(--paper-warm); }
+
+  .faq-list { margin-top: 3rem; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--paper-dark);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 1.5rem 0;
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .faq-icon {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--ink-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--ink-muted);
+    transition: all 0.25s ease;
+  }
+
+  .faq-item.open .faq-icon {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .faq-answer-inner {
+    padding-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.8;
+  }
+
+  /* ────────────────────────────────
+     FINAL CTA
+  ──────────────────────────────── */
+  #final-cta {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    padding: clamp(5rem, 10vw, 11rem) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  #final-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 5rem;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+  }
+
+  #final-cta h2 { color: var(--paper); }
+  #final-cta p { color: rgba(245,242,236,0.6); max-width: 540px; margin: 0 auto 2.5rem; }
+
+  .guarantee {
+    margin-top: 2rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: rgba(245,242,236,0.35);
+    text-transform: uppercase;
+  }
+
+  /* ────────────────────────────────
+     FOOTER
+  ──────────────────────────────── */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 2.5rem 0;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: rgba(245,242,236,0.5);
+    text-decoration: none;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(245,242,236,0.3);
+    font-family: var(--mono);
+  }
+
+  /* ────────────────────────────────
+     ANIMATIONS
+  ──────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-up {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* ────────────────────────────────
+     STICKY CTA BAR
+  ──────────────────────────────── */
+  .sticky-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 0.9rem clamp(1.5rem, 5vw, 4rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    z-index: 800;
+    transform: translateY(100%);
+    transition: transform 0.35s ease;
+    flex-wrap: wrap;
+  }
+  .sticky-bar.visible { transform: translateY(0); }
+  .sticky-bar-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--paper);
+  }
+  .sticky-bar-text span { color: var(--gold); }
+
+  /* ────────────────────────────────
+     RESPONSIVE
+  ──────────────────────────────── */
+  @media (max-width: 768px) {
+    .hero-grid,
+    .curriculum-layout,
+    .authority-layout,
+    .matika-layout {
+      grid-template-columns: 1fr;
+    }
+    .hero-bg { display: none; }
+    .curriculum-sticky { position: static; }
+    .matika-modules { grid-template-columns: 1fr; }
+    .nav-cta { display: none; }
+    blockquote { padding-left: 1rem; font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Trivium <span>Labs</span></a>
+    <a href="#offer" class="btn btn--primary btn--sm nav-cta"><span>Quero entrar →</span></a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- LEFT -->
+      <div>
+        <div class="hero-eyebrow animate-up">
+          <hr class="rule rule--gold">
+          <span class="label">Curso intensivo · Turismo & IA</span>
+        </div>
+
+        <h1 class="hero-title animate-up delay-1">
+          Pare de pagar<br>
+          <em>25% de comissão</em><br>
+          para a OTA.
+        </h1>
+
+        <p class="hero-sub animate-up delay-2">
+          Aprenda a construir seu próprio canal de reservas diretas — com IA que atende 24h, qualifica os hóspedes e fecha vendas enquanto você descansa.
+        </p>
+
+        <div class="hero-actions animate-up delay-3">
+          <a href="#offer" class="btn btn--primary"><span>Garantir minha vaga →</span></a>
+          <a href="#curriculum" class="btn btn--ghost">Ver o conteúdo</a>
+        </div>
+
+        <p class="hero-proof animate-up delay-4">
+          Metodologia aplicada na Pousada Mirante de Lençóis · Chapada Diamantina
+        </p>
+      </div>
+
+      <!-- RIGHT — CALCULATOR -->
+      <div class="animate-up delay-2">
+        <div class="hero-card">
+          <span class="calc-label">// Calculadora de perda por OTA</span>
+
+          <div class="calc-row">
+            <span>Diária média</span>
+            <span class="val">R$ 350</span>
+          </div>
+          <div class="calc-row">
+            <span>Comissão Booking (20%)</span>
+            <span class="val val--danger">− R$ 70</span>
+          </div>
+          <div class="calc-row">
+            <span>Taxa de cartão (3%)</span>
+            <span class="val val--danger">− R$ 10,50</span>
+          </div>
+          <div class="calc-row">
+            <span>O que chega ao seu caixa</span>
+            <span class="val val--gold">R$ 269,50</span>
+          </div>
+
+          <div class="calc-total">
+            <div class="calc-total-label">Você perde por mês (30 reservas OTA)</div>
+            <div class="calc-total-value">R$ 2.415</div>
+            <div class="calc-total-sub">→ R$ 28.980 por ano indo embora</div>
+          </div>
+
+          <p class="calc-note">* Baseado em médias reais do mercado hoteleiro brasileiro 2026. Os números da sua pousada podem ser ainda maiores.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ════════════════════════════════
+     PAIN
+════════════════════════════════ -->
+<section id="pain">
+  <div class="container">
+    <span class="label">O problema real</span>
+    <h2 style="max-width:640px; color: var(--paper);">
+      Não é a OTA que está te roubando.<br>
+      <em>É a sua ausência de alternativa.</em>
+    </h2>
+    <p style="max-width:560px; margin-top:1rem;">
+      Enquanto você não tem um sistema próprio que atende, qualifica e converte, você vai continuar dependendo de quem tem — e pagando o preço que eles cobram.
+    </p>
+
+    <div class="pain-grid">
+      <div class="pain-item">
+        <div class="pain-number">01</div>
+        <div class="pain-title">Atendimento que dorme</div>
+        <p class="pain-desc">Leads chegam às 22h pelo WhatsApp. Ninguém responde. De manhã, o hóspede já reservou em outro lugar — pelo Booking.</p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-number">02</div>
+        <div class="pain-title">45% da diária desaparece</div>
+        <p class="pain-desc">Comissão de OTA + taxa de cartão + impostos. Dados da ABIH-SP confirmam: de cada R$100, apenas R$55 é seu.</p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-number">03</div>
+        <div class="pain-title">Follow-up que não acontece</div>
+        <p class="pain-desc">30 a 50% dos leads que pedem orçamento nunca recebem retorno. Cada um desses é uma reserva que foi para o concorrente.</p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-number">04</div>
+        <div class="pain-title">Decisões sem dados</div>
+        <p class="pain-desc">Você só sabe como foi o mês quando o contador fecha os números. Quando descobre que foi ruim, já é tarde para agir.</p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-number">05</div>
+        <div class="pain-title">Equipe sobrecarregada</div>
+        <p class="pain-desc">Sua recepção passa horas respondendo as mesmas perguntas. Horário do check-in. Aceita pets. Tem estacionamento. Todo. Santo. Dia.</p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-number">06</div>
+        <div class="pain-title">Preço no feeling</div>
+        <p class="pain-desc">Tarifas estáticas que não reagem à demanda. Feriado lotado? Você cobrou o mesmo. Baixa temporada? Poderia ter vendido com uma oferta certa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     QUOTE BREAK
+════════════════════════════════ -->
+<section id="quote-break">
+  <div class="container--narrow">
+    <blockquote>
+      Em 2026, não vai crescer quem trabalha mais horas. Vai crescer quem organiza melhor a operação — com sistemas inteligentes que trabalham quando você não pode.
+    </blockquote>
+    <p class="quote-attr">— Panorama Hospedin 2026 · Pesquisa hotelaria independente brasileira</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CURRICULUM
+════════════════════════════════ -->
+<section id="curriculum">
+  <div class="container">
+    <div class="curriculum-layout">
+
+      <div class="curriculum-sticky">
+        <span class="label">O que você aprende</span>
+        <h2>6 módulos.<br><em>Uma transformação.</em></h2>
+        <p style="margin-top:1.2rem;">Do diagnóstico da sua operação até um sistema de IA rodando e captando reservas diretas — sem precisar saber programar.</p>
+        <br>
+        <a href="#offer" class="btn btn--primary"><span>Quero começar →</span></a>
+      </div>
+
+      <div class="module-list">
+
+        <div class="module">
+          <span class="module-num">01</span>
+          <div>
+            <div class="module-title">A Matemática Oculta das OTAs</div>
+            <p class="module-desc">Calcule quanto sua pousada perde por mês, por ano, por reserva. Entenda o custo real de cada canal de distribuição — e por onde começar a recuperar essa margem.</p>
+            <span class="module-tag">🔴 Dói assistir. Necessário ver.</span>
+          </div>
+        </div>
+
+        <div class="module">
+          <span class="module-num">02</span>
+          <div>
+            <div class="module-title">A Jornada do Viajante com IA</div>
+            <p class="module-desc">Como o hóspede decide em 2026. Os 5 estágios da decisão de compra — e como posicionar sua pousada em cada um deles usando IA e conteúdo inteligente.</p>
+          </div>
+        </div>
+
+        <div class="module">
+          <span class="module-num">03</span>
+          <div>
+            <div class="module-title">Construindo Seu Canal Direto</div>
+            <p class="module-desc">Site com motor de reservas próprio. WhatsApp como canal de venda ativo. Como estruturar a oferta direta para que o hóspede prefira reservar com você — mesmo vendo no Booking.</p>
+          </div>
+        </div>
+
+        <div class="module">
+          <span class="module-num">04</span>
+          <div>
+            <div class="module-title">O Agente de IA da Sua Pousada</div>
+            <p class="module-desc">Configure uma IA que conhece sua propriedade de cor — políticas, comodidades, localização, pacotes. Ela atende às 2h da manhã, qualifica o lead e prepara a venda para quando você acordar.</p>
+            <span class="module-tag">⭐ Módulo mais transformador do curso</span>
+          </div>
+        </div>
+
+        <div class="module">
+          <span class="module-num">05</span>
+          <div>
+            <div class="module-title">Automações Sem Código</div>
+            <p class="module-desc">Confirmação de reserva, mensagem de pré-check-in, pesquisa de satisfação pós-checkout, solicitação de avaliação no Google. Tudo automático, tudo no tom certo.</p>
+          </div>
+        </div>
+
+        <div class="module">
+          <span class="module-num">06</span>
+          <div>
+            <div class="module-title">Dados, Decisão e Crescimento</div>
+            <p class="module-desc">Como ler métricas que importam: taxa de conversão direta vs OTA, tempo médio de resposta, reservas por canal. Como usar esses dados para aumentar diária média e ocupação ao mesmo tempo.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ════════════════════════════════
+     OFFER
+════════════════════════════════ -->
+<section id="offer">
+  <div class="container">
+    <span class="label">Escolha seu formato</span>
+    <h2>Invista uma vez.<br><em>Recupere todo mês.</em></h2>
+    <p style="max-width:520px; margin-top:1rem;">O custo do curso é, no máximo, o que você perde em 30 dias de comissão de OTA. A diferença é que o conhecimento fica com você para sempre.</p>
+
+    <div class="offer-grid">
+
+      <!-- STARTER -->
+      <div class="offer-card">
+        <div class="offer-name">Autoestudo</div>
+        <h3 style="font-family: var(--sans); font-weight:300; font-size:1rem; color:var(--ink-muted); margin-bottom:0.5rem;">Para quem quer aprender no próprio ritmo</h3>
+        <div class="offer-price-from">R$ 997</div>
+        <div class="offer-price">R$ 497</div>
+        <div class="offer-period">acesso vitalício · pagamento único</div>
+        <hr class="offer-divider">
+        <ul class="offer-features">
+          <li>6 módulos em vídeo (acesso imediato)</li>
+          <li>Calculadora de perda por OTA</li>
+          <li>Templates de automação prontos</li>
+          <li>Comunidade privada de hoteleiros</li>
+          <li>Atualizações futuras inclusas</li>
+        </ul>
+        <a href="#" class="btn btn--ghost offer-cta">Comprar agora</a>
+      </div>
+
+      <!-- FEATURED -->
+      <div class="offer-card offer-card--featured">
+        <div class="offer-badge">Mais escolhido</div>
+        <div class="offer-name">Mentoria em Grupo</div>
+        <h3 style="font-family: var(--sans); font-weight:300; font-size:1rem; color:rgba(245,242,236,0.5); margin-bottom:0.5rem;">Para quem quer implementar com suporte</h3>
+        <div class="offer-price-from" style="color:rgba(245,242,236,0.35)">R$ 2.997</div>
+        <div class="offer-price">R$ 1.497</div>
+        <div class="offer-period">4 semanas de mentoria ao vivo</div>
+        <hr class="offer-divider">
+        <ul class="offer-features">
+          <li>Tudo do Autoestudo +</li>
+          <li>4 sessões ao vivo em grupo (1 por semana)</li>
+          <li>Revisão da sua operação específica</li>
+          <li>Acesso ao Matika por 30 dias gratuito</li>
+          <li>Canal privado de suporte no WhatsApp</li>
+          <li>Certificado de conclusão</li>
+        </ul>
+        <a href="#" class="btn btn--primary offer-cta" style="background:var(--gold); color:var(--ink);"><span>Quero com mentoria →</span></a>
+      </div>
+
+      <!-- IMERSÃO -->
+      <div class="offer-card">
+        <div class="offer-name">Imersão VIP</div>
+        <h3 style="font-family: var(--sans); font-weight:300; font-size:1rem; color:var(--ink-muted); margin-bottom:0.5rem;">Para quem quer resultado em 2 dias</h3>
+        <div class="offer-price-from">R$ 6.000</div>
+        <div class="offer-price">R$ 3.500</div>
+        <div class="offer-period">2 dias · online ou presencial em Bahia</div>
+        <hr class="offer-divider">
+        <ul class="offer-features">
+          <li>Tudo da Mentoria +</li>
+          <li>Implementação ao vivo na sua pousada</li>
+          <li>Agente de IA configurado e testado</li>
+          <li>Matika por 90 dias gratuito</li>
+          <li>Diagnóstico completo da operação</li>
+          <li>Sessão de follow-up 30 dias depois</li>
+        </ul>
+        <a href="#" class="btn btn--ghost offer-cta">Solicitar vaga VIP</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     AUTHORITY
+════════════════════════════════ -->
+<section id="authority">
+  <div class="container">
+    <div class="authority-layout">
+
+      <div class="authority-image">
+        <div class="authority-img-frame">
+          <div class="authority-placeholder">
+            <div class="authority-placeholder-icon">🏔</div>
+            <div class="authority-placeholder-text">Foto · Pousada Mirante de Lençóis</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="label">Quem ensina</span>
+        <h2>Não é consultor<br>que nunca operou.<br><em>É hoteleiro que virou tech.</em></h2>
+
+        <p style="margin-top:1.5rem;">
+          Dirijo a <strong>Pousada Mirante de Lençóis</strong>, na Chapada Diamantina — e foi exatamente lá que testei, errei e refinei cada sistema que você vai aprender neste curso.
+        </p>
+        <p style="margin-top:1rem;">
+          Hoje, à frente da <strong>Trivium Labs</strong>, implemento esses mesmos sistemas em pousadas e hotéis por todo o Brasil. O que ensino aqui não é teoria. É o que funciona — com os dados reais para provar.
+        </p>
+
+        <ul class="credential-list">
+          <li>Operador da Pousada Mirante de Lençóis, Chapada Diamantina</li>
+          <li>Fundador da Trivium Labs — IA aplicada ao turismo</li>
+          <li>Criador do Matika, CRM comercial nativo da hotelaria</li>
+          <li>Especialista em n8n, automações e agentes de IA para hospitalidade</li>
+          <li>Framework proprietário 5 As + IA aplicado a dezenas de propriedades</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     MATIKA BRIDGE
+════════════════════════════════ -->
+<section id="matika-bridge">
+  <div class="container">
+    <div class="matika-layout">
+
+      <div>
+        <span class="matika-tag">Bônus exclusivo para alunos</span>
+        <h2>O sistema que os<br><em>profissionais usam.</em></h2>
+        <p style="margin-top:1.2rem;">
+          Enquanto o curso te ensina o quê e o porquê, o Matika te dá o sistema pronto para o como. É o CRM comercial que construímos especificamente para a hotelaria brasileira.
+        </p>
+
+        <ul class="matika-features">
+          <li><span class="icon">📋</span>Kanban visual de leads e reservas — nenhum hóspede se perde</li>
+          <li><span class="icon">🤖</span>Agente de IA treinado no seu hotel, não em dados genéricos</li>
+          <li><span class="icon">⚡</span>Automações visuais sem escrever uma linha de código</li>
+          <li><span class="icon">📊</span>Dashboard de vendas em tempo real — decisão com dado</li>
+          <li><span class="icon">🔗</span>Integração nativa com Booking, Expedia e Trivago</li>
+          <li><span class="icon">🎯</span>Follow-up automatizado — nenhum lead esfria sem retorno</li>
+        </ul>
+
+        <p style="margin-top:1.5rem; font-size:0.85rem; color:rgba(245,242,236,0.4);">
+          Alunos da Mentoria recebem 30 dias gratuitos. Alunos da Imersão VIP, 90 dias.
+        </p>
+      </div>
+
+      <div class="matika-card">
+        <span class="calc-label">// Módulos do Matika inclusos</span>
+        <div class="matika-modules">
+          <div class="matika-module">
+            <div class="matika-module-icon">📋</div>
+            <div class="matika-module-name">Kanban Comercial</div>
+            <div class="matika-module-desc">Funil visual de reservas</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">💬</div>
+            <div class="matika-module-name">Chat com Histórico</div>
+            <div class="matika-module-desc">Contexto completo do hóspede</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">🧠</div>
+            <div class="matika-module-name">IA com RAG Próprio</div>
+            <div class="matika-module-desc">Treinada no seu negócio</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">⚡</div>
+            <div class="matika-module-name">Motor de Automações</div>
+            <div class="matika-module-desc">Sem código, sem complicação</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">📊</div>
+            <div class="matika-module-name">Dashboard Real-time</div>
+            <div class="matika-module-desc">KPIs que importam</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">🏨</div>
+            <div class="matika-module-name">Integração OTAs</div>
+            <div class="matika-module-desc">Booking, Expedia, Trivago</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">🎯</div>
+            <div class="matika-module-name">Agenda Follow-up</div>
+            <div class="matika-module-desc">Zero lead esquecido</div>
+          </div>
+          <div class="matika-module">
+            <div class="matika-module-icon">🏆</div>
+            <div class="matika-module-name">Gamificação</div>
+            <div class="matika-module-desc">Equipe motivada com metas</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FAQ
+════════════════════════════════ -->
+<section id="faq">
+  <div class="container--narrow">
+    <span class="label">Perguntas frequentes</span>
+    <h2>Suas dúvidas,<br><em>respondidas.</em></h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Preciso saber programar para aplicar o que é ensinado?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Não. O curso foi desenhado para hoteleiros, não para desenvolvedores. Todas as ferramentas apresentadas têm interface visual — você configura clicando e arrastando, não escrevendo código. Se você consegue usar o Booking, consegue usar o que ensinamos aqui.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Funciona para pousadas pequenas, com menos de 10 quartos?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Especialmente para elas. Pousadas pequenas são as que mais perdem com comissões de OTA proporcionalmente — e as que mais ganham quando criam um canal direto eficiente. A escala pequena também facilita a implementação: você vê resultados em semanas, não meses.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Em quanto tempo vejo resultados práticos?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Depende do formato que você escolher. Na Imersão VIP, você sai do evento com o sistema rodando. Na Mentoria em Grupo, a maioria dos alunos tem o agente de IA funcionando até a semana 3. No Autoestudo, o ritmo é seu — mas os templates e as ferramentas permitem uma configuração básica em um fim de semana.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          O que é o Matika e preciso pagar por ele separado?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            O Matika é o sistema de CRM comercial que desenvolvemos especificamente para hotelaria — integra kanban de reservas, agente de IA treinado no seu hotel, automações e dashboard. Alunos da Mentoria recebem 30 dias gratuitos. Alunos da Imersão VIP, 90 dias. Após o período gratuito, a assinatura começa em R$1.200/mês — mas nessa altura você já terá gerado muito mais do que isso em reservas diretas.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Tenho garantia se não gostar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Sim. 7 dias de garantia incondicional para todos os formatos. Se você assistir às primeiras aulas e sentir que não é para você, devolvemos 100% do valor — sem burocracia, sem perguntas.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Já uso o Booking há anos. Consigo mesmo reduzir essa dependência?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            A estratégia que ensinamos não é eliminar as OTAs do dia para a noite — isso seria irresponsável. É criar um canal direto forte em paralelo, capturar hóspedes que já te encontraram nas OTAs para uma base própria, e progressivamente migrar as reservas recorrentes para o canal direto. Em 6 a 12 meses, a maioria das nossas propriedades reduziu a dependência de OTA em 30 a 50%.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FINAL CTA
+════════════════════════════════ -->
+<section id="final-cta">
+  <div class="container">
+    <span class="label" style="color:var(--gold-light)">A decisão é simples</span>
+    <h2 style="max-width:700px; margin:0 auto 1.5rem;">
+      Continue pagando R$28 mil por ano para a OTA. Ou aprenda a ficar com esse dinheiro.
+    </h2>
+    <p>
+      O curso custa menos do que um mês de comissão. O conhecimento fica para sempre. A escolha é óbvia.
+    </p>
+    <a href="#offer" class="btn btn--primary" style="font-size:1rem; padding:1.2rem 3.5rem;">
+      <span>Quero reservas diretas →</span>
+    </a>
+    <p class="guarantee">✓ Garantia de 7 dias · ✓ Acesso imediato · ✓ Sem necessidade de saber programar</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-inner">
+    <a href="#" class="footer-logo">Trivium <span>Labs</span></a>
+    <span class="footer-copy">© 2026 · Trivium Labs · IA aplicada ao turismo · Bahia, Brasil</span>
+  </div>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <div class="sticky-bar-text">
+    Reservas Diretas com IA — <span>vagas abertas</span>
+  </div>
+  <a href="#offer" class="btn btn--primary"><span>Garantir minha vaga →</span></a>
+</div>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const answer = item.querySelector('.faq-answer');
+      const isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-answer').style.maxHeight = '0';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Sticky bar
+  const stickyBar = document.getElementById('stickyBar');
+  const hero = document.getElementById('hero');
+  const observer = new IntersectionObserver(entries => {
+    stickyBar.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0.1 });
+  observer.observe(hero);
+
+  // Scroll animations
+  const animEls = document.querySelectorAll('.module, .pain-item, .offer-card, .matika-module');
+  const animObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  animEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    animObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>

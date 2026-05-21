@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrossel Instagram — Catalise.me</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --void:#030303;
+  --void2:#0d0d0d;
+  --void3:#161616;
+  --smoke:#222;
+  --ash:#3a3a3a;
+  --mist:#666;
+  --fog:#999;
+  --white:#f2f2f0;
+  --acid:#c8f135;
+  --acid2:#a8d420;
+  --ember:#ff4422;
+  --gold:#d4a843;
+  --display:'Bebas Neue',sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --slide-size:min(480px,90vw);
+}
+
+body{
+  background:#111;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--sans);
+  padding:2rem 1rem;
+  gap:2rem;
+}
+
+/* ── PHONE FRAME ── */
+.phone{
+  width:var(--slide-size);
+  background:#000;
+  border-radius:40px;
+  padding:12px;
+  box-shadow:
+    0 0 0 1px #333,
+    0 40px 80px rgba(0,0,0,0.8),
+    inset 0 0 0 1px #1a1a1a;
+  position:relative;
+}
+
+.phone-notch{
+  width:100px;height:28px;
+  background:#000;
+  border-radius:0 0 18px 18px;
+  margin:0 auto 8px;
+  position:relative;z-index:10;
+}
+
+/* ── INSTAGRAM UI ── */
+.ig-wrap{
+  background:#000;
+  border-radius:28px;
+  overflow:hidden;
+}
+
+.ig-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 14px 8px;
+  border-bottom:1px solid #1a1a1a;
+}
+
+.ig-avatar{
+  width:32px;height:32px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--acid),var(--acid2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:0.7rem;color:#000;
+  font-weight:700;flex-shrink:0;
+}
+
+.ig-user{
+  flex:1;margin-left:8px;
+}
+.ig-username{font-size:0.7rem;font-weight:600;color:#fff;font-family:var(--sans);}
+.ig-handle{font-size:0.58rem;color:#888;font-family:var(--mono);}
+
+.ig-more{color:#888;font-size:1.2rem;line-height:1;}
+
+/* ── CAROUSEL VIEWPORT ── */
+.carousel-viewport{
+  width:100%;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  position:relative;
+  background:var(--void);
+}
+
+.carousel-track{
+  display:flex;
+  width:calc(8 * 100%);
+  height:100%;
+  transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── SLIDES ── */
+.slide{
+  width:calc(100% / 8);
+  height:100%;
+  flex-shrink:0;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:clamp(18px,4vw,28px);
+}
+
+/* grain */
+.slide::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:10;opacity:0.4;
+}
+
+/* tag */
+.s-tag{
+  font-family:var(--mono);
+  font-size:clamp(0.48rem,1.2vw,0.6rem);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--acid);
+  display:flex;align-items:center;gap:6px;
+}
+.s-tag::before{content:'*';font-size:1em;}
+
+/* slide number */
+.s-num{
+  font-family:var(--display);
+  font-size:clamp(5rem,14vw,9rem);
+  line-height:0.85;
+  position:absolute;
+  bottom:-10px;right:-6px;
+  color:rgba(255,255,255,0.04);
+  pointer-events:none;
+  z-index:1;
+  user-select:none;
+}
+
+/* brand bottom */
+.s-brand{
+  font-family:var(--mono);
+  font-size:clamp(0.45rem,1vw,0.55rem);
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(200,241,53,0.5);
+}
+
+/* ══════════════════
+   SLIDE 1 — CAPA
+══════════════════ */
+.s1{background:var(--void);}
+
+.s1-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,241,53,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,241,53,0.04) 1px,transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove{
+  0%{transform:translate(0,0);}
+  100%{transform:translate(40px,40px);}
+}
+
+.s1-content{position:relative;z-index:2;}
+
+.s1-eyebrow{
+  font-family:var(--mono);
+  font-size:clamp(0.48rem,1.2vw,0.6rem);
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--acid);
+  margin-bottom:clamp(8px,2vw,14px);
+}
+
+.s1-title{
+  font-family:var(--display);
+  font-size:clamp(2.8rem,9vw,5.5rem);
+  line-height:0.88;
+  letter-spacing:-0.01em;
+  color:var(--white);
+}
+.s1-title .acid{color:var(--acid);}
+.s1-title .small{font-size:0.55em;color:var(--fog);}
+
+.s1-sub{
+  font-family:var(--serif);
+  font-size:clamp(0.75rem,2vw,0.95rem);
+  font-style:italic;
+  color:var(--fog);
+  margin-top:clamp(8px,2vw,14px);
+  line-height:1.5;
+}
+
+.s1-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--acid);
+  color:var(--void);
+  font-family:var(--mono);
+  font-size:clamp(0.45rem,1.1vw,0.58rem);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  padding:6px 12px;
+  margin-top:clamp(10px,2.5vw,18px);
+  font-weight:500;
+}
+
+.swipe-hint{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--mono);
+  font-size:clamp(0.42rem,1vw,0.52rem);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--mist);
+}
+.swipe-arrow{animation:swipeAnim 1.8s ease infinite;}
+@keyframes swipeAnim{
+  0%,100%{transform:translateX(0);}
+  50%{transform:translateX(5px);}
+}
+
+/* ══════════════════
+   SLIDE 2 — DOR OTA
+══════════════════ */
+.s2{background:var(--ember);}
+
+.s2-bg{
+  position:absolute;right:-20px;top:-20px;
+  font-family:var(--display);
+  font-size:clamp(8rem,22vw,16rem);
+  color:rgba(0,0,0,0.12);
+  line-height:1;
+  pointer-events:none;user-select:none;
+  z-index:1;
+}
+
+.s2-content{position:relative;z-index:2;}
+
+.s2-tag{
+  font-family:var(--mono);
+  font-size:clamp(0.48rem,1.1vw,0.58rem);
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(0,0,0,0.5);
+  margin-bottom:clamp(8px,2vw,14px);
+  display:flex;align-items:center;gap:6px;
+}
+.s2-tag::before{content:'!';font-size:1em;}
+
+.s2-title{
+  font-family:var(--display);
+  font-size:clamp(2.5rem,8vw,5rem);
+  line-height:0.88;color:#000;
+  letter-spacing:-0.01em;
+}
+
+.calc-box{
+  background:rgba(0,0,0,0.15);
+  padding:clamp(10px,2.5vw,18px);
+  margin-top:clamp(10px,2.5vw,16px);
+  position:relative;z-index:2;
+}
+
+.calc-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;
+  border-bottom:1px solid rgba(0,0,0,0.12);
+  font-size:clamp(0.6rem,1.4vw,0.78rem);
+}
+.calc-row:last-child{border-bottom:none;}
+.calc-label{color:rgba(0,0,0,0.6);font-family:var(--sans);}
+.calc-val{font-family:var(--mono);font-weight:500;color:#000;}
+.calc-val.red{color:rgba(100,0,0,0.8);}
+.calc-val.big{font-size:1.3em;}
+
+/* ══════════════════
+   SLIDE 3 — ATENDIMENTO
+══════════════════ */
+.s3{background:var(--void2);}
+
+.s3-title{
+  font-family:var(--serif);
+  font-size:clamp(1.4rem,4.5vw,2.8rem);
+  font-weight:700;
+  line-height:1.1;
+  color:var(--white);
+}
+.s3-title em{color:var(--acid);font-style:italic;}
+
+.chat-mock{
+  display:flex;flex-direction:column;gap:8px;
+  margin-top:clamp(10px,2.5vw,18px);
+}
+
+.msg{
+  padding:clamp(7px,1.8vw,10px) clamp(9px,2.2vw,14px);
+  border-radius:12px;
+  font-size:clamp(0.58rem,1.4vw,0.75rem);
+  line-height:1.45;
+  max-width:88%;
+}
+.msg-in{
+  background:var(--void3);
+  color:var(--fog);
+  align-self:flex-start;
+  border-bottom-left-radius:2px;
+}
+.msg-out{
+  background:var(--acid);
+  color:var(--void);
+  align-self:flex-end;
+  border-bottom-right-radius:2px;
+  font-weight:500;
+}
+.msg-time{
+  font-family:var(--mono);
+  font-size:clamp(0.38rem,0.9vw,0.48rem);
+  color:var(--mist);
+  margin-top:2px;
+}
+.msg-time.right{text-align:right;}
+
+.s3-stat{
+  display:flex;align-items:baseline;gap:6px;
+  margin-top:clamp(10px,2.5vw,16px);
+}
+.s3-stat-num{
+  font-family:var(--display);
+  font-size:clamp(2rem,6vw,3.5rem);
+  color:var(--acid);
+  line-height:1;
+}
+.s3-stat-label{
+  font-size:clamp(0.6rem,1.4vw,0.75rem);
+  color:var(--fog);
+  line-height:1.3;
+}
+
+/* ══════════════════
+   SLIDE 4 — 3 ESTADOS
+══════════════════ */
+.s4{background:var(--void3);}
+
+.s4-title{
+  font-family:var(--display);
+  font-size:clamp(2rem,6.5vw,4rem);
+  line-height:0.9;
+  color:var(--white);
+  letter-spacing:-0.01em;
+}
+.s4-title span{color:var(--acid);}
+
+.estados{
+  display:flex;flex-direction:column;gap:6px;
+  margin-top:clamp(10px,2.5vw,16px);
+}
+
+.estado-item{
+  display:flex;align-items:center;gap:10px;
+  padding:clamp(8px,2vw,12px);
+  border-left:3px solid;
+  transition:all 0.2s ease;
+}
+.estado-item.reativo{
+  border-color:var(--ember);
+  background:rgba(255,68,34,0.06);
+}
+.estado-item.organizado{
+  border-color:var(--gold);
+  background:rgba(212,168,67,0.06);
+}
+.estado-item.catalisado{
+  border-color:var(--acid);
+  background:rgba(200,241,53,0.07);
+  box-shadow:inset 3px 0 0 var(--acid);
+}
+
+.estado-label{
+  font-family:var(--mono);
+  font-size:clamp(0.45rem,1.1vw,0.58rem);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  min-width:75px;
+}
+.reativo .estado-label{color:var(--ember);}
+.organizado .estado-label{color:var(--gold);}
+.catalisado .estado-label{color:var(--acid);}
+
+.estado-desc{
+  font-size:clamp(0.58rem,1.35vw,0.73rem);
+  color:var(--fog);
+  line-height:1.4;
+}
+.catalisado .estado-desc{color:var(--white);}
+
+/* ══════════════════
+   SLIDE 5 — MATIKA
+══════════════════ */
+.s5{background:var(--void);}
+
+.s5-label{
+  font-family:var(--mono);
+  font-size:clamp(0.45rem,1.1vw,0.58rem);
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--mist);
+  margin-bottom:6px;
+}
+
+.s5-title{
+  font-family:var(--display);
+  font-size:clamp(2.5rem,8vw,5rem);
+  line-height:0.88;
+  color:var(--acid);
+  letter-spacing:-0.01em;
+}
+.s5-title span{color:var(--white);}
+
+.s5-desc{
+  font-size:clamp(0.6rem,1.4vw,0.75rem);
+  color:var(--fog);
+  line-height:1.6;
+  margin:clamp(8px,2vw,14px) 0;
+  max-width:90%;
+}
+
+.modules-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+}
+
+.module-card{
+  background:var(--void3);
+  border:1px solid var(--smoke);
+  padding:clamp(7px,1.8vw,11px);
+  position:relative;overflow:hidden;
+}
+.module-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--acid);transform:scaleX(0);
+  transition:transform 0.3s ease;transform-origin:left;
+}
+.module-card:hover::before{transform:scaleX(1);}
+
+.mod-icon{font-size:clamp(0.9rem,2.2vw,1.1rem);margin-bottom:4px;}
+.mod-name{
+  font-size:clamp(0.52rem,1.2vw,0.65rem);
+  font-weight:500;color:var(--white);
+  line-height:1.2;
+}
+.mod-sub{
+  font-size:clamp(0.44rem,1vw,0.55rem);
+  color:var(--mist);margin-top:1px;
+}
+
+/* ══════════════════
+   SLIDE 6 — NÚMEROS
+══════════════════ */
+.s6{background:var(--acid);}
+
+.s6-tag{
+  font-family:var(--mono);
+  font-size:clamp(0.48rem,1.1vw,0.58rem);
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(0,0,0,0.45);
+  margin-bottom:clamp(8px,2vw,14px);
+}
+
+.stats-list{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,0.12);}
+
+.stat-row{
+  background:var(--acid);
+  padding:clamp(10px,2.5vw,16px) clamp(10px,2.5vw,16px);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;
+}
+.stat-row:hover{background:rgba(200,241,53,0.88);}
+
+.stat-num{
+  font-family:var(--display);
+  font-size:clamp(2rem,6.5vw,4rem);
+  color:#000;line-height:0.9;
+  flex-shrink:0;
+}
+.stat-text{
+  font-size:clamp(0.55rem,1.3vw,0.7rem);
+  color:rgba(0,0,0,0.65);
+  line-height:1.4;text-align:right;
+}
+.stat-text strong{display:block;color:#000;font-weight:600;}
+
+/* ══════════════════
+   SLIDE 7 — CREDO
+══════════════════ */
+.s7{background:var(--void2);}
+
+.s7-quote{
+  font-family:var(--serif);
+  font-size:clamp(1.2rem,3.8vw,2.3rem);
+  font-style:italic;
+  line-height:1.3;
+  color:var(--white);
+  position:relative;
+  padding-left:clamp(12px,3vw,20px);
+  border-left:3px solid var(--acid);
+}
+.s7-quote em{color:var(--acid);}
+.s7-quote span{color:var(--fog);}
+
+.s7-list{
+  list-style:none;
+  margin-top:clamp(12px,3vw,20px);
+  display:flex;flex-direction:column;gap:8px;
+}
+
+.s7-item{
+  display:flex;gap:8px;align-items:flex-start;
+  font-size:clamp(0.58rem,1.4vw,0.75rem);
+  color:var(--fog);line-height:1.5;
+}
+.s7-item::before{
+  content:'→';color:var(--acid);
+  flex-shrink:0;font-size:0.9em;margin-top:0.05em;
+}
+.s7-item strong{color:var(--white);font-weight:500;}
+
+/* ══════════════════
+   SLIDE 8 — CTA
+══════════════════ */
+.s8{background:var(--void);}
+
+.s8-bg-text{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:var(--display);
+  font-size:clamp(5rem,16vw,11rem);
+  color:rgba(200,241,53,0.035);
+  white-space:nowrap;
+  pointer-events:none;user-select:none;z-index:1;
+  letter-spacing:-0.02em;
+}
+
+.rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(200,241,53,0.07);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  animation:ringPulse 5s ease-out infinite;
+}
+.ring:nth-child(1){width:100px;height:100px;animation-delay:0s;}
+.ring:nth-child(2){width:200px;height:200px;animation-delay:1.5s;}
+.ring:nth-child(3){width:350px;height:350px;animation-delay:3s;}
+@keyframes ringPulse{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.8);}
+  30%{opacity:1;}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.1);}
+}
+
+.s8-content{position:relative;z-index:2;text-align:center;width:100%;}
+
+.s8-pre{
+  font-family:var(--mono);
+  font-size:clamp(0.48rem,1.1vw,0.6rem);
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--acid);margin-bottom:clamp(10px,2.5vw,16px);
+}
+
+.s8-title{
+  font-family:var(--display);
+  font-size:clamp(2.8rem,9vw,5.5rem);
+  line-height:0.88;
+  letter-spacing:-0.01em;
+  color:var(--white);
+}
+.s8-title .ac{color:var(--acid);}
+
+.s8-sub{
+  font-family:var(--serif);
+  font-size:clamp(0.7rem,1.8vw,0.92rem);
+  font-style:italic;
+  color:var(--fog);
+  margin:clamp(8px,2vw,14px) auto;
+  max-width:240px;
+  line-height:1.5;
+}
+
+.s8-url{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:clamp(0.58rem,1.4vw,0.75rem);
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--acid);
+  border-bottom:1px solid rgba(200,241,53,0.3);
+  padding-bottom:2px;
+}
+
+/* ── DOTS ── */
+.ig-dots{
+  display:flex;justify-content:center;gap:4px;
+  padding:8px 0 4px;
+}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#333;
+  transition:all 0.3s ease;cursor:pointer;
+}
+.dot.active{background:var(--acid);width:18px;border-radius:3px;}
+
+/* ── ACTIONS ── */
+.ig-actions{
+  display:flex;align-items:center;
+  padding:8px 14px 4px;gap:14px;
+}
+.ig-action{
+  color:#fff;font-size:1.1rem;cursor:pointer;
+  opacity:0.7;transition:opacity 0.2s;
+  background:none;border:none;padding:0;
+}
+.ig-action:hover{opacity:1;}
+.ig-action.save{margin-left:auto;}
+
+.ig-likes{
+  padding:0 14px 3px;
+  font-size:0.72rem;font-weight:600;color:#fff;
+  font-family:var(--sans);
+}
+.ig-caption{
+  padding:0 14px 6px;
+  font-size:0.68rem;color:#aaa;
+  font-family:var(--sans);line-height:1.4;
+}
+.ig-caption strong{color:#fff;margin-right:4px;}
+
+/* ── CONTROLS (outside phone) ── */
+.controls{
+  display:flex;align-items:center;gap:16px;
+}
+
+.ctrl-btn{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:rgba(200,241,53,0.1);
+  border:1px solid rgba(200,241,53,0.25);
+  color:var(--acid);
+  font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  flex-shrink:0;
+}
+.ctrl-btn:hover{background:rgba(200,241,53,0.2);}
+.ctrl-btn:disabled{opacity:0.3;cursor:default;}
+
+.slide-counter{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  letter-spacing:0.12em;
+  color:rgba(200,241,53,0.6);
+  min-width:48px;
+  text-align:center;
+}
+
+/* ── DOWNLOAD HINT ── */
+.dl-hint{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:#444;
+  text-align:center;
+}
+</style>
+</head>
+<body>
+
+<!-- PHONE -->
+<div class="phone">
+  <div class="phone-notch"></div>
+  <div class="ig-wrap">
+
+    <!-- IG HEADER -->
+    <div class="ig-header">
+      <div class="ig-avatar">C</div>
+      <div class="ig-user">
+        <div class="ig-username">catalise.me</div>
+        <div class="ig-handle">Growth IA · Hotelaria</div>
+      </div>
+      <button class="ig-action">•••</button>
+    </div>
+
+    <!-- CAROUSEL -->
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="track">
+
+        <!-- SLIDE 1 — CAPA -->
+        <div class="slide s1">
+          <div class="s1-grid"></div>
+          <div class="s1-content">
+            <div class="s1-eyebrow">* Catalise.me — Episódio 01</div>
+            <div class="s1-title">
+              IA que<br>
+              <span class="acid">trabalha</span><br>
+              <span class="small">no seu hotel</span><br>
+              24 horas.
+            </div>
+            <div class="s1-sub">
+              Enquanto sua equipe dorme,<br>
+              o sistema vende.
+            </div>
+            <div class="s1-cta">Deslize para ver como →</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;">
+            <div class="s-brand">catalise.me</div>
+            <div class="swipe-hint">
+              <span>deslize</span>
+              <span class="swipe-arrow">›</span>
+            </div>
+          </div>
+          <div class="s-num">01</div>
+        </div>
+
+        <!-- SLIDE 2 — DOR OTA -->
+        <div class="slide s2">
+          <div class="s2-bg">45%</div>
+          <div class="s2-content">
+            <div class="s2-tag">A conta que dói</div>
+            <div class="s2-title">
+              Você faz<br>
+              a cama.<br>
+              A OTA<br>
+              fica com<br>
+              a margem.
+            </div>
+          </div>
+          <div style="position:relative;z-index:2;">
+            <div class="calc-box">
+              <div class="calc-row">
+                <span class="calc-label">Diária vendida</span>
+                <span class="calc-val">R$ 400</span>
+              </div>
+              <div class="calc-row">
+                <span class="calc-label">Comissão Booking</span>
+                <span class="calc-val red">− R$ 80</span>
+              </div>
+              <div class="calc-row">
+                <span class="calc-label">Taxa cartão + impostos</span>
+                <span class="calc-val red">− R$ 38</span>
+              </div>
+              <div class="calc-row" style="margin-top:4px;padding-top:8px;border-top:2px solid rgba(0,0,0,0.2);">
+                <span class="calc-label" style="font-weight:600;color:#000;">Chega no seu caixa</span>
+                <span class="calc-val big">R$ 282</span>
+              </div>
+            </div>
+            <div style="font-family:var(--mono);font-size:0.52rem;letter-spacing:0.1em;color:rgba(0,0,0,0.45);margin-top:6px;">
+              * Você trabalhou. A OTA ficou com 29,5%.
+            </div>
+          </div>
+          <div class="s-num" style="color:rgba(0,0,0,0.06);">02</div>
+        </div>
+
+        <!-- SLIDE 3 — ATENDIMENTO IA -->
+        <div class="slide s3">
+          <div>
+            <div class="s-tag">A solução</div>
+            <div class="s3-title">
+              Seu hóspede<br>
+              pergunta às<br>
+              <em>23h.</em><br>
+              A IA responde<br>
+              em 4 segundos.
+            </div>
+          </div>
+          <div>
+            <div class="chat-mock">
+              <div>
+                <div class="msg msg-in">Oi! Ainda tem quarto pra o feriado de novembro? Aceita pet? 🐕</div>
+                <div class="msg-time">23:17</div>
+              </div>
+              <div>
+                <div class="msg msg-out">Olá! Temos sim 🏡 Nossos chalés duplos estão disponíveis no feriado. Aceitamos pets de até 15kg com taxa simbólica de R$50. Posso reservar pra você agora?</div>
+                <div class="msg-time right" style="color:rgba(0,0,0,0.4);">23:17 ✓✓</div>
+              </div>
+            </div>
+            <div class="s3-stat">
+              <div class="s3-stat-num">80%</div>
+              <div class="s3-stat-label">das dúvidas<br>resolvidas<br><strong style="color:var(--acid);">automaticamente</strong></div>
+            </div>
+          </div>
+          <div class="s-brand">catalise.me</div>
+          <div class="s-num">03</div>
+        </div>
+
+        <!-- SLIDE 4 — 3 ESTADOS -->
+        <div class="slide s4">
+          <div>
+            <div class="s-tag">Diagnóstico</div>
+            <div class="s4-title">
+              Em qual<br>
+              <span>estado</span><br>
+              está sua<br>
+              pousada?
+            </div>
+          </div>
+          <div class="estados">
+            <div class="estado-item reativo">
+              <div class="estado-label">Reativo</div>
+              <div class="estado-desc">Opera no improviso. O dono é o sistema. Se para, tudo para.</div>
+            </div>
+            <div class="estado-item organizado">
+              <div class="estado-label">Organizado</div>
+              <div class="estado-desc">Tem processos, mas manuais. Cresce até o limite da equipe.</div>
+            </div>
+            <div class="estado-item catalisado">
+              <div class="estado-label">✦ Catalisado</div>
+              <div class="estado-desc"><strong>Sistemas inteligentes operam 24h.</strong> Escala sem escalar o caos.</div>
+            </div>
+          </div>
+          <div class="s-brand">catalise.me</div>
+          <div class="s-num">04</div>
+        </div>
+
+        <!-- SLIDE 5 — MATIKA -->
+        <div class="slide s5">
+          <div>
+            <div class="s5-label">Nosso produto</div>
+            <div class="s5-title">
+              <span>Matika</span><br>
+              Kanban.
+            </div>
+            <div class="s5-desc">
+              O único CRM comercial construído especificamente para a hotelaria brasileira.
+            </div>
+          </div>
+          <div class="modules-grid">
+            <div class="module-card">
+              <div class="mod-icon">📋</div>
+              <div class="mod-name">Kanban de Reservas</div>
+              <div class="mod-sub">Zero lead perdido</div>
+            </div>
+            <div class="module-card">
+              <div class="mod-icon">🤖</div>
+              <div class="mod-name">IA com RAG</div>
+              <div class="mod-sub">Treinada no seu hotel</div>
+            </div>
+            <div class="module-card">
+              <div class="mod-icon">⚡</div>
+              <div class="mod-name">Automações</div>
+              <div class="mod-sub">Sem código</div>
+            </div>
+            <div class="module-card">
+              <div class="mod-icon">📊</div>
+              <div class="mod-name">Dashboard Real</div>
+              <div class="mod-sub">Decisão com dado</div>
+            </div>
+            <div class="module-card">
+              <div class="mod-icon">🔗</div>
+              <div class="mod-name">Integra OTAs</div>
+              <div class="mod-sub">Booking · Expedia</div>
+            </div>
+            <div class="module-card">
+              <div class="mod-icon">🏆</div>
+              <div class="mod-name">Gamificação</div>
+              <div class="mod-sub">Equipe motivada</div>
+            </div>
+          </div>
+          <div class="s-brand">catalise.me</div>
+          <div class="s-num">05</div>
+        </div>
+
+        <!-- SLIDE 6 — NÚMEROS -->
+        <div class="slide s6">
+          <div class="s6-tag">* Os dados que mudam tudo</div>
+          <div class="stats-list">
+            <div class="stat-row">
+              <div class="stat-num">45%</div>
+              <div class="stat-text"><strong>Da diária some</strong>antes de chegar<br>no seu caixa</div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-num">80%</div>
+              <div class="stat-text"><strong>Queda na conversão</strong>sem resposta<br>em 15 minutos</div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-num">70%</div>
+              <div class="stat-text"><strong>Das reservas</strong>ainda chegam<br>via OTA no Brasil</div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-num">286h</div>
+              <div class="stat-text"><strong>Perdidas por ano</strong>em sistemas<br>desconectados</div>
+            </div>
+          </div>
+          <div style="font-family:var(--mono);font-size:0.5rem;letter-spacing:0.12em;color:rgba(0,0,0,0.4);text-transform:uppercase;">
+            * Fontes: ABIH · Hospedin 2026 · FOHB
+          </div>
+          <div class="s-num" style="color:rgba(0,0,0,0.06);">06</div>
+        </div>
+
+        <!-- SLIDE 7 — CREDO -->
+        <div class="slide s7">
+          <div>
+            <div class="s-tag">O que acreditamos</div>
+            <div class="s7-quote">
+              IA não substitui<br>
+              <em>hospitalidade.</em><br>
+              <span>Libera ela.</span>
+            </div>
+          </div>
+          <ul class="s7-list">
+            <li class="s7-item"><strong>A IA faz o repetitivo.</strong> Sua equipe faz o inesquecível.</li>
+            <li class="s7-item"><strong>O sistema fica</strong> quando vamos embora. Essa é a diferença.</li>
+            <li class="s7-item"><strong>Checkout às 12h.</strong> Sua cabeça não precisa se hospedar na ansiedade todo dia.</li>
+            <li class="s7-item"><strong>Crescer não precisa</strong> significar mais caos. Só mais inteligência.</li>
+          </ul>
+          <div class="s-brand">catalise.me</div>
+          <div class="s-num">07</div>
+        </div>
+
+        <!-- SLIDE 8 — CTA -->
+        <div class="slide s8">
+          <div class="rings">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+          <div class="s8-bg-text">CATALISE</div>
+          <div class="s8-content">
+            <div class="s8-pre">A reação começa aqui</div>
+            <div class="s8-title">
+              Seu hotel<br>
+              trabalha<br>
+              por <span class="ac">você.</span><br>
+              <span style="color:var(--acid);font-size:0.55em;letter-spacing:0.05em;">Ainda.</span>
+            </div>
+            <div class="s8-sub">
+              Link na bio para o diagnóstico gratuito da sua operação.
+            </div>
+            <div class="s8-url">catalise.me</div>
+          </div>
+          <div class="s-brand" style="text-align:center;width:100%;position:relative;z-index:2;">catalise.me · @catalise.me</div>
+          <div class="s-num">08</div>
+        </div>
+
+      </div><!-- /track -->
+    </div><!-- /viewport -->
+
+    <!-- DOTS -->
+    <div class="ig-dots" id="dots"></div>
+
+    <!-- ACTIONS -->
+    <div class="ig-actions">
+      <button class="ig-action">♡</button>
+      <button class="ig-action">💬</button>
+      <button class="ig-action">↗</button>
+      <button class="ig-action save">⊟</button>
+    </div>
+    <div class="ig-likes">2.847 curtidas</div>
+    <div class="ig-caption">
+      <strong>catalise.me</strong>
+      Checkout às 12h. Sua cabeça não precisa se hospedar na ansiedade todo dia. Veja como IA transforma a operação do seu hotel 👇 Link na bio para diagnóstico gratuito.
+      <span style="color:#0095f6;">#hotelaria #pousada #inteligenciaartificial #turismo #automação #hoteltech</span>
+    </div>
+
+  </div><!-- /ig-wrap -->
+</div><!-- /phone -->
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" id="prev" disabled>‹</button>
+  <span class="slide-counter" id="counter">1 / 8</span>
+  <button class="ctrl-btn" id="next">›</button>
+</div>
+
+<div class="dl-hint">← → para navegar · Clique nos dots</div>
+
+<script>
+const track = document.getElementById('track');
+const dotsEl = document.getElementById('dots');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const counter = document.getElementById('counter');
+const total = 8;
+let cur = 0;
+
+// build dots
+for(let i=0;i<total;i++){
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.addEventListener('click',()=>goTo(i));
+  dotsEl.appendChild(d);
+}
+
+function goTo(n){
+  cur = Math.max(0,Math.min(total-1,n));
+  const pct = (cur/total)*100;
+  track.style.transform = `translateX(-${pct}%)`;
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===cur);
+  });
+  counter.textContent = `${cur+1} / ${total}`;
+  prevBtn.disabled = cur===0;
+  nextBtn.disabled = cur===total-1;
+}
+
+prevBtn.addEventListener('click',()=>goTo(cur-1));
+nextBtn.addEventListener('click',()=>goTo(cur+1));
+
+// keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight') goTo(cur+1);
+  if(e.key==='ArrowLeft') goTo(cur-1);
+});
+
+// touch swipe
+let startX=0;
+const vp = document.querySelector('.carousel-viewport');
+vp.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
+vp.addEventListener('touchend',e=>{
+  const dx = e.changedTouches[0].clientX - startX;
+  if(Math.abs(dx)>40){dx<0?goTo(cur+1):goTo(cur-1);}
+});
+</script>
+</body>
+</html>

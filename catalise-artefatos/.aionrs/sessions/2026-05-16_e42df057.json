@@ -1,0 +1,15 @@
+{
+  "id": "e42df057",
+  "created_at": "2026-05-16T22:19:09.901246Z",
+  "updated_at": "2026-05-16T22:19:09.901247Z",
+  "provider": "openai",
+  "model": "perplexity-web/pplx-opus",
+  "cwd": "/Users/edbentto/Downloads/catalise-artefatos",
+  "total_usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0
+  },
+  "messages": []
+}

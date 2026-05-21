@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato · Catalise.me — Agende seu diagnóstico gratuito</title>
+  <meta name="description" content="Fale com a Catalise.me. Diagnóstico gratuito para perfis qualificados. Resposta em até 24 horas. Pelo formulário ou WhatsApp.">
+  <meta property="og:title" content="Contato · Catalise.me — Agende seu diagnóstico gratuito">
+  <meta property="og:description" content="Diagnóstico gratuito para perfis qualificados. Resposta em até 24 horas.">
+  <meta property="og:url" content="https://catalise.me/contato">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://catalise.me/contato">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/inner.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Navegação principal">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Catalise.me — Página inicial">
+        <img src="assets/logo.png" alt="Catalise.me" class="nav-logo-img" width="420" height="84">
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="opera-os.html">Opera AIAS</a></li>
+        <li><a href="contato.html" class="active">Contato</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="contato.html" class="btn btn-primary btn-sm">Diagnóstico gratuito</a>
+      </div>
+      <button class="nav-hamburger" aria-label="Abrir menu" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <nav class="nav-mobile" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="opera-os.html">Opera AIAS</a>
+    <a href="contato.html">Contato</a>
+    <a href="contato.html" class="btn btn-primary" style="margin-top: 8px; justify-content: center;">Diagnóstico gratuito</a>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <header class="page-hero" aria-labelledby="contato-heading">
+      <div class="container">
+        <p class="eyebrow hero-animate-1">Fale com a gente</p>
+        <h1 id="contato-heading" class="page-hero-title hero-animate-2">
+         Vamos conversar sobre<em> como catalisar<br></em> a sua empresa.
+        </h1>
+        <p class="page-hero-lede hero-animate-3">
+          Você está a um formulário ou um WhatsApp de saber exatamente o que faremos pelo seu negócio. O diagnóstico é gratuito, cerca de 45min, sem compromisso de compra.
+        </p>
+      </div>
+    </header>
+
+    <!-- FORMULÁRIO + SIDEBAR -->
+    <section id="formulario" aria-labelledby="form-heading">
+      <div class="container">
+        <div class="contato-layout">
+
+          <!-- Formulário -->
+          <div class="contato-form-col">
+            <div class="form-wrapper">
+              <div class="form-header">
+                <p class="eyebrow">Formulário</p>
+                <h2 id="form-heading">Quatro campos. <em>Resposta em até 24 horas.</em></h2>
+                <p>A gente respeita seu tempo. Por isso o formulário é curto. Só pedimos o que precisamos para fazer a primeira conversa render.</p>
+              </div>
+
+              <form id="contact-form" class="form" novalidate>
+
+                <div class="form-row">
+                  <div class="form-group" id="group-name">
+                    <label class="form-label" for="field-name">Nome completo <span class="required">*</span></label>
+                    <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" placeholder="Seu nome" required>
+                    <span class="form-error" id="error-name"></span>
+                  </div>
+                  <div class="form-group" id="group-email">
+                    <label class="form-label" for="field-email">Email <span class="required">*</span></label>
+                    <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" placeholder="seu@email.com" required>
+                    <span class="form-error" id="error-email"></span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" id="group-company">
+                    <label class="form-label" for="field-company">Empresa e cargo <span class="required">*</span></label>
+                    <input class="form-input" type="text" id="field-company" name="company" placeholder="Ex: Pousada Vista Mar — proprietária">
+                    <span class="form-error" id="error-company"></span>
+                  </div>
+                  <div class="form-group" id="group-revenue">
+                    <label class="form-label" for="field-revenue">Qual é o seu faturamento médio mensal? <span class="required">*</span></label>
+                    <select class="form-select" id="field-revenue" name="revenue" required>
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="abaixo_50k">Abaixo de 50k</option>
+                      <option value="50k_100k">Entre 50k e 100k</option>
+                      <option value="acima_100k">Acima de 100k</option>
+                    </select>
+                    <span class="form-error" id="error-revenue"></span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" id="group-phone">
+                    <label class="form-label" for="field-phone">Telefone / WhatsApp</label>
+                    <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel" placeholder="(00) 00000-0000">
+                    <span class="form-hint">Para resposta mais rápida</span>
+                  </div>
+                  <div class="form-group" id="group-source">
+                    <label class="form-label" for="field-source">Como chegou até nós?</label>
+                    <select class="form-select" id="field-source" name="source">
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="indicacao">Indicação</option>
+                      <option value="google">Google</option>
+                      <option value="linkedin">LinkedIn</option>
+                      <option value="evento">Evento</option>
+                      <option value="outro">Outro</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group" id="group-message">
+                  <label class="form-label" for="field-message">Como podemos ajudar? <span class="required">*</span></label>
+                  <textarea class="form-textarea" id="field-message" name="message" placeholder="Conte brevemente o que travou na sua operação. Ex: 'cada setor com sua planilha, decisões sem dado, atendimento manual'" required></textarea>
+                  <span class="form-error" id="error-message"></span>
+                </div>
+
+                <div class="form-submit">
+                  <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                    Quero meu diagnóstico gratuito <span class="btn-arrow">→</span>
+                  </button>
+                  <p class="form-legal">
+                    Ao enviar, você concorda com nossa política de privacidade. Seus dados nunca serão compartilhados com terceiros.
+                  </p>
+                </div>
+              </form>
+
+              <!-- Success state -->
+              <div class="form-success" id="form-success" role="alert">
+                <div class="success-icon">✓</div>
+                <h3>Recebido. <em>Vamos te chamar em até 24 horas.</em></h3>
+                <p>Você vai receber um email confirmando o recebimento. Em até 24h úteis, alguém do nosso time de Customer Success entra em contato para qualificar e agendar o diagnóstico.</p>
+                <p>Se preferir mais rápido, chama no <a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a>.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="contato-sidebar" aria-label="Canais alternativos">
+            <div class="section-header" style="margin-bottom: 32px;">
+              <p class="eyebrow">Canais Alternativos</p>
+              <h2 style="font-size: 1.5rem;">Prefere outro canal? <em>Estamos onde você está.</em></h2>
+            </div>
+
+            <div class="channel-cards" style="grid-template-columns: 1fr; gap: 12px;">
+              <a href="https://wa.me/5575991879786?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20diagnóstico%20gratuito%20da%20Catalise.me" target="_blank" rel="noopener" class="channel-card whatsapp" id="contact-whatsapp-link">
+                <div class="channel-icon">💬</div>
+                <div class="channel-info">
+                  <h4>WhatsApp</h4>
+                  <p>Resposta em até 1h em horário comercial</p>
+                  <p style="margin-top: 4px; font-size: 13px; color: var(--green);">(75) 99187-9786</p>
+                </div>
+              </a>
+
+              <a href="mailto:contato@catalise.me" class="channel-card email" id="contact-email-link">
+                <div class="channel-icon">📧</div>
+                <div class="channel-info">
+                  <h4>Email</h4>
+                  <p>Para mensagens mais elaboradas, com anexos ou contexto detalhado</p>
+                  <p style="margin-top: 4px; font-size: 13px; color: var(--green);">contato@catalise.me</p>
+                </div>
+              </a>
+
+              <a href="https://linkedin.com/company/catalise-me" target="_blank" rel="noopener" class="channel-card linkedin" id="contact-linkedin-link">
+                <div class="channel-icon">💼</div>
+                <div class="channel-info">
+                  <h4>LinkedIn</h4>
+                  <p>Para parcerias, conteúdo ou networking</p>
+                  <p style="margin-top: 4px; font-size: 13px; color: #0A66C2;">linkedin.com/company/catalise-me</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- O que acontece depois -->
+            <div style="margin-top: 48px;">
+              <div class="section-header" style="margin-bottom: 24px;">
+                <p class="eyebrow">Depois do contato</p>
+                <h3 style="font-size: 1.25rem; letter-spacing: -0.01em;">O que acontece depois que você envia.</h3>
+              </div>
+
+              <div class="timeline" style="--timeline-ml: 0;">
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="font-size: 10px;">0h</div>
+                  <div class="timeline-content">
+                    <h4>Você submete</h4>
+                    <p>Recebe email confirmando que sua mensagem chegou.</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="font-size: 9px;">24h</div>
+                  <div class="timeline-content">
+                    <h4>Ligamos ou mandamos mensagem</h4>
+                    <p>Customer Success qualifica perfil e entende contexto. Conversa rápida, 10-15 minutos.</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="font-size: 9px;">7d</div>
+                  <div class="timeline-content">
+                    <h4>Diagnóstico agendado</h4>
+                    <p>Sessão de 45 min presencial ou via call. Você sai com mapa dos gargalos e estimativa.</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="font-size: 9px;">+5d</div>
+                  <div class="timeline-content">
+                    <h4>Proposta formal</h4>
+                    <p>Escopo fechado, timeline, KPIs e investimento exato. Sem surpresa.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ RÁPIDA -->
+    <section id="faq-contato" aria-labelledby="faq-contato-heading">
+      <div class="container container-sm">
+        <div class="section-header reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-contato-heading">Dúvidas frequentes.</h2>
+        </div>
+
+        <div class="faq-list reveal">
+          <div class="faq-item" id="faq-c1">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Diagnóstico é sempre gratuito?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Para perfis qualificados, sim. Negócios com faturamento abaixo de R$ 100k/mês ou em fase de validação podem receber direcionamento para soluções menores, sem o investimento completo do Opera AIAS.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-c2">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Em quanto tempo recebo resposta?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Resposta inicial em até 24h úteis. WhatsApp em até 1h em horário comercial.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-c3">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Vocês atendem em todo o Brasil?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Sim, atuamos para clientes em todo o país. Diagnóstico e implantação podem ser presenciais ou totalmente remotos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-c4">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Posso indicar alguém?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Pode e adoramos. Indicações qualificadas têm tratamento prioritário e nosso programa de referência oferece benefício para quem indica. Conta com a gente no email.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="Catalise.me">
+            <img src="assets/logo.png" alt="Catalise.me" class="logo-img" width="120" height="24">
+          </a>
+          <p>Sistema operacional agêntico com IA para empresas de serviços.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Páginas</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="opera-os.html">Opera AIAS</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Contato</h4>
+          <ul>
+            <li><a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a href="mailto:contato@catalise.me">contato@catalise.me</a></li>
+            <li><a href="https://linkedin.com/company/catalise-me" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-tagline">Catalise. <em>O sistema opera.</em></p>
+        <p class="footer-copy">© 2026 Catalise.me · Todos os direitos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./js/nav.js"></script>
+  <script type="module" src="./js/contact.js"></script>
+</body>
+</html>

@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalise.me — Documento de Cultura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════
+   RESET & ROOT
+═══════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --void:    #030303;
+  --void-2:  #0a0a0a;
+  --void-3:  #111;
+  --void-4:  #181818;
+  --smoke:   #222;
+  --ash:     #3a3a3a;
+  --mist:    #666;
+  --fog:     #999;
+  --ghost:   #ccc;
+  --white:   #f2f2f0;
+  --acid:    #c8f135;
+  --acid-2:  #a8d420;
+  --acid-dim:#6a8a14;
+  --ember:   #ff4422;
+  --ember-2: #cc3318;
+  --gold:    #d4a843;
+
+  --display: 'Bebas Neue', sans-serif;
+  --serif:   'Playfair Display', Georgia, serif;
+  --mono:    'IBM Plex Mono', monospace;
+  --sans:    'IBM Plex Sans', sans-serif;
+}
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ═══════════════════════════════
+   CURSOR
+═══════════════════════════════ */
+.cursor {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--acid);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  mix-blend-mode: difference;
+}
+.cursor-trail {
+  position: fixed;
+  width: 28px; height: 28px;
+  border: 1px solid rgba(200,241,53,0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.18s ease;
+}
+
+/* ═══════════════════════════════
+   GRAIN
+═══════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.3;
+}
+
+/* ═══════════════════════════════
+   PROGRESS
+═══════════════════════════════ */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 1px;
+  background: var(--acid);
+  z-index: 8000;
+  width: 0%;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 8px var(--acid);
+}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 700;
+  padding: 1.4rem clamp(1.5rem,5vw,5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo img { height: 22px; display: block; opacity: 0.9; }
+
+.nav-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.nav-label em { color: var(--acid); font-style: normal; }
+
+/* ═══════════════════════════════
+   MOLECULE CANVAS
+═══════════════════════════════ */
+#molecule-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+}
+
+/* ═══════════════════════════════
+   LAYOUT BASE
+═══════════════════════════════ */
+.pad { padding: clamp(5rem,10vw,11rem) clamp(1.5rem,5vw,5rem); }
+.pad-sm { padding: clamp(3rem,6vw,7rem) clamp(1.5rem,5vw,5rem); }
+section { position: relative; z-index: 1; }
+
+.mono-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--acid);
+  display: block;
+  margin-bottom: 1.2rem;
+}
+
+.rule { border: none; border-top: 1px solid var(--smoke); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.r1 { transition-delay: 0.05s; }
+.r2 { transition-delay: 0.15s; }
+.r3 { transition-delay: 0.28s; }
+.r4 { transition-delay: 0.42s; }
+.r5 { transition-delay: 0.58s; }
+
+/* ═══════════════════════════════
+   SECTION 0 — ABERTURA
+═══════════════════════════════ */
+#abertura {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--void);
+}
+
+.abertura-content { position: relative; z-index: 1; max-width: 900px; padding: 0 2rem; }
+
+.abertura-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.abertura-titulo {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5.5vw, 5.2rem);
+  font-weight: 300;
+  line-height: 1.12;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.8s forwards;
+}
+.abertura-titulo em { color: var(--acid); font-style: italic; }
+.abertura-titulo strong { font-weight: 900; color: var(--white); }
+
+.abertura-divisor {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, var(--acid), transparent);
+  margin: 3rem auto;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1.4s forwards;
+}
+
+.abertura-sub {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mist);
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1.8s forwards;
+}
+
+/* ═══════════════════════════════
+   SECTION 1 — A DISTINÇÃO
+═══════════════════════════════ */
+#distincao {
+  background: var(--void-2);
+  border-top: 1px solid var(--smoke);
+}
+
+.distincao-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--smoke);
+  margin-top: 4rem;
+}
+
+.distincao-lado {
+  background: var(--void);
+  padding: 3rem 2.5rem;
+  position: relative;
+  transition: background 0.3s ease;
+}
+.distincao-lado:hover { background: var(--void-3); }
+
+.distincao-lado--nao::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ember);
+}
+.distincao-lado--sim::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--acid);
+  box-shadow: 0 0 12px var(--acid);
+}
+
+.dist-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.dist-tag--nao { color: var(--ember); }
+.dist-tag--sim { color: var(--acid); }
+
+.dist-titulo {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 0.9;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+.dist-titulo--nao {
+  color: var(--ash);
+  text-decoration: line-through;
+  text-decoration-color: var(--ember);
+  text-decoration-thickness: 3px;
+}
+.dist-titulo--sim { color: var(--acid); }
+
+.dist-itens { list-style: none; }
+.dist-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--smoke);
+  font-size: 0.9rem;
+}
+.dist-item:last-child { border-bottom: none; }
+.dist-item-icon { flex-shrink: 0; font-size: 0.8rem; padding-top: 0.15rem; }
+.dist-item-text { color: var(--fog); line-height: 1.6; }
+.dist-item-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 0.2rem; }
+
+/* ═══════════════════════════════
+   SECTION 2 — QUÍMICA
+═══════════════════════════════ */
+#quimica {
+  background: var(--void);
+  overflow: hidden;
+  position: relative;
+}
+
+.quimica-bg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,241,53,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.quimica-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.quimica-texto h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+.quimica-texto h2 em { color: var(--acid); font-style: italic; }
+
+.quimica-texto p {
+  font-size: 0.95rem;
+  color: var(--fog);
+  line-height: 1.9;
+  margin-bottom: 1.2rem;
+}
+.quimica-texto p strong { color: var(--white); font-weight: 500; }
+
+.equacao {
+  background: var(--void-3);
+  border: 1px solid var(--smoke);
+  padding: 2.5rem;
+  font-family: var(--mono);
+  position: relative;
+}
+.equacao::before {
+  content: '// reação catalisada';
+  position: absolute;
+  top: -0.7rem;
+  left: 1.5rem;
+  background: var(--void-3);
+  padding: 0 0.5rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--acid);
+}
+
+.eq-linha {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--smoke);
+}
+.eq-linha:last-child { border-bottom: none; }
+.eq-label { color: var(--mist); min-width: 130px; font-size: 0.72rem; }
+.eq-valor { color: var(--acid); font-weight: 500; }
+.eq-valor--ember { color: var(--ember); }
+.eq-valor--fog { color: var(--fog); }
+
+.eq-formula {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--acid);
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--white);
+  letter-spacing: 0.1em;
+}
+.eq-formula span { color: var(--acid); }
+
+/* ═══════════════════════════════
+   SECTION 3 — OS 3 ESTADOS
+═══════════════════════════════ */
+#estados {
+  background: var(--void-2);
+  border-top: 1px solid var(--smoke);
+}
+
+.estados-header {
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+}
+
+.estados-header h2 {
+  font-family: var(--display);
+  font-size: clamp(3rem, 8vw, 8rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+}
+.estados-header h2 span { color: var(--acid); }
+
+.estados-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--smoke);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.estado {
+  background: var(--void);
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+.estado:hover { background: var(--void-3); }
+
+.estado-num {
+  font-family: var(--display);
+  font-size: 7rem;
+  line-height: 0.8;
+  color: rgba(255,255,255,0.03);
+  position: absolute;
+  top: 1rem; right: 1rem;
+  user-select: none;
+}
+
+.estado--catalisado .estado-num { color: rgba(200,241,53,0.06); }
+
+.estado-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+}
+.estado--reativo .estado-tag { color: var(--ember); }
+.estado--organizado .estado-tag { color: var(--gold); }
+.estado--catalisado .estado-tag { color: var(--acid); }
+
+.estado::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.estado--reativo::before { background: var(--ember); }
+.estado--organizado::before { background: var(--gold); }
+.estado--catalisado::before { background: var(--acid); box-shadow: 0 0 10px var(--acid); }
+
+.estado-titulo {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.estado-atributos { list-style: none; }
+.estado-attr {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--smoke);
+  font-size: 0.82rem;
+  color: var(--fog);
+}
+.estado-attr:last-child { border-bottom: none; }
+.estado-attr strong {
+  color: var(--white);
+  font-weight: 500;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 0.15rem;
+  text-transform: uppercase;
+}
+
+.estado--catalisado .estado-attr strong { color: var(--acid); }
+
+/* ═══════════════════════════════
+   SECTION 4 — AS 5 MUDANÇAS
+═══════════════════════════════ */
+#mudancas {
+  background: var(--void);
+  border-top: 1px solid var(--smoke);
+}
+
+.mudancas-intro {
+  max-width: 1100px;
+  margin: 0 auto 5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: end;
+}
+
+.mudancas-intro h2 {
+  font-family: var(--display);
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+}
+.mudancas-intro h2 span { color: var(--acid); }
+.mudancas-intro p {
+  font-size: 0.95rem;
+  color: var(--fog);
+  line-height: 1.9;
+}
+.mudancas-intro p strong { color: var(--white); font-weight: 500; }
+
+.mudanca-list {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.mudanca {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr;
+  gap: 3rem;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--smoke);
+  transition: all 0.25s ease;
+}
+.mudanca:first-child { border-top: 1px solid var(--smoke); }
+.mudanca:hover { padding-left: 0.5rem; }
+
+.mudanca-num {
+  font-family: var(--display);
+  font-size: 4rem;
+  color: var(--smoke);
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+.mudanca:hover .mudanca-num { color: var(--acid); }
+
+.mudanca-antes { }
+.mudanca-depois { }
+
+.mudanca-sublabel {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+.mudanca-antes .mudanca-sublabel { color: var(--ember); }
+.mudanca-depois .mudanca-sublabel { color: var(--acid); }
+
+.mudanca-titulo {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+
+.mudanca-antes .mudanca-titulo { color: var(--fog); }
+
+.mudanca-desc {
+  font-size: 0.85rem;
+  color: var(--mist);
+  line-height: 1.75;
+}
+.mudanca-depois .mudanca-desc { color: var(--fog); }
+
+/* ═══════════════════════════════
+   SECTION 5 — EMPRESA CATALISADA
+═══════════════════════════════ */
+#empresa-catalisada {
+  background: var(--acid);
+  color: var(--void);
+  position: relative;
+  overflow: hidden;
+}
+
+#empresa-catalisada::before {
+  content: 'CATALISADA';
+  position: absolute;
+  right: -4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--display);
+  font-size: clamp(8rem, 18vw, 22rem);
+  color: rgba(0,0,0,0.06);
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.catalisada-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.catalisada-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(3,3,3,0.5);
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.catalisada-titulo {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--void);
+  margin-bottom: 3rem;
+  max-width: 700px;
+}
+
+.catalisada-definicao {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.9;
+  color: rgba(3,3,3,0.7);
+  max-width: 640px;
+  margin-bottom: 4rem;
+}
+.catalisada-definicao strong { color: var(--void); font-weight: 600; }
+
+.catalisada-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: rgba(0,0,0,0.15);
+}
+
+.catalisada-item {
+  background: var(--acid);
+  padding: 2rem 1.8rem;
+  transition: background 0.2s ease;
+}
+.catalisada-item:hover { background: rgba(200,241,53,0.85); }
+
+.cat-item-num {
+  font-family: var(--display);
+  font-size: 3rem;
+  line-height: 0.9;
+  color: rgba(0,0,0,0.15);
+  margin-bottom: 0.8rem;
+}
+.cat-item-titulo {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--void);
+  margin-bottom: 0.4rem;
+}
+.cat-item-desc {
+  font-size: 0.78rem;
+  color: rgba(3,3,3,0.6);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════
+   SECTION 6 — MISSÃO VISÃO VALORES
+═══════════════════════════════ */
+#mvv {
+  background: var(--void-2);
+  border-top: 1px solid var(--smoke);
+}
+
+.mvv-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 6rem;
+}
+
+.mvv-nav { }
+.mvv-nav-titulo {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  position: sticky;
+  top: 6rem;
+}
+.mvv-nav-titulo span { color: var(--acid); }
+
+.mvv-content { }
+
+.mvv-bloco {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--smoke);
+}
+.mvv-bloco:first-child { border-top: 1px solid var(--smoke); }
+
+.mvv-bloco-tag {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 1.2rem;
+  display: block;
+}
+
+.mvv-bloco-titulo {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.mvv-bloco-titulo em { color: var(--acid); font-style: italic; }
+
+.mvv-bloco-texto {
+  font-size: 0.95rem;
+  color: var(--fog);
+  line-height: 1.9;
+}
+.mvv-bloco-texto strong { color: var(--white); font-weight: 500; }
+
+.valores-lista { list-style: none; margin-top: 1.5rem; }
+.valor-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--smoke);
+}
+.valor-item:last-child { border-bottom: none; }
+.valor-nome {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+.valor-oposto {
+  font-size: 0.82rem;
+  color: var(--mist);
+  font-style: italic;
+}
+.valor-oposto::before { content: '≠ '; color: var(--ember); font-style: normal; }
+
+/* ═══════════════════════════════
+   SECTION 7 — CREDO
+═══════════════════════════════ */
+#credo {
+  background: var(--void);
+  border-top: 1px solid var(--smoke);
+  position: relative;
+  overflow: hidden;
+}
+
+#credo::before {
+  content: '"';
+  position: absolute;
+  left: -2rem;
+  top: -3rem;
+  font-family: var(--serif);
+  font-size: 30rem;
+  color: rgba(200,241,53,0.025);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.credo-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.credo-stanzas { display: flex; flex-direction: column; gap: 0; }
+
+.credo-stanza {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--smoke);
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 2rem;
+}
+.credo-stanza:first-child { border-top: 1px solid var(--smoke); }
+
+.credo-num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--acid);
+  padding-top: 0.4rem;
+  letter-spacing: 0.1em;
+}
+
+.credo-texto {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--white);
+}
+.credo-texto em { color: var(--acid); font-style: italic; }
+.credo-texto .riscado {
+  color: var(--ash);
+  text-decoration: line-through;
+  text-decoration-color: var(--ember);
+  text-decoration-thickness: 2px;
+}
+.credo-texto strong { font-weight: 700; }
+
+/* ═══════════════════════════════
+   SECTION 8 — FECHAMENTO
+═══════════════════════════════ */
+#fechamento {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--void);
+  border-top: 1px solid var(--smoke);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.fechamento-aneis {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+
+.anel {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200,241,53,0.07);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: anel-expand 8s ease-out infinite;
+}
+.anel:nth-child(1) { width: 150px; height: 150px; animation-delay: 0s; }
+.anel:nth-child(2) { width: 350px; height: 350px; animation-delay: 2s; }
+.anel:nth-child(3) { width: 600px; height: 600px; animation-delay: 4s; }
+.anel:nth-child(4) { width: 900px; height: 900px; animation-delay: 6s; }
+
+@keyframes anel-expand {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(0.85); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.08); }
+}
+
+.fechamento-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+
+.fech-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--acid);
+  margin-bottom: 3rem;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.fech-titulo {
+  font-family: var(--display);
+  font-size: clamp(4rem, 13vw, 13rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  opacity: 0;
+  transition: opacity 0.8s ease 0.2s;
+}
+.fech-titulo span { color: var(--acid); }
+
+.fech-sub {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-style: italic;
+  color: var(--fog);
+  margin: 2.5rem auto 3rem;
+  max-width: 500px;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.4s;
+}
+
+.fech-url {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acid);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,241,53,0.3);
+  padding-bottom: 0.3rem;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.6s, border-color 0.25s ease;
+}
+.fech-url:hover { border-color: var(--acid); }
+
+.fechamento-content.visible .fech-label,
+.fechamento-content.visible .fech-titulo,
+.fechamento-content.visible .fech-sub,
+.fechamento-content.visible .fech-url { opacity: 1; }
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer {
+  background: var(--void);
+  border-top: 1px solid var(--smoke);
+  padding: 2rem clamp(1.5rem,5vw,5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--ash);
+  text-transform: uppercase;
+}
+.footer-copy em { color: var(--acid); font-style: normal; }
+
+/* ═══════════════════════════════
+   ANIMATIONS
+═══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 900px) {
+  .distincao-grid { grid-template-columns: 1fr; }
+  .quimica-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .estados-grid { grid-template-columns: 1fr; }
+  .mudancas-intro { grid-template-columns: 1fr; gap: 2rem; }
+  .mudanca { grid-template-columns: 50px 1fr; gap: 1.5rem; }
+  .mudanca-antes { display: none; }
+  .mvv-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .mvv-nav-titulo { position: static; }
+  .valor-item { grid-template-columns: 1fr; gap: 0.3rem; }
+  .credo-stanza { grid-template-columns: 2rem 1fr; gap: 1rem; }
+  .cursor, .cursor-trail { display: none; }
+  body { cursor: auto; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-trail" id="curT"></div>
+<div id="progress"></div>
+
+<!-- MOLECULE CANVAS -->
+<canvas id="molecule-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span style="font-family:var(--display);font-size:1.1rem;letter-spacing:0.05em;color:var(--acid);">CATALISE<span style="color:var(--white);font-size:0.65em;">.ME</span></span>
+  </a>
+  <span class="nav-label">Documento de <em>Cultura</em> · 2026</span>
+</nav>
+
+<!-- ═══════════════════════════════
+     ABERTURA
+═══════════════════════════════ -->
+<section id="abertura">
+  <div class="abertura-content">
+    <p class="abertura-eyebrow">* Catalise.me — Catalisadora de IA para Hotelaria</p>
+    <h1 class="abertura-titulo">
+      Não viemos para<br>
+      <em>acelerar</em> o seu negócio.<br>
+      Viemos para mudar<br>
+      <strong>a natureza da reação.</strong>
+    </h1>
+    <div class="abertura-divisor"></div>
+    <p class="abertura-sub">Documento de Cultura — Versão 1.0 — Bahia, Brasil</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     A DISTINÇÃO
+═══════════════════════════════ -->
+<section id="distincao">
+  <div class="pad" style="max-width:1100px;margin:0 auto;">
+    <span class="mono-label reveal">// A distinção que define tudo</span>
+    <h2 class="reveal r1" style="font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.2;max-width:700px;">
+      Existe uma diferença fundamental entre<br>
+      <em style="color:var(--acid);">acelerar</em> uma reação<br>
+      e <em style="color:var(--acid);">catalisá-la.</em>
+    </h2>
+    <p class="reveal r2" style="margin-top:1.5rem;font-size:0.95rem;color:var(--fog);max-width:560px;line-height:1.9;">
+      A maioria das empresas de tecnologia e consultoria são aceleradoras. Empurram. Enquanto estão, o resultado aparece. Quando saem, o ritmo volta ao normal. <strong style="color:var(--white);">A dependência não acabou — só mudou de endereço.</strong>
+    </p>
+
+    <div class="distincao-grid reveal r3">
+
+      <div class="distincao-lado distincao-lado--nao">
+        <span class="dist-tag dist-tag--nao">// O acelerador</span>
+        <div class="dist-titulo dist-titulo--nao">ACELERA</div>
+        <ul class="dist-itens">
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--ember);">—</span>
+            <div class="dist-item-text">
+              <strong>É consumido no processo</strong>
+              Quanto mais usa, mais depende. Retire o acelerador e a velocidade cai.
+            </div>
+          </li>
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--ember);">—</span>
+            <div class="dist-item-text">
+              <strong>Resultado presente-dependente</strong>
+              Você cresce enquanto ele está. Quando vai embora, você volta ao ponto de partida.
+            </div>
+          </li>
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--ember);">—</span>
+            <div class="dist-item-text">
+              <strong>Dependência com outro nome</strong>
+              Trocou a dependência da OTA pela dependência da agência. O problema não foi resolvido — foi terceirizado.
+            </div>
+          </li>
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--ember);">—</span>
+            <div class="dist-item-text">
+              <strong>Vende presença</strong>
+              Cobra por estar lá. O valor some quando a relação termina.
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="distincao-lado distincao-lado--sim">
+        <span class="dist-tag dist-tag--sim">// O catalisador</span>
+        <div class="dist-titulo dist-titulo--sim">CATALISA</div>
+        <ul class="dist-itens">
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--acid);">+</span>
+            <div class="dist-item-text">
+              <strong style="color:var(--acid);">Não é consumido</strong>
+              Instala a reação e permanece intacto. Pode ser usado infinitamente. O sistema continua depois que vai embora.
+            </div>
+          </li>
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--acid);">+</span>
+            <div class="dist-item-text">
+              <strong style="color:var(--acid);">Resultado permanente</strong>
+              Você continua crescendo depois que ele vai embora. A inteligência ficou dentro da operação.
+            </div>
+          </li>
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--acid);">+</span>
+            <div class="dist-item-text">
+              <strong style="color:var(--acid);">Instala autonomia</strong>
+              O objetivo não é que você dependa da Catalise.me. É que você não precise mais de nós da forma que precisava antes.
+            </div>
+          </li>
+          <li class="dist-item">
+            <span class="dist-item-icon" style="color:var(--acid);">+</span>
+            <div class="dist-item-text">
+              <strong style="color:var(--acid);">Vende permanência</strong>
+              O valor que entregamos não depende da nossa presença para continuar funcionando.
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     QUÍMICA
+═══════════════════════════════ -->
+<section id="quimica">
+  <div class="quimica-bg"></div>
+  <div class="pad">
+    <div class="quimica-layout">
+
+      <div class="quimica-texto">
+        <span class="mono-label reveal">// A ciência por trás do nome</span>
+        <h2 class="reveal r1">
+          Na química,<br>o catalisador<br>
+          <em>muda as condições</em><br>
+          da reação.
+        </h2>
+        <p class="reveal r2">
+          Não apenas acelera. <strong>Muda a energia de ativação necessária para a reação acontecer.</strong> O sistema que antes precisava de muito esforço para reagir, passa a reagir naturalmente — em menor tempo, com menos energia, com maior precisão.
+        </p>
+        <p class="reveal r3">
+          É exatamente isso que fazemos com negócios hoteleiros. <strong>Não apenas os tornamos mais rápidos.</strong> Mudamos as condições em que operam — para que a inteligência flua naturalmente por cada processo, decisão e interação.
+        </p>
+      </div>
+
+      <div class="equacao reveal r2">
+        <div class="eq-linha">
+          <span class="eq-label">sem catalisador</span>
+          <span class="eq-valor--ember">Alta energia · Alta fricção · Lento</span>
+        </div>
+        <div class="eq-linha">
+          <span class="eq-label">com catalisador</span>
+          <span class="eq-valor">Baixa energia · Zero fricção · Rápido</span>
+        </div>
+        <div class="eq-linha">
+          <span class="eq-label">o catalisador</span>
+          <span class="eq-valor--fog">Não é consumido · Permanece intacto</span>
+        </div>
+        <div class="eq-linha">
+          <span class="eq-label">resultado</span>
+          <span class="eq-valor">Reação contínua · Independente</span>
+        </div>
+        <div class="eq-formula">
+          Negócio + <span>IA</span> → <span>Empresa Catalisada</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     OS 3 ESTADOS
+═══════════════════════════════ -->
+<section id="estados">
+  <div class="pad">
+
+    <div class="estados-header">
+      <span class="mono-label reveal">// Os 3 estados de uma empresa hoteleira</span>
+      <h2 class="reveal r1">
+        TODO NEGÓCIO<br>
+        EXISTE NUM<br>
+        <span>ESTADO.</span>
+      </h2>
+      <p class="reveal r2" style="margin-top:1.5rem;font-size:0.95rem;color:var(--fog);max-width:560px;line-height:1.9;">
+        A questão não é se você vai ser catalisado. É <strong style="color:var(--white);">quando.</strong> Porque o mercado já está se movendo. E empresas no estado reativo estão perdendo para empresas no estado catalisado — todos os dias, em cada reserva.
+      </p>
+    </div>
+
+    <div class="estados-grid">
+
+      <div class="estado estado--reativo reveal">
+        <div class="estado-num">1</div>
+        <span class="estado-tag">Estado Reativo</span>
+        <div class="estado-titulo">Opera no<br>improviso.</div>
+        <ul class="estado-atributos">
+          <li class="estado-attr"><strong>Decisão</strong>Intuição e experiência pessoal</li>
+          <li class="estado-attr"><strong>Operação</strong>O dono é o sistema central</li>
+          <li class="estado-attr"><strong>Crescimento</strong>Linear · mais trabalho = mais resultado</li>
+          <li class="estado-attr"><strong>Risco</strong>Se o dono para, tudo para</li>
+          <li class="estado-attr"><strong>Resultado</strong>Depende de sorte e esforço constante</li>
+        </ul>
+      </div>
+
+      <div class="estado estado--organizado reveal r1">
+        <div class="estado-num">2</div>
+        <span class="estado-tag">Estado Organizado</span>
+        <div class="estado-titulo">Opera com<br>processos.</div>
+        <ul class="estado-atributos">
+          <li class="estado-attr"><strong>Decisão</strong>Experiência + alguns dados</li>
+          <li class="estado-attr"><strong>Operação</strong>Depende de pessoas certas no lugar certo</li>
+          <li class="estado-attr"><strong>Crescimento</strong>Limitado pela capacidade da equipe</li>
+          <li class="estado-attr"><strong>Risco</strong>Crescer aumenta o caos operacional</li>
+          <li class="estado-attr"><strong>Resultado</strong>Consistente mas com teto visível</li>
+        </ul>
+      </div>
+
+      <div class="estado estado--catalisado reveal r2">
+        <div class="estado-num">3</div>
+        <span class="estado-tag">Estado Catalisado ✦</span>
+        <div class="estado-titulo">Opera por<br>sistemas.</div>
+        <ul class="estado-atributos">
+          <li class="estado-attr"><strong>Decisão</strong>Dado em tempo real · sempre precisa</li>
+          <li class="estado-attr"><strong>Operação</strong>Inteligência na estrutura, não nas pessoas</li>
+          <li class="estado-attr"><strong>Crescimento</strong>Escala sem escalar o caos</li>
+          <li class="estado-attr"><strong>Risco</strong>Sistemas operam quando humanos não podem</li>
+          <li class="estado-attr"><strong>Resultado</strong>Arquitetado · previsível · contínuo</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     AS 5 MUDANÇAS CULTURAIS
+═══════════════════════════════ -->
+<section id="mudancas">
+  <div class="pad">
+
+    <div class="mudancas-intro">
+      <div>
+        <span class="mono-label reveal">// O que muda de verdade</span>
+        <h2 class="reveal r1">
+          CINCO<br>
+          MUDANÇAS<br>
+          <span style="color:var(--acid);">CULTURAIS</span>
+        </h2>
+      </div>
+      <div>
+        <p class="reveal r2">
+          Quando implantamos IA numa operação hoteleira, não estamos apenas automatizando tarefas. Estamos <strong>mudando a forma como a empresa pensa, age e se relaciona com o próprio crescimento.</strong> Isso não é tecnologia. É uma mudança cultural permanente.
+        </p>
+      </div>
+    </div>
+
+    <div class="mudanca-list">
+
+      <div class="mudanca reveal">
+        <div class="mudanca-num">01</div>
+        <div class="mudanca-antes">
+          <span class="mudanca-sublabel">antes</span>
+          <div class="mudanca-titulo">Empresa Reativa</div>
+          <p class="mudanca-desc">Hóspede reclama → resolve. OTA comissiona → aceita. Mês ruim → descobre no fim. A equipe sempre atrás dos acontecimentos.</p>
+        </div>
+        <div class="mudanca-depois">
+          <span class="mudanca-sublabel">depois</span>
+          <div class="mudanca-titulo">Empresa <em style="color:var(--acid);">Preditiva</em></div>
+          <p class="mudanca-desc">Os sistemas antecipam. O hóspede mostra sinal de insatisfação — o sistema alerta antes da reclamação. O vocabulário muda: de <em>"o que aconteceu"</em> para <em>"o que vai acontecer"</em>.</p>
+        </div>
+      </div>
+
+      <div class="mudanca reveal">
+        <div class="mudanca-num">02</div>
+        <div class="mudanca-antes">
+          <span class="mudanca-sublabel">antes</span>
+          <div class="mudanca-titulo">Dependência Pessoal</div>
+          <p class="mudanca-desc">"Só a Maria sabe lidar com o Booking." "Quando o João sai, o atendimento cai." O negócio refém de pessoas específicas.</p>
+        </div>
+        <div class="mudanca-depois">
+          <span class="mudanca-sublabel">depois</span>
+          <div class="mudanca-titulo">Dependência <em style="color:var(--acid);">Sistêmica</em></div>
+          <p class="mudanca-desc">O conhecimento está no sistema, não na pessoa. Isso não desvaloriza as pessoas — <em>libera</em> elas para fazer o que só humanos fazem: criar experiências inesquecíveis.</p>
+        </div>
+      </div>
+
+      <div class="mudanca reveal">
+        <div class="mudanca-num">03</div>
+        <div class="mudanca-antes">
+          <span class="mudanca-sublabel">antes</span>
+          <div class="mudanca-titulo">Decisão por Intuição</div>
+          <p class="mudanca-desc">"Acho que devemos subir a diária." "Me parece que fevereiro é melhor." Decisões baseadas em impressão e histórico pessoal.</p>
+        </div>
+        <div class="mudanca-depois">
+          <span class="mudanca-sublabel">depois</span>
+          <div class="mudanca-titulo">Decisão por <em style="color:var(--acid);">Dado</em></div>
+          <p class="mudanca-desc">O dashboard mostra. O Revenue Management calcula. O gestor ganha confiança. Para de <em>achar</em> e começa a <em>saber.</em> Energia mental que antes era gasta em incerteza vira estratégia.</p>
+        </div>
+      </div>
+
+      <div class="mudanca reveal">
+        <div class="mudanca-num">04</div>
+        <div class="mudanca-antes">
+          <span class="mudanca-sublabel">antes</span>
+          <div class="mudanca-titulo">Escassez de Tempo</div>
+          <p class="mudanca-desc">80% do tempo em operação. Apagando incêndio, respondendo WhatsApp, conferindo reservas. Sobram 20% para pensar no negócio.</p>
+        </div>
+        <div class="mudanca-depois">
+          <span class="mudanca-sublabel">depois</span>
+          <div class="mudanca-titulo">Abundância de <em style="color:var(--acid);">Foco</em></div>
+          <p class="mudanca-desc">Os sistemas absorvem o repetitivo. O dono redescobre por que abriu a pousada. Não era para ser recepcionista e analista ao mesmo tempo. Era para <em>criar algo.</em> A IA devolve esse espaço.</p>
+        </div>
+      </div>
+
+      <div class="mudanca reveal">
+        <div class="mudanca-num">05</div>
+        <div class="mudanca-antes">
+          <span class="mudanca-sublabel">antes</span>
+          <div class="mudanca-titulo">Negócio Dependente</div>
+          <p class="mudanca-desc">O negócio é uma extensão do dono. Ele não tem empresa — tem um emprego caro e estressante. Checkout às 12h. Sua cabeça nunca faz.</p>
+        </div>
+        <div class="mudanca-depois">
+          <span class="mudanca-sublabel">depois</span>
+          <div class="mudanca-titulo">Negócio <em style="color:var(--acid);">Autônomo</em></div>
+          <p class="mudanca-desc">O negócio opera com lógica própria. Atende quando o dono dorme. Vende quando está de férias. Pela primeira vez, ele consegue se afastar — e o negócio não desmorona. Isso muda tudo: de <em>ansiedade</em> para <em>confiança.</em></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     EMPRESA CATALISADA
+═══════════════════════════════ -->
+<section id="empresa-catalisada">
+  <div class="pad">
+    <div class="catalisada-inner">
+
+      <span class="catalisada-label reveal">// O conceito central</span>
+      <h2 class="catalisada-titulo reveal r1">
+        O que é uma<br>Empresa Catalisada.
+      </h2>
+
+      <p class="catalisada-definicao reveal r2">
+        Uma empresa catalisada não é uma empresa com tecnologia. É uma empresa cuja <strong>inteligência migrou das pessoas para os sistemas</strong> — libertando as pessoas para serem mais humanas, mais criativas, mais estratégicas. A tecnologia absorve o repetitivo. Os humanos fazem o inesquecível. O negócio escala sem escalar o caos.
+      </p>
+
+      <div class="catalisada-grid reveal r3">
+        <div class="catalisada-item">
+          <div class="cat-item-num">01</div>
+          <div class="cat-item-titulo">Inteligência na Estrutura</div>
+          <div class="cat-item-desc">O conhecimento não está em pessoas — está em sistemas que operam continuamente, independente de quem está de plantão.</div>
+        </div>
+        <div class="catalisada-item">
+          <div class="cat-item-num">02</div>
+          <div class="cat-item-titulo">Decisão por Dado</div>
+          <div class="cat-item-desc">Cada decisão é informada por métricas em tempo real. O gestor para de adivinhar e começa a saber.</div>
+        </div>
+        <div class="catalisada-item">
+          <div class="cat-item-num">03</div>
+          <div class="cat-item-titulo">Escala sem Caos</div>
+          <div class="cat-item-desc">Mais hóspedes não significa mais caos. Os sistemas absorvem o volume. A qualidade não depende do tamanho da equipe.</div>
+        </div>
+        <div class="catalisada-item">
+          <div class="cat-item-num">04</div>
+          <div class="cat-item-titulo">Autonomia Operacional</div>
+          <div class="cat-item-desc">O negócio funciona quando o dono está ausente. Isso transforma a relação emocional com a empresa — de prisão para patrimônio.</div>
+        </div>
+        <div class="catalisada-item">
+          <div class="cat-item-num">05</div>
+          <div class="cat-item-titulo">Humanos Livres</div>
+          <div class="cat-item-desc">A IA não substitui hospitalidade. Libera ela. A equipe para de fazer o que máquinas fazem melhor — e faz o que só humanos sabem fazer.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     MISSÃO VISÃO VALORES
+═══════════════════════════════ -->
+<section id="mvv">
+  <div class="pad">
+    <div class="mvv-layout">
+
+      <div class="mvv-nav reveal">
+        <h2 class="mvv-nav-titulo">
+          O QUE<br>
+          GUIA<br>A<br>
+          <span>CATA<br>LISE</span>
+        </h2>
+      </div>
+
+      <div class="mvv-content">
+
+        <div class="mvv-bloco reveal">
+          <span class="mvv-bloco-tag">// Missão</span>
+          <h3 class="mvv-bloco-titulo">
+            Mover empresas hoteleiras<br>
+            do estado reativo para o<br>
+            <em>estado catalisado.</em>
+          </h3>
+          <p class="mvv-bloco-texto">
+            Onde sistemas inteligentes operam o repetitivo e humanos fazem o inesquecível. Onde cada decisão é informada por dado. Onde o negócio continua funcionando mesmo quando o dono precisa parar.
+          </p>
+        </div>
+
+        <div class="mvv-bloco reveal r1">
+          <span class="mvv-bloco-tag">// Visão</span>
+          <h3 class="mvv-bloco-titulo">
+            Um setor hoteleiro brasileiro onde
+            <em>nenhum dono de pousada</em> perde uma
+            reserva por falta de resposta.
+          </h3>
+          <p class="mvv-bloco-texto">
+            Onde nenhuma margem é desperdiçada por falta de dado. Onde nenhuma operação depende de uma única pessoa para funcionar. Onde <strong>tecnologia e hospitalidade não são opostos</strong> — são o mesmo projeto.
+          </p>
+        </div>
+
+        <div class="mvv-bloco reveal r2">
+          <span class="mvv-bloco-tag">// Valores — e seus opostos</span>
+          <h3 class="mvv-bloco-titulo">O que defendemos.<br><em>E o que recusamos.</em></h3>
+          <ul class="valores-lista">
+            <li class="valor-item">
+              <div>
+                <div class="valor-nome">Permanência sobre presença</div>
+                <div style="font-size:0.78rem;color:var(--fog);margin-top:0.3rem;">O que instalamos continua funcionando quando vamos embora.</div>
+              </div>
+              <div class="valor-oposto">Dependência contínua do fornecedor</div>
+            </li>
+            <li class="valor-item">
+              <div>
+                <div class="valor-nome">Dado sobre intuição</div>
+                <div style="font-size:0.78rem;color:var(--fog);margin-top:0.3rem;">Cada decisão merece ser informada por evidência real.</div>
+              </div>
+              <div class="valor-oposto">Achismo bem-intencionado</div>
+            </li>
+            <li class="valor-item">
+              <div>
+                <div class="valor-nome">Sistema sobre pessoa</div>
+                <div style="font-size:0.78rem;color:var(--fog);margin-top:0.3rem;">O conhecimento pertence à empresa, não ao indivíduo.</div>
+              </div>
+              <div class="valor-oposto">Operação refém de talentos</div>
+            </li>
+            <li class="valor-item">
+              <div>
+                <div class="valor-nome">Profundidade sobre volume</div>
+                <div style="font-size:0.78rem;color:var(--fog);margin-top:0.3rem;">Menos clientes catalisados profundamente valem mais do que muitos superficialmente.</div>
+              </div>
+              <div class="valor-oposto">Escala sem transformação real</div>
+            </li>
+            <li class="valor-item">
+              <div>
+                <div class="valor-nome">Autonomia sobre dependência</div>
+                <div style="font-size:0.78rem;color:var(--fog);margin-top:0.3rem;">O maior sinal de sucesso é o cliente que não precisa mais de nós da forma que precisava.</div>
+              </div>
+              <div class="valor-oposto">Fidelização por aprisionamento</div>
+            </li>
+            <li class="valor-item">
+              <div>
+                <div class="valor-nome">Evolução contínua</div>
+                <div style="font-size:0.78rem;color:var(--fog);margin-top:0.3rem;">Cada implantação nos ensina algo que melhora a próxima.</div>
+              </div>
+              <div class="valor-oposto">Produto estático e acabado</div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     CREDO
+═══════════════════════════════ -->
+<section id="credo">
+  <div class="pad">
+    <div class="credo-inner">
+
+      <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem;" class="reveal">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--acid);box-shadow:0 0 12px var(--acid);flex-shrink:0;animation:credoPulse 3s ease infinite;"></div>
+        <h2 style="font-family:var(--display);font-size:clamp(2rem,5vw,4rem);letter-spacing:0.02em;">O QUE ACREDITAMOS</h2>
+      </div>
+
+      <div class="credo-stanzas">
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">01</span>
+          <p class="credo-texto">
+            Acreditamos que <em>tecnologia sem cultura é ferramenta sem propósito.</em> Qualquer um instala um chatbot. Poucos mudam a forma como uma empresa pensa.
+          </p>
+        </div>
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">02</span>
+          <p class="credo-texto">
+            Acreditamos que uma empresa catalisada não é mais eficiente — <em>é mais humana.</em> Porque os humanos param de fazer o que máquinas fazem melhor.
+          </p>
+        </div>
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">03</span>
+          <p class="credo-texto">
+            Acreditamos que nosso trabalho só está completo quando <em>não somos mais necessários da forma que éramos antes.</em> Isso não é perda de cliente. É o maior sinal de sucesso que existe.
+          </p>
+        </div>
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">04</span>
+          <p class="credo-texto">
+            Acreditamos que <span class="riscado">vender serviço</span> é o modelo do passado. O futuro pertence a quem instala <em>sistemas que geram resultado mesmo quando ninguém está olhando.</em>
+          </p>
+        </div>
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">05</span>
+          <p class="credo-texto">
+            Acreditamos que o dono de pousada independente brasileiro merece a mesma <em>inteligência operacional das grandes redes</em> — sem o preço e sem a burocracia delas.
+          </p>
+        </div>
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">06</span>
+          <p class="credo-texto">
+            Acreditamos que <em>IA não substitui hospitalidade.</em> Libera ela. A tecnologia cuida do repetitivo para que os humanos possam cuidar do que importa: fazer o hóspede sentir que chegou em casa.
+          </p>
+        </div>
+
+        <div class="credo-stanza reveal">
+          <span class="credo-num">07</span>
+          <p class="credo-texto">
+            Acreditamos que <strong>crescimento real é previsível.</strong> Não depende de alta temporada, de avaliação viral ou de sorte. Depende de <em>sistemas bem construídos e dados bem lidos.</em> Sempre.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     FECHAMENTO
+═══════════════════════════════ -->
+<section id="fechamento">
+  <div class="fechamento-aneis">
+    <div class="anel"></div>
+    <div class="anel"></div>
+    <div class="anel"></div>
+    <div class="anel"></div>
+  </div>
+  <div class="fechamento-content" id="fechConteudo">
+    <p class="fech-label">A reação já começou</p>
+    <h2 class="fech-titulo">
+      VOCÊ NÃO<br>
+      PRECISA DE<br>
+      <span>NÓS.</span>
+    </h2>
+    <p class="fech-sub">
+      Precisa do que deixamos para trás<br>quando vamos embora.
+    </p>
+    <a href="https://catalise.me" class="fech-url">catalise.me</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2026 — <em>Catalise.me</em> — Catalisadora de IA para Hotelaria</span>
+  <span class="footer-copy">Bahia, Brasil · Documento de Cultura v1.0</span>
+</footer>
+
+<style>
+@keyframes credoPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(200,241,53,0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(200,241,53,0); }
+}
+</style>
+
+<script>
+// ── CURSOR
+const cur = document.getElementById('cur');
+const curT = document.getElementById('curT');
+let mx = 0, my = 0, tx = 0, ty = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px';
+  cur.style.top = my + 'px';
+});
+(function animCur() {
+  tx += (mx - tx) * 0.13;
+  ty += (my - ty) * 0.13;
+  curT.style.left = tx + 'px';
+  curT.style.top = ty + 'px';
+  requestAnimationFrame(animCur);
+})();
+
+// ── PROGRESS
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  prog.style.width = p + '%';
+});
+
+// ── REVEAL
+const revEls = document.querySelectorAll('.reveal');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+revEls.forEach(el => revObs.observe(el));
+
+// ── FECHAMENTO
+const fechObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) document.getElementById('fechConteudo').classList.add('visible');
+}, { threshold: 0.3 });
+fechObs.observe(document.getElementById('fechamento'));
+
+// ── MOLECULE CANVAS
+const canvas = document.getElementById('molecule-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, nodes = [], edges = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function init() {
+  nodes = [];
+  edges = [];
+  const count = Math.floor((W * H) / 22000);
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.5 + 0.5
+    });
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  // update
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+  });
+  // edges
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.strokeStyle = `rgba(200,241,53,${(1 - dist / 120) * 0.4})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  // nodes
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(200,241,53,0.6)';
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', () => { resize(); init(); });
+resize(); init(); draw();
+
+// ── SCRAMBLE no hover dos títulos de estado
+document.querySelectorAll('.estado-titulo').forEach(el => {
+  const original = el.innerHTML;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let iv = null;
+  el.addEventListener('mouseenter', () => {
+    const text = el.textContent;
+    let iter = 0;
+    clearInterval(iv);
+    iv = setInterval(() => {
+      el.textContent = text.split('').map((c, i) => {
+        if (c === '\n' || c === ' ') return c;
+        if (i < iter) return text[i];
+        return chars[Math.floor(Math.random() * chars.length)];
+      }).join('');
+      if (iter >= text.length) { clearInterval(iv); el.innerHTML = original; }
+      iter += 2;
+    }, 35);
+  });
+  el.addEventListener('mouseleave', () => { clearInterval(iv); el.innerHTML = original; });
+});
+</script>
+
+</body>
+</html>
