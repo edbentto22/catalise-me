@@ -324,4 +324,5 @@ footer {
 
 @media (max-width: 480px) {
   section { padding: var(--space-12) 0; }
+  .container { padding: 0 var(--space-4); }
 }

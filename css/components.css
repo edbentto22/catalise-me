@@ -148,6 +148,7 @@
   position: fixed;
   top: var(--nav-height);
   left: 0; right: 0;
+  height: calc(100vh - var(--nav-height));
   background: var(--bg-surface);
   border-bottom: var(--seam);
   padding: var(--space-8) var(--space-6);
@@ -1428,9 +1429,20 @@
   .qual-grid { grid-template-columns: 1fr; }
   .qual-col.yes { border-right: none; border-bottom: 1px solid var(--border-subtle); }
   .channel-cards { grid-template-columns: 1fr; }
-  .opera-grid { grid-template-columns: repeat(2, 1fr); }
-  .trivium-grid { grid-template-columns: repeat(3, 1fr); }
-  .includes-grid { grid-template-columns: 1fr 1fr; }
+  
+  .opera-grid { 
+    display: grid;
+    grid-auto-flow: column; 
+    grid-auto-columns: min(85vw, 300px); 
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    padding-bottom: var(--space-4);
+  }
+  .opera-grid::-webkit-scrollbar { display: none; }
+  .opera-item { scroll-snap-align: center; }
+  
+  .trivium-grid { grid-template-columns: repeat(2, 1fr); }
+  .includes-grid { grid-template-columns: 1fr; }
 
   .principle-item { grid-template-columns: 1fr; gap: var(--space-2); }
 
@@ -1438,9 +1450,7 @@
 }
 
 @media (max-width: 480px) {
-  .opera-grid { grid-template-columns: 1fr 1fr; }
-  .trivium-grid { grid-template-columns: repeat(2, 1fr); }
-  .includes-grid { grid-template-columns: 1fr; }
+  .trivium-grid { grid-template-columns: 1fr; }
   .cta-buttons { flex-direction: column; align-items: stretch; }
   .cta-buttons .btn { text-align: center; justify-content: center; }
   .symptom-grid { grid-template-columns: 1fr; }
