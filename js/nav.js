@@ -4,6 +4,9 @@
 
 'use strict';
 
+// ─── Enable JS-dependent styles ───
+document.documentElement.classList.add('js-enabled');
+
 // ─── Nav scroll effect ───
 (function () {
   const nav = document.querySelector('.nav');

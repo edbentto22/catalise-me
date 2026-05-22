@@ -199,26 +199,26 @@ section {
 }
 
 /* ─── Reveal animations ─── */
-.reveal {
+.js-enabled .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition:
     opacity var(--duration-slow) var(--ease-out),
     transform var(--duration-slow) var(--ease-out);
 }
-.reveal.revealed {
+.js-enabled .reveal.revealed {
   opacity: 1;
   transform: translateY(0);
 }
 
-.reveal-left {
+.js-enabled .reveal-left {
   opacity: 0;
   transform: translateX(-24px);
   transition:
     opacity var(--duration-slow) var(--ease-out),
     transform var(--duration-slow) var(--ease-out);
 }
-.reveal-left.revealed {
+.js-enabled .reveal-left.revealed {
   opacity: 1;
   transform: translateX(0);
 }
