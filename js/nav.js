@@ -31,7 +31,9 @@ import {
   Magnet,
   HelpCircle,
   MousePointerClick,
-  HeartHandshake
+  HeartHandshake,
+  Check,
+  X
 } from 'lucide';
 
 // Initialize Lucide Icons
@@ -68,7 +70,9 @@ createIcons({
     Magnet,
     HelpCircle,
     MousePointerClick,
-    HeartHandshake
+    HeartHandshake,
+    Check,
+    X
   }
 });
 
