@@ -31,7 +31,7 @@ body {
 
 /* ─── Selection ─── */
 ::selection {
-  background: rgba(124, 255, 0, 0.22);
+  background: rgba(107, 158, 17, 0.22);
   color: var(--green);
 }
 
@@ -175,6 +175,7 @@ section {
 /* ─── Utils ─── */
 .text-green { color: var(--green); }
 .text-muted { color: var(--text-muted); }
+.text-white { color: var(--text-primary) !important; }
 .text-mono  { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.08em; }
 
 .flex            { display: flex; }

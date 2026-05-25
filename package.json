@@ -20,5 +20,8 @@
   "license": "ISC",
   "devDependencies": {
     "vite": "^8.0.14"
+  },
+  "dependencies": {
+    "lucide": "^1.16.0"
   }
 }

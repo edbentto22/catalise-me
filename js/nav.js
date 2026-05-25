@@ -1,8 +1,76 @@
-/* =========================================
-   CATALISE.ME — NAV + SHARED JS
-   ========================================= */
+import {
+  createIcons,
+  Zap,
+  Clock,
+  RefreshCw,
+  Globe,
+  LayoutGrid,
+  Monitor,
+  PenTool,
+  MessageSquare,
+  Activity,
+  BarChart3,
+  Users,
+  Search,
+  ClipboardList,
+  Flag,
+  Lock,
+  Target,
+  Hotel,
+  Hospital,
+  Building2,
+  Car,
+  Scale,
+  GraduationCap,
+  Network,
+  CalendarCheck,
+  Compass,
+  Rocket,
+  Sliders,
+  BrainCircuit,
+  Magnet,
+  HelpCircle,
+  MousePointerClick,
+  HeartHandshake
+} from 'lucide';
 
-'use strict';
+// Initialize Lucide Icons
+createIcons({
+  icons: {
+    Zap,
+    Clock,
+    RefreshCw,
+    Globe,
+    LayoutGrid,
+    Monitor,
+    PenTool,
+    MessageSquare,
+    Activity,
+    BarChart3,
+    Users,
+    Search,
+    ClipboardList,
+    Flag,
+    Lock,
+    Target,
+    Hotel,
+    Hospital,
+    Building2,
+    Car,
+    Scale,
+    GraduationCap,
+    Network,
+    CalendarCheck,
+    Compass,
+    Rocket,
+    Sliders,
+    BrainCircuit,
+    Magnet,
+    HelpCircle,
+    MousePointerClick,
+    HeartHandshake
+  }
+});
 
 // ─── Enable JS-dependent styles ───
 document.documentElement.classList.add('js-enabled');

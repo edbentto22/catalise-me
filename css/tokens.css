@@ -1,6 +1,6 @@
 /* =========================================
-   CATALISE.ME — DESIGN TOKENS v2
-   Soft Brutalism · Raw structure, warm finish
+   CATALISE.ME — DESIGN TOKENS v3
+   Monolith Premium · Mineral weight, digital dominance
    =========================================
    Legacy aliases (for existing component CSS)
    ========================================= */
@@ -37,68 +37,76 @@
 }
 
 :root {
-  /* ─── Core Palette — Soft Brutalism ─── */
-  /* Off-blacks: tuned warm, never pure #000 */
-  --bg-base:       #0D0D0B;   /* warm near-black */
-  --bg-surface:    #141412;   /* warm dark surface */
-  --bg-elevated:   #1C1C19;   /* raised panel */
-  --bg-card:       rgba(255, 255, 248, 0.03);
-  --bg-card-hover: rgba(124, 255, 0, 0.05);
+  /* ─── Core Palette — Monolith Premium Light ─── */
+  --bg-base:       #f5f6f5;   /* off-white base */
+  --bg-surface:    #eceeec;   /* slightly darker off-white surface */
+  --bg-elevated:   #e2e4e2;   /* raised light panel */
+  --bg-card:       rgba(20, 20, 18, 0.02);
+  --bg-card-hover: rgba(107, 158, 17, 0.04);
+  --bg-glass:      rgba(245, 246, 245, 0.85);
+  --bg-glass-light: rgba(20, 20, 18, 0.03);
 
-  /* Accent — construction green, earned and structural */
-  --green:         #7CFF00;
-  --green-glow:    #9FFF3A;
-  --green-dim:     rgba(124, 255, 0, 0.10);
-  --green-border:  rgba(124, 255, 0, 0.25);
-  --green-mid:     rgba(124, 255, 0, 0.45);
+  /* Accent — construction green, adapted for light contrast (darker acid/olive green) */
+  --green:         #6b9e11;
+  --green-glow:    #55800a;
+  --green-dim:     rgba(107, 158, 17, 0.08);
+  --green-border:  rgba(107, 158, 17, 0.22);
+  --green-mid:     rgba(107, 158, 17, 0.45);
+  --green-bright:  rgba(107, 158, 17, 0.85);
 
-  /* Warm neutrals — coherent temperature */
-  --warm-100:      #F5F4EF;   /* near-white, warm */
-  --warm-300:      #C8C7BF;
-  --warm-500:      #7A7972;
-  --warm-700:      #3A3935;
-  --warm-800:      #252421;
-  --warm-900:      #141412;
+  /* Warm neutrals — coherent temperature for light mode */
+  --warm-100:      #141412;
+  --warm-200:      #252421;
+  --warm-300:      #3a3935;
+  --warm-500:      #7a7972;
+  --warm-700:      #c8c7bf;
+  --warm-800:      #e0dfd9;
+  --warm-900:      #f5f4ef;
 
   /* Deep surface for hero contrast */
-  --deep-green:    #0B1708;
+  --deep-green:    #eef2ec;
 
   /* Text */
-  --text-primary:   #F5F4EF;
-  --text-secondary: rgba(245, 244, 239, 0.95); /* Increased for maximum legibility */
-  --text-muted:     rgba(245, 244, 239, 0.80); /* Significantly brighter */
-  --text-green:     #7CFF00;
+  --text-primary:   #141412;   /* charcoal */
+  --text-secondary: rgba(20, 20, 18, 0.85);
+  --text-muted:     rgba(20, 20, 18, 0.58);
+  --text-green:     #6b9e11;
+  --text-dim:       rgba(20, 20, 18, 0.35);
 
   /* Borders — visible seams, brutalist character */
-  --border-subtle:       rgba(245, 244, 239, 0.07);
-  --border-mid:          rgba(245, 244, 239, 0.13);
-  --border-strong:       rgba(245, 244, 239, 0.22);
-  --border-green:        rgba(124, 255, 0, 0.28);
-  --border-green-strong: rgba(124, 255, 0, 0.55);
+  --border-subtle:       rgba(20, 20, 18, 0.06);
+  --border-mid:          rgba(20, 20, 18, 0.11);
+  --border-strong:       rgba(20, 20, 18, 0.20);
+  --border-green:        rgba(107, 158, 17, 0.22);
+  --border-green-strong: rgba(107, 158, 17, 0.50);
 
   /* ─── Gradients ─── */
-  --grad-green:  linear-gradient(135deg, #7CFF00 0%, #9FFF3A 100%);
-  --grad-dark:   linear-gradient(180deg, #0D0D0B 0%, #0B1708 100%);
-  --grad-glow:   radial-gradient(ellipse 70% 45% at 50% 0%, rgba(124, 255, 0, 0.12) 0%, transparent 65%);
-  --grad-hero:   radial-gradient(ellipse 90% 55% at 50% -5%, rgba(124, 255, 0, 0.10) 0%, transparent 60%);
+  --grad-green:    linear-gradient(135deg, #6b9e11 0%, #55800a 100%);
+  --grad-dark:     linear-gradient(180deg, #f5f6f5 0%, #eef2ec 100%);
+  --grad-glow:     radial-gradient(ellipse 70% 45% at 50% 0%, rgba(107, 158, 17, 0.08) 0%, transparent 65%);
+  --grad-hero:     radial-gradient(ellipse 100% 70% at 50% -10%, rgba(107, 158, 17, 0.07) 0%, transparent 60%);
+  --grad-mineral:  radial-gradient(ellipse 80% 60% at 50% 50%, rgba(107, 158, 17, 0.04) 0%, rgba(245, 246, 245, 0) 70%);
+  --grad-cta:      radial-gradient(ellipse 900px 600px at 50% 50%, rgba(107, 158, 17, 0.05) 0%, transparent 70%);
+  --grad-section:  linear-gradient(180deg, transparent 0%, rgba(107, 158, 17, 0.015) 50%, transparent 100%);
 
   /* ─── Typography ─── */
   --font-display: 'PP Neue Montreal', 'Inter', -apple-system, sans-serif;
   --font-body:    'PP Neue Montreal', 'Inter', -apple-system, sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Fluid type scale */
-  --text-xs:    0.875rem;    /* 14px */
-  --text-sm:    1rem;        /* 16px */
-  --text-base:  1.125rem;    /* 18px */
-  --text-md:    1.25rem;     /* 20px */
-  --text-lg:    1.375rem;    /* 22px */
+  /* Fluid type scale — elevated for state-of-art presence */
+  --text-xs:    0.75rem;     /* 12px */
+  --text-sm:    0.9375rem;   /* 15px */
+  --text-base:  1.0625rem;   /* 17px */
+  --text-md:    1.1875rem;   /* 19px */
+  --text-lg:    1.3125rem;   /* 21px */
   --text-xl:    1.5rem;      /* 24px */
-  --text-2xl:   2rem;        /* 32px */
-  --text-3xl:   clamp(2rem, 4vw, 2.75rem);
-  --text-4xl:   clamp(2.5rem, 5vw, 3.5rem);
-  --text-5xl:   clamp(3rem, 6.5vw, 5rem);
-  --text-hero:  clamp(2.15rem, 5vw, 4.6rem); /* Reduzido 1.5x do original: clamp(3.25rem, 8vw, 7rem) */
+  --text-2xl:   1.875rem;    /* 30px */
+  --text-3xl:   clamp(1.875rem, 3.5vw, 2.5rem);
+  --text-4xl:   clamp(2.25rem, 4.5vw, 3.25rem);
+  --text-5xl:   clamp(2.75rem, 5.5vw, 4.5rem);
+  --text-hero:  clamp(3.25rem, 7vw, 6.25rem);  /* Dominante: ~75% maior que v2 */
+  --text-display: clamp(4rem, 9vw, 8rem);       /* Para elementos decorativos */
 
   /* ─── Spacing ─── */
   --space-1:  0.25rem;
@@ -114,28 +122,48 @@
   --space-20: 5rem;
   --space-24: 6rem;
   --space-32: 8rem;
+  --space-40: 10rem;
 
-  /* ─── Radius — Soft Brutalism: mostly sharp, softened at edges ─── */
-  --radius-sm:   3px;
-  --radius-md:   6px;
-  --radius-lg:   10px;
-  --radius-xl:   16px;
+  /* ─── Radius — Monolith Premium: Zero Border Radius ─── */
+  --radius-sm:   0px;
+  --radius-md:   0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-2xl:  0px;
   --radius-full: 9999px;
 
-  /* ─── Shadows — tinted to page mood ─── */
-  --glow-green-sm: 0 0 10px rgba(124, 255, 0, 0.28);
-  --glow-green-md: 0 0 24px rgba(124, 255, 0, 0.38), 0 0 48px rgba(124, 255, 0, 0.12);
-  --glow-green-lg: 0 0 48px rgba(124, 255, 0, 0.45), 0 0 96px rgba(124, 255, 0, 0.18);
-  --shadow-card:   0 1px 2px rgba(0, 0, 0, 0.7), 0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-warm:   0 2px 8px rgba(13, 13, 11, 0.8);
+  /* ─── Z-layers ─── */
+  --z-below:   -1;
+  --z-base:     0;
+  --z-raised:   10;
+  --z-overlay:  100;
+  --z-modal:    500;
+  --z-nav:      1000;
+  --z-toast:    2000;
 
-  /* ─── Motion — fast, honest, mechanical ─── */
-  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-sharp:  cubic-bezier(0.4, 0, 0.2, 1);
-  --duration-fast: 120ms;
-  --duration-base: 240ms;
-  --duration-slow: 500ms;
+  /* ─── Glassmorphism ─── */
+  --glass-blur:  blur(20px);
+  --glass-blur-heavy: blur(40px);
+  --glass-bg:    rgba(245, 246, 245, 0.75);
+  --glass-border: rgba(20, 20, 18, 0.08);
+
+  /* ─── Shadows — mineral depth ─── */
+  --glow-green-sm: 0 0 12px rgba(107, 158, 17, 0.15);
+  --glow-green-md: 0 0 28px rgba(107, 158, 17, 0.22), 0 0 56px rgba(107, 158, 17, 0.06);
+  --glow-green-lg: 0 0 56px rgba(107, 158, 17, 0.30), 0 0 112px rgba(107, 158, 17, 0.10);
+  --shadow-card:   0 1px 3px rgba(20, 20, 18, 0.08), 0 8px 24px rgba(20, 20, 18, 0.04);
+  --shadow-float:  0 20px 60px rgba(20, 20, 18, 0.12), 0 8px 20px rgba(20, 20, 18, 0.06);
+  --shadow-warm:   0 2px 8px rgba(20, 20, 18, 0.06);
+
+  /* ─── Motion — precise, purposeful ─── */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-sharp:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --duration-fast: 100ms;
+  --duration-base: 220ms;
+  --duration-slow: 480ms;
+  --duration-xslow: 800ms;
 
   /* ─── Layout ─── */
   --container:    1200px;
@@ -147,12 +175,12 @@
   --seam-green: 1px solid var(--border-green);
 
   /* ─── Legacy aliases — compatibility with existing components ─── */
-  --charcoal:    #0D0D0B;
-  --white:       #F5F4EF;
-  --slate:       #1C1C19;
-  --slate-light: #252421;
-  --gray-dark:   #3A3935;
-  --gray:        #7A7972;
-  --gray-light:  #C8C7BF;
-  --light-gray:  #F5F4EF;
+  --charcoal:    #141412;
+  --white:       #141412;
+  --slate:       #eceeec;
+  --slate-light: #e2e4e2;
+  --gray-dark:   #7a7972;
+  --gray:        #7a7972;
+  --gray-light:  #c8c7bf;
+  --light-gray:  #eceeec;
 }
