@@ -354,14 +354,15 @@
   filter: none;
 }
 
-/* Overlay escuro sobre o vídeo para garantir leitura do texto */
+/* Overlay escuro — camada suficiente para legibilidade sem sufocar o vídeo */
 .page-opera .page-hero::before {
   background: linear-gradient(
-    160deg,
-    rgba(0, 0, 0, 0.62) 0%,
-    rgba(0, 0, 0, 0.40) 60%,
-    rgba(0, 0, 0, 0.20) 100%
+    170deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.30) 100%
   );
+  z-index: 1; /* acima do vídeo, abaixo do container */
 }
 
 /* Textos do hero em branco */
@@ -438,6 +439,29 @@
 .page-opera .nav-cta .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.70);
+}
+
+/* Hero CTA secundário — glass branco sobre vídeo */
+.page-opera .page-hero .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: oklch(98% 0.005 100);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-shadow: none;
+  transition:
+    background var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.page-opera .page-hero .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.90);
+  color: oklch(98% 0.005 100);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 /* Hamburger branco no mobile */
