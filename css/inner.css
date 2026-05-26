@@ -374,11 +374,25 @@
    o efeito apenas nesta página
 ───────────────────────────────────────── */
 
-/* Vídeo sem filtro e opacidade total */
-.page-opera .page-hero-video-bg,
-.page-opera .page-hero-youtube-bg {
+/* Vídeo local sem filtro e opacidade total */
+.page-opera .page-hero-video-bg {
   opacity: 1;
   filter: none;
+}
+
+/* Vídeo do YouTube sem filtro e carregamento suave com delay de 1.8s
+   Isso esconde o "red play button" e o loading spinner iniciais do YouTube */
+.page-opera .page-hero-youtube-bg {
+  opacity: 0;
+  filter: none;
+  animation: fadeInYoutubeBg 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 1.8s; /* Tempo exato para o player inicializar e começar a reproduzir */
+}
+
+@keyframes fadeInYoutubeBg {
+  to {
+    opacity: 1;
+  }
 }
 
 /* Overlay escuro — camada suficiente para legibilidade sem sufocar o vídeo */
