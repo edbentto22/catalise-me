@@ -16,9 +16,8 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/inner.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <!-- Preconnect para carregar vídeo do YouTube mais rápido -->
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://www.youtube-nocookie.com">
+  <!-- Preload do vídeo hero (qHD 8.8MB) para carregamento instantâneo -->
+  <link rel="preload" href="assets/VIDEO-CATALISE-ME-qhd.mp4" as="video" type="video/mp4">
 </head>
 <body class="page-opera">
 
@@ -54,15 +53,9 @@
 
     <!-- HERO -->
     <header class="page-hero" aria-labelledby="opera-hero-heading">
-      <div class="page-hero-youtube-wrapper">
-        <iframe class="page-hero-youtube-bg" 
-                src="https://www.youtube.com/embed/p7DYInq7-nM?autoplay=1&mute=1&controls=0&loop=1&playlist=p7DYInq7-nM&playsinline=1&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3" 
-                frameborder="0" 
-                allow="autoplay; encrypted-media" 
-                aria-hidden="true"
-                tabindex="-1">
-        </iframe>
-      </div>
+      <video class="page-hero-video-bg" autoplay loop muted playsinline preload="auto" aria-hidden="true">
+        <source src="assets/VIDEO-CATALISE-ME-qhd.mp4" type="video/mp4">
+      </video>
       <div class="container">
         <p class="eyebrow hero-animate-1">Produto Principal</p>
         <h1 id="opera-hero-heading" class="page-hero-title hero-animate-2">
