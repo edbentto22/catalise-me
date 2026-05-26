@@ -341,3 +341,106 @@
     justify-content: center;
   }
 }
+
+/* ─────────────────────────────────────────
+   OPERA OS — Hero com vídeo em destaque
+   Aplicado via body.page-opera para isolar
+   o efeito apenas nesta página
+───────────────────────────────────────── */
+
+/* Vídeo sem filtro e opacidade total */
+.page-opera .page-hero-video-bg {
+  opacity: 1;
+  filter: none;
+}
+
+/* Overlay escuro sobre o vídeo para garantir leitura do texto */
+.page-opera .page-hero::before {
+  background: linear-gradient(
+    160deg,
+    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.40) 60%,
+    rgba(0, 0, 0, 0.20) 100%
+  );
+}
+
+/* Textos do hero em branco */
+.page-opera .page-hero-title,
+.page-opera .page-hero-title em,
+.page-opera .page-hero-lede,
+.page-opera .page-hero-sub,
+.page-opera .eyebrow {
+  color: oklch(98% 0.005 100);
+}
+
+.page-opera .eyebrow::before {
+  background: oklch(98% 0.005 100);
+}
+
+/* Pills em branco translúcido */
+.page-opera .hero-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.page-opera .hero-pill-label {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.page-opera .hero-pill-value {
+  color: oklch(98% 0.005 100);
+}
+
+/* Nav transparente e texto branco nesta página */
+.page-opera .nav {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-bottom-color: transparent !important;
+}
+
+.page-opera .nav.scrolled {
+  background: rgba(5, 10, 5, 0.88) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+/* Logo branca via invert (funciona com PNG escuro) */
+.page-opera .nav-logo-img {
+  filter: brightness(0) invert(1);
+}
+
+.page-opera .nav-logo:hover .nav-logo-img {
+  filter: brightness(0) invert(1) brightness(0.85);
+}
+
+/* Links de navegação brancos */
+.page-opera .nav-links a {
+  color: rgba(255, 255, 255, 0.80);
+}
+
+.page-opera .nav-links a:hover,
+.page-opera .nav-links a.active {
+  color: oklch(98% 0.005 100);
+}
+
+.page-opera .nav-links a::after {
+  background: oklch(98% 0.005 100);
+}
+
+/* Botão CTA no nav com borda branca */
+.page-opera .nav-cta .btn-secondary {
+  border-color: rgba(255, 255, 255, 0.40);
+  color: oklch(98% 0.005 100);
+}
+
+.page-opera .nav-cta .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.70);
+}
+
+/* Hamburger branco no mobile */
+.page-opera .nav-hamburger span {
+  background: oklch(98% 0.005 100);
+}
