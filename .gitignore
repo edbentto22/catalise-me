@@ -8,3 +8,6 @@ dist/
 .trae/
 _bmad-output/
 package-lock.json
+
+# Ignorar vídeo bruto pesado (97MB) para não inflar o repositório
+assets/VIDEO-CATALISE-ME.mp4
