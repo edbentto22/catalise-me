@@ -83,7 +83,7 @@
 
     <!-- ══════════════ HERO ══════════════ -->
     <section class="hero-section" aria-labelledby="hero-heading">
-      <video class="hero-video-bg" autoplay loop muted playsinline aria-hidden="true">
+      <video class="hero-video-bg" id="hero-bg-video" autoplay loop muted playsinline preload="none" aria-hidden="true">
         <source src="assets/video-bg.mp4" type="video/mp4">
       </video>
       <div class="hero-bg-grid"></div>
@@ -681,6 +681,7 @@
   </footer>
 
 <script type="module" src="./js/nav.js"></script>
+<script src="./js/video-loader.js" defer></script>
 </body>
 
 </html>

@@ -37,9 +37,16 @@
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  opacity: 0.12; /* Ajuste para equilibrar com o texto e as texturas */
+  opacity: 0.12;
   pointer-events: none;
-  filter: grayscale(100%); /* Mantém elegância mineral sem competir com a paleta */
+  filter: grayscale(100%);
+  will-change: opacity;            /* GPU layer — sem repaint no fade-in */
+  transform: translateZ(0);        /* Force composited layer */
+}
+
+/* Esconde o vídeo até ele estar pronto (preload=none na Home) */
+@media (max-width: 767px) {
+  .hero-video-bg { display: none; } /* Jamais carrega em mobile */
 }
 
 /* Fine structural grid */

@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/inner.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <!-- Preload do vídeo hero para eliminar latência de exibição -->
+  <link rel="preload" href="assets/background-looping-video.mp4" as="video" type="video/mp4">
 </head>
 <body class="page-opera">
 
@@ -51,7 +53,7 @@
 
     <!-- HERO -->
     <header class="page-hero" aria-labelledby="opera-hero-heading">
-      <video class="page-hero-video-bg" autoplay loop muted playsinline aria-hidden="true">
+      <video class="page-hero-video-bg" autoplay loop muted playsinline preload="auto" aria-hidden="true">
         <source src="assets/background-looping-video.mp4" type="video/mp4">
       </video>
       <div class="container">
