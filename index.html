@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a09">
 
   <!-- SEO -->
   <title>Catalise.me - O sistema neural centralizado da sua empresa.</title>
@@ -17,12 +18,13 @@
     content="Empresas têm corpo. A Catalise instala o sistema nervoso. Sistema operacional agêntico com IA em 10-12 semanas.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://catalise.me/">
-  <meta property="og:image" content="https://catalise.me/assets/og-home.jpg">
+  <meta property="og:image" content="https://catalise.me/assets/logo.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Catalise.me — Catalise. O Sistema Nervoso Central da sua empresa.">
   <meta name="twitter:description" content="Empresas têm corpo. A Catalise.me instala o sistema nervoso.">
+  <meta name="twitter:image" content="https://catalise.me/assets/logo.png">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://catalise.me/">
@@ -81,79 +83,72 @@
 
   <main>
 
-    <!-- ══════════════ HERO ══════════════ -->
-    <section class="hero-section" aria-labelledby="hero-heading">
-      <video class="hero-video-bg" id="hero-bg-video" autoplay loop muted playsinline preload="none" aria-hidden="true">
-        <source src="assets/video-bg.mp4" type="video/mp4">
-      </video>
-      <div class="hero-bg-grid"></div>
+    <!-- ══════════════ HERO — EDITORIAL FULLSCREEN ══════════════ -->
+    <section class="hero-editorial" aria-labelledby="hero-heading" id="hero">
 
-      <div class="container">
-        <div class="hero-layout">
-          <div class="hero-content">
-            <p class="hero-eyebrow hero-animate-1">Sistema operacional agêntico com IA</p>
+      <!-- BG Layer: vídeo + dark overlay -->
+      <div class="hero-bg-layer" aria-hidden="true">
+        <video class="hero-video-bg" id="hero-bg-video" autoplay loop muted playsinline preload="none">
+          <source src="assets/background-looping-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-bg-grain"></div>
+      </div>
 
-            <h1 id="hero-heading" class="hero-heading hero-animate-2">
-              Sua empresa cresceu.
-              <em>Mas cada setor ainda opera como uma ilha.</em>
+      <!-- Grid decoration: cruzes + nos pontos do grid -->
+      <div class="hero-grid-crosses" aria-hidden="true">
+        <span class="hx" style="--hx: 3.5%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 64%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 64%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 92%"></span>
+      </div>
+
+      <!-- Content Layer -->
+      <div class="hero-content-layer">
+
+        <!-- Top row: headline + badge -->
+        <div class="hero-top-row">
+          <div class="hero-headline-block">
+            <h1 id="hero-heading" class="hero-editorial-heading hero-animate-1">
+              Sua empresa cresceu.<br>
+              <span>Mas cada setor<br>ainda opera como<br>uma ilha.</span>
             </h1>
-
-            <p class="hero-lede hero-animate-3">
-              Marketing tem sua planilha. Vendas tem seu CRM. Operação tem seu ERP. Cada setor desenvolveu sua própria
-              inteligência — e perdeu a capacidade de falar com o resto. Você não tem uma empresa integrada. Tem
-              departamentos inteligentes operando às cegas. <strong>Corpo sem sistema nervoso central não age. Reage.</strong>
-            </p>
-
-            <p class="hero-sub hero-animate-3" style="transition-delay: 0.2s;">
-              Em 10 a 12 semanas, instalamos a camada agêntica que conecta tudo. Os setores compartilham dados, aprendem
-              juntos, e a operação inteira se otimiza sozinha.
-            </p>
-
-            <div class="hero-ctas hero-animate-4">
-              <a href="contato.html" class="btn btn-primary btn-lg" id="hero-cta-primary">
-                Quero meu diagnóstico gratuito
-                <span class="btn-arrow">→</span>
-              </a>
-              <a href="opera-os.html" class="btn btn-secondary btn-lg" id="hero-cta-secondary">
-                Conhecer o método OPERA
-              </a>
-            </div>
-          </div>
-
-          <!-- Hero Visual — Orbital System -->
-          <div class="hero-visual hero-animate-symbol">
-            <div class="hero-orb-container">
-
-              <!-- Atmospheric glow -->
-              <div class="hero-atmo-glow"></div>
-
-              <!-- Orbital rings with nodes -->
-              <div class="orbit orbit-3">
-                <div class="orbit-node">FIN</div>
-                <div class="orbit-node">MKT</div>
-              </div>
-
-              <div class="orbit orbit-2">
-                <div class="orbit-node">CRM</div>
-                <div class="orbit-node">OPS</div>
-              </div>
-
-              <div class="orbit orbit-1">
-                <div class="orbit-node">IA</div>
-              </div>
-
-              <!-- Central nucleus -->
-              <div class="hero-nucleus">
-                <div class="hero-nucleus-inner">
-                  <div class="hero-nucleus-dot"></div>
-                  Opera<br>AIAS
-                </div>
-              </div>
-
-            </div>
           </div>
         </div>
+
+        <!-- Eyebrow: dot + subtitle -->
+        <div class="hero-eyebrow-editorial hero-animate-3">
+          <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+          <span>Sistema operacional agêntico com IA — em 10 a 12 semanas</span>
+        </div>
+
+        <!-- CTAs -->
+        <div class="hero-ctas-editorial hero-animate-4">
+          <a href="contato.html" class="btn btn-primary-editorial btn-lg" id="hero-cta-primary">
+            Diagnóstico gratuito <span class="btn-arrow">→</span>
+          </a>
+          <a href="opera-os.html" class="btn-ghost-editorial" id="hero-cta-secondary">
+            Conhecer o método OPERA
+          </a>
+        </div>
+
       </div>
+
+      <!-- Wordmark: tipografia gigante na base (Arpeggio pattern) -->
+      <div class="hero-wordmark-layer" aria-hidden="true">
+        <span class="hero-wordmark">CATALISE</span>
+      </div>
+
     </section>
 
     <!-- ══════════════ TICKER DE MÉTRICAS ══════════════ -->
@@ -210,7 +205,7 @@
       <div class="logo-strip-track">
         <span class="logo-strip-item">Hotelaria</span>
         <span class="logo-strip-dot"></span>
-        <span class="logo-strip-item">Clínicas & Saúde</span>
+        <span class="logo-strip-item">Clínicas &amp; Saúde</span>
         <span class="logo-strip-dot"></span>
         <span class="logo-strip-item">Universidades/Faculdades</span>
         <span class="logo-strip-dot"></span>
@@ -227,7 +222,7 @@
         <!-- duplicate -->
         <span class="logo-strip-item">Hotelaria</span>
         <span class="logo-strip-dot"></span>
-        <span class="logo-strip-item">Clínicas & Saúde</span>
+        <span class="logo-strip-item">Clínicas &amp; Saúde</span>
         <span class="logo-strip-dot"></span>
         <span class="logo-strip-item">Universidades/Faculdades</span>
         <span class="logo-strip-dot"></span>
@@ -245,7 +240,7 @@
     </div>
 
     <!-- ══════════════ PROBLEMA (Stats) ══════════════ -->
-    <section id="problema" aria-labelledby="problema-heading">
+    <section id="problema" class="dark-section" aria-labelledby="problema-heading">
       <div class="container">
         <div class="section-header reveal">
           <p class="eyebrow">O Problema</p>
@@ -258,25 +253,27 @@
             entregar.</p>
         </div>
 
-        <div class="stats-grid">
-          <div class="stat-card reveal reveal-delay-1">
-            <span class="stat-number" data-target="286" data-suffix="h">286h</span>
-            <span class="stat-label">por ano perdidas em sistemas desconectados: gerentes refazendo trabalho já
-              feito</span>
+        <div class="stats-arpeggio-container reveal">
+          <div class="stats-arpeggio-header">
+            <span class="stats-arpeggio-eyebrow">O Custo Oculto da Descoordenação</span>
           </div>
-          <div class="stat-card reveal reveal-delay-2">
-            <span class="stat-number" data-target="51" data-suffix="%">51%</span>
-            <span class="stat-label">do tempo do seu time de operação gasto em tarefas que poderiam estar
-              coordenadas</span>
-          </div>
-          <div class="stat-card reveal reveal-delay-3">
-            <span class="stat-number" data-target="67" data-suffix="%">67%</span>
-            <span class="stat-label">dos gestores tomam decisão sem dado atualizado, porque o dado está em outro
-              sistema</span>
-          </div>
-          <div class="stat-card reveal reveal-delay-4">
-            <span class="stat-number" data-target="80" data-suffix="%">80%</span>
-            <span class="stat-label">de queda na conversão se o lead esperar mais de 15 minutos por resposta</span>
+          <div class="stats-arpeggio-grid">
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Horas perdidas em<br>sistemas desconectados</span>
+              <span class="stat-number-arpeggio" data-target="286" data-suffix="h">286h</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Tempo de operação<br>em tarefas manuais</span>
+              <span class="stat-number-arpeggio" data-target="51" data-suffix="%">51%</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Decisões tomadas<br>sem dado atualizado</span>
+              <span class="stat-number-arpeggio" data-target="67" data-suffix="%">67%</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Queda de conversão<br>após 15 minutos</span>
+              <span class="stat-number-arpeggio" data-target="80" data-suffix="%">80%</span>
+            </div>
           </div>
         </div>
 
@@ -289,9 +286,28 @@
 
     <!-- ══════════════ SOLUÇÃO ══════════════ -->
     <section id="solucao" class="solucao-section" aria-labelledby="solucao-heading">
-      <video class="solucao-bg-video" autoplay loop muted playsinline aria-hidden="true">
-        <source src="assets/background-looping-video.mp4" type="video/mp4">
-      </video>
+      <div class="solucao-grid-pattern" aria-hidden="true">
+        <svg class="solucao-grid-svg">
+          <defs>
+            <pattern id="grid-pattern-solucao" width="40" height="40" patternUnits="userSpaceOnUse" x="-1" y="-1">
+              <path d="M.5 40V.5H40" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern-solucao)" />
+          <svg x="-1" y="-1" class="solucao-grid-squares">
+            <rect stroke-width="0" width="39" height="39" x="161" y="41" />
+            <rect stroke-width="0" width="39" height="39" x="201" y="41" />
+            <rect stroke-width="0" width="39" height="39" x="41" y="241" />
+            <rect stroke-width="0" width="39" height="39" x="481" y="161" />
+            <rect stroke-width="0" width="39" height="39" x="521" y="161" />
+            <rect stroke-width="0" width="39" height="39" x="521" y="201" />
+            <rect stroke-width="0" width="39" height="39" x="801" y="81" />
+            <rect stroke-width="0" width="39" height="39" x="1121" y="321" />
+            <rect stroke-width="0" width="39" height="39" x="1161" y="321" />
+            <rect stroke-width="0" width="39" height="39" x="1441" y="121" />
+          </svg>
+        </svg>
+      </div>
       <div class="container solucao-content-wrapper">
         <div class="section-header reveal">
           <p class="eyebrow">A Solução</p>
@@ -303,28 +319,38 @@
           <p style="margin-top: 12px;">A gente chama essa camada de <strong>Opera OS</strong>. É a infraestrutura de inteligência operacional que faltava na sua empresa.</p>
         </div>
 
-        <div class="solucao-cards reveal">
-          <div class="card">
-            <div class="card-icon">
-              <i data-lucide="zap" aria-hidden="true"></i>
+        <div class="solucao-editorial-table reveal">
+          
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{01}</div>
+            <div class="ser-col ser-category">Marketing —</div>
+            <div class="ser-col ser-desc">Toma uma decisão e vendas, finanças e operação são notificados automaticamente. Antes da próxima reunião.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Integração CRM</span>
+              <span class="ser-tag">Automação de Pipeline</span>
             </div>
-            <h3>Marketing decide</h3>
-            <p>...e vendas, finanças e operação são notificados automaticamente. Antes da próxima reunião.</p>
           </div>
-          <div class="card reveal-delay-1">
-            <div class="card-icon">
-              <i data-lucide="clock" aria-hidden="true"></i>
+
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{02}</div>
+            <div class="ser-col ser-category">Operação —</div>
+            <div class="ser-col ser-desc">Detecta um gargalo e o sistema reorganiza prioridades de toda a empresa. Sem reunião, sem ata, sem fricção.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Reorganização Dinâmica</span>
+              <span class="ser-tag">Sincronia Financeira</span>
             </div>
-            <h3>Operação detecta gargalo</h3>
-            <p>...e o sistema reorganiza prioridades de toda a empresa. Sem reunião, sem ata, sem fricção.</p>
           </div>
-          <div class="card reveal-delay-2">
-            <div class="card-icon">
-              <i data-lucide="refresh-cw" aria-hidden="true"></i>
+
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{03}</div>
+            <div class="ser-col ser-category">Atendimento —</div>
+            <div class="ser-col ser-desc">Recebe uma reclamação e a inteligência inteira aprende com isso. O próximo cliente não passa pelo mesmo problema.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Aprendizado Contínuo</span>
+              <span class="ser-tag">Prevenção de Atrito</span>
             </div>
-            <h3>Cliente reclama</h3>
-            <p>...e a inteligência inteira aprende com isso. Próximo cliente não passa pelo mesmo problema.</p>
           </div>
+
         </div>
 
         <!-- Diagrama camada agêntica -->
@@ -368,57 +394,91 @@
       </div>
     </section>
 
-    <!-- ══════════════ MÉTODO OPERA ══════════════ -->
-    <section id="opera" aria-labelledby="opera-heading">
+    <!-- ══════════════ MÉTODO OPERA (Arpeggio Sticky Scroll) ══════════════ -->
+    <section id="opera" class="method-stack-section" aria-labelledby="opera-heading">
+      
+      <!-- Introduction Header -->
       <div class="container">
-        <div class="section-header reveal">
+        <div class="section-header reveal" style="margin-bottom: var(--space-8); padding-top: var(--space-12);">
           <p class="eyebrow">O Método</p>
           <h2 id="opera-heading">Cinco fases. <em>10 a 12 semanas.</em><br>Resultado certo.</h2>
-          <p>Cada implementação segue o <strong>OPERA</strong> nossa metodologia proprietária de 5 fases. Você sabe o
-            que acontece em cada semana, o que recebe em cada fase, e qual é o critério de "pronto".</p>
+          <p>Cada implementação segue o <strong>OPERA</strong> nossa metodologia proprietária de 5 fases.</p>
         </div>
+      </div>
 
-        <div class="opera-grid reveal">
-          <div class="opera-item active" data-phase="O" id="opera-item-o">
-            <span class="opera-icon"><i data-lucide="network" aria-hidden="true"></i></span>
-            <span class="opera-title">Organização</span>
-            <span class="opera-weeks">Sem 1–2</span>
-          </div>
-          <div class="opera-item" data-phase="P" id="opera-item-p">
-            <span class="opera-icon"><i data-lucide="calendar-check" aria-hidden="true"></i></span>
-            <span class="opera-title">Planejamento</span>
-            <span class="opera-weeks">Sem 2–3</span>
-          </div>
-          <div class="opera-item" data-phase="E" id="opera-item-e">
-            <span class="opera-icon"><i data-lucide="compass" aria-hidden="true"></i></span>
-            <span class="opera-title">Estratégia</span>
-            <span class="opera-weeks">Sem 3–4</span>
-          </div>
-          <div class="opera-item" data-phase="R" id="opera-item-r">
-            <span class="opera-icon"><i data-lucide="rocket" aria-hidden="true"></i></span>
-            <span class="opera-title">Realização</span>
-            <span class="opera-weeks">Sem 4–8</span>
-          </div>
-          <div class="opera-item" data-phase="A" id="opera-item-a">
-            <span class="opera-icon"><i data-lucide="sliders" aria-hidden="true"></i></span>
-            <span class="opera-title">Afinação</span>
-            <span class="opera-weeks">Sem 8–10</span>
+      <!-- The Full-Bleed Sticky Stack -->
+      <div class="method-stack">
+        
+        <!-- Phase O -->
+        <div class="method-sticky-section">
+          <video src="assets/organizacao.mp4" class="method-bg-image" autoplay loop muted playsinline></video>
+          <div class="method-overlay"></div>
+          <div class="method-content">
+            <div class="method-chips">
+              <span class="method-chip">Fase 1</span>
+              <span class="method-chip">Semanas 1–2</span>
+            </div>
+            <h3 class="method-headline">Organização</h3>
+            <p class="method-desc">Diagnóstico profundo da operação atual. Mapeamos cada processo: do primeiro contato do cliente até o pós-venda. Identificamos e classificamos todos os gargalos por impacto financeiro real.</p>
           </div>
         </div>
 
-        <div class="opera-detail reveal" id="opera-detail" aria-live="polite">
-          <p class="opera-detail-weeks text-mono text-green">Semanas 1–2</p>
-          <h3 class="opera-detail-title">O · Organização</h3>
-          <p class="opera-detail-desc">Diagnóstico profundo da operação atual. Mapeamos cada processo: do primeiro
-            contato do cliente até o pós-venda. Identificamos e classificamos todos os gargalos por impacto financeiro
-            real.</p>
+        <!-- Phase P -->
+        <div class="method-sticky-section">
+          <video src="assets/planejamento.mp4" class="method-bg-image" autoplay loop muted playsinline></video>
+          <div class="method-overlay"></div>
+          <div class="method-content">
+            <div class="method-chips">
+              <span class="method-chip">Fase 2</span>
+              <span class="method-chip">Semanas 2–3</span>
+            </div>
+            <h3 class="method-headline">Planejamento</h3>
+            <p class="method-desc">Desenhamos a arquitetura ideal. Cada sistema é escolhido e conectado não por intuição, mas por necessidade operacional. A planta baixa da sua nova inteligência neural.</p>
+          </div>
         </div>
 
-        <div class="reveal" style="text-align: center; margin-top: 48px;">
-          <a href="opera-os.html#metodo" class="btn btn-secondary" id="opera-detail-link">
-            Ver cada fase em detalhe <span class="btn-arrow">→</span>
-          </a>
+        <!-- Phase E -->
+        <div class="method-sticky-section">
+          <video src="assets/estrategia.mp4" class="method-bg-image" autoplay loop muted playsinline></video>
+          <div class="method-overlay"></div>
+          <div class="method-content">
+            <div class="method-chips">
+              <span class="method-chip">Fase 3</span>
+              <span class="method-chip">Semanas 3–4</span>
+            </div>
+            <h3 class="method-headline">Estratégia</h3>
+            <p class="method-desc">O alinhamento do time. Não adiantam sistemas que a equipe não usa. Desenhamos a gestão de mudança, as regras de ouro e como a cultura vai absorver a nova velocidade.</p>
+          </div>
         </div>
+
+        <!-- Phase R -->
+        <div class="method-sticky-section">
+          <video src="assets/realizacao.mp4" class="method-bg-image" autoplay loop muted playsinline></video>
+          <div class="method-overlay"></div>
+          <div class="method-content">
+            <div class="method-chips">
+              <span class="method-chip">Fase 4</span>
+              <span class="method-chip">Semanas 4–8</span>
+            </div>
+            <h3 class="method-headline">Realização</h3>
+            <p class="method-desc">Mão na massa bruta. Integração de APIs, automação de fluxos Zappier/Make, configuração de CRMs e painéis BI. O sistema nervoso central ganha vida e começa a pulsar os primeiros dados reais.</p>
+          </div>
+        </div>
+
+        <!-- Phase A -->
+        <div class="method-sticky-section">
+          <video src="assets/afinacao.mp4" class="method-bg-image" autoplay loop muted playsinline></video>
+          <div class="method-overlay"></div>
+          <div class="method-content">
+            <div class="method-chips">
+              <span class="method-chip">Fase 5</span>
+              <span class="method-chip">Semanas 8–10</span>
+            </div>
+            <h3 class="method-headline">Afinação</h3>
+            <p class="method-desc">Onde a excelência acontece. Coleta de feedbacks da equipe operando, micro-ajustes nos gatilhos, relatórios aprimorados e treinamento contínuo. Entregamos a chave, calibrada para a sua pista.</p>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -431,81 +491,129 @@
           <p>Cada setor tem suas dores específicas de coordenação. O Opera OS se adapta ao seu contexto e entrega resultado mensurável.</p>
         </div>
 
-        <div class="cases-grid">
+        <div class="cases-grid arpeggio-grid">
+          <!-- Card 1: Hotelaria -->
           <div class="case-card reveal">
-            <div class="case-card-image">
-              <span class="case-sector-badge">Hotelaria</span>
-              <span class="case-card-icon"><i data-lucide="hotel" aria-hidden="true"></i></span>
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop" class="case-card-bg" alt="Hotelaria">
+            <div class="case-card-scrim"></div>
+            
+            <div class="case-state-normal">
+              <div class="case-card-meta">
+                <span class="case-card-badge">Hotelaria</span>
+                <span class="case-card-date">Setembro 2024</span>
+              </div>
+              <div class="case-card-divider"></div>
+              <h3 class="case-card-title">Hotelaria & Turismo</h3>
+              <p class="case-card-subtitle">Check-in inteligente e gestão de demanda</p>
             </div>
-            <div class="case-card-body">
-              <span class="case-card-label">Case de aplicação</span>
-              <h3 class="case-card-title">Check-in inteligente e gestão de demanda em tempo real</h3>
-              <p class="case-card-desc">Reservas, governança, manutenção e atendimento ao hóspede coordenados por IA — sem silos entre os departamentos.</p>
+
+            <div class="case-state-hover">
+              <p class="case-card-desc">Reservas, governança, manutenção e atendimento ao hóspede coordenados por IA — sem silos entre os departamentos.<span class="cursor-dot"></span></p>
               <span class="case-card-metric">↑ 40% na taxa de ocupação efetiva</span>
             </div>
           </div>
 
+          <!-- Card 2: Clínicas & Saúde -->
           <div class="case-card reveal reveal-delay-1">
-            <div class="case-card-image">
-              <span class="case-sector-badge">Clínicas & Saúde</span>
-              <span class="case-card-icon"><i data-lucide="hospital" aria-hidden="true"></i></span>
+            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop" class="case-card-bg" alt="Clínicas">
+            <div class="case-card-scrim"></div>
+            
+            <div class="case-state-normal">
+              <div class="case-card-meta">
+                <span class="case-card-badge">Clínicas & Saúde</span>
+                <span class="case-card-date">Agosto 2024</span>
+              </div>
+              <div class="case-card-divider"></div>
+              <h3 class="case-card-title">Clínicas de Saúde</h3>
+              <p class="case-card-subtitle">Agendamento preditivo automatizado</p>
             </div>
-            <div class="case-card-body">
-              <span class="case-card-label">Case de aplicação</span>
-              <h3 class="case-card-title">Agendamento preditivo e retenção de pacientes automatizada</h3>
-              <p class="case-card-desc">Agenda, confirmações, pós-consulta e faturamento operando como um sistema único que aprende com cada paciente.</p>
+
+            <div class="case-state-hover">
+              <p class="case-card-desc">Agenda, confirmações, pós-consulta e faturamento operando como um sistema único que aprende com cada paciente.<span class="cursor-dot"></span></p>
               <span class="case-card-metric">↓ 70% nas faltas sem aviso</span>
             </div>
           </div>
 
+          <!-- Card 3: Imobiliárias -->
           <div class="case-card reveal reveal-delay-2">
-            <div class="case-card-image">
-              <span class="case-sector-badge">Imobiliárias</span>
-              <span class="case-card-icon"><i data-lucide="building-2" aria-hidden="true"></i></span>
+            <img src="assets/imobiliaria.png" class="case-card-bg" alt="Imobiliárias">
+            <div class="case-card-scrim"></div>
+            
+            <div class="case-state-normal">
+              <div class="case-card-meta">
+                <span class="case-card-badge">Imobiliárias</span>
+                <span class="case-card-date">Julho 2024</span>
+              </div>
+              <div class="case-card-divider"></div>
+              <h3 class="case-card-title">Imobiliárias</h3>
+              <p class="case-card-subtitle">Pipeline de leads e follow-up 24/7</p>
             </div>
-            <div class="case-card-body">
-              <span class="case-card-label">Case de aplicação</span>
-              <h3 class="case-card-title">Pipeline de leads qualificados com follow-up 24/7</h3>
-              <p class="case-card-desc">Do lead ao contrato: captação, qualificação, nutrição e proposta integrados em um fluxo único e autônomo.</p>
+
+            <div class="case-state-hover">
+              <p class="case-card-desc">Do lead ao contrato: captação, qualificação, nutrição e proposta integrados em um fluxo único e autônomo.<span class="cursor-dot"></span></p>
               <span class="case-card-metric">↑ 3× na taxa de conversão</span>
             </div>
           </div>
 
+          <!-- Card 4: Universidades -->
           <div class="case-card reveal reveal-delay-1">
-            <div class="case-card-image">
-              <span class="case-sector-badge">Universidades/Faculdades</span>
-              <span class="case-card-icon"><i data-lucide="graduation-cap" aria-hidden="true"></i></span>
+            <img src="assets/universidade.png" class="case-card-bg" alt="Universidades">
+            <div class="case-card-scrim"></div>
+            
+            <div class="case-state-normal">
+              <div class="case-card-meta">
+                <span class="case-card-badge">Universidades</span>
+                <span class="case-card-date">Junho 2024</span>
+              </div>
+              <div class="case-card-divider"></div>
+              <h3 class="case-card-title">Ensino Superior</h3>
+              <p class="case-card-subtitle">Retenção acadêmica com IA preditiva</p>
             </div>
-            <div class="case-card-body">
-              <span class="case-card-label">Case de aplicação</span>
-              <h3 class="case-card-title">Retenção e engajamento acadêmico com IA preditiva</h3>
-              <p class="case-card-desc">Matrícula, frequência, desempenho, renovação de contrato e risco de evasão monitorados por agentes que agem antes do problema virar perda.</p>
+
+            <div class="case-state-hover">
+              <p class="case-card-desc">Matrícula, frequência, desempenho, renovação de contrato e risco de evasão monitorados por agentes que agem antes do problema virar perda.<span class="cursor-dot"></span></p>
               <span class="case-card-metric">↓ 50% na evasão no 1º semestre</span>
             </div>
           </div>
 
+          <!-- Card 5: Jurídico -->
           <div class="case-card reveal reveal-delay-2">
-            <div class="case-card-image">
-              <span class="case-sector-badge">Jurídico</span>
-              <span class="case-card-icon"><i data-lucide="scale" aria-hidden="true"></i></span>
+            <img src="assets/juridico.png" class="case-card-bg" alt="Jurídico">
+            <div class="case-card-scrim"></div>
+            
+            <div class="case-state-normal">
+              <div class="case-card-meta">
+                <span class="case-card-badge">Jurídico</span>
+                <span class="case-card-date">Maio 2024</span>
+              </div>
+              <div class="case-card-divider"></div>
+              <h3 class="case-card-title">Escritórios Jurídicos</h3>
+              <p class="case-card-subtitle">Gestão de processos com prazos inteligentes</p>
             </div>
-            <div class="case-card-body">
-              <span class="case-card-label">Case de aplicação</span>
-              <h3 class="case-card-title">Gestão de processos com alertas e prazos inteligentes</h3>
-              <p class="case-card-desc">Prazos processuais, documentação, cobrança e comunicação com clientes unificados em um único sistema nervoso.</p>
+
+            <div class="case-state-hover">
+              <p class="case-card-desc">Prazos processuais, documentação, cobrança e comunicação com clientes unificados em um único sistema nervoso.<span class="cursor-dot"></span></p>
               <span class="case-card-metric">↓ 85% no risco de prazo perdido</span>
             </div>
           </div>
 
+          <!-- Card 6: Educação Básica -->
           <div class="case-card reveal reveal-delay-3">
-            <div class="case-card-image">
-              <span class="case-sector-badge">Educação</span>
-              <span class="case-card-icon"><i data-lucide="graduation-cap" aria-hidden="true"></i></span>
+            <img src="assets/universidade.png" class="case-card-bg" alt="Educação">
+            <div class="case-card-scrim"></div>
+            
+            <div class="case-state-normal">
+              <div class="case-card-meta">
+                <span class="case-card-badge">Educação</span>
+                <span class="case-card-date">Abril 2024</span>
+              </div>
+              <div class="case-card-divider"></div>
+              <h3 class="case-card-title">Educação Básica</h3>
+              <p class="case-card-subtitle">Engajamento de pais e alunos</p>
             </div>
-            <div class="case-card-body">
-              <span class="case-card-label">Case de aplicação</span>
-              <h3 class="case-card-title">Retenção de alunos com engajamento personalizado</h3>
-              <p class="case-card-desc">Matrícula, frequência, desempenho e risco de evasão monitorados por IA que age proativamente antes do problema.</p>
+
+            <div class="case-state-hover">
+              <p class="case-card-desc">Comunicação automatizada, frequência, desempenho e risco de evasão monitorados por IA que age proativamente.<span class="cursor-dot"></span></p>
               <span class="case-card-metric">↓ 45% na taxa de evasão</span>
             </div>
           </div>
@@ -553,8 +661,6 @@
         </div>
       </div>
     </section>
-
-    
 
     <!-- ══════════════ PARA QUEM ══════════════ -->
     <section id="para-quem" aria-labelledby="para-quem-heading">
@@ -610,7 +716,7 @@
                 <span class="qual-text">Quer comprar só software sem transformação de processo</span>
               </li>
             </ul>
-            <p style="font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 24px; line-height: 1.7;">
+            <p style="font-size: 13px; color: rgba(255,255,255,0.30); margin-top: 24px; line-height: 1.7; font-style: italic;">
               Tudo bem, somos honestos sobre quando não somos a melhor opção.
             </p>
           </div>
@@ -682,6 +788,7 @@
 
 <script type="module" src="./js/nav.js"></script>
 <script src="./js/video-loader.js" defer></script>
+<script src="./js/animations.js" defer></script>
 </body>
 
 </html>

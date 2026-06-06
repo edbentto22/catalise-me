@@ -46,16 +46,9 @@
     video.preload = 'auto';
     video.load();
 
-    // Fade-in suave quando o vídeo estiver pronto para tocar
+    // Fade-in suave usando classe CSS
     video.addEventListener('canplaythrough', () => {
-      video.style.opacity = '0';
-      video.style.transition = 'opacity 0.6s ease';
-      // Próximo frame para garantir que o transition se aplique
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          video.style.opacity = '';
-        });
-      });
+      video.classList.add('loaded');
     }, { once: true });
   }
 

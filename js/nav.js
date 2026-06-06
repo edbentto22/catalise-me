@@ -101,6 +101,7 @@ document.documentElement.classList.add('js-enabled');
     const isOpen = hamburger.classList.toggle('open');
     mobileMenu.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
+    hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
   // Close on link click
@@ -109,6 +110,7 @@ document.documentElement.classList.add('js-enabled');
       hamburger.classList.remove('open');
       mobileMenu.classList.remove('open');
       document.body.style.overflow = '';
+      hamburger.setAttribute('aria-expanded', 'false');
     });
   });
 })();

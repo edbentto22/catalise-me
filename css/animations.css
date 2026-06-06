@@ -1,6 +1,6 @@
 /* =========================================
-   CATALISE.ME — ANIMATIONS v3
-   Premium motion — precise, purposeful
+   CATALISE.ME — ANIMATIONS v4
+   Opera OS visual system → extracted & adapted
    ========================================= */
 
 /* ─── Hero entrance ─── */
@@ -106,6 +106,25 @@
   to   { transform: rotate(360deg); }
 }
 
+/* ─── Dot breathe (for sticky CTA) ─── */
+@keyframes dotBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 0 0 rgba(107, 158, 17, 0.5); }
+  50%       { transform: scale(1.15); opacity: 1; box-shadow: 0 0 0 6px rgba(107, 158, 17, 0); }
+}
+
+/* ─── Eyebrow line grow ─── */
+@keyframes lineGrow {
+  from { width: 0; }
+  to   { width: 28px; }
+}
+
+/* ─── Float blob (bg decoration) ─── */
+@keyframes floatBlob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(20px, -30px) scale(1.06); }
+  66%       { transform: translate(-15px, 20px) scale(0.95); }
+}
+
 /* =========================================
    APPLIED CLASSES
    ========================================= */
@@ -165,6 +184,117 @@
   animation: marquee 30s linear infinite;
 }
 
+/* ─── Scroll-driven reveal system (Opera OS pattern) ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.10s; }
+.reveal-delay-2 { transition-delay: 0.20s; }
+.reveal-delay-3 { transition-delay: 0.30s; }
+.reveal-delay-4 { transition-delay: 0.40s; }
+
+/* ─── Eyebrow reveal animation ─── */
+.eyebrow-revealed::before {
+  animation: lineGrow 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Sticky CTA bar — extracted from Opera OS ─── */
+.sticky-cta-bar {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6) var(--space-3) var(--space-4);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-green);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow:
+    0 8px 32px rgba(20, 20, 18, 0.12),
+    0 0 0 1px rgba(107, 158, 17, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  transition: bottom 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticky-cta-bar.visible {
+  bottom: 28px;
+}
+
+.sticky-cta-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.sticky-cta-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: dotBreathe 2.4s ease-in-out infinite;
+}
+
+/* ─── Scroll progress track — Opera OS lateral dots ─── */
+.scroll-progress-track {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+@media (max-width: 1199px) {
+  .scroll-progress-track { display: none; }
+}
+
+.scroll-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border-mid);
+  transition: all 0.3s var(--ease-out);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.scroll-dot.active {
+  background: var(--green);
+  transform: scale(1.6);
+  box-shadow: 0 0 8px rgba(107, 158, 17, 0.6);
+}
+
+/* ─── Dragging cursor state ─── */
+.dragging {
+  cursor: grabbing !important;
+  user-select: none;
+}
+
 /* Prefers reduced motion — respect accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -174,4 +304,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .reveal { opacity: 1; transform: none; }
 }

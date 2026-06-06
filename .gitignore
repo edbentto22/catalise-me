@@ -9,5 +9,16 @@ dist/
 _bmad-output/
 package-lock.json
 
-# Ignorar vídeo bruto pesado (97MB) para não inflar o repositório
+# ─── Vídeos pesados não usados em código ───
+# Vídeo bruto original (101MB)
 assets/VIDEO-CATALISE-ME.mp4
+# Vídeo de fundo antigo não referenciado (65MB)
+assets/video-bg.mp4
+# Vídeos de fases OPERA não usados no site final
+assets/organizacao.mp4
+assets/planejamento.mp4
+assets/estrategia.mp4
+assets/afinacao.mp4
+assets/realizacao.mp4
+# Vídeo de solução antiga
+assets/bg-solucao.mp4
