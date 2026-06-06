@@ -176,6 +176,8 @@
     if (!vid) return;
 
     // Se o vídeo foi bloqueado pelo navegador de autoplayar, tenta rodar manualmente
+    vid.preload = 'auto';
+    vid.load();
     vid.play().catch(() => {});
 
     const onReady = () => {
