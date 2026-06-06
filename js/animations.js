@@ -174,14 +174,19 @@
   function initHeroVideo() {
     const vid = document.getElementById('hero-bg-video');
     if (!vid) return;
+
+    // Se o vídeo foi bloqueado pelo navegador de autoplayar, tenta rodar manualmente
+    vid.play().catch(() => {});
+
     const onReady = () => {
       vid.classList.add('loaded');
     };
-    if (vid.readyState >= 3) onReady();
-    else vid.addEventListener('canplay', onReady, { once: true });
-    vid.src = vid.querySelector('source')?.src || vid.src;
-    vid.load();
-    vid.play().catch(() => {});
+
+    if (vid.readyState >= 3) {
+      onReady();
+    } else {
+      vid.addEventListener('canplay', onReady, { once: true });
+    }
   }
 
   /* ─── 10. Parallax Wordmark (Editorial Hero) ─── */
