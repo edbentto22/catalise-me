@@ -186,7 +186,7 @@
 }
 
 .opera-phase-letter {
-  font-size: 3rem;
+  font-size: var(--text-5xl);
   font-weight: 700;
   font-style: italic;
   color: var(--green);

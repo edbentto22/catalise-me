@@ -229,7 +229,7 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-body);
-  font-size: 0.9375rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   letter-spacing: 0.01em;
   padding: 14px 28px;
@@ -270,7 +270,7 @@
   display: inline-flex;
   align-items: center;
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.55);
@@ -366,7 +366,7 @@
   align-items: center;
   gap: 10px;
   padding: 0 36px;
-  font-size: 13px;
+  font-size: var(--text-xs);
   font-weight: 500;
   color: rgba(255, 255, 255, 0.92);
   letter-spacing: 0.01em;
@@ -412,7 +412,7 @@
 }
 
 .logo-strip-item {
-  font-size: 12px;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -471,7 +471,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   
   .hero-badge-block {
     text-align: left;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
   }
   
   .hero-editorial-heading {
@@ -518,7 +518,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   align-items: center;
   gap: var(--space-3);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--green);
@@ -547,7 +547,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 }
 
 .hero-heading em {
-  font-size: 0.68em;
+  font-size: 0.6em;
   font-weight: 200;
   font-style: normal;
   display: block;
@@ -618,7 +618,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .hero-nucleus-inner {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   letter-spacing: 0.15em;
   color: var(--green);
   text-transform: uppercase;
@@ -694,7 +694,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 0.625rem;  /* 10px — absolute min, decorative only */
   font-weight: 600;
   color: var(--green);
   letter-spacing: 0.06em;
@@ -808,7 +808,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: 600;
   color: var(--green);
   letter-spacing: 0.08em;
@@ -879,7 +879,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .ticker-item span {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.12em;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -1104,7 +1104,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .ser-index {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: var(--text-xs);
   color: var(--text-muted);
   padding-top: 4px;
 }
@@ -1112,14 +1112,14 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 .ser-category {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--text-base);
   color: var(--text-main);
   padding-top: 2px;
 }
 
 .ser-desc {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--text-base);
   line-height: 1.6;
   color: var(--text-secondary);
 }
@@ -1134,7 +1134,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .ser-tag {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 6px 12px;
@@ -1244,7 +1244,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .method-chip {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1306,7 +1306,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 .agentic-diagram-title {
   text-align: center;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -1588,7 +1588,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 500;
   color: rgba(255, 255, 255, 0.75);
   margin-bottom: var(--space-3);
@@ -1617,7 +1617,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .case-card-subtitle {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--text-sm);
   font-weight: 400;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -1652,7 +1652,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .case-card-metric {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1764,7 +1764,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   border-radius: var(--radius-full);
   padding: 4px var(--space-4);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--green);
   margin-bottom: var(--space-6);
   width: fit-content;
@@ -1787,7 +1787,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: var(--text-base);
   font-weight: 700;
   color: var(--charcoal);
   flex-shrink: 0;
@@ -1849,7 +1849,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .before-after-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   margin-bottom: var(--space-8);
@@ -1887,7 +1887,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: var(--text-xs);
   margin-top: 1px;
 }
 
@@ -2009,7 +2009,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .logo-strip-item {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -2143,7 +2143,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .problem-card-stat {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--green);
   margin-top: var(--space-6);
   padding-top: var(--space-4);
@@ -2298,7 +2298,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .qual-badge {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   padding: var(--space-1) var(--space-4);
@@ -2426,7 +2426,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   letter-spacing: 0.12em;
   color: var(--text-muted);
   padding: 3px 10px;
@@ -2517,7 +2517,7 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
 
 .opera-weeks {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   letter-spacing: 0.14em;
   color: var(--text-dim);
 }

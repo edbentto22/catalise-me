@@ -16,7 +16,8 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  font-size: 16px;
+  /* Root size: 16px on mobile, scales to 17px at 1440px */
+  font-size: clamp(16px, 1.18vw, 17px);
 }
 
 body {
@@ -51,14 +52,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 { font-size: var(--text-hero); font-weight: 700; }
-h2 { font-size: clamp(2rem, 4.33vw, 3.33rem); font-weight: 700; line-height: 1.08; }
+h2 { font-size: var(--text-4xl); font-weight: 700; line-height: 1.08; }
 h3 { font-size: var(--text-2xl); font-weight: 600; }
 h4 { font-size: var(--text-xl);  font-weight: 500; }
 
 p {
   color: var(--text-secondary);
   font-size: var(--text-base);
-  line-height: 1.75;
+  line-height: 1.7;
   max-width: 68ch;
 }
 
