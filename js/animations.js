@@ -175,20 +175,25 @@
     const vid = document.getElementById('hero-bg-video');
     if (!vid) return;
 
-    // Se o vídeo foi bloqueado pelo navegador de autoplayar, tenta rodar manualmente
-    vid.preload = 'auto';
-    vid.load();
-    vid.play().catch(() => {});
+    const reveal = () => vid.classList.add('loaded');
 
-    const onReady = () => {
-      vid.classList.add('loaded');
-    };
-
+    // Já pronto para tocar (cache ou pré-carregamento rápido)
     if (vid.readyState >= 3) {
-      onReady();
-    } else {
-      vid.addEventListener('canplay', onReady, { once: true });
+      reveal();
+      return;
     }
+
+    // Disparo normal quando o browser está pronto
+    vid.addEventListener('canplay', reveal, { once: true });
+
+    // Fallback: se depois de 2s o evento ainda não disparou, revela mesmo assim
+    // (comum em Vercel/CDN onde o primeiro byte demora)
+    setTimeout(() => {
+      if (!vid.classList.contains('loaded')) reveal();
+    }, 2000);
+
+    // Tenta iniciar play (silenciosamente ignora erros de autoplay policy)
+    vid.play().catch(() => {});
   }
 
   /* ─── 10. Parallax Wordmark (Editorial Hero) ─── */

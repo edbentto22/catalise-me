@@ -36,8 +36,16 @@
   will-change: opacity;
   transform: translateZ(0);
   transition: opacity 1.2s ease;
+  /* Fallback: se JS não conseguir adicionar .loaded, o vídeo aparece via animação CSS */
+  animation: hero-video-fallback 1.2s ease 2s forwards;
 }
-.hero-video-bg.loaded { opacity: 1; }
+@keyframes hero-video-fallback {
+  to { opacity: 0.55; }
+}
+.hero-video-bg.loaded {
+  opacity: 0.55;
+  animation: none;
+}
 
 /* Dark overlay — controls photo opacity like Arpeggio */
 .hero-bg-overlay {
