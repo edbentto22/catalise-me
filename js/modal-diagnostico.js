@@ -129,17 +129,42 @@ function maskPhone(input) {
 }
 
 /* ─── Submissão ─── */
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const form = e.target;
   const btn = form.querySelector('[type=submit]');
   if (!form.checkValidity()) { form.reportValidity(); return; }
+
   btn.textContent = 'Enviando…';
   btn.disabled = true;
-  setTimeout(() => {
-    form.hidden = true;
-    document.getElementById('modal-diag-success').hidden = false;
-  }, 1000);
+
+  const data = new FormData(form);
+  const body = Object.fromEntries(data.entries());
+
+  try {
+    const res = await fetch(
+      'https://triviumlabs.sg.larksuite.com/base/automation/webhook/event/THgIaGzH4wWd2lhVeDtlC4D5gAh',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      }
+    );
+
+    // Lark webhooks retornam 200 mesmo sem body JSON — qualquer 2xx é sucesso
+    if (res.ok) {
+      form.hidden = true;
+      document.getElementById('modal-diag-success').hidden = false;
+    } else {
+      throw new Error(`HTTP ${res.status}`);
+    }
+  } catch (err) {
+    console.error('[Modal Diagnóstico] Erro ao enviar:', err);
+    btn.textContent = 'Erro ao enviar — tente novamente';
+    btn.disabled = false;
+    btn.style.background = '#e53e3e';
+    btn.style.color = '#fff';
+  }
 }
 
 /* ─── Trap de foco ─── */
