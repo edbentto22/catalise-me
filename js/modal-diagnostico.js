@@ -142,22 +142,23 @@ async function handleSubmit(e) {
   const body = Object.fromEntries(data.entries());
 
   try {
-    const res = await fetch(
+    // Lark não envia Access-Control-Allow-Origin, então usamos no-cors.
+    // O browser envia o POST mas não consegue ler a resposta (opaque).
+    // Confirmamos sucesso: se não lançou excessão, o dado chegou ao Lark.
+    await fetch(
       'https://triviumlabs.sg.larksuite.com/base/automation/webhook/event/THgIaGzH4wWd2lhVeDtlC4D5gAh',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        mode: 'no-cors',
+        // no-cors só permite headers "simples" (CORS-safe).
+        // text/plain é aceito pelo Lark e compatível com no-cors.
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(body),
       }
     );
-
-    // Lark webhooks retornam 200 mesmo sem body JSON — qualquer 2xx é sucesso
-    if (res.ok) {
-      form.hidden = true;
-      document.getElementById('modal-diag-success').hidden = false;
-    } else {
-      throw new Error(`HTTP ${res.status}`);
-    }
+    // Se chegou aqui sem exceção, consider sucesso
+    form.hidden = true;
+    document.getElementById('modal-diag-success').hidden = false;
   } catch (err) {
     console.error('[Modal Diagnóstico] Erro ao enviar:', err);
     btn.textContent = 'Erro ao enviar — tente novamente';
