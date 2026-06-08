@@ -171,16 +171,15 @@
   top: var(--nav-height);
   left: 0; right: 0;
   height: calc(100vh - var(--nav-height));
-  background: rgba(245, 246, 245, 0.98);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(245, 246, 245, 0.75);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   transform: translateZ(0) translateY(-8px);
   border-bottom: var(--seam);
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-10) var(--space-8);
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-6);
   z-index: 999;
-  transform: translateY(-8px);
   opacity: 0;
   transition:
     transform var(--duration-base) var(--ease-sharp),
@@ -194,16 +193,30 @@
 }
 
 .nav-mobile a {
-  font-size: var(--text-xl);
-  font-weight: 700;
+  font-size: var(--text-3xl);
+  font-weight: 500;
   color: var(--text-primary);
   text-decoration: none;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .nav-mobile a:hover {
   color: var(--green);
   opacity: 1;
+}
+
+/* Fix for buttons inside the mobile menu so they don't inherit huge fonts and black text */
+.nav-mobile a.btn {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+}
+
+.nav-mobile a.btn:hover {
+  color: #ffffff;
 }
 
 /* ─────────────────────────────────────────
