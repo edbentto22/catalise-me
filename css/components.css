@@ -746,10 +746,10 @@
 .form-select,
 .form-textarea {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 14px var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 16px var(--space-5);
   font-family: var(--font-body);
   font-size: var(--text-base);
   color: var(--text-primary);
@@ -769,9 +769,9 @@
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-  border-color: var(--green);
+  border-color: var(--border-strong);
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(107, 158, 17, 0.1);
+  box-shadow: 0 4px 12px rgba(20, 20, 18, 0.05);
 }
 
 .form-select {
@@ -949,10 +949,10 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-4);
-  padding: var(--space-6);
-  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
-  background: var(--bg-card);
+  background: var(--bg-surface);
   text-decoration: none;
   transition: all var(--duration-base) var(--ease-out);
 }
@@ -963,37 +963,57 @@
 }
 
 .channel-card.whatsapp:hover {
-  border-color: rgba(37, 211, 102, 0.5);
-  background: rgba(37, 211, 102, 0.06);
-  box-shadow: 0 0 20px rgba(37, 211, 102, 0.15);
+  border-color: rgba(37, 211, 102, 0.4);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.08);
 }
 
 .channel-card.email:hover {
   border-color: var(--border-green);
-  background: var(--green-dim);
-  box-shadow: var(--glow-green-sm);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(107, 158, 17, 0.08);
 }
 
 .channel-card.linkedin:hover {
-  border-color: rgba(10, 102, 194, 0.5);
-  background: rgba(10, 102, 194, 0.06);
-  box-shadow: 0 0 20px rgba(10, 102, 194, 0.15);
+  border-color: rgba(10, 102, 194, 0.4);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.08);
 }
 
 .channel-icon {
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-xl);
   flex-shrink: 0;
 }
 
-.channel-card.whatsapp .channel-icon { background: rgba(37, 211, 102, 0.12); }
-.channel-card.email .channel-icon     { background: var(--green-dim); }
-.channel-card.linkedin .channel-icon  { background: rgba(10, 102, 194, 0.12); }
+.channel-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+  transition: stroke var(--duration-base) var(--ease-out);
+}
+
+.channel-card.whatsapp .channel-icon { background: rgba(37, 211, 102, 0.1); }
+.channel-card.whatsapp .channel-icon svg { stroke: #128C7E; }
+
+.channel-card.email .channel-icon { background: var(--green-dim); }
+.channel-card.email .channel-icon svg { stroke: var(--green); }
+
+.channel-card.linkedin .channel-icon { background: rgba(10, 102, 194, 0.1); }
+.channel-card.linkedin .channel-icon svg { stroke: #0A66C2; }
+
+.channel-meta {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--green);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
 
 .channel-info h4 {
   font-size: var(--text-base);
@@ -1948,4 +1968,123 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 540px) {
   .modal-diag-box { padding: 36px 24px 32px; }
   .modal-diag-row { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────
+   SEÇÃO DIFERENCIAL (Editorial Comparison)
+───────────────────────────────────────── */
+.dif-versus {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  margin-bottom: var(--space-16);
+  align-items: center;
+}
+
+.dif-versus-others {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-right: var(--space-8);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.dif-versus-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: var(--space-4);
+  align-items: baseline;
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+.dif-versus-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.dif-versus-result {
+  color: var(--text-secondary);
+}
+
+.dif-versus-catalise {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dif-versus-catalise-label {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--green);
+  margin-bottom: var(--space-4);
+}
+
+.dif-versus-catalise-desc {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.dif-versus-catalise-desc strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.dif-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-12) var(--space-8);
+}
+
+.dif-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-strong);
+}
+
+.dif-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--green);
+  line-height: 1;
+}
+
+.dif-body h4 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.01em;
+}
+
+.dif-body p {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .dif-versus {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+  .dif-versus-others {
+    padding-right: 0;
+    padding-bottom: var(--space-8);
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .dif-versus-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
 }

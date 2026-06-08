@@ -265,24 +265,28 @@
 
 .btn-primary-editorial:active { transform: translateY(0); }
 
-/* Ghost CTA */
-.btn-ghost-editorial {
+/* Secondary CTA — solid white */
+.btn-secondary-editorial {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 14px 28px;
+  background: #ffffff;
+  color: #0a0a09;
+  border: none;
+  cursor: pointer;
   text-decoration: none;
-  padding: 14px 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-ghost-editorial:hover {
-  color: rgba(255, 255, 255, 0.9);
-  border-bottom-color: rgba(255, 255, 255, 0.55);
+.btn-secondary-editorial:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
 }
 
 /* ── Wordmark — Arpeggio signature element ── */
