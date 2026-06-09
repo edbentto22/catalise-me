@@ -1279,6 +1279,11 @@ body:has(.hero-editorial) .nav:not(.scrolled) .nav-logo:hover .nav-logo-img {
   max-width: 480px;
 }
 
+.method-desc strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
 /* ─────────────────────────────────────────
    AGENTIC DIAGRAM — Premium network
 ───────────────────────────────────────── */

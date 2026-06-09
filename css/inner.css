@@ -227,6 +227,11 @@
   margin-bottom: var(--space-5);
 }
 
+.opera-phase-body p strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
 .deliverable {
   font-size: var(--text-sm);
   color: var(--text-secondary);
