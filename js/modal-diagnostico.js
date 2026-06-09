@@ -36,12 +36,12 @@ function createModal() {
       <form id="modal-diag-form" class="modal-diag-form" novalidate>
         <div class="modal-diag-row">
           <div class="modal-diag-field">
-            <label for="diag-nome">Nome <span aria-hidden="true">*</span></label>
-            <input type="text" id="diag-nome" name="nome" placeholder="Seu nome" required autocomplete="given-name">
+            <label for="diag-name">Nome completo <span aria-hidden="true">*</span></label>
+            <input type="text" id="diag-name" name="name" placeholder="Seu nome" required autocomplete="name">
           </div>
           <div class="modal-diag-field">
-            <label for="diag-empresa">Empresa <span aria-hidden="true">*</span></label>
-            <input type="text" id="diag-empresa" name="empresa" placeholder="Nome da empresa" required autocomplete="organization">
+            <label for="diag-company">Empresa e cargo <span aria-hidden="true">*</span></label>
+            <input type="text" id="diag-company" name="company" placeholder="Nome da empresa" required autocomplete="organization">
           </div>
         </div>
         <div class="modal-diag-field">
@@ -49,12 +49,12 @@ function createModal() {
           <input type="email" id="diag-email" name="email" placeholder="seu@email.com" required autocomplete="email">
         </div>
         <div class="modal-diag-field">
-          <label for="diag-whatsapp">WhatsApp <span aria-hidden="true">*</span></label>
-          <input type="tel" id="diag-whatsapp" name="whatsapp" placeholder="(00) 90000-0000" required autocomplete="tel">
+          <label for="diag-phone">Telefone / WhatsApp <span aria-hidden="true">*</span></label>
+          <input type="tel" id="diag-phone" name="phone" placeholder="(00) 90000-0000" required autocomplete="tel">
         </div>
         <div class="modal-diag-field">
-          <label for="diag-faturamento">Faturamento médio mensal <span aria-hidden="true">*</span></label>
-          <select id="diag-faturamento" name="faturamento" required>
+          <label for="diag-revenue">Faturamento médio mensal <span aria-hidden="true">*</span></label>
+          <select id="diag-revenue" name="revenue" required>
             <option value="" disabled selected>Selecione uma faixa</option>
             <option value="ate-50k">Até R$ 50 mil</option>
             <option value="50k-150k">R$ 50 mil – R$ 150 mil</option>
@@ -64,8 +64,8 @@ function createModal() {
           </select>
         </div>
         <div class="modal-diag-field">
-          <label for="diag-origem">Como ficou sabendo sobre nós? <span aria-hidden="true">*</span></label>
-          <select id="diag-origem" name="origem" required>
+          <label for="diag-source">Como ficou sabendo sobre nós? <span aria-hidden="true">*</span></label>
+          <select id="diag-source" name="source" required>
             <option value="" disabled selected>Selecione uma opção</option>
             <option value="instagram">Instagram</option>
             <option value="linkedin">LinkedIn</option>
@@ -203,7 +203,7 @@ function init() {
   modal.querySelector('#modal-diag-close').addEventListener('click', closeModal);
   modal.querySelector('#modal-diag-success-close').addEventListener('click', closeModal);
   modal.querySelector('#modal-diag-form').addEventListener('submit', handleSubmit);
-  maskPhone(modal.querySelector('#diag-whatsapp'));
+  maskPhone(modal.querySelector('#diag-phone'));
   document.addEventListener('keydown', trapFocus);
 
   // 1) Intercepta por ID/classe explícita
