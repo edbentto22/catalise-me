@@ -92,8 +92,9 @@ const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.o
     const coarsePointer = matchMedia('(pointer: coarse)').matches;
     const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection?.saveData);
     const slowConnection = ['slow-2g', '2g'].includes((navigator as Navigator & { connection?: { effectiveType?: string } }).connection?.effectiveType || '');
-    const allowMotion = !reduceMotion && !coarsePointer && !saveData && !slowConnection;
-    root.dataset.motion = allowMotion ? 'full' : 'reduced';
+    const allowEffects = !reduceMotion && !coarsePointer && !saveData && !slowConnection;
+    const allowAutoplay = !reduceMotion && !saveData && !slowConnection;
+    root.dataset.motion = allowEffects ? 'full' : 'reduced';
 
     createIcons({ icons: { Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
       MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
@@ -101,7 +102,7 @@ const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.o
       Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
       HelpCircle, MousePointerClick, HeartHandshake, Check, X } });
 
-    if (allowMotion) {
+    if (allowEffects) {
       const lenis = new Lenis({ duration: 1, smoothWheel: true, smoothTouch: false });
       const raf = (time: number) => { lenis.raf(time); requestAnimationFrame(raf); };
       requestAnimationFrame(raf);
@@ -158,7 +159,7 @@ const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.o
 
     const revealElements = [...document.querySelectorAll<HTMLElement>('.reveal, .reveal-left')];
     const counterElements = [...document.querySelectorAll<HTMLElement>('[data-target]')];
-    if (!('IntersectionObserver' in window) || !allowMotion) {
+    if (!('IntersectionObserver' in window) || !allowEffects) {
       revealElements.forEach((el) => el.classList.add('revealed', 'is-visible'));
       counterElements.forEach((el) => { el.textContent = `${el.dataset.target || el.textContent || ''}${el.dataset.suffix || ''}`; });
     } else {
@@ -200,14 +201,31 @@ const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.o
     });
 
     const activateVideo = (video: HTMLVideoElement) => {
-        if (!allowMotion) return;
+        if (!allowAutoplay) return;
         if (!video.src) {
-          video.src = video.dataset.src || '';
+          const source = video.dataset.src;
+          if (!source) return;
+          video.src = source;
           video.load();
         }
         video.play().catch(() => {});
       };
     const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-src]')];
+
+    videos.forEach((video) => {
+      const mediaFrame = video.closest<HTMLElement>('[data-media-frame]');
+      const markLoaded = () => {
+        video.classList.add('loaded');
+        mediaFrame?.classList.add('media-loaded');
+      };
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) markLoaded();
+      else video.addEventListener('loadeddata', markLoaded, { once: true });
+      video.addEventListener('error', () => {
+        video.classList.remove('loaded');
+        mediaFrame?.classList.remove('media-loaded');
+        mediaFrame?.classList.add('media-failed');
+      });
+    });
 
     if (!('IntersectionObserver' in window)) {
       videos
@@ -222,10 +240,6 @@ const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.o
 
       videos.forEach((video) => mediaObserver.observe(video));
     }
-
-    videos.forEach((video) => {
-      video.addEventListener('error', () => video.closest<HTMLElement>('[data-media-frame]')?.classList.add('media-failed'));
-    });
   </script>
 
 </body>
