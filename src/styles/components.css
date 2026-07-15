@@ -112,17 +112,18 @@
 .nav-links a {
   display: inline-flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 0.8125rem;
   font-weight: 400; /* Lighter, more elegant weight */
   color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
-  padding: 10px 20px; /* Generous spacing between items */
+  padding: 10px 14px;
+  min-height: 44px;
   border-radius: 9999px;
   transition:
     color var(--duration-base) var(--ease-out),
     background var(--duration-base) var(--ease-out);
-  letter-spacing: 0.08em; /* Wide, premium tracking */
-  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  text-transform: none;
   white-space: nowrap;
 }
 
@@ -280,9 +281,9 @@
 
 /* Primary — capsule solid */
 .btn-primary {
-  background: #05080c;
-  color: #ffffff;
-  border-color: #05080c;
+  background: var(--green-neon);
+  color: #0b0f16;
+  border-color: var(--green-neon);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -292,7 +293,7 @@
 .btn-primary:hover {
   background: var(--green);
   border-color: var(--green);
-  color: #ffffff;
+  color: #0b0f16;
   box-shadow: 0 8px 24px rgba(107, 158, 17, 0.25);
   transform: translateY(-2px);
 }
@@ -303,9 +304,9 @@
 .modal-diagnostico-body .btn-primary,
 .footer-cta .btn-primary,
 .nav .btn-primary {
-  background: #ffffff;
-  color: #05080c;
-  border-color: #ffffff;
+  background: var(--green-neon);
+  color: #0b0f16;
+  border-color: var(--green-neon);
 }
 
 .dark-section .btn-primary:hover,
@@ -315,7 +316,7 @@
 .nav .btn-primary:hover {
   background: var(--green-neon);
   border-color: var(--green-neon);
-  color: #05080c;
+  color: #0b0f16;
   box-shadow: 0 8px 24px rgba(124, 189, 18, 0.35);
   transform: translateY(-2px);
 }
