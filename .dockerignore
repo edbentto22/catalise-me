@@ -1,0 +1,17 @@
+.git
+.github
+.astro
+.agents
+.codex
+node_modules
+dist
+_source-assets
+_bmad
+_bmad-output
+catalise-artefatos
+taste-skill
+LOGO
+.DS_Store
+*.log
+.env
+.env.*
