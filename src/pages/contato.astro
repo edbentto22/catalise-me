@@ -1,0 +1,362 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/inner.css';
+---
+
+<BaseLayout
+  title="Contato · Catalise.me: Agende seu diagnóstico gratuito"
+  description="Fale com a Catalise.me. Diagnóstico gratuito para perfis qualificados. Resposta em até 24 horas. Pelo formulário ou WhatsApp."
+  ogTitle="Contato · Catalise.me: Agende seu diagnóstico gratuito"
+  ogDescription="Diagnóstico gratuito para perfis qualificados. Resposta em até 24 horas."
+  ogUrl="https://catalise.me/contato"
+  canonical="https://catalise.me/contato"
+  pageType="inner"
+>
+
+    <!-- HERO -->
+    <header class="page-hero" aria-labelledby="contato-heading">
+      <div class="container">
+        <p class="eyebrow hero-animate-1">Diagnóstico gratuito</p>
+        <h1 id="contato-heading" class="page-hero-title hero-animate-2">
+          Comece pelo <em>diagnóstico gratuito</em>.
+        </h1>
+        <p class="page-hero-lede hero-animate-3">
+          Em 45 minutos, vamos ajudar a identificar gargalos operacionais, impactos financeiros estimados, e desenhar um plano de implementação personalizado para o seu contexto.
+        </p>
+      </div>
+    </header>
+
+    <!-- FORMULÁRIO + SIDEBAR -->
+    <section id="formulario" aria-labelledby="form-heading">
+      <div class="container">
+        <div class="contato-layout">
+
+          <!-- Formulário -->
+          <div class="contato-form-col">
+            <div class="form-wrapper">
+              <div class="form-header">
+                <p class="eyebrow">Formulário</p>
+                <h2 id="form-heading">Agende um papo com a gente. <span style="font-size: var(--text-lg); font-weight: 400; font-style: normal; display: block; margin-top: var(--space-2); color: inherit;">Resposta em até 24 horas.</span></h2>
+
+              </div>
+
+              <form id="contact-form" class="form" novalidate>
+
+                <div class="form-row">
+                  <div class="form-group" id="group-name">
+                    <label class="form-label" for="field-name">Nome completo <span class="required">*</span></label>
+                    <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required aria-describedby="error-name">
+                    <span class="form-error" id="error-name" aria-live="polite"></span>
+                  </div>
+                  <div class="form-group" id="group-email">
+                    <label class="form-label" for="field-email">Email <span class="required">*</span></label>
+                    <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" required aria-describedby="error-email">
+                    <span class="form-error" id="error-email" aria-live="polite"></span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" id="group-company">
+                    <label class="form-label" for="field-company">Empresa e cargo <span class="required">*</span></label>
+                    <input class="form-input" type="text" id="field-company" name="company" autocomplete="organization-title" required aria-describedby="error-company">
+                    <span class="form-error" id="error-company" aria-live="polite"></span>
+                  </div>
+                  <div class="form-group" id="group-revenue">
+                    <label class="form-label" for="field-revenue">Qual é o seu faturamento médio mensal? <span class="required">*</span></label>
+                    <select class="form-select" id="field-revenue" name="revenue" required aria-describedby="error-revenue">
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="ate-50k">Até R$ 50 mil</option>
+                      <option value="50k-150k">R$ 50 mil – R$ 150 mil</option>
+                      <option value="150k-500k">R$ 150 mil – R$ 500 mil</option>
+                      <option value="500k-2m">R$ 500 mil – R$ 2 milhões</option>
+                      <option value="acima-2m">Acima de R$ 2 milhões</option>
+                    </select>
+                    <span class="form-error" id="error-revenue" aria-live="polite"></span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" id="group-phone">
+                    <label class="form-label" for="field-phone">Telefone / WhatsApp</label>
+                    <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel">
+                    <span class="form-hint">Para resposta mais rápida</span>
+                  </div>
+                  <div class="form-group" id="group-source">
+                    <label class="form-label" for="field-source">Como chegou até nós?</label>
+                    <select class="form-select" id="field-source" name="source">
+                      <option value="" disabled selected>Selecione</option>
+                      <option value="indicacao">Indicação</option>
+                      <option value="google">Google</option>
+                      <option value="linkedin">LinkedIn</option>
+                      <option value="evento">Evento</option>
+                      <option value="outro">Outro</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group" id="group-message">
+                  <label class="form-label" for="field-message">Como podemos ajudar? <span class="required">*</span></label>
+                  <textarea class="form-textarea" id="field-message" name="message" required aria-describedby="error-message"></textarea>
+                  <span class="form-error" id="error-message" aria-live="polite"></span>
+                </div>
+
+                <div class="form-submit">
+                  <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                    Quero meu diagnóstico gratuito <span class="btn-arrow">→</span>
+                  </button>
+                  <p class="form-legal">
+                    Ao enviar, você concorda com nossa política de privacidade. Seus dados nunca serão compartilhados com terceiros.
+                  </p>
+                </div>
+              </form>
+
+              <!-- Success state -->
+              <div class="form-success" id="form-success" role="status" tabindex="-1">
+                <div class="success-icon">✓</div>
+                <h3>Encaminhado. <em>Se não receber nosso contato em até 24 horas úteis, fale com a gente pelo WhatsApp.</em></h3>
+                <p>Se preferir falar agora, chama no <a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a>.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="contato-sidebar" aria-label="Canais alternativos">
+            <div class="section-header" style="margin-bottom: 32px;">
+              <p class="eyebrow">Canais Alternativos</p>
+              <h2 style="font-size: 1.5rem;">Prefere outro canal?</h2>
+            </div>
+
+            <div class="channel-cards" style="grid-template-columns: 1fr; gap: 12px;">
+              <a href="https://wa.me/5575991879786?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20diagnóstico%20gratuito%20da%20Catalise.me" target="_blank" rel="noopener" class="channel-card whatsapp" id="contact-whatsapp-link">
+                <div class="channel-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                </div>
+                <div class="channel-info">
+                  <h3>WhatsApp</h3>
+                  <p>Resposta em até 1h em horário comercial</p>
+                  <p class="channel-meta">(75) 99187-9786</p>
+                </div>
+              </a>
+
+              <a href="mailto:contato@catalise.me" class="channel-card email" id="contact-email-link">
+                <div class="channel-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div class="channel-info">
+                  <h3>Email</h3>
+                  <p>Para mensagens elaboradas ou anexos</p>
+                  <p class="channel-meta">contato@catalise.me</p>
+                </div>
+              </a>
+
+            </div>
+
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ RÁPIDA -->
+    <section id="faq-contato" aria-labelledby="faq-contato-heading">
+      <div class="container container-sm">
+        <div class="section-header reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-contato-heading">Dúvidas frequentes.</h2>
+        </div>
+
+        <div class="faq-list reveal">
+          <div class="faq-item" id="faq-c1">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Diagnóstico é sempre gratuito?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Para perfis qualificados, sim. Negócios com faturamento abaixo de R$ 100k/mês ou em fase de validação podem receber direcionamento para soluções menores, sem o investimento completo do Opera OS.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-c2">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Em quanto tempo recebo resposta?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Resposta inicial em até 24h úteis. WhatsApp em até 1h em horário comercial.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-c3">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Vocês atendem em todo o Brasil?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Sim, atuamos para clientes em todo o país. Diagnóstico e implantação podem ser presenciais ou totalmente remotos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-c4">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Posso indicar alguém?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Pode e adoramos. Indicações qualificadas têm tratamento prioritário e nosso programa de referência oferece benefício para quem indica. Conta com a gente no email.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact form script -->
+    <script>
+      (function () {
+        'use strict';
+        const form = document.getElementById('contact-form') as HTMLFormElement | null;
+        if (!form) return;
+
+        const successMsg = document.getElementById('form-success');
+        const submitBtn = form.querySelector('[type="submit"]') as HTMLButtonElement | null;
+
+        const validators: Record<string, (v: string) => true | string> = {
+          name: (v) => v.trim().length >= 2 || 'Informe seu nome completo',
+          email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Email inválido',
+          company: (v) => v.trim().length >= 2 || 'Informe sua empresa e cargo',
+          revenue: (v) => !!v || 'Selecione seu faturamento',
+          message: (v) => v.trim().length >= 10 || 'Conte um pouco mais (mínimo 10 caracteres)',
+        };
+
+        function getField(name: string) {
+          return form!.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${name}"]`);
+        }
+
+        function getGroup(field: Element | null) {
+          return field?.closest('.form-group');
+        }
+
+        function showError(field: Element, msg: string) {
+          const group = getGroup(field);
+          if (!group) return;
+          group.classList.add('has-error');
+          field.setAttribute('aria-invalid', 'true');
+          const errEl = group.querySelector('.form-error');
+          if (errEl) errEl.textContent = msg;
+        }
+
+        function clearError(field: Element) {
+          const group = getGroup(field);
+          if (!group) return;
+          group.classList.remove('has-error');
+          field.setAttribute('aria-invalid', 'false');
+        }
+
+        function validateField(name: string) {
+          const field = getField(name);
+          const validator = validators[name];
+          if (!field || !validator) return true;
+          const result = validator(field.value);
+          if (result !== true) {
+            showError(field, result);
+            return false;
+          }
+          clearError(field);
+          return true;
+        }
+
+        ['name', 'email', 'company', 'revenue', 'message'].forEach(name => {
+          const field = getField(name);
+          if (field) {
+            field.addEventListener('blur', () => validateField(name));
+            field.addEventListener('input', () => {
+              const group = getGroup(field);
+              if (group?.classList.contains('has-error')) validateField(name);
+            });
+          }
+        });
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const valid = ['name', 'email', 'company', 'revenue', 'message']
+            .map(validateField)
+            .every(Boolean);
+
+          if (!valid) {
+            const firstInvalid = form.querySelector<HTMLElement>('[aria-invalid="true"]');
+            firstInvalid?.focus();
+            return;
+          }
+
+          const data = {
+            name: getField('name')?.value.trim(),
+            email: getField('email')?.value.trim(),
+            company: getField('company')?.value.trim(),
+            revenue: getField('revenue')?.value || '',
+            message: getField('message')?.value.trim(),
+            phone: getField('phone')?.value.trim() || '',
+            source: getField('source')?.value || '',
+            page_url: window.location.href,
+            referrer: document.referrer || '',
+            utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+            utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+            utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+            submitted_at: new Date().toISOString(),
+          };
+
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+          }
+
+          const controller = new AbortController();
+          const timeoutId = window.setTimeout(() => controller.abort(), 15000);
+
+          try {
+            const LARK_ENDPOINT = 'https://triviumlabs.sg.larksuite.com/base/automation/webhook/event/THgIaGzH4wWd2lhVeDtlC4D5gAh';
+
+            await fetch(LARK_ENDPOINT, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify(data),
+              signal: controller.signal,
+            });
+
+            form.style.display = 'none';
+            if (successMsg) {
+              successMsg.classList.add('visible');
+              successMsg.setAttribute('aria-live', 'polite');
+              successMsg.focus();
+            }
+
+            try {
+              if (typeof (window as any).gtag === 'function') {
+                (window as any).gtag('event', 'form_submit', { event_category: 'contact', event_label: 'diagnostico' });
+              }
+            } catch (analyticsError) {
+              console.warn('Analytics indisponível após envio do formulário.', analyticsError);
+            }
+
+          } catch (err) {
+            console.error(err);
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Quero meu diagnóstico gratuito →';
+            }
+            alert('Ops! Algo deu errado. Por favor, fale com a gente pelo WhatsApp: (75) 99187-9786');
+          } finally {
+            window.clearTimeout(timeoutId);
+          }
+        });
+      })();
+    </script>
+
+</BaseLayout>
