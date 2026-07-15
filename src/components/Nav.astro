@@ -1,0 +1,58 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/opera-os', label: 'Opera OS' },
+  { href: '/contato', label: 'Contato' },
+];
+
+function isActive(linkHref: string): boolean {
+  if (linkHref === '/') return currentPath === '/' || currentPath === '/index.html';
+  return currentPath === linkHref || currentPath.startsWith(`${linkHref}/`);
+}
+
+const needsWhiteLogo = currentPath.includes('/contato') || currentPath.includes('/sobre');
+---
+
+<!-- NAV -->
+<nav class="nav" aria-label="Navegação principal">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Catalise.me — Página inicial">
+      <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" class={`nav-logo-img ${needsWhiteLogo ? 'invert-logo' : ''}`} width="420" height="84">
+    </a>
+
+    <ul class="nav-links" role="list">
+      {links.map(link => (
+        <li><a href={link.href} class={isActive(link.href) ? 'active' : ''} aria-current={isActive(link.href) ? 'page' : undefined}>{link.label}</a></li>
+      ))}
+    </ul>
+
+    <div class="nav-cta">
+      <a href="/contato" class="btn btn-primary btn-sm">
+        Diagnóstico gratuito
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <button class="nav-hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<nav class="nav-mobile" aria-label="Menu mobile" id="mobile-menu">
+  {links.map(link => (
+    <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>{link.label}</a>
+  ))}
+  <a href="/contato" class="btn btn-primary nav-mobile-cta">
+    Diagnóstico gratuito
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+  </a>
+</nav>

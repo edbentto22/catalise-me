@@ -1,0 +1,232 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import ModalDiagnostico from '../components/ModalDiagnostico.astro';
+
+// Import base styles (always loaded)
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/components.css';
+import '../styles/animations.css';
+import 'lenis/dist/lenis.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogUrl?: string;
+  ogImage?: string;
+  canonical?: string;
+  bodyClass?: string;
+  pageType?: 'home' | 'inner' | 'error';
+  showFooter?: boolean;
+  showModal?: boolean;
+  noindex?: boolean;
+  keywords?: string;
+}
+
+const {
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogUrl,
+  ogImage,
+  canonical,
+  bodyClass = '',
+  pageType = 'inner',
+  showFooter = true,
+  showModal = true,
+  noindex = false,
+  keywords,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.origin).toString();
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    ogTitle={ogTitle || title}
+    ogDescription={ogDescription || description}
+    ogUrl={ogUrl}
+    ogImage={ogImage}
+    canonical={canonicalUrl}
+    noindex={noindex}
+    keywords={keywords}
+  />
+</head>
+<body class={bodyClass} data-page-type={pageType}>
+
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+
+  <Nav currentPath={currentPath} />
+
+  <main id="main-content" tabindex="-1">
+    <slot />
+  </main>
+
+  {showFooter && <Footer />}
+  {showModal && <ModalDiagnostico />}
+
+
+<!-- Um único controlador progressivo para navegação, movimento e componentes. -->
+  <script>
+    import Lenis from 'lenis';
+    import {
+      createIcons, Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
+      MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
+      Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
+      Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
+      HelpCircle, MousePointerClick, HeartHandshake, Check, X
+    } from 'lucide';
+
+    const root = document.documentElement;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarsePointer = matchMedia('(pointer: coarse)').matches;
+    const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection?.saveData);
+    const slowConnection = ['slow-2g', '2g'].includes((navigator as Navigator & { connection?: { effectiveType?: string } }).connection?.effectiveType || '');
+    const allowMotion = !reduceMotion && !coarsePointer && !saveData && !slowConnection;
+    root.dataset.motion = allowMotion ? 'full' : 'reduced';
+
+    createIcons({ icons: { Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
+      MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
+      Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
+      Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
+      HelpCircle, MousePointerClick, HeartHandshake, Check, X } });
+
+    if (allowMotion) {
+      const lenis = new Lenis({ duration: 1, smoothWheel: true, smoothTouch: false });
+      const raf = (time: number) => { lenis.raf(time); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+
+    const nav = document.querySelector<HTMLElement>('.nav');
+    const hamburger = document.querySelector<HTMLButtonElement>('.nav-hamburger');
+    const mobileMenu = document.querySelector<HTMLElement>('.nav-mobile');
+    let menuFocusBefore: HTMLElement | null = null;
+
+    mobileMenu?.setAttribute('aria-hidden', 'true');
+
+    const closeMenu = (restore = true) => {
+      hamburger?.classList.remove('open');
+      mobileMenu?.classList.remove('open');
+      hamburger?.setAttribute('aria-expanded', 'false');
+      hamburger?.setAttribute('aria-label', 'Abrir menu');
+      mobileMenu?.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+      if (restore) menuFocusBefore?.focus();
+    };
+    const openMenu = () => {
+      if (!hamburger || !mobileMenu) return;
+      menuFocusBefore = document.activeElement as HTMLElement;
+      hamburger.classList.add('open');
+      mobileMenu.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      hamburger.setAttribute('aria-label', 'Fechar menu');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('menu-open');
+      mobileMenu.querySelector<HTMLElement>('a')?.focus();
+    };
+    hamburger?.addEventListener('click', () => hamburger.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu());
+    mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMenu(false)));
+    matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
+      if (event.matches && hamburger?.getAttribute('aria-expanded') === 'true') closeMenu(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && hamburger?.getAttribute('aria-expanded') === 'true') closeMenu();
+      if (event.key !== 'Tab' || hamburger?.getAttribute('aria-expanded') !== 'true' || !mobileMenu) return;
+      const focusable = [...mobileMenu.querySelectorAll<HTMLElement>('a, button:not([disabled])')].filter((el) => !el.hidden);
+      const first = focusable[0], last = focusable.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    });
+
+    let scrollQueued = false;
+    const updateNav = () => { nav?.classList.toggle('scrolled', scrollY > 20); scrollQueued = false; };
+    addEventListener('scroll', () => { if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateNav); } }, { passive: true });
+    updateNav();
+
+    root.classList.remove('no-js');
+    root.classList.add('js', 'js-enabled');
+
+    const revealElements = [...document.querySelectorAll<HTMLElement>('.reveal, .reveal-left')];
+    const counterElements = [...document.querySelectorAll<HTMLElement>('[data-target]')];
+    if (!('IntersectionObserver' in window) || !allowMotion) {
+      revealElements.forEach((el) => el.classList.add('revealed', 'is-visible'));
+      counterElements.forEach((el) => { el.textContent = `${el.dataset.target || el.textContent || ''}${el.dataset.suffix || ''}`; });
+    } else {
+      const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        el.classList.add('revealed', 'is-visible');
+        if (el.dataset.target && !el.dataset.counted) {
+          el.dataset.counted = 'true';
+          const target = Number(el.dataset.target), suffix = el.dataset.suffix || '';
+          const start = performance.now();
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / 1200, 1);
+            el.textContent = `${Math.round(target * (1 - Math.pow(1 - progress, 3)))}${suffix}`;
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+        observer.unobserve(el);
+      }), { threshold: .12, rootMargin: '0px 0px -48px' });
+      [...new Set([...revealElements, ...counterElements])].forEach((el) => observer.observe(el));
+    }
+
+    document.querySelectorAll<HTMLElement>('.faq-item').forEach((item, index) => {
+      const button = item.querySelector<HTMLButtonElement>('.faq-question');
+      const panel = item.querySelector<HTMLElement>('.faq-answer');
+      if (!button || !panel) return;
+      if (!panel.id) panel.id = `faq-panel-${index + 1}`;
+      button.setAttribute('aria-controls', panel.id);
+      panel.setAttribute('role', 'region');
+      panel.setAttribute('aria-labelledby', button.id || (button.id = `faq-button-${index + 1}`));
+      panel.hidden = button.getAttribute('aria-expanded') !== 'true';
+      button.addEventListener('click', () => {
+        const opening = button.getAttribute('aria-expanded') !== 'true';
+        button.setAttribute('aria-expanded', String(opening));
+        panel.hidden = !opening;
+        item.classList.toggle('open', opening);
+      });
+    });
+
+    const activateVideo = (video: HTMLVideoElement) => {
+        if (!allowMotion) return;
+        if (!video.src) {
+          video.src = video.dataset.src || '';
+          video.load();
+        }
+        video.play().catch(() => {});
+      };
+    const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-src]')];
+
+    if (!('IntersectionObserver' in window)) {
+      videos
+        .filter((video) => video.matches('.hero-video-bg, .page-hero-video-bg'))
+        .forEach(activateVideo);
+    } else {
+      const mediaObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) activateVideo(video);
+        else video.pause();
+      }), { rootMargin: '180px 0px', threshold: .1 });
+
+      videos.forEach((video) => mediaObserver.observe(video));
+    }
+
+    videos.forEach((video) => {
+      video.addEventListener('error', () => video.closest<HTMLElement>('[data-media-frame]')?.classList.add('media-failed'));
+    });
+  </script>
+
+</body>
+</html>

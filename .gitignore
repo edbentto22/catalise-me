@@ -7,12 +7,9 @@ dist/
 .claude/
 .trae/
 _bmad-output/
-package-lock.json
 
-# ─── Vídeos pesados não usados em código ───
-# Vídeo bruto original (101MB)
-assets/VIDEO-CATALISE-ME.mp4
-# Vídeo de fundo antigo não referenciado (65MB)
-assets/video-bg.mp4
-# Vídeo de solução antiga
-assets/bg-solucao.mp4
+# Astro
+.astro/
+
+# Fontes brutas preservadas fora do bundle de produção
+_source-assets/

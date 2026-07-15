@@ -1,0 +1,223 @@
+/* =========================================
+   CATALISE.ME — DESIGN TOKENS v3
+   Monolith Premium · Mineral weight, digital dominance
+   =========================================
+   Legacy aliases (for existing component CSS)
+   ========================================= */
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-thin.otf') format('opentype');
+  font-weight: 100; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-book.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-italic.otf') format('opentype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-medium.otf') format('opentype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-semibolditalic.otf') format('opentype');
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+
+:root {
+  /* ─── Core Palette — Monolith Premium Light ─── */
+  --bg-base:       #f3f4f1;
+  --bg-surface:    #e7eae5;
+  --bg-elevated:   #fafbf8;
+  --bg-card:       rgba(20, 20, 18, 0.02);
+  --bg-card-hover: rgba(107, 158, 17, 0.04);
+  --bg-glass:      rgba(250, 251, 248, 0.78);
+  --bg-glass-light: rgba(20, 20, 18, 0.03);
+
+  /* ─── Dark Mode Palette — Deep Mineral Blue-Black (Human Academy Inspired) ─── */
+  --bg-dark-base:     #0b0f16;
+  --bg-dark-surface:  #121824;
+  --bg-dark-elevated: #192231;
+  --bg-dark-glass:    rgba(11, 15, 22, 0.72);
+  --bg-dark-card:     rgba(255, 255, 255, 0.02);
+
+  /* Accent — construction green, adapted for light contrast (darker acid/olive green) */
+  --green:         #79b81c;
+  --green-glow:    #537f12;
+  --green-deep:    #4c7510;
+  --green-dim:     rgba(107, 158, 17, 0.08);
+  --green-border:  rgba(107, 158, 17, 0.22);
+  --green-mid:     rgba(107, 158, 17, 0.45);
+  --green-bright:  rgba(107, 158, 17, 0.85);
+  --green-neon:    #8dcf28;
+
+  /* Warm neutrals — coherent temperature for light mode */
+  --warm-100:      #141412;
+  --warm-200:      #252421;
+  --warm-300:      #3a3935;
+  --warm-500:      #7a7972;
+  --warm-700:      #c8c7bf;
+  --warm-800:      #e0dfd9;
+  --warm-900:      #f5f4ef;
+
+  /* Deep surface for hero contrast */
+  --deep-green:    #eef2ec;
+
+  /* Text */
+  --text-primary:   #151713;
+  --text-secondary: rgba(21, 23, 19, 0.76);
+  --text-muted:     rgba(21, 23, 19, 0.62);
+  --text-green:     #4c7510;
+  --text-dim:       rgba(20, 20, 18, 0.35);
+  --text-main:      var(--text-primary);
+  --text-on-dark:   #f7f8f4;
+  --text-on-dark-muted: rgba(247, 248, 244, 0.68);
+
+  /* Borders — visible seams */
+  --border-subtle:       rgba(20, 20, 18, 0.06);
+  --border-mid:          rgba(20, 20, 18, 0.11);
+  --border-strong:       rgba(20, 20, 18, 0.20);
+  --border-green:        rgba(107, 158, 17, 0.22);
+  --border-green-strong: rgba(107, 158, 17, 0.50);
+
+  /* Borders (Dark Section) */
+  --border-dark-subtle:  rgba(255, 255, 255, 0.06);
+  --border-dark-mid:     rgba(255, 255, 255, 0.12);
+  --border-dark-strong:  rgba(255, 255, 255, 0.20);
+
+  /* ─── Gradients ─── */
+  --grad-green:    linear-gradient(135deg, #6b9e11 0%, #55800a 100%);
+  --grad-dark:     linear-gradient(180deg, #f5f6f5 0%, #eef2ec 100%);
+  --grad-glow:     radial-gradient(ellipse 70% 45% at 50% 0%, rgba(107, 158, 17, 0.08) 0%, transparent 65%);
+  --grad-hero:     radial-gradient(ellipse 100% 70% at 50% -10%, rgba(107, 158, 17, 0.07) 0%, transparent 60%);
+  --grad-mineral:  radial-gradient(ellipse 80% 60% at 50% 50%, rgba(107, 158, 17, 0.04) 0%, rgba(245, 246, 245, 0) 70%);
+  --grad-cta:      radial-gradient(ellipse 900px 600px at 50% 50%, rgba(107, 158, 17, 0.05) 0%, transparent 70%);
+  --grad-section:  linear-gradient(180deg, transparent 0%, rgba(107, 158, 17, 0.015) 50%, transparent 100%);
+  /* Radial glow for dark sections */
+  --grad-dark-glow: radial-gradient(circle at 50% 30%, rgba(124, 189, 18, 0.08) 0%, transparent 70%);
+
+  /* ─── Typography ─── */
+  --font-display: 'PP Neue Montreal', 'Inter', -apple-system, sans-serif;
+  --font-body:    'PP Neue Montreal', 'Inter', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Heading weights */
+  --weight-thin:   200;
+  --weight-extra-light: 200;
+  --weight-light:  300;
+  --weight-book:   400;
+  --weight-medium: 500;
+  --weight-bold:   700;
+
+  /*
+   * Fluid type scale — Major Third (1.25) modular ratio
+   * Base: 16px mobile → 17px desktop (set on html element)
+   * All values use rem so they scale with the html root.
+   */
+  --text-xs:      0.875rem;                         /* 14px — labels, captions, metadata */
+  --text-sm:      0.875rem;                         /* 14px — secondary body, footnotes */
+  --text-base:    1rem;                             /* 16px — primary body copy */
+  --text-md:      clamp(1rem, 1.15vw, 1.125rem);    /* 16→18px — lead paragraphs */
+  --text-lg:      clamp(1.125rem, 1.4vw, 1.25rem);  /* 18→20px — subheadings, callouts */
+  --text-xl:      1.5rem;                           /* 24px — section intro, card titles */
+  --text-2xl:     1.875rem;                         /* 30px — h3 headings */
+  --text-3xl:     clamp(1.875rem, 3.5vw, 2.5rem);   /* 30→40px — h2 small */
+  --text-4xl:     clamp(2.25rem,  4.5vw, 3.25rem);  /* 36→52px — h2 standard */
+  --text-5xl:     clamp(2.75rem,  5.5vw, 4.5rem);   /* 44→72px — hero supporting */
+  --text-hero:    clamp(3.25rem,  7vw,   6.25rem);  /* 52→100px — primary hero h1 */
+  --text-display: clamp(4rem,     9vw,   8rem);     /* 64→128px — decorative wordmarks */
+
+  /* ─── Spacing ─── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
+
+  /* ─── Radius — Monolith Premium: Elegant Rounded Corner Radius ─── */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-xl:   32px;
+  --radius-2xl:  40px;
+  --radius-full: 9999px;
+
+  /* ─── Z-layers ─── */
+  --z-below:   -1;
+  --z-base:     0;
+  --z-raised:   10;
+  --z-overlay:  100;
+  --z-modal:    500;
+  --z-nav:      1000;
+  --z-toast:    2000;
+
+  /* Accessible focus pair: visible against both light and dark surfaces */
+  --focus-ring-dark: #0b0f16;
+  --focus-ring-light: #f7f8f4;
+
+  /* ─── Glassmorphism ─── */
+  --glass-blur:  blur(24px) saturate(180%);
+  --glass-blur-heavy: blur(48px) saturate(200%);
+  --glass-bg:    rgba(245, 246, 245, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.4);
+
+  /* ─── Shadows — mineral depth ─── */
+  --glow-green-sm: 0 0 12px rgba(107, 158, 17, 0.15);
+  --glow-green-md: 0 0 28px rgba(107, 158, 17, 0.22), 0 0 56px rgba(107, 158, 17, 0.06);
+  --glow-green-lg: 0 0 56px rgba(107, 158, 17, 0.30), 0 0 112px rgba(107, 158, 17, 0.10);
+  --shadow-card:   0 1px 3px rgba(20, 20, 18, 0.08), 0 8px 24px rgba(20, 20, 18, 0.04);
+  --shadow-float:  0 20px 60px rgba(20, 20, 18, 0.12), 0 8px 20px rgba(20, 20, 18, 0.06);
+  --shadow-warm:   0 2px 8px rgba(20, 20, 18, 0.06);
+
+  /* ─── Motion — precise, purposeful ─── */
+  --ease-out:      cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring:   cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-sharp:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast: 180ms;
+  --duration-base: 220ms;
+  --duration-slow: 700ms;
+  --duration-xslow: 1000ms;
+
+  /* ─── Layout ─── */
+  --container:    1320px;
+  --container-sm: 760px;
+  --nav-height:   88px;
+
+  /* Exposed grid seams — brutalist character */
+  --seam: 1px solid var(--border-mid);
+  --seam-mid: var(--seam);
+  --seam-green: 1px solid var(--border-green);
+
+  /* ─── Legacy aliases — compatibility with existing components ─── */
+  --charcoal:    #141412;
+  --white:       #141412;
+  --slate:       #eceeec;
+  --slate-light: #e2e4e2;
+  --gray-dark:   #7a7972;
+  --gray:        #7a7972;
+  --gray-light:  #c8c7bf;
+  --light-gray:  #eceeec;
+}

@@ -1,27 +1,21 @@
 {
-  "name": "site",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "catalise-me-site",
+  "type": "module",
+  "version": "2.0.0",
+  "description": "Site institucional da Catalise.me — Astro",
   "engines": {
     "node": ">=22.12.0"
   },
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build",
-    "dev": "vite",
-    "start": "npx serve dist -l 3000"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "vite": "^8.0.14"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "astro dev"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^5.10.4",
+    "lenis": "^1.3.25",
     "lucide": "^1.16.0"
   }
 }

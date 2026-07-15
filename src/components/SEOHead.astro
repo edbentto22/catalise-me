@@ -1,0 +1,60 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogUrl?: string;
+  ogImage?: string;
+  canonical?: string;
+  twitterCard?: string;
+  noindex?: boolean;
+  keywords?: string;
+}
+
+const {
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogUrl,
+  ogImage = 'https://catalise.me/assets/logo.png',
+  canonical,
+  twitterCard = 'summary_large_image',
+  noindex = false,
+  keywords,
+} = Astro.props;
+---
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a09">
+
+<!-- SEO -->
+<title>{title}</title>
+<meta name="description" content={description}>
+{keywords && <meta name="keywords" content={keywords}>}
+{noindex && <meta name="robots" content="noindex, nofollow">}
+
+<!-- Open Graph -->
+<meta property="og:title" content={ogTitle || title} />
+<meta property="og:description" content={ogDescription || description} />
+<meta property="og:type" content="website">
+{ogUrl && <meta property="og:url" content={ogUrl} />}
+<meta property="og:image" content={ogImage}>
+
+<!-- Twitter -->
+<meta name="twitter:card" content={twitterCard}>
+<meta name="twitter:title" content={ogTitle || title}>
+<meta name="twitter:description" content={ogDescription || description}>
+<meta name="twitter:image" content={ogImage}>
+
+<!-- Canonical -->
+{canonical && <link rel="canonical" href={canonical} />}
+
+<!-- Preload critical fonts -->
+<link rel="preload" href="/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-book.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-medium.otf" as="font" type="font/otf" crossorigin>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/assets/favicon-site.png">

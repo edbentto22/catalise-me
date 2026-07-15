@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 · Página não encontrada · Catalise.me"
+  description="A página que você procura não existe ou foi movida."
+  pageType="error"
+  showFooter={false}
+  showModal={false}
+  noindex={true}
+  canonical="https://catalise.me/"
+>
+
+  <section class="error-page">
+    <div class="container" style="text-align: center; padding: 120px 0;">
+      <p class="eyebrow" style="justify-content: center;">404</p>
+      <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 24px;">
+        Esta página não existe.<br><em>Mas sua operação pode.</em>
+      </h1>
+      <p style="max-width: 520px; margin: 0 auto 40px; color: var(--text-muted);">
+        O link que você tentou acessar não está aqui. Talvez tenha mudado, ou nunca existiu.<br>
+        A gente te leva de volta ao que importa.
+      </p>
+      <div class="cta-buttons" style="justify-content: center;">
+        <a href="/" class="btn btn-primary btn-lg">
+          Ir para a Home <span class="btn-arrow">→</span>
+        </a>
+        <a href="/contato" class="btn btn-secondary btn-lg">
+          Falar com a gente
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
