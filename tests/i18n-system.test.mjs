@@ -71,3 +71,14 @@ test('páginas localizadas mantêm CTAs, WhatsApp e cópia no próprio idioma', 
   assert.equal(englishContact.match(/<script>[\s\S]*<\/script>/)?.[0], sourceScript);
   assert.equal(spanishContact.match(/<script>[\s\S]*<\/script>/)?.[0], sourceScript);
 });
+
+test('modal de diagnóstico resolve todos os textos pelo idioma do documento', async () => {
+  const modal = await readText('src/components/ModalDiagnostico.astro');
+
+  assert.match(modal, /document\.documentElement\.lang/);
+  assert.match(modal, /REQUEST A FREE DIAGNOSTIC SESSION/);
+  assert.match(modal, /title: 'Sesión de diagnóstico'/);
+  assert.match(modal, /accent: 'gratuita'/);
+  assert.match(modal, /Please review the highlighted required fields/);
+  assert.match(modal, /Revise los campos obligatorios resaltados/);
+});
