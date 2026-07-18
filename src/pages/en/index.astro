@@ -1,0 +1,500 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/home.css';
+---
+
+<BaseLayout locale="en" localizedPaths={{ pt: '/', en: '/en', es: '/es' }}
+  title="Catalise.me: AI systems and agents working alongside your business."
+  description="Catalise.me connects all your departments into a single intelligence that serves, sells, and operates processes 24 hours a day. In 10 to 12 weeks."
+  ogTitle="Catalise.me: AI systems and agents working alongside your business."
+  ogDescription="More speed, lower costs, better results. An AI operating system in 10–12 weeks." ogUrl="https://catalise.me/en" canonical="https://catalise.me/en"
+  keywords="artificial intelligence for businesses, AI agents, process automation, Opera OS, Catalise.me"
+  pageType="home"
+>
+
+    <!-- ══════════════ HERO — EDITORIAL FULLSCREEN ══════════════ -->
+    <section class="hero-editorial" aria-labelledby="hero-heading" id="hero">
+
+      <!-- BG Layer: vídeo + dark overlay -->
+      <div class="hero-bg-layer" aria-hidden="true" data-media-frame>
+        <video class="hero-video-bg" id="hero-bg-video" data-src="/assets/background-looping-video.mp4?v=20260715" poster="/assets/background-looping-video-poster.jpg" loop muted playsinline preload="none"></video>
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-bg-grain"></div>
+      </div>
+
+      <!-- Grid decoration: cruzes + nos pontos do grid -->
+      <div class="hero-grid-crosses" aria-hidden="true">
+        <span class="hx" style="--hx: 3.5%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 64%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 64%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 92%"></span>
+      </div>
+
+      <!-- Content Layer -->
+      <div class="hero-content-layer">
+
+        <!-- Top row: headline + badge -->
+        <div class="hero-top-row">
+          <div class="hero-headline-block">
+            <h1 id="hero-heading" class="hero-editorial-heading hero-animate-1">
+              AI systems and agents<br>
+              <span>working alongside your business.</span>
+            </h1>
+          </div>
+        </div>
+
+        <!-- Eyebrow: dot + subtitle -->
+        <div class="hero-eyebrow-editorial hero-animate-3">
+          <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+          <span>While you focus on what only you can do, we install the intelligence that keeps service, sales, and operations running without depending on you.</span>
+        </div>
+
+        <!-- CTAs -->
+        <div class="hero-ctas-editorial hero-animate-4">
+          <a href="/en/contato" class="btn btn-primary-editorial btn-lg" id="hero-cta-primary">
+            Free diagnosis <span class="btn-arrow">→</span>
+          </a>
+          <a href="/en/opera-os" class="btn-secondary-editorial" id="hero-cta-secondary">
+            Discover the OPERA method
+          </a>
+        </div>
+
+      </div>
+
+
+    </section>
+
+    <!-- ══════════════ TICKER DE MÉTRICAS ══════════════ -->
+    <div class="metrics-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <div class="ticker-item">
+          <strong>286h</strong><span class="ticker-sep"></span><span>per year recovered per company</span>
+        </div>
+        <div class="ticker-item">
+          <strong>80%</strong><span class="ticker-sep"></span><span>drop in conversion after 15min without response</span>
+        </div>
+        <div class="ticker-item">
+          <strong>10–12 weeks</strong><span class="ticker-sep"></span><span>for complete system running</span>
+        </div>
+        <div class="ticker-item">
+          <strong>24/7</strong><span class="ticker-sep"></span><span>AI agents working while you sleep</span>
+        </div>
+        <div class="ticker-item">
+          <strong>60–90 days</strong><span class="ticker-sep"></span><span>average return on investment</span>
+        </div>
+        <div class="ticker-item">
+          <strong>67%</strong><span class="ticker-sep"></span><span>of managers decide without updated data</span>
+        </div>
+        <div class="ticker-item">
+          <strong>51%</strong><span class="ticker-sep"></span><span>of operation time on coordinable tasks</span>
+        </div>
+        <!-- Duplicate for loop -->
+        <div class="ticker-item" aria-hidden="true">
+          <strong>286h</strong><span class="ticker-sep"></span><span>per year recovered per company</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>80%</strong><span class="ticker-sep"></span><span>drop in conversion after 15min without response</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>10–12 weeks</strong><span class="ticker-sep"></span><span>for complete system running</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>24/7</strong><span class="ticker-sep"></span><span>AI agents working while you sleep</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>60–90 days</strong><span class="ticker-sep"></span><span>average return on investment</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>67%</strong><span class="ticker-sep"></span><span>of managers decide without updated data</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>51%</strong><span class="ticker-sep"></span><span>of operation time on coordinable tasks</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ LOGO STRIP — Segmentos ══════════════ -->
+    <div class="logo-strip" aria-hidden="true">
+      <div class="logo-strip-track">
+        <span class="logo-strip-item">Hospitality</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Clinics & Health</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Universities/Colleges</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Real Estate</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Law Firms</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Education</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">B2B Services</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Dealerships</span>
+        <span class="logo-strip-dot"></span>
+        <!-- duplicate -->
+        <span class="logo-strip-item">Hospitality</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Clinics & Health</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Universities/Colleges</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Real Estate</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Law Firms</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Education</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">B2B Services</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Dealerships</span>
+        <span class="logo-strip-dot"></span>
+      </div>
+    </div>
+
+    <!-- ══════════════ PROBLEMA (Stats) ══════════════ -->
+    <section id="problema" class="dark-section" aria-labelledby="problema-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">The Problem</p>
+          <h2 id="problema-heading">
+            The problem is not your team. It’s the <em>lack of coordination between departments</em>.
+          </h2>
+          <p>The team is good. The tools work. But departments don’t communicate. Each area with its own spreadsheet, decision, isolated data.</p>
+        </div>
+
+        <div class="stats-arpeggio-container reveal">
+          <div class="stats-arpeggio-header">
+            <span class="stats-arpeggio-eyebrow">The Hidden Cost of Discoordination</span>
+          </div>
+          <div class="stats-arpeggio-grid">
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Hours lost in<br>disconnected systems</span>
+              <span class="stat-number-arpeggio" data-target="286" data-suffix="h">286h</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Operation time<br>on manual tasks</span>
+              <span class="stat-number-arpeggio" data-target="51" data-suffix="%">51%</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Decisions made<br>without updated data</span>
+              <span class="stat-number-arpeggio" data-target="67" data-suffix="%">67%</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Conversion drop<br>after 15 minutes</span>
+              <span class="stat-number-arpeggio" data-target="80" data-suffix="%">80%</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="problema-conclusion reveal">
+          Operations are growing faster than the intelligence coordinating them.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════ SOLUÇÃO ══════════════ -->
+    <section id="solucao" class="solucao-section" aria-labelledby="solucao-heading">
+      <div class="solucao-grid-pattern" aria-hidden="true">
+        <svg class="solucao-grid-svg">
+          <defs>
+            <pattern id="grid-pattern-solucao" width="40" height="40" patternUnits="userSpaceOnUse" x="-1" y="-1">
+              <path d="M.5 40V.5H40" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern-solucao)" />
+          <svg x="-1" y="-1" class="solucao-grid-squares">
+            <rect stroke-width="0" width="39" height="39" x="161" y="41" />
+            <rect stroke-width="0" width="39" height="39" x="201" y="41" />
+            <rect stroke-width="0" width="39" height="39" x="41" y="241" />
+            <rect stroke-width="0" width="39" height="39" x="481" y="161" />
+            <rect stroke-width="0" width="39" height="39" x="521" y="161" />
+            <rect stroke-width="0" width="39" height="39" x="521" y="201" />
+            <rect stroke-width="0" width="39" height="39" x="801" y="81" />
+            <rect stroke-width="0" width="39" height="39" x="1121" y="321" />
+            <rect stroke-width="0" width="39" height="39" x="1161" y="321" />
+            <rect stroke-width="0" width="39" height="39" x="1441" y="121" />
+          </svg>
+        </svg>
+      </div>
+      <div class="container solucao-content-wrapper">
+        <div class="section-header reveal">
+          <p class="eyebrow">The Solution</p>
+          <h2 id="solucao-heading">
+            Each layer that <em>we connect</em>.
+          </h2>
+          <p>An intelligence layer over the systems you already use. We don’t replace your tools. We don’t replace your team. We connect everything and deploy AI agents to operate.</p>
+          <p style="margin-top: 12px;">Departments start sharing data in real time. Agents serve customers, organize the funnel, and execute processes. The system improves with every operation. <strong>We call this layer Opera.</strong></p>
+        </div>
+
+        <div class="solucao-editorial-table reveal">
+          
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{'{01}'}</div>
+            <div class="ser-col ser-category">Marketing</div>
+            <div class="ser-col ser-desc">Makes a decision and sales, finance, and operations are automatically notified. Before the next meeting.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">CRM Integration</span>
+              <span class="ser-tag">Pipeline Automation</span>
+            </div>
+          </div>
+
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{'{02}'}</div>
+            <div class="ser-col ser-category">Operations</div>
+            <div class="ser-col ser-desc">Detects a bottleneck and the system reorganizes priorities across the company. No meetings, no minutes, no friction.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Dynamic Reorganization</span>
+              <span class="ser-tag">Financial Synchronization</span>
+            </div>
+          </div>
+
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{'{03}'}</div>
+            <div class="ser-col ser-category">Customer Service</div>
+            <div class="ser-col ser-desc">Receives a complaint and the entire intelligence learns from it. The next customer won’t face the same issue.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Continuous Learning</span>
+              <span class="ser-tag">Friction Prevention</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Diagrama camada agêntica -->
+        <div class="agentic-diagram reveal" style="transition-delay: 200ms;">
+          <p class="agentic-diagram-title">how the agent layer connects your company</p>
+          <div class="agentic-system">
+            
+            <div class="agentic-layer top-layer">
+              <div class="agentic-node">Marketing</div>
+              <div class="agentic-node">Sales / CRM</div>
+              <div class="agentic-node">Customer Service</div>
+            </div>
+
+            <div class="agentic-core-wrapper">
+              <div class="agentic-core-glow"></div>
+              <div class="agentic-core">
+                <span class="core-pulse"></span>
+                Opera OS
+              </div>
+            </div>
+
+            <div class="agentic-layer bottom-layer">
+              <div class="agentic-node">Operations</div>
+              <div class="agentic-node">Finance</div>
+              <div class="agentic-node">Dashboard</div>
+            </div>
+            
+          </div>
+        </div>
+
+        <p class="solucao-metafora reveal" style="margin-top: var(--space-12);">
+          Information flows between departments without meetings, rework, or relying on anyone’s memory.
+        </p>
+
+        <div class="reveal" style="text-align: center; margin-top: 48px;">
+          <a href="/en/opera-os" class="btn btn-secondary">
+            How it works, in practice <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DIFERENCIAL ══════════════ -->
+    <section id="diferencial" aria-labelledby="diferencial-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">The Difference</p>
+          <h2 id="diferencial-heading">We work to <em>make ourselves unnecessary</em>.</h2>
+          <p>Most try to solve by buying one more thing. Agency, consultancy, software. Each delivers only a piece.</p>
+        </div>
+
+        <!-- Tabela editorial de comparação -->
+        <div class="dif-versus reveal">
+          <div class="dif-versus-others">
+            <div class="dif-versus-row">
+              <span class="dif-versus-label">Agency</span>
+              <span class="dif-versus-result">delivers campaign. Then leaves when contract ends.</span>
+            </div>
+            <div class="dif-versus-row">
+              <span class="dif-versus-label">Consultancy</span>
+              <span class="dif-versus-result">delivers report. You implement alone.</span>
+            </div>
+            <div class="dif-versus-row">
+              <span class="dif-versus-label">Software</span>
+              <span class="dif-versus-result">delivers login. Another disconnected system.</span>
+            </div>
+          </div>
+          <div class="dif-versus-catalise">
+            <p class="dif-versus-catalise-desc"><strong>We make the agent system co-operate with your business:</strong> built, integrated, team trained and evolving over time.</p>
+          </div>
+        </div>
+
+        <!-- Grade numerada de diferenciais -->
+        <div class="dif-grid reveal">
+          <div class="dif-item">
+            <span class="dif-num">01</span>
+            <div class="dif-body">
+              <h3>Complete implementation, not recommendation.</h3>
+              <p>When we leave, it’s working. We don’t deliver a plan for you to execute.</p>
+            </div>
+          </div>
+          <div class="dif-item">
+            <span class="dif-num">02</span>
+            <div class="dif-body">
+              <h3>Proprietary system, not resale.</h3>
+              <p>Opera and Matika CRM are ours. They don’t depend on third parties changing with every update.</p>
+            </div>
+          </div>
+          <div class="dif-item">
+            <span class="dif-num">03</span>
+            <div class="dif-body">
+              <h3>Permanent memory and self-improvement.</h3>
+              <p>The system records every decision and gets smarter every week. It’s not frozen automation.</p>
+            </div>
+          </div>
+          <div class="dif-item">
+            <span class="dif-num">04</span>
+            <div class="dif-body">
+              <h3>Method and continuous evolution.</h3>
+              <p>Five phases for implementation and ongoing support. The system grows with the business.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ANTES / DEPOIS ══════════════ -->
+    <section id="resultados" aria-labelledby="resultados-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">What Changes</p>
+          <h2 id="resultados-heading">What changes in <em>90 days</em>.</h2>
+        </div>
+
+        <div class="before-after reveal">
+          <div class="before-col">
+            <div class="before-after-label">
+              <span>✕</span> Before Catalise.me
+            </div>
+            <ul class="before-after-list">
+              <li><span class="list-icon">✕</span> Owner on WhatsApp 14 hours a day</li>
+              <li><span class="list-icon">✕</span> Lead at night dies, competitor responds first</li>
+              <li><span class="list-icon">✕</span> Each department with its own spreadsheet, no one knows the whole picture</li>
+              <li><span class="list-icon">✕</span> Review goes 5 days without response</li>
+              <li><span class="list-icon">✕</span> Pricing decisions based on gut feeling</li>
+              <li><span class="list-icon">✕</span> Doesn’t know which channel brings more ROI</li>
+            </ul>
+          </div>
+          <div class="after-col">
+            <div class="before-after-label">
+              <span>✓</span> After Catalise.me (90 days)
+            </div>
+            <ul class="before-after-list">
+              <li><span class="list-icon">✓</span> AI agents operate 24/7, owner gets nights back</li>
+              <li><span class="list-icon">✓</span> Lead at midnight gets response in 15 seconds</li>
+              <li><span class="list-icon">✓</span> Departments share intelligence in real time</li>
+              <li><span class="list-icon">✓</span> Review answered within 1 hour, automatically</li>
+              <li><span class="list-icon">✓</span> Dynamic pricing adjusted by demand</li>
+              <li><span class="list-icon">✓</span> Dashboard shows ROI by channel, in real time</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PARA QUEM ══════════════ -->
+    <section id="para-quem" aria-labelledby="para-quem-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">For Whom</p>
+          <h2 id="para-quem-heading">For whom Opera OS <em>works</em>.</h2>
+        </div>
+
+        <div class="qual-grid reveal">
+          <div class="qual-col yes">
+            <div class="qual-header">
+              <span class="qual-badge">It’s for you</span>
+            </div>
+            <ul class="qual-list">
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Your business bills <strong>R$ 100,000 or more per month</strong> and has consolidated operations</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">You are owner, manager, or director of a <strong>service company</strong> (hospitality, clinic, driving school, real estate, legal, education)</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Your operation grew as far as the team’s effort allowed, now you need a <strong>system</strong></span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">You are willing to invest in <strong>real transformation</strong>, not just another standalone tool</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">You can wait <strong>10 to 12 weeks</strong> to see the complete system running</span>
+              </li>
+            </ul>
+          </div>
+          <div class="qual-col no">
+            <div class="qual-header">
+              <span class="qual-badge">It’s not for you</span>
+            </div>
+            <ul class="qual-list">
+              <li>
+                <span class="qual-icon"><i data-lucide="x" aria-hidden="true"></i></span>
+                <span class="qual-text">Still validating business model</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="x" aria-hidden="true"></i></span>
+                <span class="qual-text">Need results in 2 weeks</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="x" aria-hidden="true"></i></span>
+                <span class="qual-text">Want to buy software only without process transformation</span>
+              </li>
+            </ul>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.30); margin-top: 24px; line-height: 1.7; font-style: italic;">
+              That’s fine, we’re honest about when we’re not the best option.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ CTA FINAL ══════════════ -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container">
+        <p class="eyebrow" style="justify-content: center; margin-bottom: var(--space-6);">Next step</p>
+        <h2 id="cta-heading">
+          Start with <em>free diagnosis</em>.
+        </h2>
+        <p>In 45 minutes, we’ll help identify operational bottlenecks, estimated financial impacts, and design a personalized implementation plan for your context.</p>
+        <div class="cta-buttons">
+          <a href="/en/contato" class="btn btn-primary btn-lg" id="final-cta-primary">
+            Schedule free diagnosis
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="https://wa.me/5575991879786?text=Hello!%20I%20would%20like%20to%20learn%20more%20about%20Catalise.me's%20free%20diagnostic%20session."
+            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp">
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+</BaseLayout>

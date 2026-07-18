@@ -148,9 +148,34 @@
   background: var(--green-neon);
 }
 
-/* Nav CTA */
-.nav-cta {
-  flex-shrink: 0;
+.nav-language {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 10px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .04);
+}
+
+.nav-language a {
+  min-width: 28px;
+  padding: 5px 6px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, .58);
+  font-size: .625rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.nav-language a:hover,
+.nav-language a[aria-current="true"] {
+  color: #0b0f16;
+  background: var(--green-neon);
 }
 
 /* Hamburger */
@@ -239,17 +264,6 @@
   background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
 }
-
-/* Fix for buttons inside the mobile menu */
-.nav-mobile a.btn {
-  font-size: var(--text-base);
-  font-weight: 600;
-  color: #ffffff;
-  letter-spacing: 0.01em;
-  text-align: center;
-}
-
-.nav-mobile-cta { margin-top: 8px; justify-content: center; }
 
 /* ─────────────────────────────────────────
    BUTTONS — Soft Brutalism: mechanical, physical press
@@ -1823,7 +1837,7 @@
 
 @media (min-width: 769px) and (max-width: 900px) {
   .nav-links,
-  .nav-cta { display: none; }
+  .nav-language { display: none; }
   .nav-hamburger { display: flex; }
   .no-js .nav-hamburger { display: none; }
   .no-js .nav-mobile {
@@ -1855,7 +1869,7 @@
   }
 
   .nav-links { display: none; }
-  .nav-cta { display: none; }
+  .nav-language { display: none; }
   .nav-hamburger { display: flex; }
 
   .no-js .nav-hamburger { display: none; }

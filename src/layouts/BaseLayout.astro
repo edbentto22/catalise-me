@@ -3,6 +3,8 @@ import SEOHead from '../components/SEOHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import ModalDiagnostico from '../components/ModalDiagnostico.astro';
+import type { Locale } from '../i18n/config';
+import { translatedLocales } from '../i18n/routes';
 
 // Import base styles (always loaded)
 import '../styles/tokens.css';
@@ -25,6 +27,8 @@ interface Props {
   showModal?: boolean;
   noindex?: boolean;
   keywords?: string;
+  locale?: Locale;
+  localizedPaths?: Partial<Record<Locale, string>>;
 }
 
 const {
@@ -41,14 +45,21 @@ const {
   showModal = true,
   noindex = false,
   keywords,
+  locale = 'pt',
+  localizedPaths,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.origin).toString();
+const basePath = locale === 'pt' ? currentPath : currentPath.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/';
+const generatedPaths = translatedLocales.length > 1
+  ? Object.fromEntries(translatedLocales.map((language) => [language, language === 'pt' ? basePath : `/${language}${basePath}`])) as Partial<Record<Locale, string>>
+  : undefined;
+const allLocalizedPaths = localizedPaths || generatedPaths;
 ---
 
 <!DOCTYPE html>
-<html lang="pt-BR" class="no-js">
+<html lang={locale === 'pt' ? 'pt-BR' : locale === 'en' ? 'en-US' : 'es-419'} class="no-js">
 <head>
   <SEOHead
     title={title}
@@ -60,19 +71,21 @@ const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.o
     canonical={canonicalUrl}
     noindex={noindex}
     keywords={keywords}
+    locale={locale}
+    localizedPaths={allLocalizedPaths}
   />
 </head>
 <body class={bodyClass} data-page-type={pageType}>
 
-  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+  <a class="skip-link" href="#main-content">{locale === 'pt' ? 'Pular para o conteúdo' : locale === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
 
-  <Nav currentPath={currentPath} />
+  <Nav currentPath={currentPath} locale={locale} localizedPaths={allLocalizedPaths} />
 
   <main id="main-content" tabindex="-1">
     <slot />
   </main>
 
-  {showFooter && <Footer />}
+  {showFooter && <Footer locale={locale} />}
   {showModal && <ModalDiagnostico />}
 
 

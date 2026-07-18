@@ -10,6 +10,8 @@ interface Props {
   twitterCard?: string;
   noindex?: boolean;
   keywords?: string;
+  locale?: 'pt' | 'en' | 'es';
+  localizedPaths?: Partial<Record<'pt' | 'en' | 'es', string>>;
 }
 
 const {
@@ -23,7 +25,13 @@ const {
   twitterCard = 'summary_large_image',
   noindex = false,
   keywords,
+  locale = 'pt',
+  localizedPaths,
 } = Astro.props;
+
+const localeCodes = { pt: 'pt-BR', en: 'en-US', es: 'es-419' } as const;
+const canonicalOrigin = canonical ? new URL(canonical).origin : 'https://catalise.me';
+const alternateEntries = localizedPaths ? Object.entries(localizedPaths) as Array<['pt' | 'en' | 'es', string]> : [];
 ---
 
 <meta charset="UTF-8">
@@ -40,6 +48,7 @@ const {
 <meta property="og:title" content={ogTitle || title} />
 <meta property="og:description" content={ogDescription || description} />
 <meta property="og:type" content="website">
+<meta property="og:locale" content={localeCodes[locale]} />
 {ogUrl && <meta property="og:url" content={ogUrl} />}
 <meta property="og:image" content={ogImage}>
 
@@ -51,6 +60,10 @@ const {
 
 <!-- Canonical -->
 {canonical && <link rel="canonical" href={canonical} />}
+{alternateEntries.map(([language, path]) => (
+  <link rel="alternate" hreflang={localeCodes[language]} href={new URL(path, canonicalOrigin).toString()} />
+))}
+{localizedPaths?.pt && <link rel="alternate" hreflang="x-default" href={new URL(localizedPaths.pt, canonicalOrigin).toString()} />}
 
 <!-- Preload critical fonts -->
 <link rel="preload" href="/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-book.otf" as="font" type="font/otf" crossorigin>

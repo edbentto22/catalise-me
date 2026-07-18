@@ -1,27 +1,25 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import '../styles/inner.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/inner.css';
 ---
 
-<BaseLayout
-  title="Contato · Catalise.me: Agende seu diagnóstico gratuito"
-  description="Fale com a Catalise.me. Diagnóstico gratuito para perfis qualificados. Resposta em até 24 horas. Pelo formulário ou WhatsApp."
-  ogTitle="Contato · Catalise.me: Agende seu diagnóstico gratuito"
-  ogDescription="Diagnóstico gratuito para perfis qualificados. Resposta em até 24 horas."
-  ogUrl="https://catalise.me/contato"
-  canonical="https://catalise.me/contato"
+<BaseLayout locale="en" localizedPaths={{ pt: '/contato', en: '/en/contato', es: '/es/contato' }}
+  title="Contact · Catalise.me: Schedule your free diagnosis"
+  description="Talk to Catalise.me. Free diagnosis for qualified profiles. Response within 24 hours. Via form or WhatsApp."
+  ogTitle="Contact · Catalise.me: Schedule your free diagnosis"
+  ogDescription="Free diagnosis for qualified profiles. Response within 24 hours." ogUrl="https://catalise.me/en/contato" canonical="https://catalise.me/en/contato"
   pageType="inner"
 >
 
     <!-- HERO -->
     <header class="page-hero" aria-labelledby="contato-heading">
       <div class="container">
-        <p class="eyebrow hero-animate-1">Diagnóstico gratuito</p>
+        <p class="eyebrow hero-animate-1">Free diagnosis</p>
         <h1 id="contato-heading" class="page-hero-title hero-animate-2">
-          Comece pelo <em>diagnóstico gratuito</em>.
+          Start with <em>free diagnosis</em>.
         </h1>
         <p class="page-hero-lede hero-animate-3">
-          Em 45 minutos, vamos ajudar a identificar gargalos operacionais, impactos financeiros estimados, e desenhar um plano de implementação personalizado para o seu contexto.
+          In 45 minutes, we’ll help identify operational bottlenecks, estimated financial impacts, and design a personalized implementation plan for your context.
         </p>
       </div>
     </header>
@@ -31,12 +29,12 @@ import '../styles/inner.css';
       <div class="container">
         <div class="contato-layout">
 
-          <!-- Formulário -->
+          <!-- Form -->
           <div class="contato-form-col">
             <div class="form-wrapper">
               <div class="form-header">
-                <p class="eyebrow">Formulário</p>
-                <h2 id="form-heading">Agende um papo com a gente. <span style="font-size: var(--text-lg); font-weight: 400; font-style: normal; display: block; margin-top: var(--space-2); color: inherit;">Resposta em até 24 horas.</span></h2>
+                <p class="eyebrow">Form</p>
+                <h2 id="form-heading">Schedule a chat with us. <span style="font-size: var(--text-lg); font-weight: 400; font-style: normal; display: block; margin-top: var(--space-2); color: inherit;">Response within 24 hours.</span></h2>
 
               </div>
 
@@ -44,7 +42,7 @@ import '../styles/inner.css';
 
                 <div class="form-row">
                   <div class="form-group" id="group-name">
-                    <label class="form-label" for="field-name">Nome completo <span class="required">*</span></label>
+                    <label class="form-label" for="field-name">Full name <span class="required">*</span></label>
                     <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required aria-describedby="error-name">
                     <span class="form-error" id="error-name" aria-live="polite"></span>
                   </div>
@@ -57,19 +55,19 @@ import '../styles/inner.css';
 
                 <div class="form-row">
                   <div class="form-group" id="group-company">
-                    <label class="form-label" for="field-company">Empresa e cargo <span class="required">*</span></label>
+                    <label class="form-label" for="field-company">Company and position <span class="required">*</span></label>
                     <input class="form-input" type="text" id="field-company" name="company" autocomplete="organization-title" required aria-describedby="error-company">
                     <span class="form-error" id="error-company" aria-live="polite"></span>
                   </div>
                   <div class="form-group" id="group-revenue">
-                    <label class="form-label" for="field-revenue">Qual é o seu faturamento médio mensal? <span class="required">*</span></label>
+                    <label class="form-label" for="field-revenue">What is your average monthly revenue? <span class="required">*</span></label>
                     <select class="form-select" id="field-revenue" name="revenue" required aria-describedby="error-revenue">
-                      <option value="" disabled selected>Selecione</option>
-                      <option value="ate-50k">Até R$ 50 mil</option>
-                      <option value="50k-150k">R$ 50 mil – R$ 150 mil</option>
-                      <option value="150k-500k">R$ 150 mil – R$ 500 mil</option>
-                      <option value="500k-2m">R$ 500 mil – R$ 2 milhões</option>
-                      <option value="acima-2m">Acima de R$ 2 milhões</option>
+                      <option value="" disabled selected>Select</option>
+                      <option value="ate-50k">Up to R$ 50k</option>
+                      <option value="50k-150k">R$ 50k – R$ 150k</option>
+                      <option value="150k-500k">R$ 150k – R$ 500k</option>
+                      <option value="500k-2m">R$ 500k – R$ 2 million</option>
+                      <option value="acima-2m">Above R$ 2 million</option>
                     </select>
                     <span class="form-error" id="error-revenue" aria-live="polite"></span>
                   </div>
@@ -77,35 +75,35 @@ import '../styles/inner.css';
 
                 <div class="form-row">
                   <div class="form-group" id="group-phone">
-                    <label class="form-label" for="field-phone">Telefone / WhatsApp</label>
+                    <label class="form-label" for="field-phone">Phone / WhatsApp</label>
                     <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel">
-                    <span class="form-hint">Para resposta mais rápida</span>
+                    <span class="form-hint">For faster response</span>
                   </div>
                   <div class="form-group" id="group-source">
-                    <label class="form-label" for="field-source">Como chegou até nós?</label>
+                    <label class="form-label" for="field-source">How did you find us?</label>
                     <select class="form-select" id="field-source" name="source">
-                      <option value="" disabled selected>Selecione</option>
-                      <option value="indicacao">Indicação</option>
+                      <option value="" disabled selected>Select</option>
+                      <option value="indicacao">Referral</option>
                       <option value="google">Google</option>
                       <option value="linkedin">LinkedIn</option>
-                      <option value="evento">Evento</option>
-                      <option value="outro">Outro</option>
+                      <option value="evento">Event</option>
+                      <option value="outro">Other</option>
                     </select>
                   </div>
                 </div>
 
                 <div class="form-group" id="group-message">
-                  <label class="form-label" for="field-message">Como podemos ajudar? <span class="required">*</span></label>
+                  <label class="form-label" for="field-message">How can we help? <span class="required">*</span></label>
                   <textarea class="form-textarea" id="field-message" name="message" required aria-describedby="error-message"></textarea>
                   <span class="form-error" id="error-message" aria-live="polite"></span>
                 </div>
 
                 <div class="form-submit">
                   <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
-                    Quero meu diagnóstico gratuito <span class="btn-arrow">→</span>
+                    I want my free diagnosis <span class="btn-arrow">→</span>
                   </button>
                   <p class="form-legal">
-                    Ao enviar, você concorda com nossa política de privacidade. Seus dados nunca serão compartilhados com terceiros.
+                    By submitting, you agree to our privacy policy. Your data will never be shared with third parties.
                   </p>
                 </div>
               </form>
@@ -113,27 +111,27 @@ import '../styles/inner.css';
               <!-- Success state -->
               <div class="form-success" id="form-success" role="status" tabindex="-1">
                 <div class="success-icon">✓</div>
-                <h3>Encaminhado. <em>Se não receber nosso contato em até 24 horas úteis, fale com a gente pelo WhatsApp.</em></h3>
-                <p>Se preferir falar agora, chama no <a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a>.</p>
+                <h3>Forwarded. <em>If you do not receive our contact within 24 business hours, reach out to us via WhatsApp.</em></h3>
+                <p>If you prefer to talk now, contact us on <a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a>.</p>
               </div>
             </div>
           </div>
 
           <!-- Sidebar -->
-          <aside class="contato-sidebar" aria-label="Canais alternativos">
+          <aside class="contato-sidebar" aria-label="Alternative channels">
             <div class="section-header" style="margin-bottom: 32px;">
-              <p class="eyebrow">Canais Alternativos</p>
-              <h2 style="font-size: 1.5rem;">Prefere outro canal?</h2>
+              <p class="eyebrow">Alternative Channels</p>
+              <h2 style="font-size: 1.5rem;">Prefer another channel?</h2>
             </div>
 
             <div class="channel-cards" style="grid-template-columns: 1fr; gap: 12px;">
-              <a href="https://wa.me/5575991879786?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20diagnóstico%20gratuito%20da%20Catalise.me" target="_blank" rel="noopener" class="channel-card whatsapp" id="contact-whatsapp-link">
+              <a href="https://wa.me/5575991879786?text=Hello!%20I%20would%20like%20to%20learn%20more%20about%20Catalise.me's%20free%20diagnostic%20session." target="_blank" rel="noopener" class="channel-card whatsapp" id="contact-whatsapp-link">
                 <div class="channel-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                 </div>
                 <div class="channel-info">
                   <h3>WhatsApp</h3>
-                  <p>Resposta em até 1h em horário comercial</p>
+                  <p>Response within 1 hour during business hours</p>
                   <p class="channel-meta">(75) 99187-9786</p>
                 </div>
               </a>
@@ -144,7 +142,7 @@ import '../styles/inner.css';
                 </div>
                 <div class="channel-info">
                   <h3>Email</h3>
-                  <p>Para mensagens elaboradas ou anexos</p>
+                  <p>For detailed messages or attachments</p>
                   <p class="channel-meta">contato@catalise.me</p>
                 </div>
               </a>
@@ -161,54 +159,54 @@ import '../styles/inner.css';
       <div class="container container-sm">
         <div class="section-header reveal">
           <p class="eyebrow">FAQ</p>
-          <h2 id="faq-contato-heading">Dúvidas frequentes.</h2>
+          <h2 id="faq-contato-heading">Frequently asked questions.</h2>
         </div>
 
         <div class="faq-list reveal">
           <div class="faq-item" id="faq-c1">
             <button class="faq-question" aria-expanded="false">
-              <span class="faq-question-text">Diagnóstico é sempre gratuito?</span>
+              <span class="faq-question-text">Is the diagnosis always free?</span>
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                <p>Para perfis qualificados, sim. Negócios com faturamento abaixo de R$ 100k/mês ou em fase de validação podem receber direcionamento para soluções menores, sem o investimento completo do Opera OS.</p>
+                <p>For qualified profiles, yes. Businesses with revenue below R$ 100k/month or in validation phase may be directed to smaller solutions without the full Opera OS investment.</p>
               </div>
             </div>
           </div>
 
           <div class="faq-item" id="faq-c2">
             <button class="faq-question" aria-expanded="false">
-              <span class="faq-question-text">Em quanto tempo recebo resposta?</span>
+              <span class="faq-question-text">How soon will I receive a response?</span>
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                <p>Resposta inicial em até 24h úteis. WhatsApp em até 1h em horário comercial.</p>
+                <p>Initial response within 24 business hours. WhatsApp within 1 hour during business hours.</p>
               </div>
             </div>
           </div>
 
           <div class="faq-item" id="faq-c3">
             <button class="faq-question" aria-expanded="false">
-              <span class="faq-question-text">Vocês atendem em todo o Brasil?</span>
+              <span class="faq-question-text">Do you serve all over Brazil?</span>
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                <p>Sim, atuamos para clientes em todo o país. Diagnóstico e implantação podem ser presenciais ou totalmente remotos.</p>
+                <p>Yes, we serve clients nationwide. Diagnosis and implementation can be onsite or fully remote.</p>
               </div>
             </div>
           </div>
 
           <div class="faq-item" id="faq-c4">
             <button class="faq-question" aria-expanded="false">
-              <span class="faq-question-text">Posso indicar alguém?</span>
+              <span class="faq-question-text">Can I refer someone?</span>
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                <p>Pode e adoramos. Indicações qualificadas têm tratamento prioritário e nosso programa de referência oferece benefício para quem indica. Conta com a gente no email.</p>
+                <p>Yes, and we love it. Qualified referrals receive priority treatment and our referral program offers benefits for those who refer. Count on us via email.</p>
               </div>
             </div>
           </div>

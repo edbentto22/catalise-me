@@ -1,0 +1,500 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/home.css';
+---
+
+<BaseLayout locale="es" localizedPaths={{ pt: '/', en: '/en', es: '/es' }}
+  title="Catalise.me: Sistemas y agentes de IA que trabajan junto a su negocio."
+  description="Catalise.me conecta todos sus sectores en una sola inteligencia que atiende, vende y opera procesos 24 horas al día. En 10 a 12 semanas."
+  ogTitle="Catalise.me: Sistemas y agentes de IA que trabajan junto a su negocio."
+  ogDescription="Más velocidad, menos costos, más resultados. Sistema operativo con IA en 10-12 semanas." ogUrl="https://catalise.me/es" canonical="https://catalise.me/es"
+  keywords="inteligencia artificial para empresas, agentes de IA, automatización de procesos, Opera OS, Catalise.me"
+  pageType="home"
+>
+
+    <!-- ══════════════ HERO — EDITORIAL FULLSCREEN ══════════════ -->
+    <section class="hero-editorial" aria-labelledby="hero-heading" id="hero">
+
+      <!-- BG Layer: vídeo + dark overlay -->
+      <div class="hero-bg-layer" aria-hidden="true" data-media-frame>
+        <video class="hero-video-bg" id="hero-bg-video" data-src="/assets/background-looping-video.mp4?v=20260715" poster="/assets/background-looping-video-poster.jpg" loop muted playsinline preload="none"></video>
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-bg-grain"></div>
+      </div>
+
+      <!-- Grid decoration: cruzes + nos pontos do grid -->
+      <div class="hero-grid-crosses" aria-hidden="true">
+        <span class="hx" style="--hx: 3.5%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 9%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 37%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 64%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 64%"></span>
+        <span class="hx" style="--hx: 3.5%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 34%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 65%; --hy: 92%"></span>
+        <span class="hx" style="--hx: 96%; --hy: 92%"></span>
+      </div>
+
+      <!-- Content Layer -->
+      <div class="hero-content-layer">
+
+        <!-- Top row: headline + badge -->
+        <div class="hero-top-row">
+          <div class="hero-headline-block">
+            <h1 id="hero-heading" class="hero-editorial-heading hero-animate-1">
+              Sistemas y agentes de IA<br>
+              <span>que trabajan junto a su negocio.</span>
+            </h1>
+          </div>
+        </div>
+
+        <!-- Eyebrow: dot + subtitle -->
+        <div class="hero-eyebrow-editorial hero-animate-3">
+          <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+          <span>Mientras usted se ocupa de lo que solo usted puede hacer, instalamos la inteligencia que mantiene atención, ventas y operación funcionando sin depender de usted.</span>
+        </div>
+
+        <!-- CTAs -->
+        <div class="hero-ctas-editorial hero-animate-4">
+          <a href="/es/contato" class="btn btn-primary-editorial btn-lg" id="hero-cta-primary">
+            Diagnóstico gratuito <span class="btn-arrow">→</span>
+          </a>
+          <a href="/es/opera-os" class="btn-secondary-editorial" id="hero-cta-secondary">
+            Conocer el método OPERA
+          </a>
+        </div>
+
+      </div>
+
+
+    </section>
+
+    <!-- ══════════════ TICKER DE MÉTRICAS ══════════════ -->
+    <div class="metrics-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <div class="ticker-item">
+          <strong>286h</strong><span class="ticker-sep"></span><span>por año recuperadas por empresa</span>
+        </div>
+        <div class="ticker-item">
+          <strong>80%</strong><span class="ticker-sep"></span><span>caída en la conversión después de 15 min sin respuesta</span>
+        </div>
+        <div class="ticker-item">
+          <strong>10–12 semanas</strong><span class="ticker-sep"></span><span>para sistema completo funcionando</span>
+        </div>
+        <div class="ticker-item">
+          <strong>24/7</strong><span class="ticker-sep"></span><span>agentes de IA que trabajan mientras usted duerme</span>
+        </div>
+        <div class="ticker-item">
+          <strong>60–90 días</strong><span class="ticker-sep"></span><span>retorno promedio de la inversión</span>
+        </div>
+        <div class="ticker-item">
+          <strong>67%</strong><span class="ticker-sep"></span><span>de los gestores deciden sin dato actualizado</span>
+        </div>
+        <div class="ticker-item">
+          <strong>51%</strong><span class="ticker-sep"></span><span>del tiempo de operación en tareas coordinables</span>
+        </div>
+        <!-- Duplicate for loop -->
+        <div class="ticker-item" aria-hidden="true">
+          <strong>286h</strong><span class="ticker-sep"></span><span>por año recuperadas por empresa</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>80%</strong><span class="ticker-sep"></span><span>caída en la conversión después de 15 min sin respuesta</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>10–12 semanas</strong><span class="ticker-sep"></span><span>para sistema completo funcionando</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>24/7</strong><span class="ticker-sep"></span><span>agentes de IA que trabajan mientras usted duerme</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>60–90 días</strong><span class="ticker-sep"></span><span>retorno promedio de la inversión</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>67%</strong><span class="ticker-sep"></span><span>de los gestores deciden sin dato actualizado</span>
+        </div>
+        <div class="ticker-item" aria-hidden="true">
+          <strong>51%</strong><span class="ticker-sep"></span><span>del tiempo de operación en tareas coordinables</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ LOGO STRIP — Segmentos ══════════════ -->
+    <div class="logo-strip" aria-hidden="true">
+      <div class="logo-strip-track">
+        <span class="logo-strip-item">Hotelería</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Clínicas y Salud</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Universidades/Facultades</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Inmobiliarias</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Despachos Jurídicos</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Educación</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Servicios B2B</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Concesionarias</span>
+        <span class="logo-strip-dot"></span>
+        <!-- duplicate -->
+        <span class="logo-strip-item">Hotelería</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Clínicas y Salud</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Universidades/Facultades</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Inmobiliarias</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Despachos Jurídicos</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Educación</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Servicios B2B</span>
+        <span class="logo-strip-dot"></span>
+        <span class="logo-strip-item">Concesionarias</span>
+        <span class="logo-strip-dot"></span>
+      </div>
+    </div>
+
+    <!-- ══════════════ PROBLEMA (Stats) ══════════════ -->
+    <section id="problema" class="dark-section" aria-labelledby="problema-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">El Problema</p>
+          <h2 id="problema-heading">
+            El problema no es su equipo. Es la <em>falta de coordinación entre los sectores</em>.
+          </h2>
+          <p>El equipo es bueno. Las herramientas funcionan. Pero los sectores no se comunican. Cada área con su hoja de cálculo, su decisión, su dato aislado.</p>
+        </div>
+
+        <div class="stats-arpeggio-container reveal">
+          <div class="stats-arpeggio-header">
+            <span class="stats-arpeggio-eyebrow">El Costo Oculto de la Descoordinación</span>
+          </div>
+          <div class="stats-arpeggio-grid">
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Horas perdidas en<br>sistemas desconectados</span>
+              <span class="stat-number-arpeggio" data-target="286" data-suffix="h">286h</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Tiempo de operación<br>en tareas manuales</span>
+              <span class="stat-number-arpeggio" data-target="51" data-suffix="%">51%</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Decisiones tomadas<br>sin dato actualizado</span>
+              <span class="stat-number-arpeggio" data-target="67" data-suffix="%">67%</span>
+            </div>
+            <div class="stat-item-arpeggio">
+              <span class="stat-label-arpeggio">Caída de conversión<br>después de 15 minutos</span>
+              <span class="stat-number-arpeggio" data-target="80" data-suffix="%">80%</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="problema-conclusion reveal">
+          Es la operación creciendo más rápido que la inteligencia que la coordina.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════ SOLUÇÃO ══════════════ -->
+    <section id="solucao" class="solucao-section" aria-labelledby="solucao-heading">
+      <div class="solucao-grid-pattern" aria-hidden="true">
+        <svg class="solucao-grid-svg">
+          <defs>
+            <pattern id="grid-pattern-solucao" width="40" height="40" patternUnits="userSpaceOnUse" x="-1" y="-1">
+              <path d="M.5 40V.5H40" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern-solucao)" />
+          <svg x="-1" y="-1" class="solucao-grid-squares">
+            <rect stroke-width="0" width="39" height="39" x="161" y="41" />
+            <rect stroke-width="0" width="39" height="39" x="201" y="41" />
+            <rect stroke-width="0" width="39" height="39" x="41" y="241" />
+            <rect stroke-width="0" width="39" height="39" x="481" y="161" />
+            <rect stroke-width="0" width="39" height="39" x="521" y="161" />
+            <rect stroke-width="0" width="39" height="39" x="521" y="201" />
+            <rect stroke-width="0" width="39" height="39" x="801" y="81" />
+            <rect stroke-width="0" width="39" height="39" x="1121" y="321" />
+            <rect stroke-width="0" width="39" height="39" x="1161" y="321" />
+            <rect stroke-width="0" width="39" height="39" x="1441" y="121" />
+          </svg>
+        </svg>
+      </div>
+      <div class="container solucao-content-wrapper">
+        <div class="section-header reveal">
+          <p class="eyebrow">La Solución</p>
+          <h2 id="solucao-heading">
+            Cada capa que <em>conectamos</em>.
+          </h2>
+          <p>Una capa de inteligencia sobre los sistemas que ya usa. No cambiamos sus herramientas. No sustituimos su equipo. Conectamos todo y ponemos agentes de IA para operar.</p>
+          <p style="margin-top: 12px;">Los sectores comienzan a compartir datos en tiempo real. Los agentes atienden clientes, organizan el embudo y ejecutan procesos. Y el sistema mejora con cada operación. <strong>Llamamos a esta capa Opera.</strong></p>
+        </div>
+
+        <div class="solucao-editorial-table reveal">
+          
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{'{01}'}</div>
+            <div class="ser-col ser-category">Marketing</div>
+            <div class="ser-col ser-desc">Toma una decisión y ventas, finanzas y operación son notificados automáticamente. Antes de la próxima reunión.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Integración CRM</span>
+              <span class="ser-tag">Automatización de Pipeline</span>
+            </div>
+          </div>
+
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{'{02}'}</div>
+            <div class="ser-col ser-category">Operación</div>
+            <div class="ser-col ser-desc">Detecta un cuello de botella y el sistema reorganiza prioridades de toda la empresa. Sin reunión, sin acta, sin fricción.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Reorganización Dinámica</span>
+              <span class="ser-tag">Sincronía Financiera</span>
+            </div>
+          </div>
+
+          <div class="solucao-editorial-row">
+            <div class="ser-col ser-index">{'{03}'}</div>
+            <div class="ser-col ser-category">Atención</div>
+            <div class="ser-col ser-desc">Recibe una queja y toda la inteligencia aprende de ella. El próximo cliente no pasa por el mismo problema.</div>
+            <div class="ser-col ser-tags">
+              <span class="ser-tag">Aprendizaje Continuo</span>
+              <span class="ser-tag">Prevención de Fricción</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Diagrama camada agêntica -->
+        <div class="agentic-diagram reveal" style="transition-delay: 200ms;">
+          <p class="agentic-diagram-title">cómo la capa agéntica conecta su empresa</p>
+          <div class="agentic-system">
+            
+            <div class="agentic-layer top-layer">
+              <div class="agentic-node">Marketing</div>
+              <div class="agentic-node">Ventas / CRM</div>
+              <div class="agentic-node">Atención</div>
+            </div>
+
+            <div class="agentic-core-wrapper">
+              <div class="agentic-core-glow"></div>
+              <div class="agentic-core">
+                <span class="core-pulse"></span>
+                Opera OS
+              </div>
+            </div>
+
+            <div class="agentic-layer bottom-layer">
+              <div class="agentic-node">Operación</div>
+              <div class="agentic-node">Financiero</div>
+              <div class="agentic-node">Dashboard</div>
+            </div>
+            
+          </div>
+        </div>
+
+        <p class="solucao-metafora reveal" style="margin-top: var(--space-12);">
+          La información circula entre los sectores sin reunión, sin retrabajo, sin depender de la memoria de nadie.
+        </p>
+
+        <div class="reveal" style="text-align: center; margin-top: 48px;">
+          <a href="/es/opera-os" class="btn btn-secondary">
+            Cómo funciona, en la práctica <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DIFERENCIAL ══════════════ -->
+    <section id="diferencial" aria-labelledby="diferencial-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">La Diferencia</p>
+          <h2 id="diferencial-heading">Trabajamos para <em>no ser necesarios</em>.</h2>
+          <p>La mayoría intenta resolver comprando otra cosa más. Agencia, consultoría, software. Cada una entrega solo una parte.</p>
+        </div>
+
+        <!-- Tabela editorial de comparação -->
+        <div class="dif-versus reveal">
+          <div class="dif-versus-others">
+            <div class="dif-versus-row">
+              <span class="dif-versus-label">Agencia</span>
+              <span class="dif-versus-result">entrega campaña. Y se va cuando termina el contrato.</span>
+            </div>
+            <div class="dif-versus-row">
+              <span class="dif-versus-label">Consultoría</span>
+              <span class="dif-versus-result">entrega informe. Usted implementa solo.</span>
+            </div>
+            <div class="dif-versus-row">
+              <span class="dif-versus-label">Software</span>
+              <span class="dif-versus-result">entrega acceso. Otro sistema desconectado de los demás.</span>
+            </div>
+          </div>
+          <div class="dif-versus-catalise">
+            <p class="dif-versus-catalise-desc"><strong>Hacemos que el sistema agéntico coopere con su negocio:</strong> construido, integrado, equipo entrenado y evolucionando en el tiempo.</p>
+          </div>
+        </div>
+
+        <!-- Grade numerada de diferenciais -->
+        <div class="dif-grid reveal">
+          <div class="dif-item">
+            <span class="dif-num">01</span>
+            <div class="dif-body">
+              <h3>Implementación completa, no recomendación.</h3>
+              <p>Cuando nos vamos, está funcionando. No entregamos un plan para que usted ejecute.</p>
+            </div>
+          </div>
+          <div class="dif-item">
+            <span class="dif-num">02</span>
+            <div class="dif-body">
+              <h3>Sistema propietario, no reventa.</h3>
+              <p>Opera y CRM Matika son nuestros. No dependen de terceros que cambian con cada actualización.</p>
+            </div>
+          </div>
+          <div class="dif-item">
+            <span class="dif-num">03</span>
+            <div class="dif-body">
+              <h3>Memoria permanente y auto-mejora.</h3>
+              <p>El sistema registra cada decisión y se vuelve más inteligente cada semana. No es una automatización congelada.</p>
+            </div>
+          </div>
+          <div class="dif-item">
+            <span class="dif-num">04</span>
+            <div class="dif-body">
+              <h3>Método y evolución continua.</h3>
+              <p>Cinco fases para implantar y seguimiento después. El sistema crece junto con el negocio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ANTES / DEPOIS ══════════════ -->
+    <section id="resultados" aria-labelledby="resultados-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Lo Que Cambia</p>
+          <h2 id="resultados-heading">Lo que cambia en <em>90 días</em>.</h2>
+        </div>
+
+        <div class="before-after reveal">
+          <div class="before-col">
+            <div class="before-after-label">
+              <span>✕</span> Antes de Catalise.me
+            </div>
+            <ul class="before-after-list">
+              <li><span class="list-icon">✕</span> Dueño en WhatsApp 14 horas al día</li>
+              <li><span class="list-icon">✕</span> Lead por la noche muere, competidor responde antes</li>
+              <li><span class="list-icon">✕</span> Cada sector con su hoja de cálculo, nadie conoce el todo</li>
+              <li><span class="list-icon">✕</span> Review queda 5 días sin respuesta</li>
+              <li><span class="list-icon">✕</span> Decisión de pricing sale de feeling</li>
+              <li><span class="list-icon">✕</span> No sabe qué canal trae más ROI</li>
+            </ul>
+          </div>
+          <div class="after-col">
+            <div class="before-after-label">
+              <span>✓</span> Después de Catalise.me (90 días)
+            </div>
+            <ul class="before-after-list">
+              <li><span class="list-icon">✓</span> Agentes de IA operan 24/7, dueño vuelve a tener noche</li>
+              <li><span class="list-icon">✓</span> Lead a medianoche recibe respuesta en 15 segundos</li>
+              <li><span class="list-icon">✓</span> Sectores comparten inteligencia en tiempo real</li>
+              <li><span class="list-icon">✓</span> Review respondida en hasta 1 hora, automáticamente</li>
+              <li><span class="list-icon">✓</span> Pricing dinámico ajustado por demanda</li>
+              <li><span class="list-icon">✓</span> Dashboard muestra ROI por canal, en tiempo real</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PARA QUEM ══════════════ -->
+    <section id="para-quem" aria-labelledby="para-quem-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Para Quién</p>
+          <h2 id="para-quem-heading">Para quién Opera OS <em>funciona</em>.</h2>
+        </div>
+
+        <div class="qual-grid reveal">
+          <div class="qual-col yes">
+            <div class="qual-header">
+              <span class="qual-badge">Es para usted</span>
+            </div>
+            <ul class="qual-list">
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Su negocio factura <strong>R$ 100.000 o más por mes</strong> y tiene operación consolidada</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Usted es dueño, gestor o director de una <strong>empresa de servicios</strong> (hotelería, clínica, autoescuela, inmobiliaria, jurídico, educación)</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Su operación creció hasta donde pudo por el esfuerzo del equipo, ahora necesita <strong>sistema</strong></span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Está dispuesto a invertir en <strong>transformación real</strong>, no en otra herramienta suelta</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="qual-text">Puede esperar <strong>10 a 12 semanas</strong> para ver el sistema completo funcionando</span>
+              </li>
+            </ul>
+          </div>
+          <div class="qual-col no">
+            <div class="qual-header">
+              <span class="qual-badge">No es para usted</span>
+            </div>
+            <ul class="qual-list">
+              <li>
+                <span class="qual-icon"><i data-lucide="x" aria-hidden="true"></i></span>
+                <span class="qual-text">Aún está validando modelo de negocio</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="x" aria-hidden="true"></i></span>
+                <span class="qual-text">Necesita resultado en 2 semanas</span>
+              </li>
+              <li>
+                <span class="qual-icon"><i data-lucide="x" aria-hidden="true"></i></span>
+                <span class="qual-text">Quiere comprar solo software sin transformación de proceso</span>
+              </li>
+            </ul>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.30); margin-top: 24px; line-height: 1.7; font-style: italic;">
+              Está bien, somos honestos sobre cuándo no somos la mejor opción.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ CTA FINAL ══════════════ -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container">
+        <p class="eyebrow" style="justify-content: center; margin-bottom: var(--space-6);">Próximo paso</p>
+        <h2 id="cta-heading">
+          Comience por el <em>diagnóstico gratuito</em>.
+        </h2>
+        <p>En 45 minutos, ayudaremos a identificar cuellos de botella operativos, impactos financieros estimados y diseñar un plan de implementación personalizado para su contexto.</p>
+        <div class="cta-buttons">
+          <a href="/es/contato" class="btn btn-primary btn-lg" id="final-cta-primary">
+            Agendar diagnóstico gratuito
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="https://wa.me/5575991879786?text=%C2%A1Hola!%20Quiero%20saber%20m%C3%A1s%20sobre%20el%20diagn%C3%B3stico%20gratuito%20de%20Catalise.me."
+            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp">
+            Hablar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+</BaseLayout>
