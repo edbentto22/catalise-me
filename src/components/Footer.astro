@@ -1,29 +1,32 @@
 ---
-// Footer component — reused on all pages except 404
+import { footer, localizedHref, navigation, type Locale } from '../i18n/config';
+interface Props { locale?: Locale; }
+const { locale = 'pt' } = Astro.props;
+const copy = footer[locale];
 ---
 
 <footer role="contentinfo">
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="/" class="nav-logo" aria-label="Catalise.me">
+        <a href={localizedHref('/', locale)} class="nav-logo" aria-label="Catalise.me">
           <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" class="logo-img" width="120" height="24">
         </a>
-        <p>Sistema operacional agêntico com IA para empresas de serviços.</p>
+        <p>{copy.description}</p>
       </div>
 
       <div class="footer-links">
-        <h4>Páginas</h4>
+        <h4>{copy.pages}</h4>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/sobre">Sobre</a></li>
-          <li><a href="/opera-os">Opera OS</a></li>
-          <li><a href="/contato">Contato</a></li>
+          <li><a href={localizedHref('/', locale)}>{navigation[locale].home}</a></li>
+          <li><a href={localizedHref('/sobre', locale)}>{navigation[locale].about}</a></li>
+          <li><a href={localizedHref('/opera-os', locale)}>{navigation[locale].opera}</a></li>
+          <li><a href={localizedHref('/contato', locale)}>{navigation[locale].contact}</a></li>
         </ul>
       </div>
 
       <div class="footer-links">
-        <h4>Contato</h4>
+        <h4>{copy.contact}</h4>
         <ul>
           <li><a href="https://wa.me/5575991879786" target="_blank" rel="noopener">WhatsApp</a></li>
           <li><a href="mailto:contato@catalise.me">contato@catalise.me</a></li>
@@ -32,7 +35,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Catalise.me · Todos os direitos reservados</p>
+      <p class="footer-copy">© 2026 Catalise.me · {copy.rights}</p>
     </div>
   </div>
 </footer>

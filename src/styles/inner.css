@@ -71,12 +71,14 @@
 }
 
 .page-hero-title {
-  font-size: clamp(3.1rem, 6.2vw, 6.25rem);
+  font-size: clamp(2.7rem, 5.2vw, 5.4rem);
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: .96;
   margin-bottom: var(--space-6);
   max-width: 900px;
+  text-wrap: balance;
+  font-kerning: normal;
 }
 
 .page-hero-title em {

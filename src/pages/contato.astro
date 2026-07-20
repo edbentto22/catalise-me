@@ -225,13 +225,25 @@ import '../styles/inner.css';
 
         const successMsg = document.getElementById('form-success');
         const submitBtn = form.querySelector('[type="submit"]') as HTMLButtonElement | null;
+        const language = document.documentElement.lang.startsWith('en') ? 'en' : document.documentElement.lang.startsWith('es') ? 'es' : 'pt';
+        const copy = {
+          pt: {
+            name: 'Informe seu nome completo', email: 'Email inválido', company: 'Informe sua empresa e cargo', revenue: 'Selecione seu faturamento', message: 'Conte um pouco mais (mínimo 10 caracteres)', sending: 'Enviando...', submit: 'Quero meu diagnóstico gratuito →', failure: 'Ops! Algo deu errado. Por favor, fale com a gente pelo WhatsApp: (75) 99187-9786',
+          },
+          en: {
+            name: 'Enter your full name', email: 'Enter a valid email address', company: 'Enter your company and role', revenue: 'Select your monthly revenue', message: 'Tell us a little more (at least 10 characters)', sending: 'Sending...', submit: 'I want my free diagnostic →', failure: 'Oops! Something went wrong. Please contact us on WhatsApp: (75) 99187-9786',
+          },
+          es: {
+            name: 'Indica tu nombre completo', email: 'Ingresa un correo electrónico válido', company: 'Indica tu empresa y cargo', revenue: 'Selecciona tu facturación', message: 'Cuéntanos un poco más (mínimo 10 caracteres)', sending: 'Enviando...', submit: 'Quiero mi diagnóstico gratuito →', failure: '¡Ups! Algo salió mal. Contáctanos por WhatsApp: (75) 99187-9786',
+          },
+        }[language];
 
         const validators: Record<string, (v: string) => true | string> = {
-          name: (v) => v.trim().length >= 2 || 'Informe seu nome completo',
-          email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Email inválido',
-          company: (v) => v.trim().length >= 2 || 'Informe sua empresa e cargo',
-          revenue: (v) => !!v || 'Selecione seu faturamento',
-          message: (v) => v.trim().length >= 10 || 'Conte um pouco mais (mínimo 10 caracteres)',
+          name: (v) => v.trim().length >= 2 || copy.name,
+          email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || copy.email,
+          company: (v) => v.trim().length >= 2 || copy.company,
+          revenue: (v) => !!v || copy.revenue,
+          message: (v) => v.trim().length >= 10 || copy.message,
         };
 
         function getField(name: string) {
@@ -313,7 +325,7 @@ import '../styles/inner.css';
 
           if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
+            submitBtn.textContent = copy.sending;
           }
 
           const controller = new AbortController();
@@ -349,9 +361,9 @@ import '../styles/inner.css';
             console.error(err);
             if (submitBtn) {
               submitBtn.disabled = false;
-              submitBtn.textContent = 'Quero meu diagnóstico gratuito →';
+              submitBtn.textContent = copy.submit;
             }
-            alert('Ops! Algo deu errado. Por favor, fale com a gente pelo WhatsApp: (75) 99187-9786');
+            alert(copy.failure);
           } finally {
             window.clearTimeout(timeoutId);
           }
