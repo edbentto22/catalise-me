@@ -120,6 +120,7 @@ const t = ui[locale];
   <!-- Um único controlador progressivo para navegação, movimento e componentes. -->
   <script>
     import Lenis from 'lenis';
+    import gsap from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { initMotion } from '../scripts/motionController';
     import { initConsultable } from '../scripts/consultable';
@@ -155,8 +156,9 @@ const t = ui[locale];
     if (allowEffects) {
       lenis = new Lenis({ duration: 1.1, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
-      const raf = (time: number) => { lenis?.raf(time); requestAnimationFrame(raf); };
-      requestAnimationFrame(raf);
+      // One clock for smooth scrolling and scroll-bound animation.
+      gsap.ticker.add((seconds: number) => { if (!document.hidden) lenis?.raf(seconds * 1000); });
+      ScrollTrigger.addEventListener('refresh', () => lenis?.resize());
     }
 
     initConsultable({ motion: allowMotion, pointer: allowEffects, lenis });
@@ -168,6 +170,7 @@ const t = ui[locale];
     let menuFocusBefore: HTMLElement | null = null;
     let lastY = scrollY;
     let scrollQueued = false;
+    const menuBackground = [...document.querySelectorAll<HTMLElement>('main, .site-footer, .floating-dock-wrap, .nav-logo, .nav-links, .nav-language, .nav-contact-btn')];
 
     const updateNav = () => {
       const y = scrollY;
@@ -192,6 +195,10 @@ const t = ui[locale];
       if (!mobileMenu || !mobileMenu.classList.contains('open')) return;
       setMenuLabel(false);
       mobileMenu.classList.remove('open');
+      mobileMenu.inert = true;
+      menuBackground.forEach(element => { element.inert = false; });
+      const dock = document.getElementById('floating-action-dock');
+      if (dock) dock.inert = !dock.classList.contains('is-visible') || dock.hasAttribute('data-dismissed');
       document.body.classList.remove('menu-open');
       lenis?.start();
       const hide = () => { if (!mobileMenu.classList.contains('open')) mobileMenu.hidden = true; };
@@ -202,13 +209,15 @@ const t = ui[locale];
       if (!hamburger || !mobileMenu) return;
       menuFocusBefore = document.activeElement as HTMLElement;
       mobileMenu.hidden = false;
+      mobileMenu.inert = false;
+      menuBackground.forEach(element => { element.inert = true; });
       void mobileMenu.offsetHeight;
       mobileMenu.classList.add('open');
       setMenuLabel(true);
       nav?.classList.remove('is-hidden');
       document.body.classList.add('menu-open');
       lenis?.stop();
-      setTimeout(() => mobileMenu.querySelector<HTMLElement>('a')?.focus(), 200);
+      setTimeout(() => { if (mobileMenu.classList.contains('open')) mobileMenu.querySelector<HTMLElement>('a')?.focus(); }, 100);
     };
     hamburger?.addEventListener('click', () => (hamburger.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu()));
     mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMenu(false)));
@@ -233,6 +242,8 @@ const t = ui[locale];
       if (!target) return;
       event.preventDefault();
       lenis.scrollTo(target, { offset: id === 'main-content' ? 0 : -80 });
+      history.pushState(null, '', `#${id}`);
+      if (id === 'main-content') target.focus({ preventScroll: true });
     });
 
     // ─── Revelação genérica ───
@@ -279,6 +290,13 @@ const t = ui[locale];
       video.play().catch(() => {});
     };
     const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-src]')];
+    const visibleVideos = new Set<HTMLVideoElement>();
+    document.addEventListener('visibilitychange', () => {
+      videos.forEach(video => {
+        if (document.hidden) video.pause();
+        else if (visibleVideos.has(video)) activateVideo(video);
+      });
+    });
 
     videos.forEach((video) => {
       const mediaFrame = video.closest<HTMLElement>('[data-media-frame]');
@@ -300,8 +318,13 @@ const t = ui[locale];
     } else {
       const mediaObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
         const video = entry.target as HTMLVideoElement;
-        if (entry.isIntersecting) activateVideo(video);
-        else video.pause();
+        if (entry.isIntersecting) {
+          visibleVideos.add(video);
+          if (!document.hidden) activateVideo(video);
+        } else {
+          visibleVideos.delete(video);
+          video.pause();
+        }
       }), { rootMargin: '180px 0px', threshold: 0.1 });
       videos.forEach((video) => mediaObserver.observe(video));
     }

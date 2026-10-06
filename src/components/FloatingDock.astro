@@ -7,7 +7,7 @@ const { locale = 'pt' } = Astro.props;
 const t = ui[locale];
 ---
 
-<aside class="floating-dock-wrap" id="floating-action-dock" aria-label={t.dockAria}>
+<aside class="floating-dock-wrap" id="floating-action-dock" inert aria-label={t.dockAria}>
   <div class="floating-dock-pill">
     <p class="dock-label">{t.dockLabel}</p>
 
@@ -116,8 +116,8 @@ const t = ui[locale];
   .dock-close-btn {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     color: rgba(255, 255, 255, 0.5);
     font-size: 1.15rem;
@@ -132,7 +132,7 @@ const t = ui[locale];
 
   @media (max-width: 820px) {
     .floating-dock-wrap {
-      bottom: 12px;
+      bottom: max(12px, env(safe-area-inset-bottom));
     }
 
     .dock-label {

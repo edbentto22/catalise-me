@@ -1,0 +1,122 @@
+[
+  {
+    "antipattern": "all-caps-body",
+    "name": "All-caps body text",
+    "description": "Long passages in uppercase are hard to read. We recognize words by shape (ascenders and descenders), which all-caps removes. Reserve uppercase for short labels and headings.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "text-transform: uppercase on 32 chars of body text"
+  },
+  {
+    "antipattern": "gray-on-color",
+    "name": "Gray text on colored background",
+    "description": "Gray text looks washed out on colored backgrounds. Use a darker shade of the background color instead, or white/near-white for contrast.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "text #c9c9c9 on bg #253d14"
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 2.7:1 median 2.7:1 (need 4.5:1) via analytic-gradient+alpha \"Implantamos agentes de IA, integramos seu CRM e automatizamos atendimento e proc\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 3.5:1 median 3.5:1 (need 4.5:1) via analytic-gradient+alpha \"Prazo\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 1.1:1 median 1.1:1 (need 4.5:1) via analytic-gradient+alpha \"10 a 12 semanas\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 3.5:1 median 3.5:1 (need 4.5:1) via analytic-gradient+alpha \"Investimento\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 1.1:1 median 1.1:1 (need 4.5:1) via analytic-gradient+alpha \"Definido no diagnóstico\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 3.5:1 median 3.5:1 (need 4.5:1) via analytic-gradient+alpha \"Inclui\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/opera-os/index.html",
+    "line": 0,
+    "snippet": "browser contrast 1.1:1 median 1.1:1 (need 4.5:1) via analytic-gradient+alpha \"CRM + IA + site + automações + treinamento\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/manifesto/index.html",
+    "line": 0,
+    "snippet": "browser contrast 2.0:1 median 2.0:1 (need 3:1) via analytic-gradient+alpha \"A próxima geração de empresas não será apenas .\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/manifesto/index.html",
+    "line": 0,
+    "snippet": "browser contrast 1.1:1 median 1.1:1 (need 3:1) via analytic-gradient+alpha \"Será .\""
+  },
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "http://127.0.0.1:4330/contato/index.html",
+    "line": 0,
+    "snippet": "browser contrast 2.7:1 median 2.7:1 (need 4.5:1) via analytic-gradient+alpha \"Em 45 minutos, mapeamos onde estão as respostas da sua operação, estimamos os im\""
+  }
+]

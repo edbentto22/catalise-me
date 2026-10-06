@@ -37,25 +37,9 @@ html[data-motion='reduced'] .mf-read-progress {
 }
 
 /* ─── Índices e títulos ─── */
-.mf-index {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-body, 'Manrope');
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #71717a;
-  margin-bottom: clamp(20px, 3vw, 32px);
-}
 
-.mf-index::before {
-  content: '';
-  width: 28px;
-  height: 1px;
-  background: #09090b;
-}
+
+
 
 .mf-section {
   position: relative;
@@ -666,9 +650,7 @@ html[data-motion='reduced'] .mf-read-progress {
 }
 
 .mf-belief-not-text {
-  color: #52525b;
-  /* Risco desenhado linha a linha: o gradiente percorre o texto quebrado como uma faixa contínua */
-  background: linear-gradient(#09090b, #09090b) 0 58% / 0% 1.5px no-repeat;
+  color: inherit;
 }
 
 .mf-belief-yes {
@@ -1047,3 +1029,5 @@ html[data-motion='reduced'] .mf-loop-item {
     font-size: 0.625rem;
   }
 }
+
+.mf-belief-not.is-struck .mf-belief-not-text { text-decoration: line-through; text-decoration-color: var(--subtle); }

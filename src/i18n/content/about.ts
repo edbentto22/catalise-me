@@ -11,7 +11,7 @@ export const about = {
     },
     hero: {
       title: 'Existimos para tornar empresas <em>consultáveis</em>.',
-      lede: 'A inteligência da sua empresa já existe. Está nas pessoas, nos sistemas, nas conversas e nas planilhas. Nós conectamos tudo isso em uma camada única, para que a IA entenda a empresa e possa trabalhar dentro dela.',
+      lede: 'O que sua empresa sabe está nas pessoas, documentos, conversas e sistemas. Organizamos esse conhecimento, conectamos as ferramentas e implantamos agentes de IA que consultam, executam e registram cada ação.',
       facts: ['Não somos agência.', 'Não somos consultoria de slides.', 'Não vendemos software de prateleira.'],
       factYes: 'Somos engenharia de empresas consultáveis.',
     },
@@ -75,7 +75,7 @@ export const about = {
     },
     hero: {
       title: 'We exist to make companies <em>queryable</em>.',
-      lede: "Your company's intelligence already exists. It lives in people, systems, conversations and spreadsheets. We connect all of it into a single layer, so AI can understand the company and work inside it.",
+      lede: "Your company’s knowledge lives in people, documents, conversations and systems. We organize that knowledge, connect the tools and implement AI agents that query, execute and record each action.",
       facts: ['Not an agency.', 'Not a slide-deck consultancy.', 'Not off-the-shelf software.'],
       factYes: 'We are the engineering of queryable companies.',
     },
@@ -139,7 +139,7 @@ export const about = {
     },
     hero: {
       title: 'Existimos para hacer empresas <em>consultables</em>.',
-      lede: 'La inteligencia de su empresa ya existe. Está en las personas, en los sistemas, en las conversaciones y en las planillas. Conectamos todo eso en una sola capa, para que la IA entienda la empresa y pueda trabajar dentro de ella.',
+      lede: 'El conocimiento de su empresa está en las personas, documentos, conversaciones y sistemas. Organizamos ese conocimiento, conectamos las herramientas e implementamos agentes de IA que consultan, ejecutan y registran cada acción.',
       facts: ['No somos una agencia.', 'No somos una consultoría de diapositivas.', 'No vendemos software enlatado.'],
       factYes: 'Somos ingeniería de empresas consultables.',
     },

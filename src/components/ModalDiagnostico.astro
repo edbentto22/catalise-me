@@ -27,9 +27,9 @@ const TRIGGER_SELECTORS = [
 
 const locale = document.documentElement.lang.startsWith('en') ? 'en' : document.documentElement.lang.startsWith('es') ? 'es' : 'pt';
 const modalCopy = {
-  pt: { close: 'Fechar', title: 'Vamos tornar sua empresa', accent: 'consultável.', lede: 'Em 45 minutos mapeamos onde estão as respostas da sua operação e o que ela já poderia executar sozinha.', footer: 'Sem compromisso · Resposta em até 24 horas úteis', discard: 'Descartar os dados preenchidos?' },
-  en: { close: 'Close', title: "Let's make your company", accent: 'queryable.', lede: 'In 45 minutes we map where the answers of your operation live, and what it could already execute on its own.', footer: 'No commitment · Reply within 24 business hours', discard: 'Discard the information you entered?' },
-  es: { close: 'Cerrar', title: 'Hagamos su empresa', accent: 'consultable.', lede: 'En 45 minutos mapeamos dónde están las respuestas de su operación y lo que ya podría ejecutar por sí sola.', footer: 'Sin compromiso · Respuesta en hasta 24 horas hábiles', discard: '¿Descartar los datos ingresados?' },
+  pt: { close: 'Fechar', title: 'Vamos tornar sua empresa', accent: 'consultável.', lede: 'Conte sobre sua operação para avaliarmos o perfil e agendarmos uma conversa de 45 minutos. Diagnóstico gratuito para perfis qualificados.', footer: 'Sem compromisso · Resposta em até 24 horas úteis', discard: 'Descartar os dados preenchidos?' },
+  en: { close: 'Close', title: "Let's make your company", accent: 'queryable.', lede: 'Tell us about your operation so we can assess fit and schedule a 45-minute conversation. A free diagnostic for qualified businesses.', footer: 'No commitment · Reply within 24 business hours', discard: 'Discard the information you entered?' },
+  es: { close: 'Cerrar', title: 'Hagamos su empresa', accent: 'consultable.', lede: 'Cuéntenos sobre su operación para evaluar el encaje y agendar una conversación de 45 minutos. Diagnóstico gratuito para perfiles calificados.', footer: 'Sin compromiso · Respuesta en hasta 24 horas hábiles', discard: '¿Descartar los datos ingresados?' },
 }[locale];
 const copy = { ...leadForm[locale], ...modalCopy };
 const privacyHref = locale === 'pt' ? '/privacidade' : `/${locale}/privacidade`;

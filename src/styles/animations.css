@@ -27,10 +27,10 @@
   transform: none;
 }
 
-html.js-enabled[data-motion="full"] .hero-animate-1 { animation: fadeInUp 1s var(--ease-out) 0.05s both; }
-html.js-enabled[data-motion="full"] .hero-animate-2 { animation: fadeInUp 1s var(--ease-out) 0.16s both; }
-html.js-enabled[data-motion="full"] .hero-animate-3 { animation: fadeInUp 1s var(--ease-out) 0.3s both; }
-html.js-enabled[data-motion="full"] .hero-animate-4 { animation: fadeInUp 1s var(--ease-out) 0.44s both; }
+html.js-enabled[data-motion="full"] .hero-animate-1 { animation: fadeInUp 0.55s var(--ease-out) both; }
+html.js-enabled[data-motion="full"] .hero-animate-2 { animation: fadeInUp 0.55s var(--ease-out) 0.05s both; }
+html.js-enabled[data-motion="full"] .hero-animate-3 { animation: fadeInUp 0.55s var(--ease-out) 0.1s both; }
+html.js-enabled[data-motion="full"] .hero-animate-4 { animation: fadeInUp 0.55s var(--ease-out) 0.15s both; }
 
 /* ─── Revelação genérica por IntersectionObserver ─── */
 .js-enabled[data-motion="full"] .reveal {
@@ -50,11 +50,11 @@ html.js-enabled[data-motion="full"] .hero-animate-4 { animation: fadeInUp 1s var
 }
 
 ::view-transition-old(root) {
-  animation: 0.45s var(--ease-in-out) both vtOut;
+  animation: 0.18s ease-out both vtOut;
 }
 
 ::view-transition-new(root) {
-  animation: 0.7s var(--ease-out) 0.08s both vtIn;
+  animation: 0.28s var(--ease-out) both vtIn;
 }
 
 ::view-transition-group(site-nav) {
@@ -62,12 +62,12 @@ html.js-enabled[data-motion="full"] .hero-animate-4 { animation: fadeInUp 1s var
 }
 
 @keyframes vtOut {
-  to { opacity: 0; transform: translateY(-2%) scale(0.985); filter: blur(4px); }
+  to { opacity: 0; }
 }
 
 @keyframes vtIn {
-  from { opacity: 0; clip-path: inset(12% 0 0 0); transform: translateY(4%); }
-  to   { opacity: 1; clip-path: inset(0 0 0 0); transform: none; }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ─── Movimento reduzido ─── */
@@ -91,8 +91,4 @@ html[data-motion="reduced"] .hero-animate-4 {
   @view-transition { navigation: none; }
 }
 
-/* ─── Coreografia "Empresas consultáveis": oculta até o JS assumir ─── */
-html.cx-preload [data-cx-hero],
-html.cx-preload [data-cx-fade] {
-  opacity: 0;
-}
+/* O HTML permanece legível mesmo se um módulo de movimento falhar. */

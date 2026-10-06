@@ -1,0 +1,142 @@
+{
+  "reports": [
+    {
+      "name": "layout 1440 /",
+      "passed": true
+    },
+    {
+      "name": "layout 1440 /opera-os",
+      "passed": true
+    },
+    {
+      "name": "layout 1440 /sobre",
+      "passed": true
+    },
+    {
+      "name": "layout 1440 /manifesto",
+      "passed": true
+    },
+    {
+      "name": "layout 1440 /contato",
+      "passed": true
+    },
+    {
+      "name": "console controls 1440",
+      "passed": true
+    },
+    {
+      "name": "contact navigation 1440",
+      "passed": true
+    },
+    {
+      "name": "diagnostic modal 1440",
+      "passed": true
+    },
+    {
+      "name": "layout 390 /",
+      "passed": true
+    },
+    {
+      "name": "layout 390 /opera-os",
+      "passed": true
+    },
+    {
+      "name": "layout 390 /sobre",
+      "passed": true
+    },
+    {
+      "name": "layout 390 /manifesto",
+      "passed": true
+    },
+    {
+      "name": "layout 390 /contato",
+      "passed": true
+    },
+    {
+      "name": "console controls 390",
+      "passed": true
+    },
+    {
+      "name": "contact navigation 390",
+      "passed": true
+    },
+    {
+      "name": "menu keyboard 390",
+      "passed": true
+    },
+    {
+      "name": "diagnostic modal 390",
+      "passed": true
+    },
+    {
+      "name": "layout 320 /",
+      "passed": true
+    },
+    {
+      "name": "layout 320 /en",
+      "passed": true
+    },
+    {
+      "name": "layout 320 /es",
+      "passed": true
+    },
+    {
+      "name": "console controls 320",
+      "passed": true
+    },
+    {
+      "name": "contact navigation 320",
+      "passed": true
+    },
+    {
+      "name": "menu keyboard 320",
+      "passed": true
+    },
+    {
+      "name": "diagnostic modal 320",
+      "passed": true
+    },
+    {
+      "name": "layout 768 /",
+      "passed": true
+    },
+    {
+      "name": "layout 768 /en",
+      "passed": true
+    },
+    {
+      "name": "layout 768 /es",
+      "passed": true
+    },
+    {
+      "name": "console controls 768",
+      "passed": true
+    },
+    {
+      "name": "contact navigation 768",
+      "passed": true
+    },
+    {
+      "name": "menu keyboard 768",
+      "passed": true
+    },
+    {
+      "name": "diagnostic modal 768",
+      "passed": true
+    },
+    {
+      "name": "reduced motion: static scene and usable console",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript: content and contact remain available",
+      "passed": true
+    },
+    {
+      "name": "Three.js: real renderer and cleanup on navigation",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "errors": []
+}

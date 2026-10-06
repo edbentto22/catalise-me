@@ -25,7 +25,6 @@ export interface ConsultableFlags {
 }
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /** Quebra o texto em palavras preservando elementos internos (em, strong, mark). */
 function splitWords(el: HTMLElement, { mask = false } = {}): HTMLElement[] {
@@ -75,70 +74,59 @@ interface Query { q: string; a: string; act: string; }
 function initQueryConsole(flags: ConsultableFlags) {
   const consoleEl = document.querySelector<HTMLElement>('[data-query-console]');
   if (!consoleEl) return;
-
-  const queries: Query[] = JSON.parse(consoleEl.dataset.queries || '[]');
-  const questionEl = consoleEl.querySelector<HTMLElement>('[data-query-q]');
-  const answerEl = consoleEl.querySelector<HTMLElement>('[data-query-a]');
-  const actionEl = consoleEl.querySelector<HTMLElement>('[data-query-act]');
-  const answerRow = consoleEl.querySelector<HTMLElement>('[data-query-answer]');
-  const actionRow = consoleEl.querySelector<HTMLElement>('[data-query-action]');
-  const statusEl = consoleEl.querySelector<HTMLElement>('[data-query-status]');
-  const counterEl = consoleEl.querySelector<HTMLElement>('[data-query-index]');
+  let queries: Query[];
+  try { queries = JSON.parse(consoleEl.dataset.queries || '[]'); } catch { return; }
+  const question = consoleEl.querySelector<HTMLElement>('[data-query-q]');
+  const answer = consoleEl.querySelector<HTMLElement>('[data-query-a]');
+  const action = consoleEl.querySelector<HTMLElement>('[data-query-act]');
+  const rows = [...consoleEl.querySelectorAll<HTMLElement>('[data-query-answer], [data-query-action]')];
+  const counter = consoleEl.querySelector<HTMLElement>('[data-query-index]');
+  const announcement = consoleEl.querySelector<HTMLElement>('[data-query-announcement]');
+  const status = consoleEl.querySelector<HTMLElement>('[data-query-status]');
+  const controls = consoleEl.querySelector<HTMLElement>('[data-query-controls]');
+  const buttons = [...consoleEl.querySelectorAll<HTMLButtonElement>('[data-query-prev], [data-query-next]')];
   const check = consoleEl.querySelector<SVGPathElement>('[data-query-check]');
-  if (!questionEl || !answerEl || !actionEl || !answerRow || !actionRow || queries.length === 0) return;
-
-  if (!flags.motion) return;
-  consoleEl.style.opacity = '0';
-  motionAnimate(consoleEl, { opacity: [0, 1], y: [24, 0], scale: [0.98, 1] }, { duration: 1.1, delay: 0.9, ease: EASE_OUT });
-
-  const status = (text: string, busy: boolean) => {
-    if (!statusEl) return;
-    statusEl.textContent = text;
-    consoleEl.classList.toggle('is-busy', busy);
-  };
-
+  if (!question || !answer || !action || queries.length < 2) return;
+  const [drawable] = check ? createDrawable(check) : [];
+  if (drawable) animate(drawable, { draw: '0 1', duration: 0 });
+  if (controls) controls.hidden = false;
   let index = 0;
-  let running = false;
-  let visible = true;
-  const [checkDrawable] = check ? createDrawable(check) : [];
-
-  const cycle = async () => {
-    if (running) return;
-    running = true;
-    while (visible && !document.hidden) {
-      const item = queries[index % queries.length];
-      if (counterEl) counterEl.textContent = String((index % queries.length) + 1).padStart(2, '0');
-
-      await motionAnimate([answerRow, actionRow], { opacity: 0, y: 6 }, { duration: 0.3 });
-      status(consoleEl.dataset.busy || '', true);
-
-      // Pergunta digitada com scramble (anime.js)
-      await animate(questionEl, {
-        innerHTML: scrambleText({ text: item.q, override: '', chars: 'lowercase', revealRate: 42, settleDuration: 160, cursor: '▍' }),
-      });
-      await sleep(650);
-
-      answerEl.textContent = item.a;
-      actionEl.textContent = item.act;
-      status(consoleEl.dataset.done || '', false);
-      await motionAnimate(answerRow, { opacity: [0, 1], y: [10, 0] }, { duration: 0.45, ease: EASE_OUT });
-      if (checkDrawable) animate(checkDrawable, { draw: ['0 0', '0 1'], duration: 520, ease: 'outQuad' });
-      await motionAnimate(actionRow, { opacity: [0, 1], y: [10, 0] }, { duration: 0.45, ease: EASE_OUT });
-
-      await sleep(3600);
-      index += 1;
+  let busy = false;
+  const select = async (direction: number) => {
+    if (busy) return;
+    busy = true;
+    buttons.forEach(button => { button.disabled = true; });
+    const motion = flags.motion && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try {
+      index = (index + direction + queries.length) % queries.length;
+      const item = queries[index];
+      if (motion) await motionAnimate(rows, { opacity: 0, y: 4 }, { duration: 0.12 });
+      question.textContent = item.q;
+      answer.textContent = item.a;
+      action.textContent = item.act;
+      if (counter) counter.textContent = String(index + 1).padStart(2, '0');
+      if (motion) {
+        if (status) status.textContent = consoleEl.dataset.busy || '';
+        document.dispatchEvent(new CustomEvent('cx:query'));
+        const networkPath = consoleEl.querySelector<SVGPathElement>('[data-network-link]');
+        if (networkPath) {
+          animate(createDrawable(networkPath), { draw: ['0 0', '0 1'], duration: 650, ease: 'outQuad' });
+        }
+        await motionAnimate(rows, { opacity: [0, 1], y: [6, 0] }, { duration: 0.3, delay: motionStagger(0.16), ease: EASE_OUT });
+        if (drawable) await animate(drawable, { draw: ['0 0', '0 1'], duration: 220, ease: 'outQuad' });
+      }
+      if (status) status.textContent = consoleEl.dataset.done || '';
+      if (announcement) announcement.textContent = `${item.q} ${item.a}. ${item.act}.`;
+    } finally {
+      // Interrupted motion must never leave the simulated answers invisible.
+      rows.forEach(row => { row.style.opacity = '1'; row.style.transform = ''; });
+      buttons.forEach(button => { button.disabled = false; });
+      busy = false;
     }
-    running = false;
   };
-
-  // Mantém a primeira consulta (renderizada no HTML) por um instante antes de começar o ciclo.
-  index = 1;
-  const start = () => { visible = true; if (!running) sleep(2600).then(cycle); };
-  new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) start();
-    else visible = false;
-  }).observe(consoleEl);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && visible) cycle(); });
+  buttons.forEach(button => button.addEventListener('click', () => {
+    void select(button.hasAttribute('data-query-prev') ? -1 : 1);
+  }));
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -157,7 +145,7 @@ function initManifestoHero() {
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.1 });
   if (title) {
     const words = splitWords(title, { mask: true });
-    tl.fromTo(words, { yPercent: 115, rotate: 4 }, { yPercent: 0, rotate: 0, duration: 1.5, stagger: 0.09 }, 0);
+    tl.fromTo(words, { yPercent: 115, rotate: 4 }, { yPercent: 0, rotate: 0, duration: 0.65, stagger: { amount: 0.2 } }, 0);
   }
   if (fades.length) tl.fromTo(fades, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.1, stagger: 0.12 }, 0.45);
   if (strike && strikeLine) {
@@ -165,10 +153,8 @@ function initManifestoHero() {
       .to(strike, { color: '#7c7c85', duration: 0.5, ease: 'power1.out' }, 1.75);
   }
   if (scramble) {
-    const finalText = scramble.textContent || '';
-    scramble.textContent = '';
     tl.add(() => {
-      animate(scramble, { innerHTML: scrambleText({ text: finalText, override: '', chars: 'lowercase', revealRate: 24, settleDuration: 420 }) });
+      animate(scramble, { opacity: [0.65, 1], duration: 350, ease: 'outQuad' });
     }, 1.9);
   }
 
@@ -355,8 +341,8 @@ function initBeliefs() {
     if (num) tl.fromTo(num, { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, 0);
     if (not) tl.fromTo(not, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0);
     if (not) {
-      tl.to(not, { backgroundSize: '100% 1.5px', duration: 0.9, ease: 'power2.inOut' }, 0.5)
-        .to(not, { color: '#7c7c85', duration: 0.4 }, 0.9);
+      tl.add(() => { not.classList.add('is-struck'); }, 0.5)
+        .to(not, { color: '#62626b', duration: 0.3 }, 0.5);
     }
     tl.to(yesWords, { yPercent: 0, duration: 1, stagger: 0.07, ease: 'expo.out' }, 0.9);
 
@@ -447,15 +433,15 @@ function initReveals() {
     const children = [...group.children] as HTMLElement[];
     children.forEach((child) => { child.style.opacity = '0'; });
     inView(group, () => {
-      motionAnimate(children, { opacity: [0, 1], y: [28, 0] }, { delay: motionStagger(0.09), duration: 0.9, ease: EASE_OUT });
-    }, { amount: 0.2 });
+      motionAnimate(children, { opacity: [0, 1], y: [14, 0] }, { delay: motionStagger(Math.min(0.06, 0.2 / Math.max(children.length - 1, 1))), duration: 0.5, ease: EASE_OUT });
+    }, { amount: 'some' });
   });
 
   document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
     el.style.opacity = '0';
     inView(el, () => {
-      motionAnimate(el, { opacity: [0, 1], y: [24, 0] }, { duration: 0.9, ease: EASE_OUT });
-    }, { amount: 0.3 });
+      motionAnimate(el, { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, ease: EASE_OUT });
+    }, { amount: 'some' });
   });
 
   document.querySelectorAll<HTMLElement>('[data-draw-on-view]').forEach((svgEl) => {
@@ -492,17 +478,8 @@ function initHeroTitles() {
   document.querySelectorAll<HTMLElement>('[data-mf-title]').forEach((title) => {
     if (title.closest('[data-mf-hero]')) return;
     const words = splitWords(title, { mask: true });
-    gsap.fromTo(words, { yPercent: 115, rotate: 3 }, { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.07, ease: 'expo.out', delay: 0.12 });
+    gsap.fromTo(words, { yPercent: 115, rotate: 3 }, { yPercent: 0, rotate: 0, duration: 0.65, stagger: { amount: 0.18 }, ease: 'expo.out', delay: 0.12 });
   });
-}
-
-/* Itens riscados em sequência quando entram na tela */
-function initStrikeItems() {
-  const items = [...document.querySelectorAll<HTMLElement>('[data-strike-item]')];
-  if (!items.length) return;
-  inView(items[0].closest('ul') || items[0], () => {
-    gsap.to(items, { backgroundSize: '100% 1px', duration: 0.8, stagger: 0.25, ease: 'power2.inOut', delay: 0.3 });
-  }, { amount: 0.5 });
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -516,6 +493,7 @@ function initMethod() {
   const name = section.querySelector<HTMLElement>('[data-method-name]');
   const rows = [...section.querySelectorAll<HTMLElement>('[data-gantt-row]')];
   let current = -1;
+  let letterMotion: gsap.core.Timeline | undefined;
 
   const activate = (index: number) => {
     if (index === current || index < 0) return;
@@ -528,12 +506,13 @@ function initMethod() {
       row.classList.toggle('is-done', i < index);
     });
     if (letter) {
-      gsap.timeline()
+      letterMotion?.kill();
+      letterMotion = gsap.timeline()
         .to(letter, { yPercent: -100 * direction, opacity: 0, duration: 0.25, ease: 'power2.in' })
         .add(() => { letter.textContent = phase.dataset.letter || ''; })
         .fromTo(letter, { yPercent: 100 * direction, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: 'expo.out' });
     }
-    if (name) animate(name, { innerHTML: scrambleText({ text: phase.dataset.title || '', chars: 'lowercase', revealRate: 50, settleDuration: 200 }) });
+    if (name) name.textContent = phase.dataset.title || '';
   };
 
   phases.forEach((phase, i) => {
@@ -553,18 +532,13 @@ function initOperaScreen(flags: ConsultableFlags) {
   if (!screen) return;
   const letters = [...screen.querySelectorAll<HTMLElement>('.op-screen-letters li')];
   if (letters.length) {
-    let index = 0;
-    setInterval(() => {
-      if (document.hidden) return;
-      index = (index + 1) % letters.length;
-      letters.forEach((li, i) => {
-        const on = i === index;
-        li.style.background = on ? 'var(--lime)' : '';
-        li.style.borderColor = on ? 'var(--lime)' : '';
-        li.style.color = on ? 'var(--ink)' : '';
-      });
-      animate(letters[index], { scale: [0.82, 1], duration: 600, ease: 'outBack(2)' });
-    }, 1600);
+    ScrollTrigger.create({
+      trigger: screen, start: 'top 85%', end: 'bottom 20%',
+      onUpdate: ({ progress }) => {
+        const index = Math.min(letters.length - 1, Math.floor(progress * letters.length));
+        letters.forEach((letter, i) => letter.classList.toggle('is-active', i === index));
+      },
+    });
   }
   if (!flags.pointer) return;
   const tiltX = gsap.quickTo(screen, 'rotationY', { duration: 0.8, ease: 'power3.out' });
@@ -581,24 +555,12 @@ function initOperaScreen(flags: ConsultableFlags) {
 /* ──────────────────────────────────────────────────────────
    RODAPÉ · faixa que acelera com o scroll e wordmark que sobe
 ────────────────────────────────────────────────────────── */
-function initFooter(flags: ConsultableFlags) {
+function initFooter() {
   const track = document.querySelector<HTMLElement>('[data-marquee-track]');
   if (track) {
-    const loop = gsap.to(track, { xPercent: -50, duration: 40, ease: 'none', repeat: -1 });
-    let direction = 1;
-    let lastY = scrollY;
-    ScrollTrigger.create({
-      trigger: track,
-      start: 'top bottom',
-      end: 'bottom top',
-      onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
-    });
-    gsap.ticker.add(() => {
-      const velocity = flags.lenis?.velocity ?? (scrollY - lastY);
-      lastY = scrollY;
-      if (Math.abs(velocity) > 0.5) direction = velocity > 0 ? 1 : -1;
-      const boost = 1 + Math.min(Math.abs(velocity) / 6, 6);
-      loop.timeScale(gsap.utils.interpolate(loop.timeScale(), direction * boost, 0.08));
+    gsap.fromTo(track, { xPercent: 0 }, {
+      xPercent: -8, ease: 'none',
+      scrollTrigger: { trigger: track, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
     });
   }
 
@@ -647,7 +609,7 @@ export async function initConsultable(flags: ConsultableFlags) {
   // 2 · O restante da coreografia é montado em tarefas pequenas.
   const steps = [
     initScrubText, initScatterScene, initLayerDiagram, initBeliefs, initLoop, initSignature,
-    initReveals, initShift, initStrikeItems, initMethod, () => initOperaScreen(flags), () => initFooter(flags),
+    initReveals, initShift, initMethod, () => initOperaScreen(flags), initFooter,
   ];
   for (const step of steps) {
     await yieldToMain();

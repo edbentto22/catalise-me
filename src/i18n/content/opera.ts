@@ -11,7 +11,7 @@ export const opera = {
     },
     hero: {
       title: 'Opera OS: sua empresa <em>consultável</em> em 10 a 12 semanas.',
-      lede: 'A implantação, ponta a ponta, da camada que conecta agentes de IA, CRM, automações e equipe treinada. Para que a operação responda sobre si mesma e aja sobre essas respostas.',
+      lede: 'Implantamos agentes de IA, integramos seu CRM e automatizamos atendimento e processos. Sua equipe recebe treinamento para consultar a operação e agir sobre as respostas, com regras e responsabilidades definidas.',
       specs: [
         { label: 'Prazo', value: '10 a 12 semanas' },
         { label: 'Investimento', value: 'Definido no diagnóstico' },
@@ -62,14 +62,14 @@ export const opera = {
       ],
     },
     scope: {
-      title: 'Tudo que a sua empresa precisa para <em>funcionar</em>.',
-      lede: 'O escopo final é definido na Fase O. Mas o Opera OS sempre entrega o ecossistema completo.',
+      title: 'O que entra na <em>implantação</em>.',
+      lede: 'Atendimento, vendas e operação conectados. O escopo de cada entrega fica definido na proposta, antes da contratação.',
       items: [
         { title: 'Presença digital', text: 'Site, blog e páginas de venda otimizadas.' },
         { title: 'Agente de IA', text: 'Atendimento 24/7 treinado no seu negócio.' },
-        { title: 'CRM agêntico', text: 'Kanban comercial, funil e dashboard.' },
-        { title: 'Automações orquestradas', text: 'A jornada completa do cliente, automatizada.' },
-        { title: 'Stack de atendimento', text: 'Hub de atendimento integrado e configurado.' },
+        { title: 'CRM integrado à IA', text: 'Pipeline de vendas, histórico de clientes e indicadores conectados aos agentes.' },
+        { title: 'Processos automatizados', text: 'A jornada completa do cliente, automatizada.' },
+        { title: 'Canais de atendimento', text: 'WhatsApp e demais canais integrados ao histórico do cliente.' },
         { title: 'Funil de vendas', text: 'Estrutura completa de captação e conversão.' },
         { title: 'Estratégia de canais', text: 'Venda direta e intermediários otimizados.' },
         { title: 'Treinamento da equipe', text: 'Onboarding e documentação completos.' },
@@ -125,7 +125,7 @@ export const opera = {
     },
     cta: {
       title: 'Comece pelo <em>diagnóstico gratuito</em>.',
-      text: 'Em 45 minutos, identificamos gargalos operacionais e impactos financeiros estimados, e desenhamos um plano de implementação para o seu contexto.',
+      text: 'Em 45 minutos, avaliamos sua operação e identificamos prioridades. Se houver aderência, o próximo passo é uma proposta com escopo, prazo e investimento definidos.',
       primary: 'Agendar diagnóstico gratuito',
       secondary: 'Falar pelo WhatsApp',
     },
@@ -139,7 +139,7 @@ export const opera = {
     },
     hero: {
       title: 'Opera OS: your <em>queryable</em> company in 10 to 12 weeks.',
-      lede: 'The end-to-end rollout of the layer that connects AI agents, CRM, automations and a trained team. So the operation can answer about itself and act on those answers.',
+      lede: 'We implement AI agents, integrate your CRM and automate customer service and processes. Your team is trained to query operations and act on the answers, with clear rules and responsibilities.',
       specs: [
         { label: 'Timeline', value: '10 to 12 weeks' },
         { label: 'Investment', value: 'Defined in the diagnostic' },
@@ -190,14 +190,14 @@ export const opera = {
       ],
     },
     scope: {
-      title: 'Everything your company needs to <em>operate</em>.',
-      lede: 'The final scope is defined in Phase O. But Opera OS always delivers the complete ecosystem.',
+      title: 'What the <em>implementation</em> includes.',
+      lede: 'Customer service, sales and operations, connected. The scope of each deliverable is defined in the proposal, before you commit.',
       items: [
         { title: 'Digital presence', text: 'Website, blog and optimized sales pages.' },
         { title: 'AI agent', text: '24/7 service trained on your business.' },
-        { title: 'Agentic CRM', text: 'Sales kanban, funnel and dashboard.' },
-        { title: 'Orchestrated automations', text: 'The full customer journey, automated.' },
-        { title: 'Service stack', text: 'An integrated, configured service hub.' },
+        { title: 'AI-connected CRM', text: 'Sales pipeline, customer history and metrics connected to AI agents.' },
+        { title: 'Automated processes', text: 'The full customer journey, automated.' },
+        { title: 'Customer service channels', text: 'WhatsApp and other channels connected to each customer’s history.' },
         { title: 'Sales funnel', text: 'A complete acquisition and conversion structure.' },
         { title: 'Channel strategy', text: 'Direct sales and intermediaries, optimized.' },
         { title: 'Team training', text: 'Complete onboarding and documentation.' },
@@ -253,7 +253,7 @@ export const opera = {
     },
     cta: {
       title: 'Start with the <em>free diagnostic</em>.',
-      text: 'In 45 minutes, we identify operational bottlenecks and estimated financial impact, and design an implementation plan for your context.',
+      text: 'In 45 minutes, we assess your operation and identify priorities. If there is a fit, the next step is a proposal with a clear scope, timeline and investment.',
       primary: 'Book a free diagnostic',
       secondary: 'Chat on WhatsApp',
     },
@@ -267,7 +267,7 @@ export const opera = {
     },
     hero: {
       title: 'Opera OS: su empresa <em>consultable</em> en 10 a 12 semanas.',
-      lede: 'La implementación integral de la capa que conecta agentes de IA, CRM, automatizaciones y un equipo capacitado. Para que la operación responda sobre sí misma y actúe sobre esas respuestas.',
+      lede: 'Implementamos agentes de IA, integramos su CRM y automatizamos la atención y los procesos. Capacitamos a su equipo para consultar la operación y actuar sobre las respuestas, con reglas y responsabilidades definidas.',
       specs: [
         { label: 'Plazo', value: '10 a 12 semanas' },
         { label: 'Inversión', value: 'Definida en el diagnóstico' },
@@ -318,14 +318,14 @@ export const opera = {
       ],
     },
     scope: {
-      title: 'Todo lo que su empresa necesita para <em>funcionar</em>.',
-      lede: 'El alcance final se define en la Fase O. Pero Opera OS siempre entrega el ecosistema completo.',
+      title: 'Lo que incluye la <em>implementación</em>.',
+      lede: 'Atención, ventas y operación conectadas. El alcance de cada entrega se define en la propuesta, antes de contratar.',
       items: [
         { title: 'Presencia digital', text: 'Sitio web, blog y páginas de venta optimizadas.' },
         { title: 'Agente de IA', text: 'Atención 24/7 entrenada en su negocio.' },
-        { title: 'CRM agéntico', text: 'Kanban comercial, embudo y dashboard.' },
-        { title: 'Automatizaciones orquestadas', text: 'El recorrido completo del cliente, automatizado.' },
-        { title: 'Stack de atención', text: 'Hub de atención integrado y configurado.' },
+        { title: 'CRM integrado con IA', text: 'Embudo de ventas, historial de clientes e indicadores conectados a los agentes.' },
+        { title: 'Procesos automatizados', text: 'El recorrido completo del cliente, automatizado.' },
+        { title: 'Canales de atención', text: 'WhatsApp y otros canales conectados al historial del cliente.' },
         { title: 'Embudo de ventas', text: 'Estructura completa de captación y conversión.' },
         { title: 'Estrategia de canales', text: 'Venta directa e intermediarios optimizados.' },
         { title: 'Capacitación del equipo', text: 'Onboarding y documentación completos.' },
@@ -381,7 +381,7 @@ export const opera = {
     },
     cta: {
       title: 'Comience por el <em>diagnóstico gratuito</em>.',
-      text: 'En 45 minutos, identificamos cuellos de botella operativos e impactos financieros estimados, y diseñamos un plan de implementación para su contexto.',
+      text: 'En 45 minutos, evaluamos su operación e identificamos prioridades. Si existe encaje, el siguiente paso es una propuesta con alcance, plazo e inversión definidos.',
       primary: 'Agendar diagnóstico gratuito',
       secondary: 'Hablar por WhatsApp',
     },

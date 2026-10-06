@@ -24,8 +24,9 @@ const { variant, class: className = '' } = Astro.props;
     if (!canvas || container.dataset.state) return;
     container.dataset.state = 'loading';
     import('../scripts/ambient3d').then(({ initAmbient3D }) => {
-      initAmbient3D({ canvas, container, variant: container.dataset.ambient as Ambient3DVariant });
-    });
+      const dispose = initAmbient3D({ canvas, container, variant: container.dataset.ambient as Ambient3DVariant });
+      addEventListener('pagehide', (event) => { if (!event.persisted) dispose?.(); });
+    }).catch(() => { container.dataset.state = 'off'; });
   }), { rootMargin: '200px 0px' });
 
   document.querySelectorAll<HTMLElement>('[data-ambient]').forEach((container) => {

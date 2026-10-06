@@ -10,7 +10,7 @@ export const contact = {
     },
     hero: {
       title: 'Comece pelo <em>diagnóstico gratuito</em>.',
-      lede: 'Em 45 minutos, mapeamos onde estão as respostas da sua operação, estimamos os impactos financeiros dos gargalos e desenhamos um plano de implementação para o seu contexto.',
+      lede: 'Em 45 minutos, avaliamos sua operação e identificamos prioridades. Se houver aderência, o próximo passo é uma proposta com escopo, prazo e investimento definidos.',
       badge: 'Resposta em até 24 horas',
     },
     form: {
@@ -47,7 +47,7 @@ export const contact = {
     },
     hero: {
       title: 'Start with the <em>free diagnostic</em>.',
-      lede: 'In 45 minutes, we map where the answers in your operation live, estimate the financial impact of its bottlenecks and design an implementation plan for your context.',
+      lede: 'In 45 minutes, we assess your operation and identify priorities. If there is a fit, the next step is a proposal with a clear scope, timeline and investment.',
       badge: 'Reply within 24 hours',
     },
     form: {
@@ -84,7 +84,7 @@ export const contact = {
     },
     hero: {
       title: 'Comience por el <em>diagnóstico gratuito</em>.',
-      lede: 'En 45 minutos, mapeamos dónde están las respuestas de su operación, estimamos el impacto financiero de los cuellos de botella y diseñamos un plan de implementación para su contexto.',
+      lede: 'En 45 minutos, evaluamos su operación e identificamos prioridades. Si existe encaje, el siguiente paso es una propuesta con alcance, plazo e inversión definidos.',
       badge: 'Respuesta en hasta 24 horas',
     },
     form: {

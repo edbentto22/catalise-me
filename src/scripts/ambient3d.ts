@@ -16,6 +16,7 @@ import {
   Vector3,
   WebGLRenderer,
 } from 'three';
+import { runScene } from './sceneLifecycle';
 
 /**
  * Cenas 3D ambientes e sutis para as páginas internas.
@@ -68,7 +69,6 @@ export function initAmbient3D({ canvas, container, variant }: Ambient3DOptions):
     return undefined;
   }
 
-  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isCoarse = matchMedia('(pointer: coarse)').matches;
 
   let renderer: WebGLRenderer;
@@ -298,45 +298,25 @@ export function initAmbient3D({ canvas, container, variant }: Ambient3DOptions):
     renderer.setSize(w, h, false);
     layout();
   };
-  const resizeObserver = new ResizeObserver(onResize);
-  resizeObserver.observe(container);
-
-  // ── Loop: só renderiza quando visível; reduced motion recebe um quadro estático ──
-  let raf = 0;
-  let visible = true;
-  let elapsed = 0;
-  let last = performance.now();
-
-  const frame = (now = performance.now()) => {
-    raf = requestAnimationFrame(frame);
-    elapsed += Math.min(0.05, (now - last) / 1000);
-    last = now;
-    pointer.x += (pointer.tx - pointer.x) * 0.04;
-    pointer.y += (pointer.ty - pointer.y) * 0.04;
-    update(elapsed, Math.min(1, elapsed / 4.6));
+  const stop = runScene({ container, resize: onResize, render: (elapsed, delta, reduced) => {
+    const smoothing = 1 - Math.exp(-6 * delta);
+    pointer.x += (pointer.tx - pointer.x) * smoothing;
+    pointer.y += (pointer.ty - pointer.y) * smoothing;
+    if (reduced) {
+      const progress = scrollProgress;
+      scrollProgress = 1;
+      pointer.x = pointer.y = 0;
+      update(0, 1);
+      scrollProgress = progress;
+    } else {
+      update(elapsed, Math.min(1, elapsed / 1.4));
+    }
     renderer.render(scene, camera);
-  };
-
-  if (prefersReduced) {
-    scrollProgress = 1;
-    update(0, 1);
-    renderer.render(scene, camera);
-  } else {
-    frame();
-  }
+  } });
   container.dataset.state = 'ready';
 
-  const io = new IntersectionObserver(([entry]) => {
-    if (prefersReduced) return;
-    if (entry.isIntersecting && !visible) { visible = true; last = performance.now(); frame(); }
-    else if (!entry.isIntersecting && visible) { visible = false; cancelAnimationFrame(raf); }
-  });
-  io.observe(container);
-
   return () => {
-    cancelAnimationFrame(raf);
-    io.disconnect();
-    resizeObserver.disconnect();
+    stop();
     removeEventListener('pointermove', onPointer);
     removeEventListener('scroll', onScroll);
     disposables.forEach((item) => item.dispose());

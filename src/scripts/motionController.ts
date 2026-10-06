@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
  * A coreografia específica das páginas fica em consultable.ts.
  */
 export function initMotion() {
-  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReduced = document.documentElement.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isCoarse = matchMedia('(pointer: coarse)').matches;
   const pointerFx = !prefersReduced && !isCoarse;
 
@@ -114,14 +114,14 @@ export function initMotion() {
       splitIntoWords(heroHeading);
       gsap.fromTo(heroHeading.querySelectorAll('.kinetic-word-inner'),
         { yPercent: 115, rotate: 2 },
-        { yPercent: 0, rotate: 0, duration: 1.2, stagger: 0.05, ease: 'power4.out', delay: 0.1 });
+        { yPercent: 0, rotate: 0, duration: 0.65, stagger: { amount: 0.16 }, ease: 'power4.out', delay: 0.1 });
     }
 
     document.querySelectorAll<HTMLElement>('.section-header h2').forEach((heading) => {
       splitIntoWords(heading);
       gsap.fromTo(heading.querySelectorAll('.kinetic-word-inner'),
         { yPercent: 110 },
-        { yPercent: 0, duration: 0.95, stagger: 0.03, ease: 'power3.out', scrollTrigger: { trigger: heading, start: 'top 88%' } });
+        { yPercent: 0, duration: 0.6, stagger: { amount: 0.15 }, ease: 'power3.out', scrollTrigger: { trigger: heading, start: 'top 88%' } });
     });
   }
 
@@ -153,7 +153,8 @@ export function initMotion() {
       queued = false;
       const end = document.querySelector<HTMLElement>('.site-footer, .cta-section');
       const endTop = end ? end.getBoundingClientRect().top : Infinity;
-      const show = scrollY > 520 && endTop > innerHeight - 40 && onScreen.size === 0;
+      const show = !dock.hasAttribute('data-dismissed') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('menu-open') && scrollY > 520 && endTop > innerHeight - 40 && onScreen.size === 0;
+      dock.inert = !show || dock.hasAttribute('data-dismissed');
       if (show === visible) return;
       visible = show;
       dock.classList.toggle('is-visible', show);
@@ -169,6 +170,9 @@ export function initMotion() {
     });
     document.querySelectorAll('main [data-open-modal]').forEach((cta) => ctaObserver.observe(cta));
     addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule, { passive: true });
+    new MutationObserver(schedule).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    new MutationObserver(schedule).observe(dock, { attributes: true, attributeFilter: ['data-dismissed'] });
     check();
   }
 }
