@@ -21,7 +21,7 @@ import {
  * Cenas 3D ambientes e sutis para as páginas internas.
  *
  * - "converge" (Manifesto): pontos espalhados que se organizam em uma rede conectada.
- *   Traduz a tese: a inteligência da empresa está espalhada → a Catalise conecta.
+ *   Traduz a tese: a inteligência da empresa está espalhada → a Catalise.me conecta.
  * - "strata" (Sobre): quatro camadas de pontos (conhecimento, processos, sistemas, agentes)
  *   atravessadas por conexões verticais e pulsos que sobem e descem entre elas.
  */

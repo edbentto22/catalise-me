@@ -870,7 +870,7 @@ html[data-motion='reduced'] .mf-loop-item {
 
 .mf-sign .mf-sign-brand {
   font-family: var(--font-display, 'Archivo');
-  font-size: clamp(4rem, 13vw, 11.5rem);
+  font-size: clamp(3rem, 10vw, 9rem);
   font-weight: 800;
   letter-spacing: -0.07em;
   line-height: 0.85;
@@ -882,7 +882,7 @@ html[data-motion='reduced'] .mf-loop-item {
   padding-bottom: 0.06em;
 }
 
-.mf-sign-brand .cx-char:last-child {
+.mf-sign-brand .cx-char-dot {
   color: #8af334;
 }
 

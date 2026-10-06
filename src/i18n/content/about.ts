@@ -23,7 +23,7 @@ export const about = {
         'Toda empresa que cresce acumula inteligência. E, junto com ela, acumula dispersão: cada setor compra suas ferramentas, cria seus processos e guarda seus dados. O que começou como agilidade vira fragmentação.',
         'Passamos anos vendo bons negócios travarem por isso. Lideranças reféns da rotina. Times refazendo trabalho que já existia em outro setor. <strong>Respostas que a empresa tinha, mas que ninguém conseguia encontrar a tempo.</strong>',
         'Com a IA agêntica, ficou claro que existe outro caminho: <em>quando conhecimento, processos, sistemas e agentes estão conectados, a empresa passa a responder sobre si mesma, e a agir sobre essas respostas.</em>',
-        'A Catalise existe para tornar essa transição real e segura: com método, responsabilidade técnica e governança em produção.',
+        'A Catalise.me existe para tornar essa transição real e segura: com método, responsabilidade técnica e governança em produção.',
       ],
     },
     layer: {
@@ -93,7 +93,7 @@ export const about = {
         'Every growing company accumulates intelligence. And, with it, dispersion: each department buys its own tools, creates its own processes and keeps its own data. What started as agility becomes fragmentation.',
         'For years we watched good businesses stall because of it. Leaders held hostage by routine. Teams redoing work that already existed in another department. <strong>Answers the company had, but no one could find in time.</strong>',
         'With agentic AI, it became clear there is another way: <em>when knowledge, processes, systems and agents are connected, the company starts answering about itself, and acting on those answers.</em>',
-        'Catalise exists to make that transition real and safe: with method, technical accountability and governance in production.',
+        'Catalise.me exists to make that transition real and safe: with method, technical accountability and governance in production.',
       ],
     },
     layer: {
@@ -163,7 +163,7 @@ export const about = {
         'Toda empresa que crece acumula inteligencia. Y, con ella, acumula dispersión: cada área compra sus herramientas, crea sus procesos y guarda sus datos. Lo que empezó como agilidad se convierte en fragmentación.',
         'Durante años vimos buenos negocios estancarse por eso. Líderes rehenes de la rutina. Equipos rehaciendo trabajo que ya existía en otra área. <strong>Respuestas que la empresa tenía, pero que nadie lograba encontrar a tiempo.</strong>',
         'Con la IA agéntica, quedó claro que existe otro camino: <em>cuando el conocimiento, los procesos, los sistemas y los agentes están conectados, la empresa empieza a responder sobre sí misma, y a actuar sobre esas respuestas.</em>',
-        'Catalise existe para que esa transición sea real y segura: con método, responsabilidad técnica y gobernanza en producción.',
+        'Catalise.me existe para que esa transición sea real y segura: con método, responsabilidad técnica y gobernanza en producción.',
       ],
     },
     layer: {

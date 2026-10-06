@@ -12,7 +12,7 @@ export const opera = {
     hero: {
       eyebrow: 'Produto · Opera OS',
       title: 'A inteligência instalada <em>no centro do seu negócio</em>.',
-      lede: 'O Opera OS é o método da Catalise para tornar a sua empresa consultável em 10 a 12 semanas: agentes de IA, CRM, automações e equipe treinada, tudo conectado em uma única camada.',
+      lede: 'O Opera OS é o método da Catalise.me para tornar a sua empresa consultável em 10 a 12 semanas: agentes de IA, CRM, automações e equipe treinada, tudo conectado em uma única camada.',
       specs: [
         { label: 'Prazo', value: '10 a 12 semanas' },
         { label: 'Investimento', value: 'Definido no diagnóstico' },
@@ -148,7 +148,7 @@ export const opera = {
     hero: {
       eyebrow: 'Product · Opera OS',
       title: 'The intelligence installed <em>at the core of your business</em>.',
-      lede: "Opera OS is Catalise's method to make your company queryable in 10 to 12 weeks: AI agents, CRM, automations and a trained team, all connected in a single layer.",
+      lede: "Opera OS is Catalise.me's method to make your company queryable in 10 to 12 weeks: AI agents, CRM, automations and a trained team, all connected in a single layer.",
       specs: [
         { label: 'Timeline', value: '10 to 12 weeks' },
         { label: 'Investment', value: 'Defined in the diagnostic' },
@@ -284,7 +284,7 @@ export const opera = {
     hero: {
       eyebrow: 'Producto · Opera OS',
       title: 'La inteligencia instalada <em>en el centro de su negocio</em>.',
-      lede: 'Opera OS es el método de Catalise para hacer su empresa consultable en 10 a 12 semanas: agentes de IA, CRM, automatizaciones y equipo capacitado, todo conectado en una sola capa.',
+      lede: 'Opera OS es el método de Catalise.me para hacer su empresa consultable en 10 a 12 semanas: agentes de IA, CRM, automatizaciones y equipo capacitado, todo conectado en una sola capa.',
       specs: [
         { label: 'Plazo', value: '10 a 12 semanas' },
         { label: 'Inversión', value: 'Definida en el diagnóstico' },

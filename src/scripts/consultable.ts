@@ -271,7 +271,7 @@ function initScatterScene() {
       .to(dots, { backgroundColor: '#d4d4d8', duration: 0.4 }, 1.4)
       .to(frags, { y: (_i, el) => scatter(el, 'sy') + 10, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 1.4);
 
-    // 3 · A Catalise conecta: tudo converge para a camada
+    // 3 · A Catalise.me conecta: tudo converge para a camada
     tl.to(frags, { x: 0, y: 0, rotate: 0, opacity: 1, duration: 1.3, stagger: 0.05, ease: 'expo.inOut' }, 2.8)
       .fromTo(core, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.6)' }, 3.3)
       .to(dots, { backgroundColor: '#8af334', duration: 0.3, stagger: 0.05 }, 3.7)
@@ -425,12 +425,12 @@ function initLoop() {
 }
 
 /* ──────────────────────────────────────────────────────────
-   ASSINATURA · "Catalise." letra a letra
+   ASSINATURA · "Catalise.me" letra a letra
 ────────────────────────────────────────────────────────── */
 function initSignature() {
   document.querySelectorAll<HTMLElement>('[data-sign-brand]').forEach((brand) => {
     const text = brand.dataset.text || brand.textContent || '';
-    brand.innerHTML = `<span class="visually-hidden">${text}</span>` + [...text].map((char) => `<span class="cx-char" aria-hidden="true">${char}</span>`).join('');
+    brand.innerHTML = `<span class="visually-hidden">${text}</span>` + [...text].map((char) => `<span class="cx-char${char === '.' ? ' cx-char-dot' : ''}" aria-hidden="true">${char}</span>`).join('');
     const chars = brand.querySelectorAll<HTMLElement>('.cx-char');
     gsap.set(chars, { yPercent: 100, opacity: 0 });
     inView(brand, () => {
