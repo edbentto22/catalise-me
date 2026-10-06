@@ -729,7 +729,7 @@ html[data-motion='reduced'] .mf-read-progress {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   font-weight: 500;
   letter-spacing: -0.025em;
-  color: #85858e;
+  color: var(--subtle);
   cursor: default;
   transition: color 0.35s ease, padding-left 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;

@@ -188,8 +188,9 @@ function initManifestoHero() {
 function initScrubText() {
   document.querySelectorAll<HTMLElement>('[data-scrub]').forEach((el) => {
     const words = splitWords(el);
-    gsap.fromTo(words, { opacity: 0.14 }, {
-      opacity: 1, ease: 'none', stagger: 0.12,
+    // Cinza → preto (não opacidade): o texto grande mantém contraste mínimo de 3:1 desde o início.
+    gsap.fromTo(words, { color: '#8e8e96' }, {
+      color: '#09090b', ease: 'none', stagger: 0.12,
       scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 42%', scrub: 0.5 },
     });
     const marks = el.querySelectorAll('mark');
@@ -476,9 +477,9 @@ function initShift() {
       const after = row.querySelector<HTMLElement>('[data-shift-after]');
       const arrow = row.querySelector<HTMLElement>('[data-shift-arrow]');
       const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 82%', end: 'top 52%', scrub: 0.6 } });
-      if (before) tl.fromTo(before, { opacity: 1 }, { opacity: 0.7, ease: 'none' }, 0);
+      if (before) tl.fromTo(before, { color: '#3f3f46' }, { color: '#71717a', ease: 'none' }, 0);
       if (arrow) tl.fromTo(arrow, { x: -12, opacity: 0 }, { x: 0, opacity: 1, ease: 'none' }, 0);
-      if (after) tl.fromTo(after, { opacity: 0.2, x: 16 }, { opacity: 1, x: 0, ease: 'none' }, 0.1);
+      if (after) tl.fromTo(after, { color: '#71717a', x: 16 }, { color: '#09090b', x: 0, ease: 'none' }, 0.1);
     });
   });
 }
@@ -621,31 +622,36 @@ function initPointerGlow() {
   });
 }
 
-export function initConsultable(flags: ConsultableFlags) {
+/** Devolve o controle ao navegador entre etapas (evita uma única tarefa longa no carregamento). */
+const yieldToMain = () => new Promise<void>((resolve) => {
+  const scheduler = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+  if (scheduler?.yield) scheduler.yield().then(resolve);
+  else setTimeout(resolve, 0);
+});
+
+export async function initConsultable(flags: ConsultableFlags) {
   const root = document.documentElement;
 
+  // 1 · O que está acima da dobra entra primeiro, numa tarefa curta.
   initQueryConsole(flags);
-
   if (flags.motion) {
     initManifestoHero();
-    initScrubText();
-    initScatterScene();
-    initLayerDiagram();
-    initBeliefs();
-    initLoop();
-    initSignature();
-    initReveals();
-    initShift();
     initHeroTitles();
-    initStrikeItems();
-    initMethod();
-    initOperaScreen(flags);
-    initFooter(flags);
-    ScrollTrigger.refresh();
   }
-
-  if (flags.pointer) initPointerGlow();
-
   root.classList.remove('cx-preload');
   root.classList.add('cx-ready');
+
+  if (flags.pointer) initPointerGlow();
+  if (!flags.motion) return;
+
+  // 2 · O restante da coreografia é montado em tarefas pequenas.
+  const steps = [
+    initScrubText, initScatterScene, initLayerDiagram, initBeliefs, initLoop, initSignature,
+    initReveals, initShift, initStrikeItems, initMethod, () => initOperaScreen(flags), () => initFooter(flags),
+  ];
+  for (const step of steps) {
+    await yieldToMain();
+    step();
+  }
+  ScrollTrigger.refresh();
 }
