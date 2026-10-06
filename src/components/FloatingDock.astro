@@ -1,0 +1,142 @@
+---
+import type { Locale } from '../i18n/config';
+import { ui } from '../i18n/ui';
+
+interface Props { locale?: Locale; }
+const { locale = 'pt' } = Astro.props;
+const t = ui[locale];
+---
+
+<aside class="floating-dock-wrap" id="floating-action-dock" inert aria-label={t.dockAria}>
+  <div class="floating-dock-pill">
+    <p class="dock-label">{t.dockLabel}</p>
+
+    <button type="button" class="dock-cta-btn" data-open-modal>
+      <span>{t.dockCta}</span>
+      <span class="btn-arrow" aria-hidden="true">→</span>
+    </button>
+
+    <button type="button" class="dock-close-btn" id="dock-dismiss-btn" aria-label={t.dockClose} title={t.dockClose}>
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+</aside>
+
+<script>
+  const dock = document.getElementById('floating-action-dock');
+  const dismissBtn = document.getElementById('dock-dismiss-btn');
+  const KEY = 'cx-dock-dismissed';
+
+  try {
+    if (sessionStorage.getItem(KEY)) dock?.setAttribute('data-dismissed', '');
+  } catch { /* storage indisponível: o dock apenas reaparece */ }
+
+  dismissBtn?.addEventListener('click', () => {
+    dock?.setAttribute('data-dismissed', '');
+    try { sessionStorage.setItem(KEY, '1'); } catch { /* sem persistência */ }
+  });
+</script>
+
+<style>
+  .floating-dock-wrap {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    /* Centraliza com translate: o motion anima apenas o transform (y) */
+    translate: -50% 0;
+    transform: translateY(80px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: var(--z-dock);
+    width: max-content;
+    max-width: calc(100vw - 24px);
+    transition: transform 0.5s var(--ease-out), opacity 0.4s var(--ease-out);
+  }
+
+  .floating-dock-wrap.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .floating-dock-wrap[data-dismissed] {
+    display: none;
+  }
+
+  .floating-dock-pill {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 7px 7px 7px 8px;
+    background: rgba(9, 9, 11, 0.92);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-full);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.12);
+    color: #ffffff;
+  }
+
+
+
+  .dock-label {
+    margin: 0;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: nowrap;
+  }
+
+  .dock-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-full);
+    background: var(--lime);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background var(--duration-fast) ease;
+  }
+
+  .dock-cta-btn:hover {
+    background: #a3ff5c;
+  }
+
+  .dock-cta-btn .btn-arrow {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .dock-cta-btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+
+  .dock-close-btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: color var(--duration-fast) ease, background var(--duration-fast) ease;
+  }
+
+  .dock-close-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  @media (max-width: 820px) {
+    .floating-dock-wrap {
+      bottom: max(12px, env(safe-area-inset-bottom));
+    }
+
+    .dock-label {
+      display: none;
+    }
+  }
+</style>

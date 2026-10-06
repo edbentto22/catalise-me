@@ -1,0 +1,252 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Ambient3D from '../components/Ambient3D.astro';
+import { localizedHref, type Locale } from '../i18n/config';
+import { manifesto } from '../i18n/content/manifesto';
+import '../styles/inner.css';
+import '../styles/manifesto.css';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = manifesto[locale];
+const pageUrl = `https://catalise.me${localizedHref('/manifesto', locale)}`;
+
+// Onde a inteligência da empresa vive hoje. x/y = posição conectada (anel);
+// sx/sy/sr = deslocamento quando ainda está espalhada (fração do palco e rotação).
+const fragmentLayout = [
+  { icon: 'brain', x: 50, y: 11, sx: -0.28, sy: 0.13, sr: -7 },
+  { icon: 'database', x: 83, y: 30, sx: -0.09, sy: -0.16, sr: 6 },
+  { icon: 'messages-square', x: 83, y: 70, sx: -0.53, sy: -0.08, sr: -4 },
+  { icon: 'sheet', x: 50, y: 89, sx: 0.3, sy: -0.37, sr: 9 },
+  { icon: 'file-text', x: 17, y: 70, sx: 0.43, sy: 0.16, sr: -11 },
+  { icon: 'workflow', x: 17, y: 30, sx: 0.29, sy: 0.08, sr: 7 },
+];
+const fragments = fragmentLayout.map((f, i) => ({ ...f, label: t.scatter.fragments[i] }));
+
+// Nós do ciclo no anel (centro 200,200 · raio 150), começando no topo.
+const cycleNodes = t.loop.steps.map((_, i) => {
+  const angle = -Math.PI / 2 + (i * Math.PI * 2) / t.loop.steps.length;
+  return { x: 200 + Math.cos(angle) * 150, y: 200 + Math.sin(angle) * 150 };
+});
+
+const layerX = [180, 440, 760, 1020];
+---
+
+<BaseLayout
+  title={t.meta.title}
+  description={t.meta.description}
+  ogTitle={t.meta.ogTitle}
+  ogDescription={t.meta.ogDescription}
+  ogUrl={pageUrl}
+  canonical={pageUrl}
+  pageType="inner"
+  showDock={false}
+  locale={locale}
+>
+
+  <div class="mf-read-progress" data-read-progress aria-hidden="true"></div>
+
+  <!-- ══════════════ HERO · A TESE ══════════════ -->
+  <header class="mf-hero" data-mf-hero aria-labelledby="manifesto-heading">
+    <Ambient3D variant="converge" />
+
+    <div class="container mf-hero-inner">
+
+      <h1 id="manifesto-heading" class="mf-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
+
+      <div class="mf-hero-thesis">
+        <p data-cx-fade>
+          {t.hero.thesisPre}
+          <span class="mf-strike" data-strike>{t.hero.strike}<span class="mf-strike-line" data-strike-line aria-hidden="true"></span></span>.
+        </p>
+        <p class="mf-hero-thesis-strong" data-cx-fade>
+          {t.hero.thesisStrongPre} <span class="mf-scramble" data-scramble>{t.hero.scramble}</span>.
+        </p>
+      </div>
+
+      <div class="mf-hero-meta" data-cx-fade>
+        <span>{t.hero.meta[0]}</span>
+        <span class="mf-hero-meta-sep" aria-hidden="true">/</span>
+        <span>{t.hero.meta[1]}</span>
+        <a href="#definicao" class="mf-scroll-cue">
+          {t.hero.cue}
+          <span class="mf-scroll-cue-line" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════ 01 · DEFINIÇÃO ══════════════ -->
+  <section id="definicao" class="mf-section mf-define" aria-label={t.define.aria}>
+    <div class="container mf-narrow">
+
+      <p class="mf-scrub" data-scrub set:html={t.define.scrub} />
+
+      <p class="mf-aside" data-reveal>{t.define.aside}</p>
+
+      <p class="mf-punch" data-punch>
+        {t.define.punchPre} <span class="mf-underline">{t.define.punchWord}<svg class="mf-underline-svg" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true" data-no-split><path data-underline d="M2 9 C 30 3, 70 3, 118 8" /></svg></span> {t.define.punchPost}
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════ 02 · ESPALHADA → CONECTADA ══════════════ -->
+  <section id="espalhada" class="mf-section mf-scatter" data-scatter aria-label={t.scatter.aria}>
+    <div class="container mf-scatter-grid">
+      <div class="mf-scatter-copy">
+
+        <div class="mf-steps">
+          {t.scatter.steps.map((step, i) => (
+            <div class:list={['mf-step', { 'is-active': i === 0 }]} data-step>
+              <h2 set:html={step} />
+            </div>
+          ))}
+        </div>
+
+        <div class="mf-scatter-track" aria-hidden="true"><span data-scatter-progress></span></div>
+      </div>
+
+      <div class="mf-stage" data-stage>
+        <svg class="mf-stage-lines" aria-hidden="true">
+          {fragments.map((f) => (
+            <line data-link x1="50%" y1="50%" x2={`${f.x}%`} y2={`${f.y}%`} />
+          ))}
+        </svg>
+
+        <div class="mf-core" data-core>
+          <span class="mf-core-mark" aria-hidden="true">✱</span>
+          <span>{t.scatter.core}</span>
+        </div>
+
+        <ul class="mf-frags" role="list">
+          {fragments.map((f) => (
+            <li class="mf-frag" data-frag data-sx={f.sx} data-sy={f.sy} data-sr={f.sr} style={`--x:${f.x}%; --y:${f.y}%`}>
+              <span class="mf-frag-icon"><i data-lucide={f.icon} aria-hidden="true"></i></span>
+              <span class="mf-frag-label">{f.label}</span>
+              <span class="mf-frag-dot" aria-hidden="true"></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 03 · A CAMADA ══════════════ -->
+  <section id="camada" class="mf-section mf-layer" aria-labelledby="camada-heading">
+    <div class="container">
+      <div class="mf-layer-head">
+        <h2 id="camada-heading" class="mf-layer-title" data-reveal>{t.layer.title}</h2>
+      </div>
+
+      <div class="mf-layer-diagram" data-layer>
+        <svg class="mf-layer-svg" viewBox="0 0 1200 440" aria-hidden="true">
+          {layerX.map((x) => <path class="mf-layer-path" data-layer-path d={`M${x} 360 V244`} />)}
+          {layerX.map((x) => <path class="mf-layer-path" data-layer-path d={`M${x} 196 C ${x} 130, 600 150, 600 84`} />)}
+          {layerX.map((x) => <path class="mf-route" data-route-up d={`M${x} 360 V196 C ${x} 130, 600 150, 600 84`} />)}
+          {layerX.map((x) => <path class="mf-route" data-route-down d={`M600 84 C 600 150, ${x} 130, ${x} 196 V360`} />)}
+          {layerX.map(() => <circle class="mf-pulse mf-pulse-up" data-pulse-up r="5" cx="0" cy="0" />)}
+          {layerX.map(() => <circle class="mf-pulse mf-pulse-down" data-pulse-down r="4" cx="0" cy="0" />)}
+        </svg>
+
+        <div class="mf-layer-node mf-layer-ai" data-layer-node style="--x:50%; --y:13%">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+          {t.layer.ai}
+        </div>
+
+        <div class="mf-layer-bar" data-layer-bar>
+          <span class="mf-layer-bar-mark" aria-hidden="true">✱</span>
+          {t.layer.bar}
+        </div>
+
+        <ul class="mf-layer-sources" role="list">
+          {t.layer.sources.map((label, i) => (
+            <li class="mf-layer-node mf-layer-source" data-layer-node style={`--x:${(layerX[i] / 1200) * 100}%; --y:88%`}>{label}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="mf-layer-purpose" data-reveal-group>
+        <p>
+          <span class="mf-arrow" aria-hidden="true">↑</span>
+          <span set:html={t.layer.up} />
+        </p>
+        <p>
+          <span class="mf-arrow mf-arrow-down" aria-hidden="true">↓</span>
+          <span set:html={t.layer.down} />
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 04 · CRENÇAS ══════════════ -->
+  <section id="crencas" class="mf-section mf-beliefs" aria-labelledby="crencas-heading">
+    <div class="container">
+      <div class="mf-beliefs-head">
+        <h2 id="crencas-heading" class="mf-section-title" data-reveal set:html={t.beliefs.title} />
+      </div>
+
+      <ol class="mf-belief-list" role="list">
+        {t.beliefs.items.map((belief, i) => (
+          <li class="mf-belief" data-belief>
+            <span class="mf-belief-num" data-belief-num>{String(i + 1).padStart(2, '0')}</span>
+            <p class="mf-belief-not"><span class="mf-belief-not-text" data-belief-not>{belief.not}</span></p>
+            <p class="mf-belief-yes" data-belief-yes>{belief.yes}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════ 05 · O CICLO ══════════════ -->
+  <section id="ciclo" class="mf-section mf-loop" data-loop aria-labelledby="ciclo-heading">
+    <div class="container mf-loop-grid">
+      <div class="mf-loop-copy">
+        <h2 id="ciclo-heading" class="mf-section-title" data-reveal set:html={t.loop.title} />
+        <p class="mf-loop-lede">{t.loop.lede}</p>
+
+        <ol class="mf-loop-list" role="list">
+          {t.loop.steps.map((step, i) => (
+            <li class="mf-loop-item" data-loop-item data-word={step.word} tabindex="0">
+              <span class="mf-loop-item-num">{String(i + 1).padStart(2, '0')}</span>
+              <span>{step.text}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="mf-loop-visual" aria-hidden="true">
+        <svg class="mf-loop-svg" viewBox="0 0 400 400">
+          <circle class="mf-loop-guide" cx="200" cy="200" r="150" />
+          <path class="mf-loop-ring" data-loop-ring d="M200 50 A150 150 0 1 1 199.99 50" />
+          {cycleNodes.map((node) => <circle class="mf-loop-node" data-loop-node cx={node.x} cy={node.y} r="6" />)}
+          <circle class="mf-loop-traveler" data-loop-traveler r="9" cx="0" cy="0" />
+        </svg>
+
+        {t.loop.steps.map((step, i) => (
+          <span class="mf-loop-label" data-loop-label style={`--x:${(cycleNodes[i].x / 400) * 100}%; --y:${(cycleNodes[i].y / 400) * 100}%`}>{step.word}</span>
+        ))}
+
+        <div class="mf-loop-center">
+          <span class="mf-loop-count" data-loop-count>01</span>
+          <strong class="mf-loop-word" data-loop-word>{t.loop.steps[0].word}</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ ASSINATURA + CTA ══════════════ -->
+  <section class="cta-section mf-sign" aria-labelledby="manifesto-cta-heading">
+    <div class="container mf-sign-inner">
+      <p class="mf-sign-brand" data-sign-brand data-text={t.sign.brand}>{t.sign.brand}</p>
+      <h2 id="manifesto-cta-heading" class="mf-sign-title" data-reveal>{t.sign.title}</h2>
+      <p data-reveal>{t.sign.text}</p>
+      <div class="cta-buttons" data-reveal>
+        <button type="button" class="btn btn-primary btn-lg" data-open-modal data-magnetic>
+          {t.sign.ctaPrimary} <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <a href={localizedHref('/sobre', locale)} class="btn btn-secondary btn-lg">{t.sign.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

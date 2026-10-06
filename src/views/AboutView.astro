@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Ambient3D from '../components/Ambient3D.astro';
+import { localizedHref, type Locale } from '../i18n/config';
+import { about } from '../i18n/content/about';
+import '../styles/inner.css';
+import '../styles/manifesto.css';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = about[locale];
+const pageUrl = `https://catalise.me${localizedHref('/sobre', locale)}`;
+---
+
+<BaseLayout
+  title={t.meta.title}
+  description={t.meta.description}
+  ogTitle={t.meta.ogTitle}
+  ogDescription={t.meta.ogDescription}
+  ogUrl={pageUrl}
+  canonical={pageUrl}
+  pageType="inner"
+  locale={locale}
+>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <header class="page-hero about-hero" aria-labelledby="sobre-heading">
+    <Ambient3D variant="strata" />
+    <div class="container">
+      <h1 id="sobre-heading" class="page-hero-title about-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
+      <p class="page-hero-lede hero-animate-3">{t.hero.lede}</p>
+      <p class="about-hero-stance hero-animate-4">
+        {t.hero.facts.map((fact) => <span set:html={fact} />)}
+        <strong>{t.hero.factYes}</strong>
+      </p>
+    </div>
+  </header>
+
+  <!-- ══════════════ A ORIGEM ══════════════ -->
+  <section id="origem" class="inner-section" aria-labelledby="origem-heading">
+    <div class="container about-origin">
+      <div class="section-header about-origin-head">
+        <h2 id="origem-heading" set:html={t.origin.title} />
+      </div>
+
+      <div class="prose" data-reveal-group>
+        {t.origin.paragraphs.map((paragraph) => <p set:html={paragraph} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ A CAMADA ══════════════ -->
+  <section id="camada" class="inner-section about-layer" aria-labelledby="camada-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="camada-heading" set:html={t.layer.title} />
+      </div>
+
+      <div class="about-layer-rail" aria-hidden="true" data-draw-on-view>
+        <svg viewBox="0 0 1000 24" preserveAspectRatio="none"><path data-draw d="M0 12 H1000" /></svg>
+      </div>
+
+      <ol class="about-layer-grid" role="list" data-reveal-group>
+        {t.layer.items.map((layer, i) => (
+          <li class="about-layer-item" data-glow>
+            <span class="about-layer-node" aria-hidden="true"></span>
+            <span class="about-layer-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{layer.title}</h3>
+            <p>{layer.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════ ANTES → DEPOIS ══════════════ -->
+  <section id="mudanca" class="inner-section about-shift" aria-labelledby="mudanca-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="mudanca-heading" set:html={t.shift.title} />
+      </div>
+
+      <div class="shift-table" data-shift role="table" aria-label={t.shift.tableAria}>
+        <div class="shift-row shift-head" role="row">
+          <span role="columnheader"><span class="visually-hidden">{t.shift.colQuestion}</span></span>
+          <span role="columnheader">{t.shift.colBefore}</span>
+          <span role="columnheader" aria-hidden="true"></span>
+          <span role="columnheader">{t.shift.colAfter}</span>
+        </div>
+        {t.shift.rows.map((row) => (
+          <div class="shift-row" role="row" data-shift-row>
+            <span class="shift-q" role="rowheader">{row.q}</span>
+            <span class="shift-before" role="cell" data-shift-before data-label={t.shift.todayLabel}>{row.before}</span>
+            <span class="shift-arrow" aria-hidden="true" data-shift-arrow>→</span>
+            <span class="shift-after" role="cell" data-shift-after>{row.after}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ COMO TRABALHAMOS ══════════════ -->
+  <section id="como-trabalhamos" class="inner-section" aria-labelledby="como-heading">
+    <div class="container">
+      <div class="section-header about-practices-head">
+        <h2 id="como-heading" set:html={t.practices.title} />
+        <p class="about-practices-lede">{t.practices.ledePre} <a href={localizedHref('/manifesto', locale)}>{t.practices.ledeLink}</a>.</p>
+      </div>
+
+      <div class="how-grid how-bento" data-reveal-group>
+        {t.practices.items.map((item, i) => (
+          <article class="how-item" data-glow>
+            <span class="how-tag">{item.tag}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CTA FINAL ══════════════ -->
+  <section class="cta-section" aria-labelledby="sobre-cta-heading">
+    <div class="container">
+      <h2 id="sobre-cta-heading">{t.cta.title}</h2>
+      <p>{t.cta.text}</p>
+      <div class="cta-buttons">
+        <button type="button" class="btn btn-primary btn-lg" data-open-modal data-magnetic>
+          {t.cta.primary} <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <a href={localizedHref('/manifesto', locale)} class="btn btn-secondary btn-lg">{t.cta.secondary}</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

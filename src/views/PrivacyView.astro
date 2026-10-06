@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedHref, type Locale } from '../i18n/config';
+import { privacy } from '../i18n/content/privacy';
+import '../styles/inner.css';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = privacy[locale];
+const pageUrl = `https://catalise.me${localizedHref('/privacidade', locale)}`;
+---
+
+<BaseLayout
+  title={t.meta.title}
+  description={t.meta.description}
+  ogUrl={pageUrl}
+  canonical={pageUrl}
+  pageType="inner"
+  showDock={false}
+  locale={locale}
+>
+
+  <header class="page-hero legal-hero" aria-labelledby="privacy-heading">
+    <div class="container">
+      <h1 id="privacy-heading" class="page-hero-title" data-cx-hero>{t.title}</h1>
+      <p class="legal-updated">{t.updated}</p>
+      <p class="page-hero-lede">{t.lede}</p>
+    </div>
+  </header>
+
+  <article class="legal-body">
+    <div class="container legal-grid">
+      <nav class="legal-toc" aria-label={t.title}>
+        <ol role="list">
+          {t.sections.map((section, i) => (
+            <li><a href={`#secao-${i + 1}`}>{section.title}</a></li>
+          ))}
+        </ol>
+      </nav>
+
+      <div class="legal-sections">
+        {t.sections.map((section, i) => (
+          <section id={`secao-${i + 1}`} aria-labelledby={`secao-${i + 1}-title`}>
+            <h2 id={`secao-${i + 1}-title`}><span>{String(i + 1).padStart(2, '0')}</span>{section.title}</h2>
+            {section.body.map((paragraph) => <p set:html={paragraph} />)}
+          </section>
+        ))}
+      </div>
+    </div>
+  </article>
+
+</BaseLayout>
