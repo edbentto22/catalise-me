@@ -1,52 +1,179 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Ambient3D from '../components/Ambient3D.astro';
 import '../styles/inner.css';
+import '../styles/manifesto.css';
+
+const layers = [
+  {
+    icon: 'book-open',
+    title: 'Conhecimento',
+    text: 'O que a empresa sabe: documentos, políticas, histórico e o que hoje vive só na cabeça das pessoas, organizado para ser consultado.',
+  },
+  {
+    icon: 'workflow',
+    title: 'Processos',
+    text: 'Como a empresa funciona de verdade, inclusive os processos que ninguém escreveu, mapeados, versionados e mensuráveis.',
+  },
+  {
+    icon: 'database',
+    title: 'Sistemas',
+    text: 'CRM, ERP, planilhas e canais de atendimento integrados, para que a informação deixe de ficar presa em cada ferramenta.',
+  },
+  {
+    icon: 'bot',
+    title: 'Agentes',
+    text: 'IA que consulta essa base e executa: responde, age dentro de limites claros e registra cada decisão para auditoria.',
+  },
+];
+
+const shift = [
+  { q: 'Onde está a resposta?', before: 'Na cabeça de alguém, se essa pessoa estiver disponível.', after: 'Consultável em segundos, com a fonte e o contexto.' },
+  { q: 'Quem executa?', before: 'Quem lembrar, quando der tempo.', after: 'Agentes com limites claros e humanos nas decisões críticas.' },
+  { q: 'Como se mede?', before: 'Relatório no fim do mês, montado à mão.', after: 'Em tempo real, direto da operação.' },
+  { q: 'E depois da entrega?', before: 'O sistema é abandonado e a equipe volta ao improviso.', after: 'O sistema aprende e evolui junto com a empresa.' },
+];
+
+const practices = [
+  {
+    tag: 'Específico vence genérico',
+    title: 'Diagnóstico antes de proposta',
+    text: 'Não enviamos orçamento sem mapear sua operação real. A sessão inicial avalia onde a empresa já tem respostas e onde elas se perdem.',
+    icon: 'search',
+  },
+  {
+    tag: 'Implementamos',
+    title: 'Engenharia sênior, entrega em produção',
+    text: 'Escopo, metas e prazos fechados com transparência. Entregamos sistemas instalados, testados e funcionando nos canais da empresa.',
+    icon: 'rocket',
+  },
+  {
+    tag: 'IA é meio',
+    title: 'Começamos pelo problema, não pela ferramenta',
+    text: 'A IA entra onde gera resultado mensurável, e só ali. Nada de demonstrações que impressionam e não mudam a operação.',
+    icon: 'target',
+  },
+  {
+    tag: 'Evoluímos',
+    title: 'Acompanhamento contínuo',
+    text: 'Regras de negócio mudam, novos canais surgem. Calibramos os agentes e integramos novos fluxos para a inteligência crescer com a empresa.',
+    icon: 'refresh-cw',
+  },
+  {
+    tag: 'Sistema vence esforço',
+    title: 'O sistema e os dados são seus',
+    text: 'Implementamos na sua infraestrutura, com processos documentados e dados sob sua governança. Sem aprisionamento, sem depender de heróis.',
+    icon: 'lock',
+  },
+];
 ---
 
 <BaseLayout
-  title="Sobre · Catalise.me"
-  description="Existimos para fazer a IA co-operar com a sua empresa. Não somos agência, não somos consultoria, não vendemos software. Implementamos e acompanhamos seus resultados."
-  ogTitle="Sobre · Catalise.me"
-  ogDescription="Por que existimos e como construímos sistemas inteligentes consultáveis por IA."
+  title="Sobre · Catalise.me · Empresas consultáveis"
+  description="A Catalise.me existe para tornar empresas consultáveis: conectamos conhecimento, processos, sistemas e agentes para que a IA entenda a empresa e possa trabalhar dentro dela."
+  ogTitle="Sobre a Catalise.me · Empresas consultáveis"
+  ogDescription="Conectamos conhecimento, processos, sistemas e agentes para que a IA entenda a sua empresa e possa trabalhar dentro dela."
   ogUrl="https://catalise.me/sobre"
   canonical="https://catalise.me/sobre"
   pageType="inner"
 >
 
   <!-- ══════════════ HERO ══════════════ -->
-  <header class="page-hero" aria-labelledby="sobre-heading">
+  <header class="page-hero about-hero" aria-labelledby="sobre-heading">
+    <Ambient3D variant="strata" />
     <div class="container">
-      <span class="page-hero-eyebrow">Sobre a Catalise.me</span>
-      <h1 id="sobre-heading" class="page-hero-title">
-        Existimos para <em>fazer a IA co-operar com a sua empresa</em>.
+      <span class="page-hero-eyebrow hero-animate-1">Sobre a Catalise.me</span>
+      <h1 id="sobre-heading" class="page-hero-title about-hero-title hero-animate-2">
+        Existimos para tornar empresas <em>consultáveis</em>.
       </h1>
-      <p class="page-hero-lede">
-        Não somos agência, não somos consultoria, não vendemos software de prateleira. Somos a parceira de engenharia que instala o sistema agêntico, integra aos seus dados, treina sua equipe e acompanha a evolução contínua da sua operação.
+      <p class="page-hero-lede hero-animate-3">
+        A inteligência da sua empresa já existe. Está nas pessoas, nos sistemas, nas conversas e nas planilhas. Nós conectamos tudo isso em uma camada única, para que a IA entenda a empresa e possa trabalhar dentro dela.
       </p>
+      <ul class="about-hero-facts hero-animate-4" role="list">
+        <li><strong>Não</strong> somos agência.</li>
+        <li><strong>Não</strong> somos consultoria de slides.</li>
+        <li><strong>Não</strong> vendemos software de prateleira.</li>
+        <li class="about-hero-facts-yes">Somos engenharia de empresas consultáveis.</li>
+      </ul>
     </div>
   </header>
 
   <!-- ══════════════ A ORIGEM ══════════════ -->
   <section id="origem" class="inner-section" aria-labelledby="origem-heading">
-    <div class="container container-sm">
-      <div class="section-header">
-        <span class="page-hero-eyebrow">A Origem</span>
+    <div class="container about-origin">
+      <div class="section-header about-origin-head">
+        <span class="page-hero-eyebrow">A origem</span>
         <h2 id="origem-heading">Por que <em>existimos</em>.</h2>
       </div>
 
-      <div class="prose">
+      <div class="prose" data-reveal-group>
         <p>
-          Toda empresa que cresce vive a mesma síndrome: cada setor compra suas próprias ferramentas, cria seus próprios processos e acumula dados isolados. O que começou como agilidade vira fragmentação. O que era cultura vira silo.
+          Toda empresa que cresce acumula inteligência. E, junto com ela, acumula dispersão: cada setor compra suas ferramentas, cria seus processos e guarda seus dados. O que começou como agilidade vira fragmentação.
         </p>
         <p>
-          Passamos anos acompanhando bons negócios travarem por isso. Lideranças brilhantes virando reféns da rotina operacional. Times competentes refazendo trabalho que já foi concluído em outro setor. <strong>Decisões estratégicas tomadas e esquecidas em planilhas desconectadas.</strong>
+          Passamos anos vendo bons negócios travarem por isso. Lideranças reféns da rotina. Times refazendo trabalho que já existia em outro setor. <strong>Respostas que a empresa tinha, mas que ninguém conseguia encontrar a tempo.</strong>
         </p>
         <p>
-          Acreditava-se que isso era o preço inevitável do crescimento. Com a evolução da IA agêntica, ficou claro que existe outro caminho: <em>sistemas inteligentes podem conectar e operar processos operacionais, permitindo que os humanos voltem a focar na estratégia e no relacionamento.</em>
+          Com a IA agêntica, ficou claro que existe outro caminho: <em>quando conhecimento, processos, sistemas e agentes estão conectados, a empresa passa a responder sobre si mesma, e a agir sobre essas respostas.</em>
         </p>
         <p>
-          A Catalise.me existe para tornar essa transição real e segura: com método rigoroso, responsabilidade técnica e governança em produção.
+          A Catalise existe para tornar essa transição real e segura: com método, responsabilidade técnica e governança em produção.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ A CAMADA ══════════════ -->
+  <section id="camada" class="inner-section about-layer" aria-labelledby="camada-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="page-hero-eyebrow">O que construímos</span>
+        <h2 id="camada-heading">Uma camada que <em>conecta</em> a empresa inteira.</h2>
+      </div>
+
+      <div class="about-layer-rail" aria-hidden="true" data-draw-on-view>
+        <svg viewBox="0 0 1000 24" preserveAspectRatio="none">
+          <path data-draw d="M0 12 H1000" />
+        </svg>
+      </div>
+
+      <ol class="about-layer-grid" role="list" data-reveal-group>
+        {layers.map((layer, i) => (
+          <li class="about-layer-item" data-glow>
+            <span class="about-layer-node" aria-hidden="true"></span>
+            <span class="about-layer-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="about-layer-icon" aria-hidden="true"><i data-lucide={layer.icon}></i></span>
+            <h3>{layer.title}</h3>
+            <p>{layer.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════ ANTES → DEPOIS ══════════════ -->
+  <section id="mudanca" class="inner-section about-shift" aria-labelledby="mudanca-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="page-hero-eyebrow">A mudança</span>
+        <h2 id="mudanca-heading">De empresa espalhada a empresa <em>consultável</em>.</h2>
+      </div>
+
+      <div class="shift-table" data-shift role="table" aria-label="Comparação entre empresa espalhada e empresa consultável">
+        <div class="shift-row shift-head" role="row">
+          <span role="columnheader"></span>
+          <span role="columnheader">Empresa espalhada</span>
+          <span role="columnheader" aria-hidden="true"></span>
+          <span role="columnheader">Empresa consultável</span>
+        </div>
+        {shift.map((row) => (
+          <div class="shift-row" role="row" data-shift-row>
+            <span class="shift-q" role="rowheader">{row.q}</span>
+            <span class="shift-before" role="cell" data-shift-before>{row.before}</span>
+            <span class="shift-arrow" aria-hidden="true" data-shift-arrow>→</span>
+            <span class="shift-after" role="cell" data-shift-after>{row.after}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -54,61 +181,23 @@ import '../styles/inner.css';
   <!-- ══════════════ COMO TRABALHAMOS ══════════════ -->
   <section id="como-trabalhamos" class="inner-section" aria-labelledby="como-heading">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header about-practices-head">
         <span class="page-hero-eyebrow">Práticas</span>
         <h2 id="como-heading">Como <em>trabalhamos</em>.</h2>
+        <p class="about-practices-lede">Cada prática nasce de um princípio do nosso <a href="/manifesto">manifesto</a>.</p>
       </div>
 
-      <div class="how-grid">
-        <article class="how-item">
-          <div class="how-icon-box" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-            </svg>
-          </div>
-          <h3>Diagnóstico antes de proposta</h3>
-          <p>Não enviamos orçamento sem mapear sua operação e seus fluxos reais. A sessão inicial avalia a viabilidade técnica e o retorno de valor.</p>
-        </article>
-
-        <article class="how-item">
-          <div class="how-icon-box" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
-            </svg>
-          </div>
-          <h3>Escopo e metas fechadas</h3>
-          <p>O escopo e os prazos são acordados com transparência. A entrega é mensurável e testada diretamente nos canais de produção da empresa.</p>
-        </article>
-
-        <article class="how-item">
-          <div class="how-icon-box" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <h3>Engenharia sênior dedicada</h3>
-          <p>Qualidade nasce de profundidade técnica. Não terceirizamos o desenvolvimento nem delegamos a implementação a modelos automáticos sem supervisão.</p>
-        </article>
-
-        <article class="how-item">
-          <div class="how-icon-box" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-          </div>
-          <h3>O sistema e os dados são seus</h3>
-          <p>Implementamos na infraestrutura e contas da sua empresa. Seus dados permanecem sob sua governança, sem aprisionamento proprietário.</p>
-        </article>
-
-        <article class="how-item">
-          <div class="how-icon-box" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
-            </svg>
-          </div>
-          <h3>Acompanhamento e evolução contínua</h3>
-          <p>IA não é estática. Acompanhamos a calibração dos agentes, a evolução das regras de negócio e a integração contínua de novos fluxos.</p>
-        </article>
+      <div class="how-grid how-bento" data-reveal-group>
+        {practices.map((item) => (
+          <article class="how-item" data-glow>
+            <div class="how-item-top">
+              <div class="how-icon-box" aria-hidden="true"><i data-lucide={item.icon}></i></div>
+              <span class="how-tag">{item.tag}</span>
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -116,17 +205,17 @@ import '../styles/inner.css';
   <!-- ══════════════ CTA FINAL ══════════════ -->
   <section class="cta-section" aria-labelledby="sobre-cta-heading">
     <div class="container">
-      <span class="page-hero-eyebrow">Próximo Passo</span>
-      <h2 id="sobre-cta-heading">Pronto para transformar sua operação?</h2>
+      <span class="page-hero-eyebrow">Próximo passo</span>
+      <h2 id="sobre-cta-heading">O que a sua empresa conseguiria responder sozinha?</h2>
       <p>
-        Converse conosco para mapear gargalos e desenhar a arquitetura agêntica da sua empresa. Sem compromisso inicial.
+        Em uma conversa de diagnóstico, mapeamos onde estão as respostas da sua operação e desenhamos a camada que vai conectá-las. Sem compromisso.
       </p>
       <div class="cta-buttons">
         <button type="button" class="btn btn-primary btn-lg" data-open-modal aria-label="Entrar em contato">
-          Entrar em Contato <span class="btn-arrow" aria-hidden="true">→</span>
+          Tornar minha empresa consultável <span class="btn-arrow" aria-hidden="true">→</span>
         </button>
         <a href="/manifesto" class="btn btn-secondary btn-lg" aria-label="Ler o Manifesto">
-          Ler nosso Manifesto
+          Ler o Manifesto
         </a>
       </div>
     </div>

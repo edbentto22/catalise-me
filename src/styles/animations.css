@@ -434,3 +434,9 @@ html[data-motion="reduced"] .hero-animate-symbol {
   opacity: 1 !important;
   transform: none !important;
 }
+
+/* ─── Coreografia "Empresas consultáveis": oculta até o JS assumir ─── */
+html.cx-preload [data-cx-hero],
+html.cx-preload [data-cx-fade] {
+  opacity: 0;
+}

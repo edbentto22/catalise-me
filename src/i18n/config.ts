@@ -17,9 +17,9 @@ export const navigation = {
 } as const;
 
 export const footer = {
-  pt: { description: 'Sistema operacional agêntico com IA para empresas de serviços.', pages: 'Páginas', contact: 'Contato', rights: 'Todos os direitos reservados' },
-  en: { description: 'An agentic AI operating system for service businesses.', pages: 'Pages', contact: 'Contact', rights: 'All rights reserved' },
-  es: { description: 'Sistema operativo agéntico con IA para empresas de servicios.', pages: 'Páginas', contact: 'Contacto', rights: 'Todos los derechos reservados' },
+  pt: { description: 'Empresas consultáveis. Conectamos conhecimento, processos, sistemas e agentes.', pages: 'Páginas', contact: 'Contato', rights: 'Todos os direitos reservados' },
+  en: { description: 'Queryable companies. We connect knowledge, processes, systems and agents.', pages: 'Pages', contact: 'Contact', rights: 'All rights reserved' },
+  es: { description: 'Empresas consultables. Conectamos conocimiento, procesos, sistemas y agentes.', pages: 'Páginas', contact: 'Contacto', rights: 'Todos los derechos reservados' },
 } as const;
 
 export function localeFromPath(pathname: string): Locale {

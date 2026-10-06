@@ -76,10 +76,15 @@
   max-width: var(--container, 1320px);
   margin: 0 auto;
   padding: clamp(2rem, 5vh, 4.5rem) var(--space-6, 1.5rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+  align-items: end;
+  gap: clamp(24px, 4vw, 64px);
   flex: 1;
+}
+
+.hero-content-wrapper > .hero-main-column {
+  align-self: center;
 }
 
 .hero-main-column {
@@ -394,18 +399,192 @@
   user-select: none;
 }
 
+/* ── Console "Pergunte à sua empresa" ── */
+.query-console {
+  position: relative;
+  align-self: end;
+  margin-bottom: clamp(0px, 2vh, 24px);
+  padding: 18px 18px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+  font-family: var(--font-body, 'Manrope', sans-serif);
+}
+
+.query-console-head,
+.query-console-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.query-console-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #09090b;
+}
+
+.query-console-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8af334;
+  box-shadow: 0 0 0 0 rgba(138, 243, 52, 0.7);
+  animation: badgePulse 2s infinite;
+}
+
+.query-console-index {
+  font-variant-numeric: tabular-nums;
+}
+
+.query-console-q {
+  display: flex;
+  gap: 10px;
+  min-height: 3.1em;
+  margin: 14px 0 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #09090b;
+  color: #ffffff;
+  font-family: var(--font-display, 'Archivo', sans-serif);
+  font-size: 0.9875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.query-console-prompt {
+  color: #8af334;
+  font-weight: 700;
+}
+
+.query-console-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.query-console-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  min-height: 40px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #09090b;
+}
+
+.query-console-label {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #f4f4f5;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #52525b;
+}
+
+.query-console-action {
+  background: rgba(138, 243, 52, 0.12);
+  border-color: rgba(138, 243, 52, 0.45);
+}
+
+.query-console-check {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #8af334;
+}
+
+.query-console-check svg {
+  width: 13px;
+  height: 13px;
+}
+
+.query-console-check path {
+  fill: none;
+  stroke: #09090b;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.query-console-foot {
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.query-console.is-busy [data-query-status]::after {
+  content: '…';
+  animation: blink 1s steps(2) infinite;
+}
+
+.query-console-note {
+  color: #a1a1aa;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 /* ── Responsive Refinements ── */
+@media (max-width: 1100px) {
+  .hero-content-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .query-console {
+    max-width: 440px;
+    margin-bottom: 0;
+  }
+}
+
 @media (max-width: 900px) {
   .hero-editorial {
     padding-top: calc(var(--nav-height, 80px) + 12px);
   }
 
   .hero-bottom-pillars {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .pillar-sep {
     display: none;
+  }
+
+  .pillar-item {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.6875rem;
   }
 
   .hero-bottom-inner {
     justify-content: center;
+    gap: 12px;
   }
 
   .hero-ctas-editorial {
@@ -426,8 +605,14 @@
 
   .hero-apps-list {
     justify-content: center;
-    gap: 16px;
+    flex-wrap: nowrap;
+    gap: 14px;
   }
+
+  .app-logo-opera { height: 19px; }
+  .app-logo-matika { height: 16px; }
+  .app-logo-brandquest { height: 14px; }
+  .app-logo-yugen { height: 15px; }
 
   .app-sep {
     display: none;

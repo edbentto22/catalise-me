@@ -127,20 +127,24 @@ export function initMotion() {
 
       nodes.forEach((node) => {
         if (node.nodeType === Node.TEXT_NODE) {
-          const text = node.textContent || '';
-          const words = text.split(/\s+/).filter(Boolean);
-          words.forEach((word) => {
+          // Mantém os espaços originais como texto: evita o vão antes de pontuação após <em>.
+          const parts = (node.textContent || '').split(/(\s+)/);
+          parts.forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) {
+              element.appendChild(document.createTextNode(' '));
+              return;
+            }
             const wordSpan = document.createElement('span');
             wordSpan.className = 'kinetic-word-wrap';
             wordSpan.style.display = 'inline-block';
             wordSpan.style.overflow = 'hidden';
             wordSpan.style.verticalAlign = 'top';
-            wordSpan.style.marginRight = '0.28em';
 
             const innerSpan = document.createElement('span');
             innerSpan.className = 'kinetic-word-inner';
             innerSpan.style.display = 'inline-block';
-            innerSpan.textContent = word;
+            innerSpan.textContent = part;
 
             wordSpan.appendChild(innerSpan);
             element.appendChild(wordSpan);

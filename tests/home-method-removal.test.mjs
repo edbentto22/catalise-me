@@ -34,9 +34,9 @@ test('Home é single-section estilo Brabaflow e remove seções antigas do méto
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinacao)\.mp4/);
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinamento)\.png/);
 
-  // Home tem apenas 1 section e a chamada solicitada
+  // Home tem apenas 1 section e a chamada da tese "Empresas consultáveis"
   assert.match(home, /<section class="hero-editorial"/);
-  assert.match(home, /Transformamos empresas em sistemas inteligentes consultáveis por IA/);
+  assert.match(home, /Construímos empresas <em>consultáveis<\/em>\./);
   assert.equal((home.match(/<section\b/g) || []).length, 1, 'Home deve conter apenas uma section');
 });
 

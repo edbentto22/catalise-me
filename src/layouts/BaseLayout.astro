@@ -76,6 +76,16 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
     locale={locale}
     localizedPaths={allLocalizedPaths}
   />
+  <!-- Esconde só os elementos coreografados até o JS assumir (com fallback de segurança). -->
+  <script is:inline>
+    (function () {
+      var c = navigator.connection;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || (c && c.saveData)) return;
+      var root = document.documentElement;
+      root.classList.add('cx-preload');
+      setTimeout(function () { root.classList.remove('cx-preload'); }, 3000);
+    })();
+  </script>
 </head>
 <body class={bodyClass} data-page-type={pageType}>
 
@@ -97,13 +107,17 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
 <!-- Um único controlador progressivo para navegação, movimento e componentes. -->
   <script>
     import Lenis from 'lenis';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { initMotion } from '../scripts/motionController';
+    import { initConsultable } from '../scripts/consultable';
     import {
       createIcons, Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
       MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
       Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
       Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
-      HelpCircle, MousePointerClick, HeartHandshake, Check, X
+      HelpCircle, MousePointerClick, HeartHandshake, Check, X,
+      Brain, Database, MessagesSquare, Sheet, FileText, Workflow, Sparkles,
+      BookOpen, Bot, Layers
     } from 'lucide';
 
     const root = document.documentElement;
@@ -119,12 +133,16 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
       MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
       Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
       Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
-      HelpCircle, MousePointerClick, HeartHandshake, Check, X } });
+      HelpCircle, MousePointerClick, HeartHandshake, Check, X,
+      Brain, Database, MessagesSquare, Sheet, FileText, Workflow, Sparkles,
+      BookOpen, Bot, Layers } });
 
     initMotion();
+    initConsultable({ motion: !reduceMotion && !saveData && !slowConnection, pointer: allowEffects });
 
     if (allowEffects) {
       const lenis = new Lenis({ duration: 1, smoothWheel: true, smoothTouch: false });
+      lenis.on('scroll', ScrollTrigger.update);
       const raf = (time: number) => { lenis.raf(time); requestAnimationFrame(raf); };
       requestAnimationFrame(raf);
     }

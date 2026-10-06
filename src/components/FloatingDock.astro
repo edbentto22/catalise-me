@@ -82,7 +82,9 @@ const texts = {
     position: fixed;
     bottom: 24px;
     left: 50%;
-    transform: translateX(-50%) translateY(60px);
+    /* Centraliza com a propriedade translate: o motion anima só o transform (y) */
+    translate: -50% 0;
+    transform: translateY(60px);
     opacity: 0;
     pointer-events: none;
     z-index: 900;
@@ -92,7 +94,7 @@ const texts = {
   }
 
   .floating-dock-wrap.is-visible {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
   }
