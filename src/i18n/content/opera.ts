@@ -10,32 +10,30 @@ export const opera = {
       ogDescription: 'Método OPERA em 5 fases, 10 a 12 semanas. CRM, agentes de IA, automações e treinamento, tudo conectado.',
     },
     hero: {
-      eyebrow: 'Produto · Opera OS',
-      title: 'A inteligência instalada <em>no centro do seu negócio</em>.',
-      lede: 'O Opera OS é o método da Catalise.me para tornar a sua empresa consultável em 10 a 12 semanas: agentes de IA, CRM, automações e equipe treinada, tudo conectado em uma única camada.',
+      title: 'Opera OS: sua empresa <em>consultável</em> em 10 a 12 semanas.',
+      lede: 'A implantação, ponta a ponta, da camada que conecta agentes de IA, CRM, automações e equipe treinada. Para que a operação responda sobre si mesma e aja sobre essas respostas.',
       specs: [
         { label: 'Prazo', value: '10 a 12 semanas' },
         { label: 'Investimento', value: 'Definido no diagnóstico' },
         { label: 'Inclui', value: 'CRM + IA + site + automações + treinamento' },
       ],
-      ctaPrimary: 'Quero meu diagnóstico gratuito',
+      ctaPrimary: 'Agendar diagnóstico gratuito',
       ctaSecondary: 'Ver o método OPERA',
-      videoLabel: 'Opera OS em operação',
+      illustrative: 'Ilustrativo',
+      videoLabel: 'Ilustração do Opera OS em operação',
     },
     symptoms: {
-      eyebrow: 'O diagnóstico',
       title: 'Seu negócio <em>funciona</em>. Mas não opera com <em>inteligência central</em>.',
       lede: 'Existe uma diferença brutal entre um negócio que sobrevive do esforço diário e um negócio guiado por sistemas inteligentes. O primeiro depende de você para tudo. O segundo opera enquanto seu time cuida do que é mais relevante.',
       items: [
-        { title: 'Operação manual e reativa', text: 'Processos que dependem de memória, de planilha ou da presença física do dono. Média: <strong>286 horas/ano perdidas</strong>.' },
-        { title: 'Leads que somem sem resposta', text: 'Oportunidades chegam fora do horário e vão embora para o concorrente. <strong>A conversão cai 80% após 15 min</strong>.' },
-        { title: 'Decisões sem dado', text: 'Preço, marketing e equipe decididos na intuição. <strong>67% dos gestores</strong> não têm dado atualizado.' },
+        { title: 'Operação manual e reativa', text: 'Processos que dependem de memória, de planilha ou da presença física do dono. <strong>Se você tirar uma semana de folga, a operação continua?</strong>' },
+        { title: 'Leads que somem sem resposta', text: 'Oportunidades chegam fora do horário e esperam até alguém ver. <strong>Quanto tempo um lead espera hoje pela primeira resposta?</strong>' },
+        { title: 'Decisões sem dado', text: 'Preço, marketing e equipe decididos na intuição. <strong>Você sabe, agora, qual canal trouxe os clientes deste mês?</strong>' },
         { title: 'Crescer aumenta o caos', text: 'Mais clientes, mais problemas. Mais receita, mais equipe. O negócio escala o trabalho, não o resultado.' },
         { title: 'Dono refém do próprio negócio', text: 'Abriu para ter liberdade e virou o sistema central de tudo. A cabeça nunca para.' },
       ],
     },
     product: {
-      eyebrow: 'O produto',
       title: 'O Opera OS é o método que <em>transforma como seu negócio opera.</em>',
       paragraphs: [
         'Não é um software que você assina e configura sozinho. É a implantação, ponta a ponta, do sistema operacional com IA no seu negócio.',
@@ -50,21 +48,20 @@ export const opera = {
       yes: 'O sistema operacional com IA do seu negócio: construído, integrado e funcionando.',
     },
     method: {
-      eyebrow: 'O método OPERA',
       title: 'As cinco fases, <em>uma por uma</em>.',
       lede: 'Toda implementação segue o método em cinco fases. Você acompanha cada etapa, com entregáveis claros em cada uma.',
       weeksLabel: 'Semana',
+      marginLabel: 'Margem de ajuste até a semana 12',
       deliverableLabel: 'Entregável',
       phases: [
         { letter: 'O', title: 'Organização', weeks: 'Semanas 1–2', start: 1, end: 2, text: 'Diagnóstico profundo. Mapeamos cada processo, do primeiro contato ao pós-venda, e classificamos os gargalos por impacto financeiro real.', deliverable: 'Relatório executivo com cada gargalo mapeado e classificado pelo custo estimado de impacto.' },
         { letter: 'P', title: 'Planejamento', weeks: 'Semanas 2–3', start: 2, end: 3, text: 'Definimos escopo, ordem de implantação e ROI projetado por iniciativa.', deliverable: 'Plano mestre com escopo fechado, cronograma, KPIs projetados e ROI esperado por iniciativa.' },
         { letter: 'E', title: 'Estratégia', weeks: 'Semanas 3–4', start: 3, end: 4, text: 'Arquitetura técnica: quais agentes, quais integrações, como tudo se conecta e o plano de adoção da equipe.', deliverable: 'Blueprint visual e técnico: fluxos, integrações, responsabilidades e sequência de implantação.' },
         { letter: 'R', title: 'Realização', weeks: 'Semanas 4–8', start: 4, end: 8, text: 'Construção e ativação. Integramos os sistemas, colocamos os agentes em operação e treinamos a equipe.', deliverable: 'Sistema funcionando, equipe treinada e documentação operacional completa.' },
-        { letter: 'A', title: 'Afinação', weeks: 'Semanas 8–10', start: 8, end: 10, text: 'Calibração com dados reais dos primeiros 30 dias. Ajustamos os agentes ao seu negócio específico.', deliverable: 'Validação final e entrega do sistema certificado.' },
+        { letter: 'A', title: 'Afinação', weeks: 'Semanas 8–10', start: 8, end: 10, text: 'Calibração com dados reais dos primeiros 30 dias. Ajustamos os agentes ao seu negócio específico.', deliverable: 'Validação final com a sua equipe e entrega do sistema documentado.' },
       ],
     },
     scope: {
-      eyebrow: 'O escopo',
       title: 'Tudo que a sua empresa precisa para <em>funcionar</em>.',
       lede: 'O escopo final é definido na Fase O. Mas o Opera OS sempre entrega o ecossistema completo.',
       items: [
@@ -79,13 +76,12 @@ export const opera = {
       ],
     },
     fit: {
-      eyebrow: 'Qualificação',
       title: 'O Opera OS <em>é para você</em> se…',
       yesLabel: 'É para você',
       noLabel: 'Não é para você',
       yes: [
         { strong: 'Negócio com operação consolidada.', text: 'Você já vende e tem clientes, mas o processo é manual e depende de você para tudo.' },
-        { strong: 'Faturamento a partir de R$ 100 mil/mês.', text: 'O investimento é recuperado nos primeiros 60 a 90 dias de operação catalisada.' },
+        { strong: 'Faturamento a partir de R$ 100 mil/mês.', text: 'Há volume suficiente para que as horas e as oportunidades recuperadas façam diferença no resultado.' },
         { strong: 'Disposição para transformar.', text: 'Você quer mudar como o negócio opera, não apenas adicionar uma ferramenta.' },
       ],
       no: [
@@ -96,7 +92,6 @@ export const opera = {
       ],
     },
     pricing: {
-      eyebrow: 'Investimento',
       title: 'Um investimento <em>para crescer</em>.',
       lede: 'O Opera OS é um investimento sob medida, definido após o diagnóstico e antes de qualquer compromisso. Apresentamos o valor exato na proposta, sem letra miúda e sem aditivo surpresa.',
       plans: [
@@ -106,12 +101,11 @@ export const opera = {
         },
         {
           badge: 'Continuidade', name: 'Retainer de Evolução', price: 'Sob consulta', period: 'após a entrega do Opera OS', cta: 'Saber mais', featured: false,
-          features: ['Manutenção e monitoramento contínuos', 'Otimização dos agentes de IA', 'Novos fluxos e automações', 'Relatórios mensais de performance', 'Suporte consultivo', 'Licença Matika inclusa'],
+          features: ['Manutenção e monitoramento contínuos', 'Otimização dos agentes de IA', 'Novos fluxos e automações', 'Relatórios mensais de performance', 'Suporte consultivo', 'Licença do Matika AI CRM inclusa'],
         },
       ],
     },
     start: {
-      eyebrow: 'Como começar',
       title: 'Quatro passos até o sistema <em>rodando</em>.',
       steps: [
         { title: 'Contato', text: 'Preencha o formulário ou fale pelo WhatsApp. Respondemos em até 24 horas para qualificar e agendar.' },
@@ -121,7 +115,6 @@ export const opera = {
       ],
     },
     faq: {
-      eyebrow: 'FAQ',
       title: 'As perguntas que <em>sempre fazem</em>.',
       items: [
         { q: 'Para que tipo de negócio o Opera OS funciona?', a: 'Foi desenhado para negócios de serviços: hotelaria, clínicas, autoescolas, imobiliárias, educação, jurídico e outros segmentos onde atendimento, funil de vendas e operação são os gargalos centrais. Se você vende serviços e tem operação consolidada, o Opera OS se adapta ao seu contexto.' },
@@ -131,7 +124,6 @@ export const opera = {
       ],
     },
     cta: {
-      eyebrow: 'Próximo passo',
       title: 'Comece pelo <em>diagnóstico gratuito</em>.',
       text: 'Em 45 minutos, identificamos gargalos operacionais e impactos financeiros estimados, e desenhamos um plano de implementação para o seu contexto.',
       primary: 'Agendar diagnóstico gratuito',
@@ -146,32 +138,30 @@ export const opera = {
       ogDescription: 'The OPERA method in 5 phases, 10 to 12 weeks. CRM, AI agents, automations and training, all connected.',
     },
     hero: {
-      eyebrow: 'Product · Opera OS',
-      title: 'The intelligence installed <em>at the core of your business</em>.',
-      lede: "Opera OS is Catalise.me's method to make your company queryable in 10 to 12 weeks: AI agents, CRM, automations and a trained team, all connected in a single layer.",
+      title: 'Opera OS: your <em>queryable</em> company in 10 to 12 weeks.',
+      lede: 'The end-to-end rollout of the layer that connects AI agents, CRM, automations and a trained team. So the operation can answer about itself and act on those answers.',
       specs: [
         { label: 'Timeline', value: '10 to 12 weeks' },
         { label: 'Investment', value: 'Defined in the diagnostic' },
         { label: 'Includes', value: 'CRM + AI + website + automations + training' },
       ],
-      ctaPrimary: 'I want my free diagnostic',
+      ctaPrimary: 'Book a free diagnostic',
       ctaSecondary: 'See the OPERA method',
-      videoLabel: 'Opera OS in operation',
+      illustrative: 'Illustrative',
+      videoLabel: 'Illustration of Opera OS in operation',
     },
     symptoms: {
-      eyebrow: 'The diagnosis',
       title: 'Your business <em>works</em>. But it does not run on <em>central intelligence</em>.',
       lede: 'There is a huge difference between a business that survives on daily effort and one guided by intelligent systems. The first depends on you for everything. The second operates while your team focuses on what matters most.',
       items: [
-        { title: 'Manual, reactive operation', text: "Processes that rely on memory, spreadsheets or the owner's physical presence. Average: <strong>286 hours/year lost</strong>." },
-        { title: 'Leads that vanish unanswered', text: 'Opportunities arrive after hours and go to competitors. <strong>Conversion drops 80% after 15 min</strong>.' },
-        { title: 'Decisions without data', text: 'Pricing, marketing and staffing decided on intuition. <strong>67% of managers</strong> lack up-to-date data.' },
+        { title: 'Manual, reactive operation', text: "Processes that rely on memory, spreadsheets or the owner's physical presence. <strong>If you took a week off, would the operation keep running?</strong>" },
+        { title: 'Leads that vanish unanswered', text: 'Opportunities arrive after hours and wait until someone notices. <strong>How long does a lead wait for a first reply today?</strong>' },
+        { title: 'Decisions without data', text: "Pricing, marketing and staffing decided on intuition. <strong>Do you know, right now, which channel brought this month's customers?</strong>" },
         { title: 'Growth increases chaos', text: 'More customers, more problems. More revenue, more staff. The business scales work, not results.' },
         { title: 'Owner held hostage by the business', text: 'Started it for freedom and became the central system for everything. The mind never stops.' },
       ],
     },
     product: {
-      eyebrow: 'The product',
       title: 'Opera OS is the method that <em>transforms how your business operates.</em>',
       paragraphs: [
         "It's not software you subscribe to and configure alone. It's the end-to-end implementation of an AI operating system in your business.",
@@ -186,21 +176,20 @@ export const opera = {
       yes: 'The AI operating system of your business: built, integrated and running.',
     },
     method: {
-      eyebrow: 'The OPERA method',
       title: 'The five phases, <em>one by one</em>.',
       lede: 'Every implementation follows the five-phase method. You follow each step, with clear deliverables at every stage.',
       weeksLabel: 'Week',
+      marginLabel: 'Buffer up to week 12',
       deliverableLabel: 'Deliverable',
       phases: [
         { letter: 'O', title: 'Organization', weeks: 'Weeks 1–2', start: 1, end: 2, text: 'In-depth diagnosis. We map every process, from first contact to after-sales, and rank bottlenecks by real financial impact.', deliverable: 'Executive report with every bottleneck mapped and ranked by estimated cost impact.' },
         { letter: 'P', title: 'Planning', weeks: 'Weeks 2–3', start: 2, end: 3, text: 'We define scope, implementation order and projected ROI per initiative.', deliverable: 'Master plan with closed scope, timeline, projected KPIs and expected ROI per initiative.' },
         { letter: 'E', title: 'Strategy', weeks: 'Weeks 3–4', start: 3, end: 4, text: 'Technical architecture: which agents, which integrations, how everything connects, and the team adoption plan.', deliverable: 'Visual and technical blueprint: flows, integrations, responsibilities and rollout sequence.' },
         { letter: 'R', title: 'Realization', weeks: 'Weeks 4–8', start: 4, end: 8, text: 'Build and activation. We integrate the systems, put the agents into operation and train the team.', deliverable: 'A running system, a trained team and complete operational documentation.' },
-        { letter: 'A', title: 'Adjustment', weeks: 'Weeks 8–10', start: 8, end: 10, text: 'Calibration with real data from the first 30 days. We tune the agents to your specific business.', deliverable: 'Final validation and delivery of the certified system.' },
+        { letter: 'A', title: 'Adjustment', weeks: 'Weeks 8–10', start: 8, end: 10, text: 'Calibration with real data from the first 30 days. We tune the agents to your specific business.', deliverable: 'Final validation with your team and delivery of the documented system.' },
       ],
     },
     scope: {
-      eyebrow: 'The scope',
       title: 'Everything your company needs to <em>operate</em>.',
       lede: 'The final scope is defined in Phase O. But Opera OS always delivers the complete ecosystem.',
       items: [
@@ -215,13 +204,12 @@ export const opera = {
       ],
     },
     fit: {
-      eyebrow: 'Qualification',
       title: 'Opera OS <em>is for you</em> if…',
       yesLabel: "It's for you",
       noLabel: "It's not for you",
       yes: [
         { strong: 'A business with a consolidated operation.', text: 'You already sell and have customers, but the process is manual and depends on you for everything.' },
-        { strong: 'Revenue from R$ 100k/month.', text: 'The investment pays back in the first 60 to 90 days of catalyzed operation.' },
+        { strong: 'Revenue from R$ 100k/month.', text: 'There is enough volume for the hours and opportunities recovered to show up in your results.' },
         { strong: 'Willingness to transform.', text: 'You want to change how the business operates, not just add another tool.' },
       ],
       no: [
@@ -232,7 +220,6 @@ export const opera = {
       ],
     },
     pricing: {
-      eyebrow: 'Investment',
       title: 'An investment <em>in growth</em>.',
       lede: 'Opera OS is a tailored investment, defined after the diagnostic and before any commitment. We present the exact value in the proposal, with no fine print and no surprise add-ons.',
       plans: [
@@ -242,12 +229,11 @@ export const opera = {
         },
         {
           badge: 'Continuity', name: 'Evolution Retainer', price: 'On request', period: 'after Opera OS delivery', cta: 'Learn more', featured: false,
-          features: ['Continuous maintenance and monitoring', 'AI agent optimization', 'New flows and automations', 'Monthly performance reports', 'Advisory support', 'Matika license included'],
+          features: ['Continuous maintenance and monitoring', 'AI agent optimization', 'New flows and automations', 'Monthly performance reports', 'Advisory support', 'Matika AI CRM license included'],
         },
       ],
     },
     start: {
-      eyebrow: 'How to start',
       title: 'Four steps until the system is <em>running</em>.',
       steps: [
         { title: 'Contact', text: 'Fill out the form or message us on WhatsApp. We reply within 24 hours to qualify and schedule.' },
@@ -257,7 +243,6 @@ export const opera = {
       ],
     },
     faq: {
-      eyebrow: 'FAQ',
       title: 'The questions we <em>always get</em>.',
       items: [
         { q: 'What kind of business is Opera OS for?', a: 'It was designed for service businesses: hospitality, clinics, driving schools, real estate, education, legal and other segments where customer service, the sales funnel and operations are the core bottlenecks. If you sell services and have a consolidated operation, Opera OS adapts to your context.' },
@@ -267,7 +252,6 @@ export const opera = {
       ],
     },
     cta: {
-      eyebrow: 'Next step',
       title: 'Start with the <em>free diagnostic</em>.',
       text: 'In 45 minutes, we identify operational bottlenecks and estimated financial impact, and design an implementation plan for your context.',
       primary: 'Book a free diagnostic',
@@ -282,32 +266,30 @@ export const opera = {
       ogDescription: 'Método OPERA en 5 fases, 10 a 12 semanas. CRM, agentes de IA, automatizaciones y capacitación, todo conectado.',
     },
     hero: {
-      eyebrow: 'Producto · Opera OS',
-      title: 'La inteligencia instalada <em>en el centro de su negocio</em>.',
-      lede: 'Opera OS es el método de Catalise.me para hacer su empresa consultable en 10 a 12 semanas: agentes de IA, CRM, automatizaciones y equipo capacitado, todo conectado en una sola capa.',
+      title: 'Opera OS: su empresa <em>consultable</em> en 10 a 12 semanas.',
+      lede: 'La implementación integral de la capa que conecta agentes de IA, CRM, automatizaciones y un equipo capacitado. Para que la operación responda sobre sí misma y actúe sobre esas respuestas.',
       specs: [
         { label: 'Plazo', value: '10 a 12 semanas' },
         { label: 'Inversión', value: 'Definida en el diagnóstico' },
         { label: 'Incluye', value: 'CRM + IA + sitio web + automatizaciones + capacitación' },
       ],
-      ctaPrimary: 'Quiero mi diagnóstico gratuito',
+      ctaPrimary: 'Agendar diagnóstico gratuito',
       ctaSecondary: 'Ver el método OPERA',
-      videoLabel: 'Opera OS en operación',
+      illustrative: 'Ilustrativo',
+      videoLabel: 'Ilustración de Opera OS en operación',
     },
     symptoms: {
-      eyebrow: 'El diagnóstico',
       title: 'Su negocio <em>funciona</em>. Pero no opera con <em>inteligencia central</em>.',
       lede: 'Existe una diferencia brutal entre un negocio que sobrevive del esfuerzo diario y uno guiado por sistemas inteligentes. El primero depende de usted para todo. El segundo opera mientras su equipo se ocupa de lo más relevante.',
       items: [
-        { title: 'Operación manual y reactiva', text: 'Procesos que dependen de la memoria, de planillas o de la presencia física del dueño. Promedio: <strong>286 horas/año perdidas</strong>.' },
-        { title: 'Leads que desaparecen sin respuesta', text: 'Oportunidades que llegan fuera de horario y se van con la competencia. <strong>La conversión cae 80% después de 15 min</strong>.' },
-        { title: 'Decisiones sin datos', text: 'Precio, marketing y equipo decididos por intuición. <strong>El 67% de los gestores</strong> no tiene datos actualizados.' },
+        { title: 'Operación manual y reactiva', text: 'Procesos que dependen de la memoria, de planillas o de la presencia física del dueño. <strong>Si usted se toma una semana libre, ¿la operación sigue funcionando?</strong>' },
+        { title: 'Leads que desaparecen sin respuesta', text: 'Oportunidades que llegan fuera de horario y esperan hasta que alguien las ve. <strong>¿Cuánto espera hoy un lead por la primera respuesta?</strong>' },
+        { title: 'Decisiones sin datos', text: 'Precio, marketing y equipo decididos por intuición. <strong>¿Sabe, ahora mismo, qué canal trajo a los clientes de este mes?</strong>' },
         { title: 'Crecer aumenta el caos', text: 'Más clientes, más problemas. Más ingresos, más equipo. El negocio escala el trabajo, no el resultado.' },
         { title: 'Dueño rehén de su propio negocio', text: 'Lo abrió para tener libertad y se convirtió en el sistema central de todo. La mente nunca para.' },
       ],
     },
     product: {
-      eyebrow: 'El producto',
       title: 'Opera OS es el método que <em>transforma la forma en que opera su negocio.</em>',
       paragraphs: [
         'No es un software al que usted se suscribe y configura por su cuenta. Es la implementación integral de un sistema operativo con IA en su negocio.',
@@ -322,21 +304,20 @@ export const opera = {
       yes: 'El sistema operativo con IA de su negocio: construido, integrado y funcionando.',
     },
     method: {
-      eyebrow: 'El método OPERA',
       title: 'Las cinco fases, <em>una por una</em>.',
       lede: 'Toda implementación sigue el método en cinco fases. Usted acompaña cada etapa, con entregables claros en cada una.',
       weeksLabel: 'Semana',
+      marginLabel: 'Margen de ajuste hasta la semana 12',
       deliverableLabel: 'Entregable',
       phases: [
         { letter: 'O', title: 'Organización', weeks: 'Semanas 1–2', start: 1, end: 2, text: 'Diagnóstico profundo. Mapeamos cada proceso, desde el primer contacto hasta la posventa, y clasificamos los cuellos de botella por impacto financiero real.', deliverable: 'Informe ejecutivo con cada cuello de botella mapeado y clasificado por costo estimado de impacto.' },
         { letter: 'P', title: 'Planificación', weeks: 'Semanas 2–3', start: 2, end: 3, text: 'Definimos alcance, orden de implementación y ROI proyectado por iniciativa.', deliverable: 'Plan maestro con alcance cerrado, cronograma, KPIs proyectados y ROI esperado por iniciativa.' },
         { letter: 'E', title: 'Estrategia', weeks: 'Semanas 3–4', start: 3, end: 4, text: 'Arquitectura técnica: qué agentes, qué integraciones, cómo se conecta todo y el plan de adopción del equipo.', deliverable: 'Blueprint visual y técnico: flujos, integraciones, responsabilidades y secuencia de implementación.' },
         { letter: 'R', title: 'Realización', weeks: 'Semanas 4–8', start: 4, end: 8, text: 'Construcción y activación. Integramos los sistemas, ponemos los agentes en operación y capacitamos al equipo.', deliverable: 'Sistema funcionando, equipo capacitado y documentación operativa completa.' },
-        { letter: 'A', title: 'Afinación', weeks: 'Semanas 8–10', start: 8, end: 10, text: 'Calibración con datos reales de los primeros 30 días. Ajustamos los agentes a su negocio específico.', deliverable: 'Validación final y entrega del sistema certificado.' },
+        { letter: 'A', title: 'Afinación', weeks: 'Semanas 8–10', start: 8, end: 10, text: 'Calibración con datos reales de los primeros 30 días. Ajustamos los agentes a su negocio específico.', deliverable: 'Validación final con su equipo y entrega del sistema documentado.' },
       ],
     },
     scope: {
-      eyebrow: 'El alcance',
       title: 'Todo lo que su empresa necesita para <em>funcionar</em>.',
       lede: 'El alcance final se define en la Fase O. Pero Opera OS siempre entrega el ecosistema completo.',
       items: [
@@ -351,13 +332,12 @@ export const opera = {
       ],
     },
     fit: {
-      eyebrow: 'Calificación',
       title: 'Opera OS <em>es para usted</em> si…',
       yesLabel: 'Es para usted',
       noLabel: 'No es para usted',
       yes: [
         { strong: 'Negocio con operación consolidada.', text: 'Ya vende y tiene clientes, pero el proceso es manual y depende de usted para todo.' },
-        { strong: 'Facturación desde R$ 100 mil/mes.', text: 'La inversión se recupera en los primeros 60 a 90 días de operación catalizada.' },
+        { strong: 'Facturación desde R$ 100 mil/mes.', text: 'Hay volumen suficiente para que las horas y las oportunidades recuperadas se noten en el resultado.' },
         { strong: 'Disposición para transformar.', text: 'Quiere cambiar cómo opera el negocio, no solo sumar una herramienta.' },
       ],
       no: [
@@ -368,7 +348,6 @@ export const opera = {
       ],
     },
     pricing: {
-      eyebrow: 'Inversión',
       title: 'Una inversión <em>para crecer</em>.',
       lede: 'Opera OS es una inversión a medida, definida después del diagnóstico y antes de cualquier compromiso. Presentamos el valor exacto en la propuesta, sin letra pequeña ni adicionales sorpresa.',
       plans: [
@@ -378,12 +357,11 @@ export const opera = {
         },
         {
           badge: 'Continuidad', name: 'Retainer de Evolución', price: 'A consultar', period: 'después de la entrega de Opera OS', cta: 'Saber más', featured: false,
-          features: ['Mantenimiento y monitoreo continuos', 'Optimización de los agentes de IA', 'Nuevos flujos y automatizaciones', 'Informes mensuales de desempeño', 'Soporte consultivo', 'Licencia Matika incluida'],
+          features: ['Mantenimiento y monitoreo continuos', 'Optimización de los agentes de IA', 'Nuevos flujos y automatizaciones', 'Informes mensuales de desempeño', 'Soporte consultivo', 'Licencia de Matika AI CRM incluida'],
         },
       ],
     },
     start: {
-      eyebrow: 'Cómo comenzar',
       title: 'Cuatro pasos hasta el sistema <em>funcionando</em>.',
       steps: [
         { title: 'Contacto', text: 'Complete el formulario o escríbanos por WhatsApp. Respondemos en hasta 24 horas para calificar y agendar.' },
@@ -393,7 +371,6 @@ export const opera = {
       ],
     },
     faq: {
-      eyebrow: 'FAQ',
       title: 'Las preguntas que <em>siempre hacen</em>.',
       items: [
         { q: '¿Para qué tipo de negocio funciona Opera OS?', a: 'Fue diseñado para negocios de servicios: hotelería, clínicas, escuelas de manejo, inmobiliarias, educación, jurídico y otros segmentos donde la atención, el embudo de ventas y la operación son los cuellos de botella centrales. Si vende servicios y tiene una operación consolidada, Opera OS se adapta a su contexto.' },
@@ -403,7 +380,6 @@ export const opera = {
       ],
     },
     cta: {
-      eyebrow: 'Próximo paso',
       title: 'Comience por el <em>diagnóstico gratuito</em>.',
       text: 'En 45 minutos, identificamos cuellos de botella operativos e impactos financieros estimados, y diseñamos un plan de implementación para su contexto.',
       primary: 'Agendar diagnóstico gratuito',

@@ -10,14 +10,12 @@ export const about = {
       ogDescription: 'Conectamos conhecimento, processos, sistemas e agentes para que a IA entenda a sua empresa e possa trabalhar dentro dela.',
     },
     hero: {
-      eyebrow: 'Sobre a Catalise.me',
       title: 'Existimos para tornar empresas <em>consultáveis</em>.',
       lede: 'A inteligência da sua empresa já existe. Está nas pessoas, nos sistemas, nas conversas e nas planilhas. Nós conectamos tudo isso em uma camada única, para que a IA entenda a empresa e possa trabalhar dentro dela.',
-      facts: ['<strong>Não</strong> somos agência.', '<strong>Não</strong> somos consultoria de slides.', '<strong>Não</strong> vendemos software de prateleira.'],
+      facts: ['Não somos agência.', 'Não somos consultoria de slides.', 'Não vendemos software de prateleira.'],
       factYes: 'Somos engenharia de empresas consultáveis.',
     },
     origin: {
-      eyebrow: 'A origem',
       title: 'Por que <em>existimos</em>.',
       paragraphs: [
         'Toda empresa que cresce acumula inteligência. E, junto com ela, acumula dispersão: cada setor compra suas ferramentas, cria seus processos e guarda seus dados. O que começou como agilidade vira fragmentação.',
@@ -27,7 +25,6 @@ export const about = {
       ],
     },
     layer: {
-      eyebrow: 'O que construímos',
       title: 'Uma camada que <em>conecta</em> a empresa inteira.',
       items: [
         { title: 'Conhecimento', text: 'O que a empresa sabe: documentos, políticas, histórico e o que hoje vive só na cabeça das pessoas, organizado para ser consultado.' },
@@ -37,7 +34,6 @@ export const about = {
       ],
     },
     shift: {
-      eyebrow: 'A mudança',
       title: 'De empresa espalhada a empresa <em>consultável</em>.',
       tableAria: 'Comparação entre empresa espalhada e empresa consultável',
       colQuestion: 'Pergunta',
@@ -52,7 +48,6 @@ export const about = {
       ],
     },
     practices: {
-      eyebrow: 'Práticas',
       title: 'Como <em>trabalhamos</em>.',
       ledePre: 'Cada prática nasce de um princípio do nosso',
       ledeLink: 'manifesto',
@@ -65,10 +60,9 @@ export const about = {
       ],
     },
     cta: {
-      eyebrow: 'Próximo passo',
       title: 'O que a sua empresa conseguiria responder sozinha?',
       text: 'Em uma conversa de diagnóstico, mapeamos onde estão as respostas da sua operação e desenhamos a camada que vai conectá-las. Sem compromisso.',
-      primary: 'Tornar minha empresa consultável',
+      primary: 'Agendar diagnóstico gratuito',
       secondary: 'Ler o Manifesto',
     },
   },
@@ -80,14 +74,12 @@ export const about = {
       ogDescription: 'We connect knowledge, processes, systems and agents so AI can understand your company and work inside it.',
     },
     hero: {
-      eyebrow: 'About Catalise.me',
       title: 'We exist to make companies <em>queryable</em>.',
       lede: "Your company's intelligence already exists. It lives in people, systems, conversations and spreadsheets. We connect all of it into a single layer, so AI can understand the company and work inside it.",
-      facts: ['<strong>Not</strong> an agency.', '<strong>Not</strong> a slide-deck consultancy.', '<strong>Not</strong> off-the-shelf software.'],
+      facts: ['Not an agency.', 'Not a slide-deck consultancy.', 'Not off-the-shelf software.'],
       factYes: 'We are the engineering of queryable companies.',
     },
     origin: {
-      eyebrow: 'The origin',
       title: 'Why we <em>exist</em>.',
       paragraphs: [
         'Every growing company accumulates intelligence. And, with it, dispersion: each department buys its own tools, creates its own processes and keeps its own data. What started as agility becomes fragmentation.',
@@ -97,7 +89,6 @@ export const about = {
       ],
     },
     layer: {
-      eyebrow: 'What we build',
       title: 'A layer that <em>connects</em> the whole company.',
       items: [
         { title: 'Knowledge', text: "What the company knows: documents, policies, history and what today lives only in people's heads, organized to be queried." },
@@ -107,7 +98,6 @@ export const about = {
       ],
     },
     shift: {
-      eyebrow: 'The shift',
       title: 'From scattered company to <em>queryable</em> company.',
       tableAria: 'Comparison between a scattered company and a queryable company',
       colQuestion: 'Question',
@@ -122,7 +112,6 @@ export const about = {
       ],
     },
     practices: {
-      eyebrow: 'Practices',
       title: 'How we <em>work</em>.',
       ledePre: 'Each practice comes from a principle in our',
       ledeLink: 'manifesto',
@@ -135,10 +124,9 @@ export const about = {
       ],
     },
     cta: {
-      eyebrow: 'Next step',
       title: 'What could your company answer on its own?',
       text: 'In a diagnostic conversation, we map where the answers in your operation live and design the layer that will connect them. No commitment.',
-      primary: 'Make my company queryable',
+      primary: 'Book a free diagnostic',
       secondary: 'Read the Manifesto',
     },
   },
@@ -150,14 +138,12 @@ export const about = {
       ogDescription: 'Conectamos conocimiento, procesos, sistemas y agentes para que la IA entienda su empresa y pueda trabajar dentro de ella.',
     },
     hero: {
-      eyebrow: 'Sobre Catalise.me',
       title: 'Existimos para hacer empresas <em>consultables</em>.',
       lede: 'La inteligencia de su empresa ya existe. Está en las personas, en los sistemas, en las conversaciones y en las planillas. Conectamos todo eso en una sola capa, para que la IA entienda la empresa y pueda trabajar dentro de ella.',
-      facts: ['<strong>No</strong> somos una agencia.', '<strong>No</strong> somos una consultoría de diapositivas.', '<strong>No</strong> vendemos software enlatado.'],
+      facts: ['No somos una agencia.', 'No somos una consultoría de diapositivas.', 'No vendemos software enlatado.'],
       factYes: 'Somos ingeniería de empresas consultables.',
     },
     origin: {
-      eyebrow: 'El origen',
       title: 'Por qué <em>existimos</em>.',
       paragraphs: [
         'Toda empresa que crece acumula inteligencia. Y, con ella, acumula dispersión: cada área compra sus herramientas, crea sus procesos y guarda sus datos. Lo que empezó como agilidad se convierte en fragmentación.',
@@ -167,7 +153,6 @@ export const about = {
       ],
     },
     layer: {
-      eyebrow: 'Lo que construimos',
       title: 'Una capa que <em>conecta</em> toda la empresa.',
       items: [
         { title: 'Conocimiento', text: 'Lo que la empresa sabe: documentos, políticas, historial y lo que hoy vive solo en la cabeza de las personas, organizado para ser consultado.' },
@@ -177,7 +162,6 @@ export const about = {
       ],
     },
     shift: {
-      eyebrow: 'El cambio',
       title: 'De empresa dispersa a empresa <em>consultable</em>.',
       tableAria: 'Comparación entre una empresa dispersa y una empresa consultable',
       colQuestion: 'Pregunta',
@@ -192,7 +176,6 @@ export const about = {
       ],
     },
     practices: {
-      eyebrow: 'Prácticas',
       title: 'Cómo <em>trabajamos</em>.',
       ledePre: 'Cada práctica nace de un principio de nuestro',
       ledeLink: 'manifiesto',
@@ -205,10 +188,9 @@ export const about = {
       ],
     },
     cta: {
-      eyebrow: 'Próximo paso',
       title: '¿Qué podría responder su empresa por sí sola?',
       text: 'En una conversación de diagnóstico, mapeamos dónde están las respuestas de su operación y diseñamos la capa que las va a conectar. Sin compromiso.',
-      primary: 'Hacer mi empresa consultable',
+      primary: 'Agendar diagnóstico gratuito',
       secondary: 'Leer el Manifiesto',
     },
   },

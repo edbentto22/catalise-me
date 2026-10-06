@@ -27,7 +27,6 @@ const apps = [
   ogUrl={pageUrl}
   canonical={pageUrl}
   pageType="home"
-  showFooter={false}
   showDock={false}
   locale={locale}
 >
@@ -43,7 +42,6 @@ const apps = [
 
         <div class="hero-badge-wrap">
           <a href={localizedHref('/manifesto', locale)} class="hero-badge hero-animate-1" aria-label={t.badgeAria}>
-            <span class="badge-pulse" aria-hidden="true"></span>
             <span>{t.badge}</span>
             <span class="badge-arrow" aria-hidden="true">→</span>
           </a>
@@ -57,7 +55,7 @@ const apps = [
           <button type="button" class="btn btn-primary btn-lg" data-open-modal data-magnetic>
             {t.ctaPrimary} <span class="btn-arrow" aria-hidden="true">→</span>
           </button>
-          <a href={localizedHref('/manifesto', locale)} class="btn btn-secondary btn-lg">
+          <a href={localizedHref('/opera-os', locale)} class="btn btn-secondary btn-lg">
             {t.ctaSecondary}
           </a>
         </div>
@@ -99,7 +97,6 @@ const apps = [
     <footer class="hero-bottom-bar">
       <div class="hero-bottom-inner">
         <div class="hero-bottom-status">
-          <span class="status-dot-active" aria-hidden="true"></span>
           <span>{t.status}</span>
         </div>
 
@@ -112,21 +109,45 @@ const apps = [
           ))}
         </ul>
       </div>
-
-      <div class="hero-apps-row">
-        <div class="hero-apps-inner">
-          <span class="hero-apps-label">{t.appsLabel}</span>
-          <ul class="hero-apps-list" role="list" aria-label={t.appsAria}>
-            {apps.map((app) => (
-              <li class="app-logo-item" title={app.alt}>
-                <img src={app.src} alt={app.alt} class:list={['app-logo-img', app.cls]} width={app.w} height={app.h} loading="lazy" decoding="async" />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
     </footer>
 
+  </section>
+
+  <!-- ══════════════ CAMINHOS · OPERA OS E PROJETOS SOB MEDIDA ══════════════ -->
+  <section class="home-paths" aria-labelledby="paths-heading">
+    <div class="container">
+      <h2 id="paths-heading" class="home-paths-title" data-reveal set:html={t.paths.title} />
+
+      <div class="home-paths-grid" data-reveal-group>
+        {t.paths.items.map((item, i) => (
+          <article class="home-path">
+            <span class="home-path-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{item.name}</h3>
+            <p class="home-path-audience">{item.audience}</p>
+            <p class="home-path-text">{item.text}</p>
+            {i === 0 ? (
+              <a href={localizedHref('/opera-os', locale)} class="home-path-link">{item.cta} <span aria-hidden="true">→</span></a>
+            ) : (
+              <button type="button" class="home-path-link" data-open-modal>{item.cta} <span aria-hidden="true">→</span></button>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <div class="home-apps">
+        <div>
+          <h2 class="home-apps-label">{t.appsLabel}</h2>
+          <p class="home-apps-note">{t.appsNote}</p>
+        </div>
+        <ul class="hero-apps-list" role="list" aria-label={t.appsAria}>
+          {apps.map((app) => (
+            <li class="app-logo-item">
+              <img src={app.src} alt={app.alt} class:list={['app-logo-img', app.cls]} width={app.w} height={app.h} loading="lazy" decoding="async" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   </section>
 
 </BaseLayout>

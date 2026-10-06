@@ -112,7 +112,7 @@ const t = ui[locale];
     <slot />
   </main>
 
-  {showFooter && <Footer locale={locale} />}
+  {showFooter && <Footer locale={locale} showApps={pageType !== 'home'} />}
   {showModal && <ModalDiagnostico />}
   {showDock && <FloatingDock locale={locale} />}
   <CustomCursor />
@@ -261,7 +261,7 @@ const t = ui[locale];
       const sync = (open: boolean) => {
         button.setAttribute('aria-expanded', String(open));
         item.classList.toggle('open', open);
-        panel.style.height = open ? `${panel.scrollHeight}px` : '0px';
+        panel.inert = !open;
       };
       sync(button.getAttribute('aria-expanded') === 'true');
       button.addEventListener('click', () => sync(button.getAttribute('aria-expanded') !== 'true'));

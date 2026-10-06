@@ -121,9 +121,9 @@ function initQueryConsole(flags: ConsultableFlags) {
       answerEl.textContent = item.a;
       actionEl.textContent = item.act;
       status(consoleEl.dataset.done || '', false);
-      await motionAnimate(answerRow, { opacity: [0, 1], y: [10, 0] }, { type: 'spring', stiffness: 260, damping: 24 });
+      await motionAnimate(answerRow, { opacity: [0, 1], y: [10, 0] }, { duration: 0.45, ease: EASE_OUT });
       if (checkDrawable) animate(checkDrawable, { draw: ['0 0', '0 1'], duration: 520, ease: 'outQuad' });
-      await motionAnimate(actionRow, { opacity: [0, 1], y: [10, 0] }, { type: 'spring', stiffness: 260, damping: 24 });
+      await motionAnimate(actionRow, { opacity: [0, 1], y: [10, 0] }, { duration: 0.45, ease: EASE_OUT });
 
       await sleep(3600);
       index += 1;
@@ -273,7 +273,7 @@ function initScatterScene() {
 
     // 3 · A Catalise.me conecta: tudo converge para a camada
     tl.to(frags, { x: 0, y: 0, rotate: 0, opacity: 1, duration: 1.3, stagger: 0.05, ease: 'expo.inOut' }, 2.8)
-      .fromTo(core, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.6)' }, 3.3)
+      .fromTo(core, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'expo.out' }, 3.3)
       .to(dots, { backgroundColor: '#8af334', duration: 0.3, stagger: 0.05 }, 3.7)
       .fromTo(proxy, { p: 0 }, { p: 1, duration: 1.1, ease: 'none', onUpdate: () => { linesTimeline.seek(linesTimeline.duration * proxy.p); } }, 3.6)
       .to({}, { duration: 0.6 });
@@ -286,7 +286,7 @@ function initScatterScene() {
     steps.forEach((step) => step.classList.add('is-active'));
     inView(stage, () => {
       motionAnimate(frags, { opacity: [0, 1], y: [16, 0] }, { delay: motionStagger(0.08), duration: 0.7, ease: EASE_OUT });
-      if (core) motionAnimate(core, { opacity: [0, 1], scale: [0.6, 1] }, { type: 'spring', stiffness: 220, damping: 18, delay: 0.3 });
+      if (core) motionAnimate(core, { opacity: [0, 1], scale: [0.6, 1] }, { duration: 0.7, ease: EASE_OUT, delay: 0.3 });
       animate(drawables, { draw: ['0 0', '0 1'], duration: 700, delay: stagger(80, { start: 500 }), ease: 'inOutSine' });
       motionAnimate(dots.filter(Boolean) as HTMLElement[], { backgroundColor: '#8af334' }, { delay: motionStagger(0.08, { startDelay: 0.8 }) });
     }, { amount: 0.3 });

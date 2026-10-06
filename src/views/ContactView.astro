@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { localizedHref, type Locale } from '../i18n/config';
 import { contact } from '../i18n/content/contact';
+import { leadForm, revenueValues, sourceValues } from '../i18n/content/leadForm';
 import { ui, EMAIL, WHATSAPP_DISPLAY, whatsappLink } from '../i18n/ui';
 import '../styles/inner.css';
 import '../styles/manifesto.css';
@@ -13,8 +14,7 @@ const { locale } = Astro.props;
 const t = contact[locale];
 const pageUrl = `https://catalise.me${localizedHref('/contato', locale)}`;
 const whatsapp = whatsappLink(ui[locale].whatsappDiagnostic);
-const revenueValues = ['ate-50k', '50k-150k', '150k-500k', '500k-2m', 'acima-2m'];
-const sourceValues = ['indicacao', 'google', 'linkedin', 'evento', 'outro'];
+const f = leadForm[locale];
 ---
 
 <BaseLayout
@@ -30,7 +30,6 @@ const sourceValues = ['indicacao', 'google', 'linkedin', 'evento', 'outro'];
 
   <header class="ct-hero" aria-labelledby="contato-heading">
     <div class="container">
-      <span class="page-hero-eyebrow hero-animate-1">{t.hero.eyebrow}</span>
       <h1 id="contato-heading" class="ct-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
       <div class="ct-hero-foot hero-animate-3">
         <p class="ct-hero-lede">{t.hero.lede}</p>
@@ -45,70 +44,77 @@ const sourceValues = ['indicacao', 'google', 'linkedin', 'evento', 'outro'];
       <div class="ct-form-card">
         <h2 id="form-heading" class="ct-form-title">{t.form.title}</h2>
 
-        <form id="contact-form" class="ct-form" novalidate>
-          <div class="ct-row">
+        <form id="contact-form" class="ct-form" novalidate data-errors={JSON.stringify(f.errors)} data-sending={f.sending}>
+          <p class="form-required-note">{f.requiredNote}</p>
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="field-name">{t.form.name} <span aria-hidden="true">*</span></label>
-              <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required aria-describedby="error-name">
+              <label class="form-label" for="field-name">{f.name} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" placeholder={f.namePlaceholder} required minlength="2" aria-describedby="error-name">
               <span class="form-error" id="error-name" aria-live="polite"></span>
             </div>
             <div class="form-group">
-              <label class="form-label" for="field-email">{t.form.email} <span aria-hidden="true">*</span></label>
-              <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" required aria-describedby="error-email">
-              <span class="form-error" id="error-email" aria-live="polite"></span>
-            </div>
-          </div>
-
-          <div class="ct-row">
-            <div class="form-group">
-              <label class="form-label" for="field-company">{t.form.company} <span aria-hidden="true">*</span></label>
-              <input class="form-input" type="text" id="field-company" name="company" autocomplete="organization-title" required aria-describedby="error-company">
+              <label class="form-label" for="field-company">{f.company} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="text" id="field-company" name="company" autocomplete="organization" placeholder={f.companyPlaceholder} required minlength="2" aria-describedby="error-company">
               <span class="form-error" id="error-company" aria-live="polite"></span>
             </div>
+          </div>
+
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="field-revenue">{t.form.revenue} <span aria-hidden="true">*</span></label>
-              <select class="form-select" id="field-revenue" name="revenue" required aria-describedby="error-revenue">
-                <option value="" disabled selected>{t.form.revenuePrompt}</option>
-                {t.form.revenueOptions.map((label, i) => <option value={revenueValues[i]}>{label}</option>)}
-              </select>
-              <span class="form-error" id="error-revenue" aria-live="polite"></span>
+              <label class="form-label" for="field-email">{f.email} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" placeholder={f.emailPlaceholder} required aria-describedby="error-email">
+              <span class="form-error" id="error-email" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-phone">{f.phone} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel" placeholder={f.phonePlaceholder} required data-phone aria-describedby="error-phone">
+              <span class="form-error" id="error-phone" aria-live="polite"></span>
             </div>
           </div>
 
-          <div class="ct-row">
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="field-phone">{t.form.phone}</label>
-              <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel" aria-describedby="hint-phone">
-              <span class="form-hint" id="hint-phone">{t.form.phoneHint}</span>
+              <label class="form-label" for="field-revenue">{f.revenue} <span aria-hidden="true">*</span></label>
+              <select class="form-select" id="field-revenue" name="revenue" required aria-describedby="hint-revenue error-revenue">
+                <option value="" disabled selected>{f.revenuePrompt}</option>
+                {f.revenueOptions.map((label, i) => <option value={revenueValues[i]}>{label}</option>)}
+              </select>
+              <span class="form-hint" id="hint-revenue">{f.revenueHint}</span>
+              <span class="form-error" id="error-revenue" aria-live="polite"></span>
             </div>
             <div class="form-group">
-              <label class="form-label" for="field-source">{t.form.source}</label>
+              <label class="form-label" for="field-source">{f.source}</label>
               <select class="form-select" id="field-source" name="source">
-                <option value="" disabled selected>{t.form.sourcePrompt}</option>
-                {t.form.sourceOptions.map((label, i) => <option value={sourceValues[i]}>{label}</option>)}
+                <option value="" selected>{f.sourcePrompt}</option>
+                {f.sourceOptions.map((label, i) => <option value={sourceValues[i]}>{label}</option>)}
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="field-message">{t.form.message} <span aria-hidden="true">*</span></label>
-            <textarea class="form-textarea" id="field-message" name="message" required aria-describedby="error-message" placeholder={t.form.messagePlaceholder}></textarea>
-            <span class="form-error" id="error-message" aria-live="polite"></span>
+            <label class="form-label" for="field-message">{f.message} <span class="form-optional">({f.optional})</span></label>
+            <textarea class="form-textarea" id="field-message" name="message" placeholder={f.messagePlaceholder}></textarea>
+          </div>
+
+          <p class="form-status visually-hidden" aria-live="polite" data-form-status></p>
+          <div class="form-network-error" role="alert" data-network-error hidden>
+            <p>{f.errors.network}</p>
+            <a href={whatsapp} target="_blank" rel="noopener">{f.successCta} ↗</a>
           </div>
 
           <div class="ct-submit">
-            <button type="submit" class="btn btn-primary btn-lg" id="submit-btn" data-label={t.form.submit}>
-              <span data-submit-label>{t.form.submit}</span> <span class="btn-arrow" aria-hidden="true">→</span>
+            <button type="submit" class="btn btn-primary btn-lg" id="submit-btn" data-label={f.submit}>
+              <span data-submit-label>{f.submit}</span> <span class="btn-arrow" aria-hidden="true">→</span>
             </button>
-            <p class="ct-legal">{t.form.legal}</p>
+            <p class="ct-legal">{f.legalPre} <a href={localizedHref('/privacidade', locale)}>{f.legalLink}</a>{f.legalPost}</p>
           </div>
         </form>
 
         <div class="ct-success" id="form-success" role="status" tabindex="-1" hidden>
           <div class="modal-diag-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>{t.form.successTitle}</h3>
-          <p>{t.form.successText}</p>
-          <a class="btn btn-secondary" href={whatsapp} target="_blank" rel="noopener">{t.form.successCta} <span class="btn-arrow" aria-hidden="true">↗</span></a>
+          <h3>{f.successTitle}</h3>
+          <p>{f.successText}</p>
+          <a class="btn btn-secondary" href={whatsapp} target="_blank" rel="noopener">{f.successCta} <span class="btn-arrow" aria-hidden="true">↗</span></a>
         </div>
       </div>
 
@@ -153,7 +159,6 @@ const sourceValues = ['indicacao', 'google', 'linkedin', 'evento', 'outro'];
   <section id="faq-contato" class="op-section op-faq" aria-labelledby="faq-contato-heading">
     <div class="container op-faq-grid">
       <div class="op-head">
-        <span class="mf-index">{t.faq.eyebrow}</span>
         <h2 id="faq-contato-heading" class="mf-section-title" data-reveal set:html={t.faq.title} />
       </div>
       <div class="faq-list">
@@ -163,106 +168,98 @@ const sourceValues = ['indicacao', 'google', 'linkedin', 'evento', 'outro'];
               <span>{item.q}</span>
               <span class="faq-icon" aria-hidden="true"></span>
             </button>
-            <div class="faq-answer"><p>{item.a}</p></div>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>{item.a}</p></div></div>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Formulário de contato: validação acessível e envio para o webhook -->
+  <!-- Formulário de contato: mesmas regras do modal, envio para o webhook -->
   <script>
-    import { submitLead } from '../scripts/leads';
+    import { maskBrazilPhone, submitLead } from '../scripts/leads';
 
     const form = document.getElementById('contact-form') as HTMLFormElement | null;
-    const successMsg = document.getElementById('form-success');
-    const submitBtn = form?.querySelector<HTMLButtonElement>('[type="submit"]') || null;
-    const submitLabel = submitBtn?.querySelector<HTMLElement>('[data-submit-label]') || null;
-    const language = document.documentElement.lang.startsWith('en') ? 'en' : document.documentElement.lang.startsWith('es') ? 'es' : 'pt';
-    const copy = {
-      pt: { name: 'Informe seu nome completo', email: 'Email inválido', company: 'Informe sua empresa e cargo', revenue: 'Selecione seu faturamento', message: 'Conte um pouco mais (mínimo de 10 caracteres)', sending: 'Enviando…', failure: 'Não foi possível enviar agora. Fale com a gente pelo WhatsApp: (75) 99187-9786' },
-      en: { name: 'Enter your full name', email: 'Enter a valid email address', company: 'Enter your company and role', revenue: 'Select your monthly revenue', message: 'Tell us a little more (at least 10 characters)', sending: 'Sending…', failure: 'We could not send it right now. Reach us on WhatsApp: (75) 99187-9786' },
-      es: { name: 'Indique su nombre completo', email: 'Ingrese un correo electrónico válido', company: 'Indique su empresa y cargo', revenue: 'Seleccione su facturación', message: 'Cuéntenos un poco más (mínimo 10 caracteres)', sending: 'Enviando…', failure: 'No pudimos enviarlo ahora. Escríbanos por WhatsApp: (75) 99187-9786' },
-    }[language];
 
-    const validators: Record<string, (v: string) => true | string> = {
-      name: (v) => v.trim().length >= 2 || copy.name,
-      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || copy.email,
-      company: (v) => v.trim().length >= 2 || copy.company,
-      revenue: (v) => !!v || copy.revenue,
-      message: (v) => v.trim().length >= 10 || copy.message,
-    };
+    if (form) {
+      const errors = JSON.parse(form.dataset.errors || '{}') as Record<string, string>;
+      const successMsg = document.getElementById('form-success');
+      const status = form.querySelector<HTMLElement>('[data-form-status]');
+      const networkError = form.querySelector<HTMLElement>('[data-network-error]');
+      const submitBtn = form.querySelector<HTMLButtonElement>('[type="submit"]');
+      const submitLabel = submitBtn?.querySelector<HTMLElement>('[data-submit-label]') || null;
+      const fields = [...form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[required]')];
+      const phone = form.querySelector<HTMLInputElement>('[data-phone]');
+      if (phone && document.documentElement.lang.startsWith('pt')) maskBrazilPhone(phone);
 
-    const getField = (name: string) => form?.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${name}"]`) || null;
-
-    const setError = (field: Element, message: string) => {
-      const group = field.closest('.form-group');
-      group?.classList.toggle('has-error', Boolean(message));
-      field.setAttribute('aria-invalid', String(Boolean(message)));
-      const error = group?.querySelector('.form-error');
-      if (error) error.textContent = message;
-    };
-
-    const validateField = (name: string) => {
-      const field = getField(name);
-      const validator = validators[name];
-      if (!field || !validator) return true;
-      const result = validator(field.value);
-      setError(field, result === true ? '' : result);
-      return result === true;
-    };
-
-    Object.keys(validators).forEach((name) => {
-      const field = getField(name);
-      field?.addEventListener('blur', () => validateField(name));
-      field?.addEventListener('input', () => { if (field.closest('.has-error')) validateField(name); });
-    });
-
-    form?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const valid = Object.keys(validators).map(validateField).every(Boolean);
-      if (!valid) {
-        form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
-        return;
-      }
-
-      const params = new URLSearchParams(location.search);
-      const data = {
-        name: getField('name')?.value.trim(),
-        email: getField('email')?.value.trim(),
-        company: getField('company')?.value.trim(),
-        revenue: getField('revenue')?.value || '',
-        message: getField('message')?.value.trim(),
-        phone: getField('phone')?.value.trim() || '',
-        source: getField('source')?.value || '',
-        page_url: location.href,
-        referrer: document.referrer || '',
-        utm_source: params.get('utm_source') || '',
-        utm_medium: params.get('utm_medium') || '',
-        utm_campaign: params.get('utm_campaign') || '',
-        submitted_at: new Date().toISOString(),
+      const messageFor = (field: HTMLInputElement | HTMLSelectElement) => {
+        const value = field.value.trim();
+        if (!value) return errors.required;
+        if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return errors.email;
+        if (field.hasAttribute('data-phone') && value.replace(/\D/g, '').length < 10) return errors.phone;
+        if (field.minLength > 0 && value.length < field.minLength) return errors.minChars;
+        return '';
       };
 
-      if (submitBtn) submitBtn.disabled = true;
-      if (submitLabel) submitLabel.textContent = copy.sending;
+      const validate = (field: HTMLInputElement | HTMLSelectElement) => {
+        const message = messageFor(field);
+        const group = field.closest('.form-group');
+        group?.classList.toggle('has-error', Boolean(message));
+        field.setAttribute('aria-invalid', String(Boolean(message)));
+        const error = group?.querySelector('.form-error');
+        if (error) error.textContent = message;
+        return !message;
+      };
 
-      try {
-        await submitLead(data);
-        form.hidden = true;
-        if (successMsg) {
-          successMsg.hidden = false;
-          successMsg.focus();
+      fields.forEach((field) => {
+        field.addEventListener('blur', () => { if (field.value) validate(field); });
+        field.addEventListener('input', () => { if (field.closest('.has-error')) validate(field); });
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const valid = fields.map(validate).every(Boolean);
+        if (!valid) {
+          if (status) status.textContent = errors.review;
+          form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+          return;
         }
+
+        const params = new URLSearchParams(location.search);
+        const data = {
+          ...Object.fromEntries([...new FormData(form).entries()].map(([key, value]) => [key, String(value).trim()])),
+          form: 'contato',
+          page_url: location.href,
+          referrer: document.referrer || '',
+          utm_source: params.get('utm_source') || '',
+          utm_medium: params.get('utm_medium') || '',
+          utm_campaign: params.get('utm_campaign') || '',
+          submitted_at: new Date().toISOString(),
+        };
+
+        if (networkError) networkError.hidden = true;
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitLabel) submitLabel.textContent = form.dataset.sending || '';
+
         try {
-          (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'form_submit', { event_category: 'contact', event_label: 'diagnostico' });
-        } catch { /* analytics opcional */ }
-      } catch (error) {
-        console.error(error);
-        if (submitBtn) submitBtn.disabled = false;
-        if (submitLabel) submitLabel.textContent = submitBtn?.dataset.label || '';
-        alert(copy.failure);
-      }
-    });
+          await submitLead(data);
+          form.hidden = true;
+          if (successMsg) {
+            successMsg.hidden = false;
+            successMsg.focus();
+          }
+          try {
+            (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'form_submit', { event_category: 'contact', event_label: 'diagnostico' });
+          } catch { /* analytics opcional */ }
+        } catch (error) {
+          console.error(error);
+          if (networkError) networkError.hidden = false;
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+          if (submitLabel) submitLabel.textContent = submitBtn?.dataset.label || '';
+        }
+      });
+    }
   </script>
 
 </BaseLayout>

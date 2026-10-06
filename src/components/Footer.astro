@@ -2,16 +2,16 @@
 import { localizedHref, navigation, type Locale } from '../i18n/config';
 import { ui, EMAIL, WHATSAPP_DISPLAY, whatsappLink } from '../i18n/ui';
 
-interface Props { locale?: Locale; }
-const { locale = 'pt' } = Astro.props;
+interface Props { locale?: Locale; showApps?: boolean; }
+const { locale = 'pt', showApps = true } = Astro.props;
 const t = ui[locale];
 const nav = navigation[locale];
 
 const pages = [
   { href: '/', label: nav.home },
-  { href: '/sobre', label: nav.about },
-  { href: '/manifesto', label: nav.manifesto },
   { href: '/opera-os', label: nav.opera },
+  { href: '/manifesto', label: nav.manifesto },
+  { href: '/sobre', label: nav.about },
   { href: '/contato', label: nav.contact },
 ];
 
@@ -61,6 +61,7 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
+    {showApps && (
     <div class="footer-apps">
       <span class="footer-apps-label">{t.footerApps}</span>
       <ul class="footer-apps-list" role="list">
@@ -71,6 +72,7 @@ const year = new Date().getFullYear();
         ))}
       </ul>
     </div>
+    )}
   </div>
 
   <div class="footer-wordmark" aria-hidden="true">
@@ -78,7 +80,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="container footer-bottom">
-    <p>© {year} Catalise.me · {t.footerRights}</p>
+    <p>© {year} Catalise.me · {t.footerRights} · <a href={localizedHref('/privacidade', locale)}>{t.footerPrivacy}</a></p>
     <a href="#main-content" class="footer-top link-roll" data-scroll-top>
       <span class="roll" data-text={t.footerTop}><span>{t.footerTop}</span></span>
       <span aria-hidden="true">↑</span>

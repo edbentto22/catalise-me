@@ -26,7 +26,7 @@ const methodAssets = [
   'afinamento.png',
 ];
 
-test('Home é single-section estilo Brabaflow e remove seções antigas do método', async () => {
+test('Home tem hero e faixa de caminhos, sem as seções antigas do método', async () => {
   const [home, copy] = await Promise.all([readText('src/views/HomeView.astro'), readText('src/i18n/content/home.ts')]);
 
   assert.doesNotMatch(home, /id=["']opera["']/);
@@ -34,10 +34,11 @@ test('Home é single-section estilo Brabaflow e remove seções antigas do méto
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinacao)\.mp4/);
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinamento)\.png/);
 
-  // Home tem apenas 1 section e a chamada da tese "Empresas consultáveis"
+  // Home: hero com a tese "Empresas consultáveis" e uma faixa de caminhos (Opera OS e projetos sob medida)
   assert.match(home, /<section class="hero-editorial"/);
+  assert.match(home, /<section class="home-paths"/);
   assert.match(copy, /Construímos empresas <em>consultáveis<\/em>\./);
-  assert.equal((home.match(/<section\b/g) || []).length, 1, 'Home deve conter apenas uma section');
+  assert.equal((home.match(/<section\b/g) || []).length, 2, 'Home deve conter o hero e a faixa de caminhos');
 });
 
 test('CSS exclusivo method-* não permanece órfão na Home', async () => {

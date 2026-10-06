@@ -78,11 +78,39 @@ test('modal de diagnóstico resolve todos os textos pelo idioma do documento', a
   const modal = await readText('src/components/ModalDiagnostico.astro');
 
   assert.match(modal, /document\.documentElement\.lang/);
-  assert.match(modal, /REQUEST A FREE DIAGNOSTIC SESSION/);
-  assert.match(modal, /title: 'Sesión de diagnóstico'/);
-  assert.match(modal, /accent: 'gratuita'/);
-  assert.match(modal, /Please review the highlighted required fields/);
-  assert.match(modal, /Revise los campos obligatorios resaltados/);
+  assert.match(modal, /accent: 'consultable\.'/);
+  assert.match(modal, /leadForm\[locale\]/);
+});
+
+test('modal e Contato usam os mesmos campos, regras e política de privacidade', async () => {
+  const [modal, contactView, { leadForm, revenueValues, sourceValues }] = await Promise.all([
+    readText('src/components/ModalDiagnostico.astro'),
+    readText('src/views/ContactView.astro'),
+    import('../src/i18n/content/leadForm.ts'),
+  ]);
+
+  for (const source of [modal, contactView]) {
+    assert.match(source, /leadForm/);
+    assert.match(source, /revenueValues/);
+    assert.match(source, /sourceValues/);
+    assert.match(source, /privacidade/);
+    for (const name of ['name', 'company', 'email', 'phone', 'revenue', 'source']) {
+      assert.match(source, new RegExp(`name="${name}"`), `campo ${name}`);
+    }
+  }
+  for (const locale of ['pt', 'en', 'es']) {
+    assert.equal(leadForm[locale].revenueOptions.length, revenueValues.length);
+    assert.equal(leadForm[locale].sourceOptions.length, sourceValues.length);
+  }
+  assert.equal(leadForm.pt.submit, 'Agendar diagnóstico gratuito');
+  assert.equal(leadForm.en.errors.review, 'Please review the highlighted fields.');
+});
+
+test('política de privacidade existe nos três idiomas', async () => {
+  for (const [prefix, locale] of [['src/pages', 'pt'], ['src/pages/en', 'en'], ['src/pages/es', 'es']]) {
+    const source = await readText(`${prefix}/privacidade.astro`);
+    assert.match(source, new RegExp(`<PrivacyView locale="${locale}" />`));
+  }
 });
 
 test('todo CTA com data-open-modal é atendido pelo modal', async () => {

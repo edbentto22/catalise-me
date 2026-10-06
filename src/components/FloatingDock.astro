@@ -9,11 +9,6 @@ const t = ui[locale];
 
 <aside class="floating-dock-wrap" id="floating-action-dock" aria-label={t.dockAria}>
   <div class="floating-dock-pill">
-    <span class="dock-badge">
-      <span class="dock-badge-pulse" aria-hidden="true"></span>
-      {t.dockBadge}
-    </span>
-
     <p class="dock-label">{t.dockLabel}</p>
 
     <button type="button" class="dock-cta-btn" data-open-modal>
@@ -82,32 +77,7 @@ const t = ui[locale];
     color: #ffffff;
   }
 
-  .dock-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 12px;
-    border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.08);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
 
-  .dock-badge-pulse {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--lime);
-    animation: dockPulse 2.2s ease-out infinite;
-  }
-
-  @keyframes dockPulse {
-    0% { box-shadow: 0 0 0 0 rgba(138, 243, 52, 0.6); }
-    70%, 100% { box-shadow: 0 0 0 8px rgba(138, 243, 52, 0); }
-  }
 
   .dock-label {
     margin: 0;

@@ -67,7 +67,7 @@ export function initMotion() {
         toY((e.clientY - r.top - r.height / 2) * 0.32);
       });
       el.addEventListener('pointerleave', () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.45)', overwrite: 'auto' });
+        gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: 'expo.out', overwrite: 'auto' });
       });
     });
   }
@@ -143,25 +143,32 @@ export function initMotion() {
     });
   }
 
-  // ── 5. Dock flutuante: aparece após o hero e some perto do fim da página ──
+  // ── 5. Dock flutuante: aparece após o hero e some quando outro CTA de diagnóstico está à vista ──
   const dock = document.getElementById('floating-action-dock');
   if (dock) {
     let visible = false;
     let queued = false;
+    const onScreen = new Set<Element>();
     const check = () => {
       queued = false;
       const end = document.querySelector<HTMLElement>('.site-footer, .cta-section');
       const endTop = end ? end.getBoundingClientRect().top : Infinity;
-      const show = scrollY > 520 && endTop > innerHeight - 40;
+      const show = scrollY > 520 && endTop > innerHeight - 40 && onScreen.size === 0;
       if (show === visible) return;
       visible = show;
       dock.classList.toggle('is-visible', show);
       if (!prefersReduced) {
-        animate(dock, show ? { y: [50, 0], opacity: [0, 1] } : { y: 50, opacity: 0 },
-          show ? { type: 'spring', stiffness: 320, damping: 26 } : { duration: 0.25 });
+        animate(dock, show ? { y: [24, 0], opacity: [0, 1] } : { y: 24, opacity: 0 },
+          { duration: show ? 0.45 : 0.2, ease: [0.22, 1, 0.36, 1] });
       }
     };
-    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(check); } }, { passive: true });
+    const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(check); } };
+    const ctaObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => (entry.isIntersecting ? onScreen.add(entry.target) : onScreen.delete(entry.target)));
+      schedule();
+    });
+    document.querySelectorAll('main [data-open-modal]').forEach((cta) => ctaObserver.observe(cta));
+    addEventListener('scroll', schedule, { passive: true });
     check();
   }
 }

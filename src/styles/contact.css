@@ -13,8 +13,8 @@
 .ct-hero-title {
   max-width: 14ch;
   margin: 0 0 clamp(28px, 4vw, 48px);
-  font-size: clamp(3rem, 8vw, 7.5rem);
-  letter-spacing: -0.055em;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  letter-spacing: -0.04em;
   line-height: 0.92;
 }
 
@@ -87,32 +87,6 @@
   gap: 6px;
 }
 
-.ct-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--graphite);
-}
-
-.form-label span { color: var(--subtle); }
-
-.form-hint {
-  min-height: 1.1em;
-  font-size: 0.75rem;
-  color: var(--subtle);
-}
-
 .ct-submit {
   display: flex;
   align-items: center;
@@ -126,8 +100,10 @@
   min-width: 220px;
   font-size: 0.75rem;
   line-height: 1.5;
-  color: var(--subtle);
+  color: var(--muted);
 }
+
+.ct-legal a { text-decoration: underline; text-underline-offset: 2px; }
 
 .ct-success {
   padding: 32px 0 8px;
@@ -271,6 +247,6 @@
 }
 
 @media (max-width: 640px) {
-  .ct-row { grid-template-columns: 1fr; gap: 6px; }
+  .form-row { grid-template-columns: 1fr; gap: 6px; }
   .ct-submit .btn { width: 100%; }
 }

@@ -10,8 +10,6 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = about[locale];
 const pageUrl = `https://catalise.me${localizedHref('/sobre', locale)}`;
-const layerIcons = ['book-open', 'workflow', 'database', 'bot'];
-const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
 ---
 
 <BaseLayout
@@ -29,13 +27,12 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
   <header class="page-hero about-hero" aria-labelledby="sobre-heading">
     <Ambient3D variant="strata" />
     <div class="container">
-      <span class="page-hero-eyebrow hero-animate-1">{t.hero.eyebrow}</span>
       <h1 id="sobre-heading" class="page-hero-title about-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
       <p class="page-hero-lede hero-animate-3">{t.hero.lede}</p>
-      <ul class="about-hero-facts hero-animate-4" role="list">
-        {t.hero.facts.map((fact) => <li set:html={fact} />)}
-        <li class="about-hero-facts-yes">{t.hero.factYes}</li>
-      </ul>
+      <p class="about-hero-stance hero-animate-4">
+        {t.hero.facts.map((fact) => <span set:html={fact} />)}
+        <strong>{t.hero.factYes}</strong>
+      </p>
     </div>
   </header>
 
@@ -43,7 +40,6 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
   <section id="origem" class="inner-section" aria-labelledby="origem-heading">
     <div class="container about-origin">
       <div class="section-header about-origin-head">
-        <span class="page-hero-eyebrow">{t.origin.eyebrow}</span>
         <h2 id="origem-heading" set:html={t.origin.title} />
       </div>
 
@@ -57,7 +53,6 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
   <section id="camada" class="inner-section about-layer" aria-labelledby="camada-heading">
     <div class="container">
       <div class="section-header">
-        <span class="page-hero-eyebrow">{t.layer.eyebrow}</span>
         <h2 id="camada-heading" set:html={t.layer.title} />
       </div>
 
@@ -70,7 +65,6 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
           <li class="about-layer-item" data-glow>
             <span class="about-layer-node" aria-hidden="true"></span>
             <span class="about-layer-num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="about-layer-icon" aria-hidden="true"><i data-lucide={layerIcons[i]}></i></span>
             <h3>{layer.title}</h3>
             <p>{layer.text}</p>
           </li>
@@ -83,7 +77,6 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
   <section id="mudanca" class="inner-section about-shift" aria-labelledby="mudanca-heading">
     <div class="container">
       <div class="section-header">
-        <span class="page-hero-eyebrow">{t.shift.eyebrow}</span>
         <h2 id="mudanca-heading" set:html={t.shift.title} />
       </div>
 
@@ -110,7 +103,6 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
   <section id="como-trabalhamos" class="inner-section" aria-labelledby="como-heading">
     <div class="container">
       <div class="section-header about-practices-head">
-        <span class="page-hero-eyebrow">{t.practices.eyebrow}</span>
         <h2 id="como-heading" set:html={t.practices.title} />
         <p class="about-practices-lede">{t.practices.ledePre} <a href={localizedHref('/manifesto', locale)}>{t.practices.ledeLink}</a>.</p>
       </div>
@@ -118,10 +110,7 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
       <div class="how-grid how-bento" data-reveal-group>
         {t.practices.items.map((item, i) => (
           <article class="how-item" data-glow>
-            <div class="how-item-top">
-              <div class="how-icon-box" aria-hidden="true"><i data-lucide={practiceIcons[i]}></i></div>
-              <span class="how-tag">{item.tag}</span>
-            </div>
+            <span class="how-tag">{item.tag}</span>
             <h3>{item.title}</h3>
             <p>{item.text}</p>
           </article>
@@ -133,7 +122,6 @@ const practiceIcons = ['search', 'rocket', 'target', 'refresh-cw', 'lock'];
   <!-- ══════════════ CTA FINAL ══════════════ -->
   <section class="cta-section" aria-labelledby="sobre-cta-heading">
     <div class="container">
-      <span class="page-hero-eyebrow">{t.cta.eyebrow}</span>
       <h2 id="sobre-cta-heading">{t.cta.title}</h2>
       <p>{t.cta.text}</p>
       <div class="cta-buttons">

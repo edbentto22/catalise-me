@@ -79,7 +79,11 @@ html[data-motion='reduced'] .mf-read-progress {
 }
 
 .mf-section-title em,
-.mf-step h2 em,
+.mf-step h2 em {
+  font-style: normal;
+  font-weight: 400;
+}
+
 .mf-hero-title em {
   font-style: italic;
   font-weight: 400;
@@ -121,9 +125,9 @@ html[data-motion='reduced'] .mf-read-progress {
 
 .mf-hero-title {
   font-family: var(--font-display, 'Archivo');
-  font-size: clamp(3.4rem, 10.5vw, 9.5rem);
+  font-size: clamp(3.2rem, 8.4vw, 6rem);
   font-weight: 700;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.04em;
   line-height: 0.92;
   color: #09090b;
   margin: 0 0 clamp(28px, 4vw, 48px);
@@ -262,8 +266,8 @@ html[data-motion='reduced'] .mf-read-progress {
   font-family: var(--font-display, 'Archivo');
   font-size: clamp(2.4rem, 6.2vw, 5.6rem);
   font-weight: 700;
-  font-style: italic;
-  letter-spacing: -0.05em;
+  font-style: normal;
+  letter-spacing: -0.04em;
   line-height: 1;
   color: #09090b;
   margin: 0;
@@ -568,19 +572,13 @@ html[data-motion='reduced'] .mf-read-progress {
   gap: 12px;
   border-radius: 999px;
   border: 1.5px solid #09090b;
-  background:
-    repeating-linear-gradient(90deg, rgba(138, 243, 52, 0.0) 0 18px, rgba(138, 243, 52, 0.22) 18px 19px),
-    linear-gradient(90deg, rgba(138, 243, 52, 0.12), rgba(138, 243, 52, 0.32), rgba(138, 243, 52, 0.12));
+  background: linear-gradient(90deg, rgba(138, 243, 52, 0.12), rgba(138, 243, 52, 0.32), rgba(138, 243, 52, 0.12));
   font-family: var(--font-display, 'Archivo');
   font-size: clamp(0.95rem, 1.6vw, 1.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #09090b;
   transform-origin: 50% 50%;
-}
-
-.mf-layer-bar-mark {
-  animation: mfSpin 9s linear infinite;
 }
 
 .mf-layer-purpose {
@@ -678,7 +676,7 @@ html[data-motion='reduced'] .mf-read-progress {
   font-family: var(--font-display, 'Archivo');
   font-size: clamp(2rem, 4.4vw, 4rem);
   font-weight: 700;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   line-height: 1;
   color: #09090b;
 }
@@ -731,9 +729,11 @@ html[data-motion='reduced'] .mf-read-progress {
   letter-spacing: -0.025em;
   color: var(--subtle);
   cursor: default;
-  transition: color 0.35s ease, padding-left 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.35s ease;
   outline: none;
 }
+
+.mf-loop-item > * { transition: translate 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
 
 .mf-loop-item-num {
   font-size: 0.8125rem;
@@ -745,8 +745,10 @@ html[data-motion='reduced'] .mf-read-progress {
 .mf-loop-item.is-active,
 .mf-loop-item:focus-visible {
   color: #09090b;
-  padding-left: 12px;
 }
+
+.mf-loop-item.is-active > *,
+.mf-loop-item:focus-visible > * { translate: 12px 0; }
 
 .mf-loop-item.is-active .mf-loop-item-num {
   color: #09090b;
@@ -850,7 +852,7 @@ html[data-motion='reduced'] .mf-loop-item {
   font-family: var(--font-display, 'Archivo');
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 700;
-  font-style: italic;
+  font-style: normal;
   letter-spacing: -0.04em;
   color: #09090b;
 }
@@ -887,7 +889,7 @@ html[data-motion='reduced'] .mf-loop-item {
 }
 
 .mf-sign .mf-sign-title {
-  font-style: italic;
+  font-style: normal;
   font-weight: 400 !important;
 }
 

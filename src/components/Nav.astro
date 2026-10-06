@@ -14,10 +14,11 @@ const nav = navigation[locale];
 
 const links = [
   { href: '/', label: nav.home },
-  { href: '/sobre', label: nav.about },
-  { href: '/manifesto', label: nav.manifesto },
   { href: '/opera-os', label: nav.opera },
+  { href: '/manifesto', label: nav.manifesto },
+  { href: '/sobre', label: nav.about },
 ];
+const mobileLinks = [...links, { href: '/contato', label: nav.contact }];
 
 const currentBasePath = locale === 'pt' ? currentPath : currentPath.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/';
 
@@ -83,7 +84,7 @@ function isActive(linkHref: string): boolean {
 <div class="nav-mobile" id="mobile-menu" aria-label={t.navLabel} role="dialog" aria-modal="true" hidden>
   <div class="nav-mobile-inner">
     <ol class="nav-mobile-links" role="list">
-      {links.map((link, i) => (
+      {mobileLinks.map((link, i) => (
         <li class="nav-mobile-item">
           <a href={localizedHref(link.href, locale)} aria-current={isActive(link.href) ? 'page' : undefined}>
             <span class="nav-mobile-num">{String(i + 1).padStart(2, '0')}</span>

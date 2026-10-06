@@ -47,7 +47,8 @@ Não é agência, não é consultoria de slides, não é software de prateleira:
 ## Evidence on Hand
 
 - **Nenhum case, depoimento ou métrica própria publicável ainda.** Não inventar clientes, logos de clientes, depoimentos, resultados ou números.
-- Estatísticas de mercado presentes no Opera OS (286 h/ano, 80% após 15 min, 67% dos gestores) não têm fonte registrada: revisar ou citar a fonte antes de manter.
+- As estatísticas de mercado sem fonte foram retiradas do Opera OS (os sintomas viraram perguntas de autodiagnóstico). Só voltar a usar números com fonte citada.
+- A política de privacidade (`/privacidade`) é um rascunho e precisa de revisão jurídica antes de publicar (faltam razão social, CNPJ e encarregado de dados).
 - Os exemplos do painel "Pergunte à sua empresa" na Home são simulação ilustrativa e precisam continuar sinalizados como tal.
 - Assets reais: imagem da proposta (`public/assets/proposta-catalise.*`), vídeo `system.mp4` (footage ilustrativo), logos das aplicações em `public/assets/apps/`.
 

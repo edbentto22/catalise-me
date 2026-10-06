@@ -12,8 +12,8 @@ export const home = {
     badgeAria: 'Ler o Manifesto: Empresas consultáveis',
     heading: 'Construímos empresas <em>consultáveis</em>.',
     subtitle: 'A próxima geração de empresas não será apenas digital. Será consultável: capaz de responder sobre seus clientes, processos, dados e operações. E de agir sobre essas respostas.',
-    ctaPrimary: 'Tornar minha empresa consultável',
-    ctaSecondary: 'Ler o Manifesto',
+    ctaPrimary: 'Agendar diagnóstico gratuito',
+    ctaSecondary: 'Conhecer o Opera OS',
     console: {
       aria: 'Exemplo de consulta a uma empresa consultável',
       label: 'Pergunte à sua empresa',
@@ -24,15 +24,23 @@ export const home = {
     },
     queries: [
       { q: 'Quais clientes não compram há mais de 60 dias?', a: '37 clientes · ticket médio em queda', act: 'Campanha de reativação criada no CRM' },
-      { q: 'Onde o onboarding de novos clientes está travando?', a: 'Etapa 3 · aprovação de contrato · 4,2 dias', act: 'Lembrete automático enviado ao responsável' },
+      { q: 'Quais pacientes faltaram esta semana e ainda não remarcaram?', a: '12 faltas · 7 sem nova data', act: 'Convite de remarcação enviado pelo WhatsApp' },
       { q: 'Qual processo mais consome horas da equipe?', a: 'Conciliação financeira · 22 h por semana', act: 'Agente de conciliação ativado com revisão humana' },
       { q: 'Quem aprovou essa exceção e por quê?', a: 'Diretoria comercial · margem acima da política', act: 'Decisão registrada na base de conhecimento' },
     ],
     status: 'Catalise.me // Empresas consultáveis',
     pillarsAria: 'A camada que conectamos',
     pillars: ['Conhecimento', 'Processos', 'Sistemas', 'Agentes'],
-    appsLabel: 'Nossas aplicações',
+    paths: {
+      title: 'Duas formas de tornar a sua empresa <em>consultável</em>.',
+      items: [
+        { name: 'Opera OS', audience: 'Empresas de serviços com operação consolidada', text: 'Clínicas, hotelaria, imobiliárias, educação, jurídico. Implantação em 10 a 12 semanas pelo método OPERA: agentes de IA, CRM, automações e equipe treinada, conectados em uma camada.', cta: 'Conhecer o Opera OS' },
+        { name: 'Projetos sob medida', audience: 'Médias e grandes empresas', text: 'Para operações com vários sistemas, áreas e bases de conhecimento. Desenhamos a camada consultável a partir do diagnóstico e implantamos em produção, com evolução contínua.', cta: 'Agendar diagnóstico gratuito' },
+      ],
+    },
+    appsLabel: 'Aplicações Catalise.me',
     appsAria: 'Aplicações desenvolvidas pela Catalise.me',
+    appsNote: 'Produtos próprios que usamos nas implantações. Páginas dedicadas em breve.',
   },
   en: {
     meta: {
@@ -44,8 +52,8 @@ export const home = {
     badgeAria: 'Read the Manifesto: Queryable companies',
     heading: 'We build <em>queryable</em> companies.',
     subtitle: "The next generation of companies won't just be digital. They will be queryable: able to answer about their customers, processes, data and operations. And to act on those answers.",
-    ctaPrimary: 'Make my company queryable',
-    ctaSecondary: 'Read the Manifesto',
+    ctaPrimary: 'Book a free diagnostic',
+    ctaSecondary: 'Explore Opera OS',
     console: {
       aria: 'Example of a query to a queryable company',
       label: 'Ask your company',
@@ -56,15 +64,23 @@ export const home = {
     },
     queries: [
       { q: "Which customers haven't bought in over 60 days?", a: '37 customers · average ticket dropping', act: 'Win-back campaign created in the CRM' },
-      { q: 'Where is new-customer onboarding getting stuck?', a: 'Step 3 · contract approval · 4.2 days', act: 'Automatic reminder sent to the owner' },
+      { q: 'Which patients missed appointments this week and have not rebooked?', a: '12 no-shows · 7 without a new date', act: 'Rebooking invitation sent on WhatsApp' },
       { q: 'Which process consumes the most team hours?', a: 'Financial reconciliation · 22 h per week', act: 'Reconciliation agent activated with human review' },
       { q: 'Who approved this exception, and why?', a: 'Sales leadership · margin above policy', act: 'Decision logged in the knowledge base' },
     ],
     status: 'Catalise.me // Queryable companies',
     pillarsAria: 'The layer we connect',
     pillars: ['Knowledge', 'Processes', 'Systems', 'Agents'],
-    appsLabel: 'Our applications',
+    paths: {
+      title: 'Two ways to make your company <em>queryable</em>.',
+      items: [
+        { name: 'Opera OS', audience: 'Service businesses with a consolidated operation', text: 'Clinics, hospitality, real estate, education, legal. A 10-to-12-week rollout through the OPERA method: AI agents, CRM, automations and a trained team, connected in one layer.', cta: 'Explore Opera OS' },
+        { name: 'Tailored projects', audience: 'Mid-size and large companies', text: 'For operations with many systems, departments and knowledge bases. We design the queryable layer from the diagnostic and put it into production, with continuous evolution.', cta: 'Book a free diagnostic' },
+      ],
+    },
+    appsLabel: 'Catalise.me applications',
     appsAria: 'Applications built by Catalise.me',
+    appsNote: 'Our own products, used in our rollouts. Dedicated pages coming soon.',
   },
   es: {
     meta: {
@@ -76,8 +92,8 @@ export const home = {
     badgeAria: 'Leer el Manifiesto: Empresas consultables',
     heading: 'Construimos empresas <em>consultables</em>.',
     subtitle: 'La próxima generación de empresas no será solo digital. Será consultable: capaz de responder sobre sus clientes, procesos, datos y operaciones. Y de actuar sobre esas respuestas.',
-    ctaPrimary: 'Hacer mi empresa consultable',
-    ctaSecondary: 'Leer el Manifiesto',
+    ctaPrimary: 'Agendar diagnóstico gratuito',
+    ctaSecondary: 'Conocer Opera OS',
     console: {
       aria: 'Ejemplo de consulta a una empresa consultable',
       label: 'Pregúntele a su empresa',
@@ -88,14 +104,22 @@ export const home = {
     },
     queries: [
       { q: '¿Qué clientes no compran hace más de 60 días?', a: '37 clientes · ticket promedio en caída', act: 'Campaña de reactivación creada en el CRM' },
-      { q: '¿Dónde se traba el onboarding de nuevos clientes?', a: 'Etapa 3 · aprobación de contrato · 4,2 días', act: 'Recordatorio automático enviado al responsable' },
+      { q: '¿Qué pacientes faltaron esta semana y aún no reprogramaron?', a: '12 inasistencias · 7 sin nueva fecha', act: 'Invitación para reprogramar enviada por WhatsApp' },
       { q: '¿Qué proceso consume más horas del equipo?', a: 'Conciliación financiera · 22 h por semana', act: 'Agente de conciliación activado con revisión humana' },
       { q: '¿Quién aprobó esta excepción y por qué?', a: 'Dirección comercial · margen por encima de la política', act: 'Decisión registrada en la base de conocimiento' },
     ],
     status: 'Catalise.me // Empresas consultables',
     pillarsAria: 'La capa que conectamos',
     pillars: ['Conocimiento', 'Procesos', 'Sistemas', 'Agentes'],
-    appsLabel: 'Nuestras aplicaciones',
+    paths: {
+      title: 'Dos formas de hacer su empresa <em>consultable</em>.',
+      items: [
+        { name: 'Opera OS', audience: 'Empresas de servicios con operación consolidada', text: 'Clínicas, hotelería, inmobiliarias, educación, jurídico. Implementación en 10 a 12 semanas con el método OPERA: agentes de IA, CRM, automatizaciones y equipo capacitado, conectados en una capa.', cta: 'Conocer Opera OS' },
+        { name: 'Proyectos a medida', audience: 'Medianas y grandes empresas', text: 'Para operaciones con varios sistemas, áreas y bases de conocimiento. Diseñamos la capa consultable a partir del diagnóstico y la implementamos en producción, con evolución continua.', cta: 'Agendar diagnóstico gratuito' },
+      ],
+    },
+    appsLabel: 'Aplicaciones Catalise.me',
     appsAria: 'Aplicaciones desarrolladas por Catalise.me',
+    appsNote: 'Productos propios que usamos en las implementaciones. Páginas dedicadas próximamente.',
   },
 } satisfies Record<Locale, unknown>;

@@ -12,8 +12,7 @@ const { locale } = Astro.props;
 const t = opera[locale];
 const pageUrl = `https://catalise.me${localizedHref('/opera-os', locale)}`;
 const whatsapp = whatsappLink(ui[locale].whatsappOpera);
-const scopeIcons = ['globe', 'bot', 'layout-grid', 'workflow', 'message-square', 'activity', 'bar-chart-3', 'users'];
-const totalWeeks = 10;
+const totalWeeks = 12;
 ---
 
 <BaseLayout
@@ -32,7 +31,6 @@ const totalWeeks = 10;
   <header class="op-hero" aria-labelledby="opera-hero-heading">
     <div class="container op-hero-grid">
       <div class="op-hero-copy">
-        <span class="page-hero-eyebrow hero-animate-1">{t.hero.eyebrow}</span>
         <h1 id="opera-hero-heading" class="op-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
         <p class="op-hero-lede hero-animate-3">{t.hero.lede}</p>
         <div class="op-hero-ctas hero-animate-4">
@@ -47,7 +45,7 @@ const totalWeeks = 10;
         <div class="op-screen-bar" aria-hidden="true">
           <span class="op-screen-dots"><i></i><i></i><i></i></span>
           <span class="op-screen-url">opera.catalise.me</span>
-          <span class="op-screen-live"><span></span>live</span>
+          <span class="op-screen-tag">{t.hero.illustrative}</span>
         </div>
         <div class="op-screen-body">
           <video class="op-screen-video" data-src="/assets/system.mp4" poster="/assets/system-poster.jpg" loop muted playsinline preload="none" aria-hidden="true"></video>
@@ -79,7 +77,6 @@ const totalWeeks = 10;
   <section id="sintomas" class="op-section" aria-labelledby="sintomas-heading">
     <div class="container">
       <div class="op-head">
-        <span class="mf-index">{t.symptoms.eyebrow}</span>
         <h2 id="sintomas-heading" class="mf-section-title" data-reveal set:html={t.symptoms.title} />
         <p class="op-head-lede" data-reveal>{t.symptoms.lede}</p>
       </div>
@@ -100,7 +97,6 @@ const totalWeeks = 10;
   <section id="o-que-e" class="op-section op-product" aria-labelledby="o-que-e-heading">
     <div class="container op-product-grid">
       <div>
-        <span class="mf-index">{t.product.eyebrow}</span>
         <h2 id="o-que-e-heading" class="mf-section-title" data-reveal set:html={t.product.title} />
         <div class="op-product-copy" data-reveal-group>
           {t.product.paragraphs.map((paragraph) => <p set:html={paragraph} />)}
@@ -123,7 +119,6 @@ const totalWeeks = 10;
   <section id="metodo" class="op-section op-method" data-method aria-labelledby="metodo-heading">
     <div class="container">
       <div class="op-head">
-        <span class="mf-index">{t.method.eyebrow}</span>
         <h2 id="metodo-heading" class="mf-section-title" data-reveal set:html={t.method.title} />
         <p class="op-head-lede" data-reveal>{t.method.lede}</p>
       </div>
@@ -144,10 +139,16 @@ const totalWeeks = 10;
                 <span class="op-gantt-letter">{phase.letter}</span>
                 <span class="op-gantt-track">
                   <span class="op-gantt-bar" style={`--start:${phase.start}; --end:${phase.end}`}></span>
+                  {i === t.method.phases.length - 1 && (
+                    <span class="op-gantt-bar op-gantt-margin" style={`--start:${phase.end + 1}; --end:${totalWeeks}`}></span>
+                  )}
                 </span>
               </div>
             ))}
-            <span class="op-gantt-caption">{t.method.weeksLabel}</span>
+            <p class="op-gantt-key">
+              <span><i class="op-gantt-swatch"></i>{t.method.marginLabel}</span>
+              <span>{t.method.weeksLabel}</span>
+            </p>
           </div>
         </aside>
 
@@ -177,16 +178,14 @@ const totalWeeks = 10;
   <section id="inclui" class="op-section op-scope" aria-labelledby="inclui-heading">
     <div class="container">
       <div class="op-head op-head-center">
-        <span class="mf-index">{t.scope.eyebrow}</span>
         <h2 id="inclui-heading" class="mf-section-title" data-reveal set:html={t.scope.title} />
         <p class="op-head-lede" data-reveal>{t.scope.lede}</p>
       </div>
 
       <ul class="op-scope-grid" role="list" data-reveal-group>
         {t.scope.items.map((item, i) => (
-          <li class="op-scope-item" data-glow>
+          <li class="op-scope-item">
             <span class="op-scope-num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="op-scope-icon" aria-hidden="true"><i data-lucide={scopeIcons[i]}></i></span>
             <h3>{item.title}</h3>
             <p>{item.text}</p>
           </li>
@@ -199,7 +198,6 @@ const totalWeeks = 10;
   <section id="qualificacao" class="op-section op-fit" aria-labelledby="qual-heading">
     <div class="container">
       <div class="op-head">
-        <span class="mf-index">{t.fit.eyebrow}</span>
         <h2 id="qual-heading" class="mf-section-title" data-reveal set:html={t.fit.title} />
       </div>
 
@@ -229,7 +227,6 @@ const totalWeeks = 10;
     <div class="container">
       <div class="op-pricing-head">
         <div>
-          <span class="mf-index">{t.pricing.eyebrow}</span>
           <h2 id="pricing-heading" class="mf-section-title" data-reveal set:html={t.pricing.title} />
           <p class="op-head-lede" data-reveal>{t.pricing.lede}</p>
         </div>
@@ -264,7 +261,6 @@ const totalWeeks = 10;
   <section id="como-comecar" class="op-section op-start" aria-labelledby="comecar-heading">
     <div class="container">
       <div class="op-head">
-        <span class="mf-index">{t.start.eyebrow}</span>
         <h2 id="comecar-heading" class="mf-section-title" data-reveal set:html={t.start.title} />
       </div>
 
@@ -289,7 +285,6 @@ const totalWeeks = 10;
   <section id="faq" class="op-section op-faq" aria-labelledby="faq-heading">
     <div class="container op-faq-grid">
       <div class="op-head">
-        <span class="mf-index">{t.faq.eyebrow}</span>
         <h2 id="faq-heading" class="mf-section-title" data-reveal set:html={t.faq.title} />
       </div>
 
@@ -301,7 +296,7 @@ const totalWeeks = 10;
               <span class="faq-icon" aria-hidden="true"></span>
             </button>
             <div class="faq-answer">
-              <p>{item.a}</p>
+              <div class="faq-answer-inner"><p>{item.a}</p></div>
             </div>
           </div>
         ))}
@@ -312,7 +307,6 @@ const totalWeeks = 10;
   <!-- ══════════════ CTA FINAL ══════════════ -->
   <section class="cta-section" aria-labelledby="opera-cta-heading">
     <div class="container">
-      <span class="page-hero-eyebrow">{t.cta.eyebrow}</span>
       <h2 id="opera-cta-heading" set:html={t.cta.title} />
       <p>{t.cta.text}</p>
       <div class="cta-buttons">

@@ -3,7 +3,8 @@
 ---
 
 <script>
-import { submitLead } from '../scripts/leads';
+import { maskBrazilPhone, submitLead } from '../scripts/leads';
+import { leadForm, revenueValues, sourceValues } from '../i18n/content/leadForm';
 /* =========================================
    CATALISE.ME — MODAL DIAGNÓSTICO GRATUITO
    ES Module — compatível com Astro build
@@ -25,17 +26,23 @@ const TRIGGER_SELECTORS = [
 ];
 
 const locale = document.documentElement.lang.startsWith('en') ? 'en' : document.documentElement.lang.startsWith('es') ? 'es' : 'pt';
-const copy = {
-  pt: {
-    close: 'Fechar', eyebrow: 'Diagnóstico gratuito', title: 'Vamos tornar sua empresa', accent: 'consultável.', lede: 'Em 45 minutos mapeamos onde estão as respostas da sua operação e o que ela já poderia executar sozinha.', name: 'Nome completo', namePlaceholder: 'Seu nome', company: 'Empresa e cargo', companyPlaceholder: 'Nome da empresa', email: 'E-mail', emailPlaceholder: 'seu@email.com', phone: 'Telefone / WhatsApp', phonePlaceholder: '(00) 90000-0000', revenue: 'Faturamento médio mensal', revenuePrompt: 'Selecione uma faixa', revenueOptions: ['Até R$ 50 mil', 'R$ 50 mil – R$ 150 mil', 'R$ 150 mil – R$ 500 mil', 'R$ 500 mil – R$ 2 milhões', 'Acima de R$ 2 milhões'], source: 'Como ficou sabendo sobre nós?', sourcePrompt: 'Selecione uma opção', referral: 'Indicação', other: 'Outro', submit: 'SOLICITAR DIAGNÓSTICO GRATUITO →', footer: 'Sem compromisso · Resposta em até 24h', network: 'Não foi possível concluir o envio agora. Seus dados continuam preenchidos.', whatsapp: 'Falar pelo WhatsApp', successTitle: 'Solicitação encaminhada', success: 'Seu navegador encaminhou os dados. Se não receber nosso contato em até 24 horas, fale com a gente pelo WhatsApp.', required: 'Campo obrigatório.', minChars: 'Informe pelo menos 2 caracteres.', phoneError: 'Informe um telefone com DDD.', review: 'Revise os campos obrigatórios destacados.', sending: 'Enviando…', sendError: 'Erro ao enviar — tente novamente', discard: 'Descartar os dados preenchidos?',
-  },
-  en: {
-    close: 'Close', eyebrow: 'Free diagnostic session', title: "Let's make your company", accent: 'queryable.', lede: 'In 45 minutes we map where the answers of your operation live, and what it could already execute on its own.', name: 'Full name', namePlaceholder: 'Your name', company: 'Company and role', companyPlaceholder: 'Company name', email: 'Email', emailPlaceholder: 'you@example.com', phone: 'Phone / WhatsApp', phonePlaceholder: '+1 000 000 0000', revenue: 'Average monthly revenue', revenuePrompt: 'Select a range', revenueOptions: ['Up to R$ 50k', 'R$ 50k – R$ 150k', 'R$ 150k – R$ 500k', 'R$ 500k – R$ 2m', 'Over R$ 2m'], source: 'How did you hear about us?', sourcePrompt: 'Select an option', referral: 'Referral', other: 'Other', submit: 'REQUEST A FREE DIAGNOSTIC SESSION →', footer: 'No commitment · Response within 24 hours', network: 'We could not complete the submission. Your information is still filled in.', whatsapp: 'Talk on WhatsApp', successTitle: 'Request received', success: 'Your browser sent the information. If you do not hear from us within 24 hours, contact us on WhatsApp.', required: 'This field is required.', minChars: 'Enter at least 2 characters.', phoneError: 'Enter a phone number with area code.', review: 'Please review the highlighted required fields.', sending: 'Sending…', sendError: 'Could not send — please try again', discard: 'Discard the information you entered?',
-  },
-  es: {
-    close: 'Cerrar', eyebrow: 'Diagnóstico gratuito', title: 'Sesión de diagnóstico', accent: 'gratuita', lede: 'En 45 minutos mapeamos dónde están las respuestas de su operación y lo que ya podría ejecutar por sí sola.', name: 'Nombre completo', namePlaceholder: 'Su nombre', company: 'Empresa y cargo', companyPlaceholder: 'Nombre de la empresa', email: 'Correo electrónico', emailPlaceholder: 'usted@ejemplo.com', phone: 'Teléfono / WhatsApp', phonePlaceholder: '+00 000 000 0000', revenue: 'Facturación mensual promedio', revenuePrompt: 'Seleccione un rango', revenueOptions: ['Hasta R$ 50 mil', 'R$ 50 mil – R$ 150 mil', 'R$ 150 mil – R$ 500 mil', 'R$ 500 mil – R$ 2 millones', 'Más de R$ 2 millones'], source: '¿Cómo nos conoció?', sourcePrompt: 'Seleccione una opción', referral: 'Recomendación', other: 'Otro', submit: 'SOLICITAR SESIÓN DE DIAGNÓSTICO GRATUITA →', footer: 'Sin compromiso · Respuesta en hasta 24 horas', network: 'No pudimos completar el envío. Sus datos siguen completos.', whatsapp: 'Hablar por WhatsApp', successTitle: 'Solicitud recibida', success: 'Su navegador envió la información. Si no recibe respuesta en hasta 24 horas, contáctenos por WhatsApp.', required: 'Este campo es obligatorio.', minChars: 'Ingrese al menos 2 caracteres.', phoneError: 'Ingrese un teléfono con código de área.', review: 'Revise los campos obligatorios resaltados.', sending: 'Enviando…', sendError: 'No se pudo enviar — intente nuevamente', discard: '¿Descartar los datos ingresados?',
-  },
+const modalCopy = {
+  pt: { close: 'Fechar', title: 'Vamos tornar sua empresa', accent: 'consultável.', lede: 'Em 45 minutos mapeamos onde estão as respostas da sua operação e o que ela já poderia executar sozinha.', footer: 'Sem compromisso · Resposta em até 24 horas úteis', discard: 'Descartar os dados preenchidos?' },
+  en: { close: 'Close', title: "Let's make your company", accent: 'queryable.', lede: 'In 45 minutes we map where the answers of your operation live, and what it could already execute on its own.', footer: 'No commitment · Reply within 24 business hours', discard: 'Discard the information you entered?' },
+  es: { close: 'Cerrar', title: 'Hagamos su empresa', accent: 'consultable.', lede: 'En 45 minutos mapeamos dónde están las respuestas de su operación y lo que ya podría ejecutar por sí sola.', footer: 'Sin compromiso · Respuesta en hasta 24 horas hábiles', discard: '¿Descartar los datos ingresados?' },
 }[locale];
+const copy = { ...leadForm[locale], ...modalCopy };
+const privacyHref = locale === 'pt' ? '/privacidade' : `/${locale}/privacidade`;
+const whatsappHref = 'https://wa.me/5575991879786';
+
+const field = (id: string, label: string, control: string, extra = '') => `
+  <div class="form-group">
+    <label class="form-label" for="${id}">${label}</label>
+    ${control}
+    ${extra}
+    <span class="form-error" id="${id}-error" aria-live="polite"></span>
+  </div>`;
+const req = (label: string) => `${label} <span aria-hidden="true">*</span>`;
 
 /* ─── Cria o HTML do modal ─── */
 function createModal() {
@@ -52,75 +59,50 @@ function createModal() {
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
       <header class="modal-diag-head">
-        <p class="modal-diag-brand"><span aria-hidden="true"></span>${copy.eyebrow}</p>
         <h2 id="modal-diag-title" class="modal-diag-title" tabindex="-1">
           ${copy.title} <em>${copy.accent}</em>
         </h2>
         <p class="modal-diag-lede">${copy.lede}</p>
       </header>
       <form id="modal-diag-form" class="modal-diag-form" novalidate aria-describedby="modal-diag-status">
+        <p class="form-required-note">${copy.requiredNote}</p>
         <p id="modal-diag-status" class="visually-hidden" aria-live="polite"></p>
-        <div class="modal-diag-row">
-          <div class="modal-diag-field">
-            <label for="diag-name">${copy.name} <span aria-hidden="true">*</span></label>
-            <input type="text" id="diag-name" name="name" placeholder="${copy.namePlaceholder}" required autocomplete="name" aria-describedby="diag-name-error">
-            <span class="modal-diag-error" id="diag-name-error" aria-live="polite"></span>
-          </div>
-          <div class="modal-diag-field">
-            <label for="diag-company">${copy.company} <span aria-hidden="true">*</span></label>
-            <input type="text" id="diag-company" name="company" placeholder="${copy.companyPlaceholder}" required autocomplete="organization" aria-describedby="diag-company-error">
-            <span class="modal-diag-error" id="diag-company-error" aria-live="polite"></span>
-          </div>
+        <div class="form-row">
+          ${field('diag-name', req(copy.name), `<input class="form-input" type="text" id="diag-name" name="name" placeholder="${copy.namePlaceholder}" required minlength="2" autocomplete="name" aria-describedby="diag-name-error">`)}
+          ${field('diag-company', req(copy.company), `<input class="form-input" type="text" id="diag-company" name="company" placeholder="${copy.companyPlaceholder}" required minlength="2" autocomplete="organization" aria-describedby="diag-company-error">`)}
         </div>
-        <div class="modal-diag-field">
-          <label for="diag-email">${copy.email} <span aria-hidden="true">*</span></label>
-          <input type="email" id="diag-email" name="email" placeholder="${copy.emailPlaceholder}" required autocomplete="email" aria-describedby="diag-email-error">
-          <span class="modal-diag-error" id="diag-email-error" aria-live="polite"></span>
+        <div class="form-row">
+          ${field('diag-email', req(copy.email), `<input class="form-input" type="email" id="diag-email" name="email" placeholder="${copy.emailPlaceholder}" required autocomplete="email" aria-describedby="diag-email-error">`)}
+          ${field('diag-phone', req(copy.phone), `<input class="form-input" type="tel" id="diag-phone" name="phone" placeholder="${copy.phonePlaceholder}" required data-phone autocomplete="tel" aria-describedby="diag-phone-error">`)}
         </div>
-        <div class="modal-diag-field">
-          <label for="diag-phone">${copy.phone} <span aria-hidden="true">*</span></label>
-          <input type="tel" id="diag-phone" name="phone" placeholder="${copy.phonePlaceholder}" required autocomplete="tel" aria-describedby="diag-phone-error">
-          <span class="modal-diag-error" id="diag-phone-error" aria-live="polite"></span>
-        </div>
-        <div class="modal-diag-field">
-          <label for="diag-revenue">${copy.revenue} <span aria-hidden="true">*</span></label>
-          <select id="diag-revenue" name="revenue" required aria-describedby="diag-revenue-error">
+        <div class="form-row">
+          ${field('diag-revenue', req(copy.revenue), `<select class="form-select" id="diag-revenue" name="revenue" required aria-describedby="diag-revenue-hint diag-revenue-error">
             <option value="" disabled selected>${copy.revenuePrompt}</option>
-            <option value="ate-50k">${copy.revenueOptions[0]}</option>
-            <option value="50k-150k">${copy.revenueOptions[1]}</option>
-            <option value="150k-500k">${copy.revenueOptions[2]}</option>
-            <option value="500k-2m">${copy.revenueOptions[3]}</option>
-            <option value="acima-2m">${copy.revenueOptions[4]}</option>
-          </select>
-          <span class="modal-diag-error" id="diag-revenue-error" aria-live="polite"></span>
+            ${copy.revenueOptions.map((label, i) => `<option value="${revenueValues[i]}">${label}</option>`).join('')}
+          </select>`, `<span class="form-hint" id="diag-revenue-hint">${copy.revenueHint}</span>`)}
+          ${field('diag-source', copy.source, `<select class="form-select" id="diag-source" name="source">
+            <option value="" selected>${copy.sourcePrompt}</option>
+            ${copy.sourceOptions.map((label, i) => `<option value="${sourceValues[i]}">${label}</option>`).join('')}
+          </select>`)}
         </div>
-        <div class="modal-diag-field">
-          <label for="diag-source">${copy.source} <span aria-hidden="true">*</span></label>
-          <select id="diag-source" name="source" required aria-describedby="diag-source-error">
-            <option value="" disabled selected>${copy.sourcePrompt}</option>
-            <option value="instagram">Instagram</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="google">Google</option>
-            <option value="indicacao">${copy.referral}</option>
-            <option value="youtube">YouTube</option>
-            <option value="outro">${copy.other}</option>
-          </select>
-          <span class="modal-diag-error" id="diag-source-error" aria-live="polite"></span>
+        <div class="form-network-error" id="modal-diag-network-error" role="alert" hidden>
+          <p>${copy.errors.network}</p>
+          <a href="${whatsappHref}" target="_blank" rel="noopener">${copy.successCta} ↗</a>
         </div>
         <button type="submit" class="modal-diag-submit" id="modal-diag-submit">
           <span data-submit-label>${copy.submit}</span>
         </button>
         <p class="modal-diag-footer">${copy.footer}</p>
-        <div class="modal-diag-network-error" id="modal-diag-network-error" role="alert" hidden>
-          <p>${copy.network}</p>
-          <a href="https://wa.me/5575991879786" target="_blank" rel="noopener">${copy.whatsapp}</a>
-        </div>
+        <p class="modal-diag-legal">${copy.legalPre} <a href="${privacyHref}">${copy.legalLink}</a>${copy.legalPost}</p>
       </form>
       <div class="modal-diag-success" id="modal-diag-success" role="status" aria-live="polite" tabindex="-1" hidden>
         <div class="modal-diag-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3 tabindex="-1">${copy.successTitle}</h3>
-        <p>${copy.success}</p>
-        <button type="button" class="modal-diag-submit" id="modal-diag-success-close">${copy.close}</button>
+        <p>${copy.successText}</p>
+        <div class="modal-diag-success-actions">
+          <a class="modal-diag-submit" href="${whatsappHref}" target="_blank" rel="noopener">${copy.successCta} ↗</a>
+          <button type="button" class="modal-diag-secondary" id="modal-diag-success-close">${copy.close}</button>
+        </div>
       </div>
     </div>
   `;
@@ -146,7 +128,6 @@ function openModal() {
   if (networkError) networkError.hidden = true;
   if (submit) {
     submit.disabled = false;
-    submit.classList.remove('is-error');
     const label = submit.querySelector<HTMLElement>('[data-submit-label]');
     if (label) label.textContent = copy.submit;
   }
@@ -176,18 +157,6 @@ function closeModal() {
   if (previousFocus instanceof HTMLElement) previousFocus.focus();
 }
 
-/* ─── Máscara WhatsApp ─── */
-function maskPhone(input: HTMLInputElement) {
-  input.addEventListener('input', () => {
-    let v = input.value.replace(/\D/g, '');
-    if (v.length > 11) v = v.slice(0, 11);
-    if (v.length > 6)      v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-    else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
-    else if (v.length > 0) v = `(${v}`;
-    input.value = v;
-  });
-}
-
 /* ─── Submissão ─── */
 async function handleSubmit(e: Event) {
   e.preventDefault();
@@ -195,10 +164,12 @@ async function handleSubmit(e: Event) {
   const btn = form.querySelector<HTMLButtonElement>('[type=submit]');
   const requiredFields = [...form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[required]')];
   const validateField = (field: HTMLInputElement | HTMLSelectElement) => {
+    const value = field.value.trim();
     let message = '';
-    if (!field.validity.valid) message = copy.required;
-    if ((field.id === 'diag-name' || field.id === 'diag-company') && field.value.trim().length < 2) message = copy.minChars;
-    if (field.id === 'diag-phone' && field.value.replace(/\D/g, '').length < 10) message = copy.phoneError;
+    if (!value) message = copy.errors.required;
+    else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) message = copy.errors.email;
+    else if (field.hasAttribute('data-phone') && value.replace(/\D/g, '').length < 10) message = copy.errors.phone;
+    else if (field.minLength > 0 && value.length < field.minLength) message = copy.errors.minChars;
     field.setAttribute('aria-invalid', String(Boolean(message)));
     const error = form.querySelector<HTMLElement>(`#${field.id}-error`);
     if (error) error.textContent = message;
@@ -207,7 +178,7 @@ async function handleSubmit(e: Event) {
   requiredFields.forEach(validateField);
   const firstInvalid = requiredFields.find((field) => field.getAttribute('aria-invalid') === 'true');
   if (firstInvalid) {
-    (form.querySelector('#modal-diag-status') as HTMLElement).textContent = copy.review;
+    (form.querySelector('#modal-diag-status') as HTMLElement).textContent = copy.errors.review;
     firstInvalid.focus();
     return;
   }
@@ -220,7 +191,17 @@ async function handleSubmit(e: Event) {
   const networkError = form.querySelector<HTMLElement>('#modal-diag-network-error');
   if (networkError) networkError.hidden = true;
 
-  const body = { ...Object.fromEntries(new FormData(form).entries()), page_url: location.href, submitted_at: new Date().toISOString() };
+  const params = new URLSearchParams(location.search);
+  const body = {
+    ...Object.fromEntries([...new FormData(form).entries()].map(([key, value]) => [key, String(value).trim()])),
+    form: 'modal',
+    page_url: location.href,
+    referrer: document.referrer || '',
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    submitted_at: new Date().toISOString(),
+  };
 
   try {
     await submitLead(body);
@@ -230,11 +211,10 @@ async function handleSubmit(e: Event) {
     success.focus();
   } catch (err) {
     console.error('[Modal Diagnóstico] Erro ao enviar:', err);
-    label.textContent = copy.sendError;
-    btn.disabled = false;
-    btn.classList.add('is-error');
     if (networkError) networkError.hidden = false;
   } finally {
+    label.textContent = copy.submit;
+    btn.disabled = false;
     btn.classList.remove('is-sending');
   }
 }
@@ -266,7 +246,15 @@ function init() {
   modal.querySelector('#modal-diag-close')!.addEventListener('click', closeModal);
   modal.querySelector('#modal-diag-success-close')!.addEventListener('click', closeModal);
   modal.querySelector('#modal-diag-form')!.addEventListener('submit', handleSubmit);
-  maskPhone(modal.querySelector<HTMLInputElement>('#diag-phone')!);
+  if (locale === 'pt') maskBrazilPhone(modal.querySelector<HTMLInputElement>('#diag-phone')!);
+  modal.querySelectorAll<HTMLInputElement | HTMLSelectElement>('#modal-diag-form [required]').forEach((field) => {
+    field.addEventListener('input', () => {
+      if (field.getAttribute('aria-invalid') !== 'true') return;
+      field.setAttribute('aria-invalid', 'false');
+      const error = modal!.querySelector<HTMLElement>(`#${field.id}-error`);
+      if (error) error.textContent = '';
+    });
+  });
   document.addEventListener('keydown', trapFocus);
 
   // Delegação: cobre [data-open-modal] e os seletores legados, inclusive elementos criados depois.
