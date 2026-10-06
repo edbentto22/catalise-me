@@ -439,7 +439,7 @@
 }
 
 .query-console-note {
-  color: #a1a1aa;
+  color: var(--subtle);
   text-transform: none;
   letter-spacing: 0;
 }

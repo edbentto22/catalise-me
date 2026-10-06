@@ -12,13 +12,25 @@ const { variant, class: className = '' } = Astro.props;
 </div>
 
 <script>
-  import { initAmbient3D, type Ambient3DVariant } from '../scripts/ambient3d';
+  import type { Ambient3DVariant } from '../scripts/ambient3d';
+  import { hasHardwareWebGL } from '../scripts/gpu';
 
-  document.querySelectorAll<HTMLElement>('[data-ambient]').forEach((container) => {
+  // three.js só é baixado quando a cena está perto de entrar na tela.
+  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    observer.unobserve(entry.target);
+    const container = entry.target as HTMLElement;
     const canvas = container.querySelector<HTMLCanvasElement>('canvas');
     if (!canvas || container.dataset.state) return;
     container.dataset.state = 'loading';
-    initAmbient3D({ canvas, container, variant: container.dataset.ambient as Ambient3DVariant });
+    import('../scripts/ambient3d').then(({ initAmbient3D }) => {
+      initAmbient3D({ canvas, container, variant: container.dataset.ambient as Ambient3DVariant });
+    });
+  }), { rootMargin: '200px 0px' });
+
+  document.querySelectorAll<HTMLElement>('[data-ambient]').forEach((container) => {
+    if (hasHardwareWebGL()) observer.observe(container);
+    else container.dataset.state = 'off';
   });
 </script>
 

@@ -20,7 +20,7 @@ const {
   ogTitle,
   ogDescription,
   ogUrl,
-  ogImage = 'https://catalise.me/assets/logo.png',
+  ogImage,
   canonical,
   twitterCard = 'summary_large_image',
   noindex = false,
@@ -30,6 +30,32 @@ const {
 } = Astro.props;
 
 const localeCodes = { pt: 'pt-BR', en: 'en-US', es: 'es-419' } as const;
+const ogLocales = { pt: 'pt_BR', en: 'en_US', es: 'es_LA' } as const;
+const image = ogImage || `https://catalise.me/og/og-${locale}.png`;
+const imageAlt = { pt: 'Catalise.me · Empresas consultáveis', en: 'Catalise.me · Queryable companies', es: 'Catalise.me · Empresas consultables' }[locale];
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://catalise.me/#organization',
+      name: 'Catalise.me',
+      url: 'https://catalise.me/',
+      logo: 'https://catalise.me/assets/icon-512.png',
+      slogan: imageAlt.replace('Catalise.me · ', ''),
+      email: 'contato@catalise.me',
+      contactPoint: [{ '@type': 'ContactPoint', contactType: 'sales', telephone: '+55-75-99187-9786', availableLanguage: ['Portuguese', 'English', 'Spanish'] }],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://catalise.me/#website',
+      url: 'https://catalise.me/',
+      name: 'Catalise.me',
+      inLanguage: localeCodes[locale],
+      publisher: { '@id': 'https://catalise.me/#organization' },
+    },
+  ],
+};
 const canonicalOrigin = canonical ? new URL(canonical).origin : 'https://catalise.me';
 const alternateEntries = localizedPaths ? Object.entries(localizedPaths) as Array<['pt' | 'en' | 'es', string]> : [];
 ---
@@ -48,15 +74,20 @@ const alternateEntries = localizedPaths ? Object.entries(localizedPaths) as Arra
 <meta property="og:title" content={ogTitle || title} />
 <meta property="og:description" content={ogDescription || description} />
 <meta property="og:type" content="website">
-<meta property="og:locale" content={localeCodes[locale]} />
+<meta property="og:locale" content={ogLocales[locale]} />
+<meta property="og:site_name" content="Catalise.me" />
 {ogUrl && <meta property="og:url" content={ogUrl} />}
-<meta property="og:image" content={ogImage}>
+<meta property="og:image" content={image}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content={imageAlt}>
 
 <!-- Twitter -->
 <meta name="twitter:card" content={twitterCard}>
 <meta name="twitter:title" content={ogTitle || title}>
 <meta name="twitter:description" content={ogDescription || description}>
-<meta name="twitter:image" content={ogImage}>
+<meta name="twitter:image" content={image}>
+<meta name="twitter:image:alt" content={imageAlt}>
 
 <!-- Canonical -->
 {canonical && <link rel="canonical" href={canonical} />}
@@ -65,10 +96,11 @@ const alternateEntries = localizedPaths ? Object.entries(localizedPaths) as Arra
 ))}
 {localizedPaths?.pt && <link rel="alternate" hreflang="x-default" href={new URL(localizedPaths.pt, canonicalOrigin).toString()} />}
 
-<!-- Google Fonts: Archivo (Display) & Manrope (Body) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" href="/assets/favicon-site.png">
+<!-- Ícones -->
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Dados estruturados -->
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

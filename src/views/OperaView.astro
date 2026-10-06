@@ -111,7 +111,7 @@ const totalWeeks = 10;
         <h3 set:html={t.product.notTitle} />
         <ul role="list" class="op-not-list">
           {t.product.not.map((item) => (
-            <li><span class="op-not-x" aria-hidden="true">×</span><span class="op-not-text" data-strike-item>{item}</span></li>
+            <li><span class="op-not-x" aria-hidden="true">×</span><span><span class="op-not-text" data-strike-item>{item}</span></span></li>
           ))}
         </ul>
         <p class="op-yes"><span class="op-yes-check" aria-hidden="true"><i data-lucide="check"></i></span>{t.product.yes}</p>

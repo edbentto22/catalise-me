@@ -7,22 +7,16 @@
 </div>
 
 <script>
-  import { initHero3D } from '../scripts/hero3d';
+  import { hasHardwareWebGL } from '../scripts/gpu';
 
   const container = document.getElementById('hero-3d-container');
   const canvas = document.getElementById('hero-3d-canvas') as HTMLCanvasElement | null;
 
-  if (container && canvas) {
-    // Only initialize when document is ready
-    const start = () => {
-      initHero3D({ canvas, container });
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', start, { once: true });
-    } else {
-      start();
-    }
+  // three.js só é baixado depois do primeiro paint, fora do caminho crítico.
+  if (container && canvas && hasHardwareWebGL()) {
+    const start = () => import('../scripts/hero3d').then(({ initHero3D }) => initHero3D({ canvas, container }));
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1200 });
+    else setTimeout(start, 300);
   }
 </script>
 

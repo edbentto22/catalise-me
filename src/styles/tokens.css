@@ -46,8 +46,8 @@
   --glow-green-sm:  0 0 0 4px var(--lime-soft);
 
   /* ─── Tipografia ─── */
-  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
-  --font-body:    'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-body:    'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-mono:    ui-monospace, 'SFMono-Regular', 'JetBrains Mono', monospace;
 
   --weight-book:   400;

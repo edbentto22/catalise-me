@@ -1,4 +1,27 @@
-import * as THREE from 'three';
+import {
+  ACESFilmicToneMapping,
+  AmbientLight,
+  BufferAttribute,
+  BufferGeometry,
+  DirectionalLight,
+  Group,
+  IcosahedronGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  Mesh,
+  MeshBasicMaterial,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  PerspectiveCamera,
+  Points,
+  PointsMaterial,
+  Scene,
+  SphereGeometry,
+  TorusGeometry,
+  TorusKnotGeometry,
+  WebGLRenderer,
+  WireframeGeometry,
+} from 'three';
 
 export interface Hero3DOptions {
   canvas: HTMLCanvasElement;
@@ -11,16 +34,16 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
   const isCoarse = window.matchMedia('(pointer: coarse)').matches;
 
   // Scene setup
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // Camera
-  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+  const camera = new PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
   camera.position.set(0, 0, 8.5);
 
   // WebGL Renderer
-  let renderer: THREE.WebGLRenderer | null = null;
+  let renderer: WebGLRenderer | null = null;
   try {
-    renderer = new THREE.WebGLRenderer({
+    renderer = new WebGLRenderer({
       canvas,
       alpha: true,
       antialias: !isCoarse,
@@ -34,42 +57,42 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   renderer.setPixelRatio(dpr);
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
 
   // ══════════════ CLEAN STUDIO LIGHTING (White Canvas Calibration) ══════════════
-  const ambientLight = new THREE.AmbientLight(0xffffff, 3.6);
+  const ambientLight = new AmbientLight(0xffffff, 3.6);
   scene.add(ambientLight);
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
+  const keyLight = new DirectionalLight(0xffffff, 1.6);
   keyLight.position.set(5, 8, 6);
   scene.add(keyLight);
 
-  const fillLight = new THREE.DirectionalLight(0xffffff, 1.4);
+  const fillLight = new DirectionalLight(0xffffff, 1.4);
   fillLight.position.set(-5, -4, 4);
   scene.add(fillLight);
 
-  const backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+  const backLight = new DirectionalLight(0xffffff, 1.0);
   backLight.position.set(0, 5, -5);
   scene.add(backLight);
 
   // ══════════════ LIGHTWEIGHT & SUBTLE 3D MATERIALS ══════════════
   // 1. Soft Silver-Graphite Wireframe Line Material (Subtle, Light & Elegant)
-  const softLineMaterial = new THREE.LineBasicMaterial({
+  const softLineMaterial = new LineBasicMaterial({
     color: 0xd4d4d8,
     transparent: true,
     opacity: 0.16,
   });
 
   // 2. Finer Hairline Sub-Wireframe (Very faint)
-  const hairlineLineMaterial = new THREE.LineBasicMaterial({
+  const hairlineLineMaterial = new LineBasicMaterial({
     color: 0xe4e4e7,
     transparent: true,
     opacity: 0.12,
   });
 
   // 3. Ethereal Frosted Glass (Luminous white, ultra low opacity)
-  const frostedGlassMaterial = new THREE.MeshPhysicalMaterial({
+  const frostedGlassMaterial = new MeshPhysicalMaterial({
     color: 0xffffff,
     emissive: 0xffffff,
     emissiveIntensity: 0.5,
@@ -83,7 +106,7 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
   });
 
   // 4. Subtle Light Grey / White Accent Material (Soft & low contrast)
-  const lightGreyMaterial = new THREE.MeshStandardMaterial({
+  const lightGreyMaterial = new MeshStandardMaterial({
     color: 0xf4f4f5,
     emissive: 0xffffff,
     emissiveIntensity: 0.4,
@@ -94,14 +117,14 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
   });
 
   // 5. Signature Brand Accent Material (Soft, desaturated pastel lime accent)
-  const brandAccentMaterial = new THREE.MeshBasicMaterial({
+  const brandAccentMaterial = new MeshBasicMaterial({
     color: 0x8af334,
     transparent: true,
     opacity: 0.35,
   });
 
   // ══════════════ SCULPTURE ASSEMBLY ══════════════
-  const group = new THREE.Group();
+  const group = new Group();
   scene.add(group);
 
   const updateGroupPosition = () => {
@@ -113,35 +136,35 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
   updateGroupPosition();
 
   // 1. Central Architectural Torus Knot (Light frosted glass + soft wireframe)
-  const torusGeo = new THREE.TorusKnotGeometry(1.5, 0.20, 120, 24, 2, 3);
-  const torusMesh = new THREE.Mesh(torusGeo, frostedGlassMaterial);
+  const torusGeo = new TorusKnotGeometry(1.5, 0.20, 120, 24, 2, 3);
+  const torusMesh = new Mesh(torusGeo, frostedGlassMaterial);
   group.add(torusMesh);
 
-  const torusWireGeo = new THREE.WireframeGeometry(torusGeo);
-  const torusWire = new THREE.LineSegments(torusWireGeo, softLineMaterial);
+  const torusWireGeo = new WireframeGeometry(torusGeo);
+  const torusWire = new LineSegments(torusWireGeo, softLineMaterial);
   torusMesh.add(torusWire);
 
   // 2. Floating Concentric Orbiting Rings (Subtle light grey lines)
-  const ring1Geo = new THREE.TorusGeometry(2.1, 0.012, 16, 100);
-  const ring1 = new THREE.Mesh(ring1Geo, lightGreyMaterial);
+  const ring1Geo = new TorusGeometry(2.1, 0.012, 16, 100);
+  const ring1 = new Mesh(ring1Geo, lightGreyMaterial);
   ring1.rotation.x = Math.PI / 3;
   group.add(ring1);
 
-  const ring2Geo = new THREE.TorusGeometry(2.4, 0.01, 16, 100);
-  const ring2 = new THREE.Mesh(ring2Geo, lightGreyMaterial);
+  const ring2Geo = new TorusGeometry(2.4, 0.01, 16, 100);
+  const ring2 = new Mesh(ring2Geo, lightGreyMaterial);
   ring2.rotation.y = Math.PI / 4;
   ring2.rotation.z = Math.PI / 6;
   group.add(ring2);
 
   // 3. Central Core: Geometric Icosahedron with neural node points
-  const coreGeo = new THREE.IcosahedronGeometry(0.72, 1);
-  const coreWireGeo = new THREE.WireframeGeometry(coreGeo);
-  const coreWire = new THREE.LineSegments(coreWireGeo, hairlineLineMaterial);
+  const coreGeo = new IcosahedronGeometry(0.72, 1);
+  const coreWireGeo = new WireframeGeometry(coreGeo);
+  const coreWire = new LineSegments(coreWireGeo, hairlineLineMaterial);
   group.add(coreWire);
 
   // Node dots on key points
-  const nodeGeo = new THREE.SphereGeometry(0.035, 12, 12);
-  const nodesGroup = new THREE.Group();
+  const nodeGeo = new SphereGeometry(0.035, 12, 12);
+  const nodesGroup = new Group();
   group.add(nodesGroup);
 
   const positions = coreGeo.attributes.position;
@@ -152,16 +175,16 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
     const z = positions.getZ(i);
 
     const mat = i === 0 ? brandAccentMaterial : lightGreyMaterial;
-    const node = new THREE.Mesh(nodeGeo, mat);
+    const node = new Mesh(nodeGeo, mat);
     node.position.set(x, y, z);
     nodesGroup.add(node);
   }
 
   // 4. Floating Minimalist Orbiting Nodes
-  const satellites: { mesh: THREE.Mesh; angle: number; speed: number; radius: number; y: number }[] = [];
+  const satellites: { mesh: Mesh; angle: number; speed: number; radius: number; y: number }[] = [];
   for (let i = 0; i < 3; i++) {
-    const satGeo = new THREE.SphereGeometry(i === 0 ? 0.05 : 0.035, 16, 16);
-    const satMesh = new THREE.Mesh(satGeo, i === 0 ? brandAccentMaterial : lightGreyMaterial);
+    const satGeo = new SphereGeometry(i === 0 ? 0.05 : 0.035, 16, 16);
+    const satMesh = new Mesh(satGeo, i === 0 ? brandAccentMaterial : lightGreyMaterial);
     group.add(satMesh);
     satellites.push({
       mesh: satMesh,
@@ -181,15 +204,15 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
     particlePositions[i3 + 1] = (Math.random() - 0.5) * 10;
     particlePositions[i3 + 2] = (Math.random() - 0.5) * 8;
   }
-  const particleGeo = new THREE.BufferGeometry();
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-  const particleMat = new THREE.PointsMaterial({
+  const particleGeo = new BufferGeometry();
+  particleGeo.setAttribute('position', new BufferAttribute(particlePositions, 3));
+  const particleMat = new PointsMaterial({
     color: 0xd4d4d8,
     size: 0.016,
     transparent: true,
     opacity: 0.10,
   });
-  const particles = new THREE.Points(particleGeo, particleMat);
+  const particles = new Points(particleGeo, particleMat);
   scene.add(particles);
 
   // ══════════════ MOUSE INTERACTION & LERP ══════════════
@@ -223,14 +246,15 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
   // ══════════════ ANIMATION LOOP ══════════════
   let animId: number | null = null;
   let isRunning = true;
-  let clock = new THREE.Clock();
+  let elapsedTime = 0;
+  let last = performance.now();
 
-  const animate = () => {
+  const animate = (now = performance.now()) => {
     if (!isRunning) return;
     animId = requestAnimationFrame(animate);
 
-    const delta = clock.getDelta();
-    const elapsedTime = clock.getElapsedTime();
+    elapsedTime += Math.min(0.05, (now - last) / 1000);
+    last = now;
 
     // Mouse lerp
     mouse.x += (mouse.targetX - mouse.x) * 0.05;
@@ -274,9 +298,23 @@ export function initHero3D({ canvas, container }: Hero3DOptions): (() => void) |
 
   animate();
 
+  // Pausa quando o hero sai da tela (economia de GPU e bateria)
+  const visibility = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting && !isRunning) {
+      isRunning = true;
+      last = performance.now();
+      animate();
+    } else if (!entry.isIntersecting && isRunning) {
+      isRunning = false;
+      if (animId !== null) cancelAnimationFrame(animId);
+    }
+  });
+  visibility.observe(container);
+
   // Cleanup
   return () => {
     isRunning = false;
+    visibility.disconnect();
     if (animId !== null) cancelAnimationFrame(animId);
     window.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('resize', onResize);

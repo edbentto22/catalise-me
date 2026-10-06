@@ -9,6 +9,11 @@ import type { Locale } from '../i18n/config';
 import { translatedLocales } from '../i18n/routes';
 import { ui } from '../i18n/ui';
 
+import '@fontsource-variable/archivo/wght.css';
+import '@fontsource-variable/archivo/wght-italic.css';
+import '@fontsource-variable/manrope/wght.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/components.css';
@@ -59,7 +64,8 @@ const basePath = locale === 'pt' ? currentPath : currentPath.replace(new RegExp(
 const generatedPaths = translatedLocales.length > 1
   ? Object.fromEntries(translatedLocales.map((language) => [language, language === 'pt' ? basePath : `/${language}${basePath === '/' ? '' : basePath}`])) as Partial<Record<Locale, string>>
   : undefined;
-const allLocalizedPaths = localizedPaths || generatedPaths;
+// A página de erro não tem equivalentes por idioma (evita hreflang e seletor apontando para /en/404).
+const allLocalizedPaths = pageType === 'error' ? undefined : (localizedPaths || generatedPaths);
 const t = ui[locale];
 ---
 
@@ -79,6 +85,8 @@ const t = ui[locale];
     locale={locale}
     localizedPaths={allLocalizedPaths}
   />
+  <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin>
   <!-- Decide o modo de movimento antes do primeiro paint e esconde só o que será coreografado. -->
   <script is:inline>
     (function () {

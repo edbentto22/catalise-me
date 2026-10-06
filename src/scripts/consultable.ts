@@ -162,7 +162,7 @@ function initManifestoHero() {
   if (fades.length) tl.fromTo(fades, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.1, stagger: 0.12 }, 0.45);
   if (strike && strikeLine) {
     tl.fromTo(strikeLine, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.inOut' }, 1.35)
-      .to(strike, { color: '#a1a1aa', duration: 0.5, ease: 'power1.out' }, 1.75);
+      .to(strike, { color: '#7c7c85', duration: 0.5, ease: 'power1.out' }, 1.75);
   }
   if (scramble) {
     const finalText = scramble.textContent || '';
@@ -355,7 +355,7 @@ function initBeliefs() {
     if (not) tl.fromTo(not, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0);
     if (not) {
       tl.to(not, { backgroundSize: '100% 1.5px', duration: 0.9, ease: 'power2.inOut' }, 0.5)
-        .to(not, { color: '#a1a1aa', duration: 0.4 }, 0.9);
+        .to(not, { color: '#7c7c85', duration: 0.4 }, 0.9);
     }
     tl.to(yesWords, { yPercent: 0, duration: 1, stagger: 0.07, ease: 'expo.out' }, 0.9);
 
@@ -429,8 +429,7 @@ function initLoop() {
 function initSignature() {
   document.querySelectorAll<HTMLElement>('[data-sign-brand]').forEach((brand) => {
     const text = brand.dataset.text || brand.textContent || '';
-    brand.setAttribute('aria-label', text);
-    brand.innerHTML = [...text].map((char) => `<span class="cx-char" aria-hidden="true">${char}</span>`).join('');
+    brand.innerHTML = `<span class="visually-hidden">${text}</span>` + [...text].map((char) => `<span class="cx-char" aria-hidden="true">${char}</span>`).join('');
     const chars = brand.querySelectorAll<HTMLElement>('.cx-char');
     gsap.set(chars, { yPercent: 100, opacity: 0 });
     inView(brand, () => {

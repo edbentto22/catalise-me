@@ -656,7 +656,7 @@ html[data-motion='reduced'] .mf-read-progress {
   font-family: var(--font-display, 'Archivo');
   font-size: 0.875rem;
   font-weight: 600;
-  color: #a1a1aa;
+  color: var(--subtle);
   letter-spacing: 0.04em;
 }
 
@@ -729,7 +729,7 @@ html[data-motion='reduced'] .mf-read-progress {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   font-weight: 500;
   letter-spacing: -0.025em;
-  color: #a1a1aa;
+  color: #85858e;
   cursor: default;
   transition: color 0.35s ease, padding-left 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
@@ -739,7 +739,7 @@ html[data-motion='reduced'] .mf-read-progress {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: #a1a1aa;
+  color: var(--subtle);
 }
 
 .mf-loop-item.is-active,
@@ -814,7 +814,7 @@ html[data-motion='reduced'] .mf-loop-item {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #a1a1aa;
+  color: var(--subtle);
   white-space: nowrap;
   transition: color 0.3s ease;
 }
@@ -1008,7 +1008,7 @@ html[data-motion='reduced'] .mf-loop-item {
     left: 50%;
     bottom: -22px;
     translate: -50% 0;
-    color: #a1a1aa;
+    color: var(--subtle);
     font-size: 0.9rem;
   }
 

@@ -285,7 +285,7 @@
 .nav-mobile-num {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--faint);
+  color: var(--subtle);
   letter-spacing: 0.04em;
 }
 

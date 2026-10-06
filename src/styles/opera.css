@@ -269,7 +269,7 @@
   font-family: var(--font-display);
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--faint);
+  color: var(--subtle);
 }
 
 .op-symptom h3 {
@@ -444,7 +444,7 @@ html:not(.js-enabled) .op-not-text {
   margin-bottom: 8px;
   font-size: 0.625rem;
   font-weight: 700;
-  color: var(--faint);
+  color: var(--subtle);
   text-align: center;
 }
 
@@ -456,7 +456,7 @@ html:not(.js-enabled) .op-not-text {
   font-family: var(--font-display);
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--faint);
+  color: var(--subtle);
   text-align: center;
   transition: color 0.3s ease;
 }
@@ -495,7 +495,7 @@ html:not(.js-enabled) .op-not-text {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--subtle);
 }
 
 .op-phases {
@@ -623,7 +623,7 @@ html:not(.js-enabled) .op-not-text {
   right: 22px;
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--faint);
+  color: var(--subtle);
 }
 
 .op-scope-icon {

@@ -217,7 +217,7 @@ section.inner-section {
 }
 
 .about-hero-facts strong {
-  color: #a1a1aa;
+  color: var(--subtle);
   font-weight: 600;
   text-decoration: line-through;
   text-decoration-thickness: 1px;
@@ -322,7 +322,7 @@ section.inner-section {
   font-family: var(--font-display, 'Archivo');
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #a1a1aa;
+  color: var(--subtle);
 }
 
 .about-layer-icon {
