@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Ambient3D from '../components/Ambient3D.astro';
+import '../styles/inner.css';
+import '../styles/manifesto.css';
 ---
 
 <BaseLayout
@@ -7,30 +10,99 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="A página que você procura não existe ou foi movida."
   pageType="error"
   showFooter={false}
-  showModal={false}
+  showDock={false}
   noindex={true}
   canonical="https://catalise.me/"
 >
 
-  <section class="error-page">
-    <div class="container" style="text-align: center; padding: 120px 0;">
-      <p class="eyebrow" style="justify-content: center;">404</p>
-      <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 24px;">
-        Esta página não existe.<br><em>Mas sua operação pode.</em>
+  <section class="nf" aria-labelledby="nf-heading">
+    <Ambient3D variant="converge" />
+    <div class="container nf-inner">
+      <p class="nf-code" aria-hidden="true">4<span>0</span>4</p>
+      <h1 id="nf-heading" class="nf-title" data-mf-title data-cx-hero>
+        Esta página não existe. <em>Mas a sua empresa pode responder.</em>
       </h1>
-      <p style="max-width: 520px; margin: 0 auto 40px; color: var(--text-muted);">
-        O link que você tentou acessar não está aqui. Talvez tenha mudado, ou nunca existiu.<br>
-        A gente te leva de volta ao que importa.
+      <p class="nf-lede hero-animate-3">
+        O link que você tentou acessar mudou ou nunca existiu. A gente te leva de volta ao que importa.
       </p>
-      <div class="cta-buttons" style="justify-content: center;">
-        <a href="/" class="btn btn-primary btn-lg">
-          Ir para a Home <span class="btn-arrow">→</span>
-        </a>
-        <a href="/contato" class="btn btn-secondary btn-lg">
-          Falar com a gente
-        </a>
+      <div class="nf-ctas hero-animate-4">
+        <a href="/" class="btn btn-primary btn-lg">Ir para a Home <span class="btn-arrow" aria-hidden="true">→</span></a>
+        <a href="/manifesto" class="btn btn-secondary btn-lg">Ler o Manifesto</a>
       </div>
+      <p class="nf-alt hero-animate-4">
+        <a href="/en" lang="en">Page not found · Go to the English home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/es" lang="es">Página no encontrada · Ir al inicio en español</a>
+      </p>
     </div>
   </section>
 
 </BaseLayout>
+
+<style>
+  .nf {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--nav-height) + 40px) 0 64px;
+    overflow: hidden;
+  }
+
+  .nf-inner { position: relative; z-index: 2; }
+
+  .nf-code {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 20vw, 16rem);
+    font-weight: 800;
+    letter-spacing: -0.07em;
+    line-height: 0.8;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .nf-code span {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--ink);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .nf-title {
+    max-width: 16ch;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .nf-title em { font-weight: 400; }
+
+  .nf-lede {
+    max-width: 48ch;
+    margin: 24px 0 32px;
+    font-size: 1.1rem;
+  }
+
+  .nf-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nf-alt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 40px;
+    font-size: 0.8125rem;
+  }
+
+  .nf-alt a {
+    color: var(--subtle);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+  }
+
+  .nf-alt a:hover { color: var(--ink); }
+</style>

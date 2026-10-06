@@ -7,8 +7,8 @@ import FloatingDock from '../components/FloatingDock.astro';
 import CustomCursor from '../components/CustomCursor.astro';
 import type { Locale } from '../i18n/config';
 import { translatedLocales } from '../i18n/routes';
+import { ui } from '../i18n/ui';
 
-// Import base styles (always loaded)
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/components.css';
@@ -27,6 +27,7 @@ interface Props {
   pageType?: 'home' | 'inner' | 'error';
   showFooter?: boolean;
   showModal?: boolean;
+  showDock?: boolean;
   noindex?: boolean;
   keywords?: string;
   locale?: Locale;
@@ -45,6 +46,7 @@ const {
   pageType = 'inner',
   showFooter = true,
   showModal = true,
+  showDock = true,
   noindex = false,
   keywords,
   locale = 'pt',
@@ -55,13 +57,14 @@ const currentPath = Astro.url.pathname;
 const canonicalUrl = canonical || new URL(currentPath, Astro.site || Astro.url.origin).toString();
 const basePath = locale === 'pt' ? currentPath : currentPath.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/';
 const generatedPaths = translatedLocales.length > 1
-  ? Object.fromEntries(translatedLocales.map((language) => [language, language === 'pt' ? basePath : `/${language}${basePath}`])) as Partial<Record<Locale, string>>
+  ? Object.fromEntries(translatedLocales.map((language) => [language, language === 'pt' ? basePath : `/${language}${basePath === '/' ? '' : basePath}`])) as Partial<Record<Locale, string>>
   : undefined;
 const allLocalizedPaths = localizedPaths || generatedPaths;
+const t = ui[locale];
 ---
 
 <!DOCTYPE html>
-<html lang={locale === 'pt' ? 'pt-BR' : locale === 'en' ? 'en-US' : 'es-419'} class="no-js">
+<html lang={locale === 'pt' ? 'pt-BR' : locale === 'en' ? 'en-US' : 'es-419'} class="no-js" data-motion="full">
 <head>
   <SEOHead
     title={title}
@@ -76,12 +79,16 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
     locale={locale}
     localizedPaths={allLocalizedPaths}
   />
-  <!-- Esconde só os elementos coreografados até o JS assumir (com fallback de segurança). -->
+  <!-- Decide o modo de movimento antes do primeiro paint e esconde só o que será coreografado. -->
   <script is:inline>
     (function () {
-      var c = navigator.connection;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches || (c && c.saveData)) return;
       var root = document.documentElement;
+      var c = navigator.connection;
+      var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || '')));
+      root.dataset.motion = reduced ? 'reduced' : 'full';
+      root.classList.remove('no-js');
+      root.classList.add('js');
+      if (reduced) return;
       root.classList.add('cx-preload');
       setTimeout(function () { root.classList.remove('cx-preload'); }, 3000);
     })();
@@ -89,7 +96,7 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
 </head>
 <body class={bodyClass} data-page-type={pageType}>
 
-  <a class="skip-link" href="#main-content">{locale === 'pt' ? 'Pular para o conteúdo' : locale === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
+  <a class="skip-link" href="#main-content">{t.skip}</a>
 
   <Nav currentPath={currentPath} locale={locale} localizedPaths={allLocalizedPaths} />
 
@@ -99,156 +106,170 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
 
   {showFooter && <Footer locale={locale} />}
   {showModal && <ModalDiagnostico />}
-  <FloatingDock locale={locale} />
+  {showDock && <FloatingDock locale={locale} />}
   <CustomCursor />
-  <div class="page-curtain" id="page-curtain" aria-hidden="true"></div>
 
-
-<!-- Um único controlador progressivo para navegação, movimento e componentes. -->
+  <!-- Um único controlador progressivo para navegação, movimento e componentes. -->
   <script>
     import Lenis from 'lenis';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { initMotion } from '../scripts/motionController';
     import { initConsultable } from '../scripts/consultable';
     import {
-      createIcons, Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
-      MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
-      Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
-      Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
-      HelpCircle, MousePointerClick, HeartHandshake, Check, X,
-      Brain, Database, MessagesSquare, Sheet, FileText, Workflow, Sparkles,
-      BookOpen, Bot, Layers
+      createIcons, Activity, BarChart3, BookOpen, Bot, Brain, Check, Clock, Compass, Database,
+      FileText, Globe, LayoutGrid, Layers, Lock, Mail, MessageCircle, MessageSquare, MessagesSquare,
+      Monitor, PenTool, Plus, RefreshCw, Rocket, Search, Sheet, Sparkles, Target, Users, Workflow, X,
     } from 'lucide';
 
     const root = document.documentElement;
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarsePointer = matchMedia('(pointer: coarse)').matches;
-    const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection?.saveData);
-    const slowConnection = ['slow-2g', '2g'].includes((navigator as Navigator & { connection?: { effectiveType?: string } }).connection?.effectiveType || '');
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    const saveData = Boolean(connection?.saveData);
+    const slowConnection = ['slow-2g', '2g'].includes(connection?.effectiveType || '');
+    // Efeitos de ponteiro e scroll suave: só com mouse; movimento em geral vale também para toque.
     const allowEffects = !reduceMotion && !coarsePointer && !saveData && !slowConnection;
     const allowAutoplay = !reduceMotion && !saveData && !slowConnection;
-    root.dataset.motion = allowEffects ? 'full' : 'reduced';
+    const allowMotion = !reduceMotion && !saveData && !slowConnection;
+    root.dataset.motion = allowMotion ? 'full' : 'reduced';
+    root.dataset.pointer = coarsePointer ? 'coarse' : 'fine';
 
-    createIcons({ icons: { Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
-      MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
-      Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
-      Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
-      HelpCircle, MousePointerClick, HeartHandshake, Check, X,
-      Brain, Database, MessagesSquare, Sheet, FileText, Workflow, Sparkles,
-      BookOpen, Bot, Layers } });
+    createIcons({ icons: {
+      Activity, BarChart3, BookOpen, Bot, Brain, Check, Clock, Compass, Database, FileText, Globe,
+      LayoutGrid, Layers, Lock, Mail, MessageCircle, MessageSquare, MessagesSquare, Monitor, PenTool,
+      Plus, RefreshCw, Rocket, Search, Sheet, Sparkles, Target, Users, Workflow, X,
+    } });
 
+    root.classList.add('js-enabled');
     initMotion();
-    initConsultable({ motion: !reduceMotion && !saveData && !slowConnection, pointer: allowEffects });
 
+    let lenis: Lenis | null = null;
     if (allowEffects) {
-      const lenis = new Lenis({ duration: 1, smoothWheel: true, smoothTouch: false });
+      lenis = new Lenis({ duration: 1.1, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
-      const raf = (time: number) => { lenis.raf(time); requestAnimationFrame(raf); };
+      const raf = (time: number) => { lenis?.raf(time); requestAnimationFrame(raf); };
       requestAnimationFrame(raf);
     }
 
-    const nav = document.querySelector<HTMLElement>('.nav');
+    initConsultable({ motion: allowMotion, pointer: allowEffects, lenis });
+
+    // ─── Navegação: some ao descer, volta ao subir ───
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
     const hamburger = document.querySelector<HTMLButtonElement>('.nav-hamburger');
     const mobileMenu = document.querySelector<HTMLElement>('.nav-mobile');
     let menuFocusBefore: HTMLElement | null = null;
+    let lastY = scrollY;
+    let scrollQueued = false;
 
-    mobileMenu?.setAttribute('aria-hidden', 'true');
+    const updateNav = () => {
+      const y = scrollY;
+      nav?.classList.toggle('scrolled', y > 20);
+      const menuOpen = hamburger?.getAttribute('aria-expanded') === 'true';
+      if (!menuOpen) nav?.classList.toggle('is-hidden', y > 480 && y > lastY + 2);
+      if (y < lastY - 2 || y < 480) nav?.classList.remove('is-hidden');
+      lastY = y;
+      scrollQueued = false;
+    };
+    addEventListener('scroll', () => { if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateNav); } }, { passive: true });
+    updateNav();
+    nav?.addEventListener('focusin', () => nav.classList.remove('is-hidden'));
 
+    // ─── Menu em tela cheia ───
+    const setMenuLabel = (open: boolean) => {
+      if (!hamburger) return;
+      hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', (open ? hamburger.dataset.labelClose : hamburger.dataset.labelOpen) || '');
+    };
     const closeMenu = (restore = true) => {
-      hamburger?.classList.remove('open');
-      mobileMenu?.classList.remove('open');
-      hamburger?.setAttribute('aria-expanded', 'false');
-      hamburger?.setAttribute('aria-label', 'Abrir menu');
-      mobileMenu?.setAttribute('aria-hidden', 'true');
+      if (!mobileMenu || !mobileMenu.classList.contains('open')) return;
+      setMenuLabel(false);
+      mobileMenu.classList.remove('open');
       document.body.classList.remove('menu-open');
+      lenis?.start();
+      const hide = () => { if (!mobileMenu.classList.contains('open')) mobileMenu.hidden = true; };
+      setTimeout(hide, 750);
       if (restore) menuFocusBefore?.focus();
     };
     const openMenu = () => {
       if (!hamburger || !mobileMenu) return;
       menuFocusBefore = document.activeElement as HTMLElement;
-      hamburger.classList.add('open');
+      mobileMenu.hidden = false;
+      void mobileMenu.offsetHeight;
       mobileMenu.classList.add('open');
-      hamburger.setAttribute('aria-expanded', 'true');
-      hamburger.setAttribute('aria-label', 'Fechar menu');
-      mobileMenu.setAttribute('aria-hidden', 'false');
+      setMenuLabel(true);
+      nav?.classList.remove('is-hidden');
       document.body.classList.add('menu-open');
-      mobileMenu.querySelector<HTMLElement>('a')?.focus();
+      lenis?.stop();
+      setTimeout(() => mobileMenu.querySelector<HTMLElement>('a')?.focus(), 200);
     };
-    hamburger?.addEventListener('click', () => hamburger.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu());
+    hamburger?.addEventListener('click', () => (hamburger.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu()));
     mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMenu(false)));
-    matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
-      if (event.matches && hamburger?.getAttribute('aria-expanded') === 'true') closeMenu(false);
-    });
+    document.addEventListener('cx:menu-close', () => closeMenu(false));
+    matchMedia('(min-width: 1081px)').addEventListener('change', (event) => { if (event.matches) closeMenu(false); });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && hamburger?.getAttribute('aria-expanded') === 'true') closeMenu();
-      if (event.key !== 'Tab' || hamburger?.getAttribute('aria-expanded') !== 'true' || !mobileMenu) return;
-      const focusable = [...mobileMenu.querySelectorAll<HTMLElement>('a, button:not([disabled])')].filter((el) => !el.hidden);
+      if (hamburger?.getAttribute('aria-expanded') !== 'true' || !mobileMenu) return;
+      if (event.key === 'Escape') { closeMenu(); return; }
+      if (event.key !== 'Tab') return;
+      const focusable = [hamburger, ...mobileMenu.querySelectorAll<HTMLElement>('a, button:not([disabled])')];
       const first = focusable[0], last = focusable.at(-1);
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
       if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     });
 
-    let scrollQueued = false;
-    const updateNav = () => { nav?.classList.toggle('scrolled', scrollY > 20); scrollQueued = false; };
-    addEventListener('scroll', () => { if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateNav); } }, { passive: true });
-    updateNav();
+    // ─── Âncoras e "voltar ao topo" com o scroll suave ───
+    document.addEventListener('click', (event) => {
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+      if (!link || !lenis) return;
+      const id = link.getAttribute('href')!.slice(1);
+      const target = id ? document.getElementById(id) : null;
+      if (!target) return;
+      event.preventDefault();
+      lenis.scrollTo(target, { offset: id === 'main-content' ? 0 : -80 });
+    });
 
-    root.classList.remove('no-js');
-    root.classList.add('js', 'js-enabled');
-
-    const revealElements = [...document.querySelectorAll<HTMLElement>('.reveal, .reveal-left')];
-    const counterElements = [...document.querySelectorAll<HTMLElement>('[data-target]')];
-    if (!('IntersectionObserver' in window) || !allowEffects) {
-      revealElements.forEach((el) => el.classList.add('revealed', 'is-visible'));
-      counterElements.forEach((el) => { el.textContent = `${el.dataset.target || el.textContent || ''}${el.dataset.suffix || ''}`; });
+    // ─── Revelação genérica ───
+    const revealElements = [...document.querySelectorAll<HTMLElement>('.reveal')];
+    if (!('IntersectionObserver' in window) || !allowMotion) {
+      revealElements.forEach((el) => el.classList.add('revealed'));
     } else {
       const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const el = entry.target as HTMLElement;
-        el.classList.add('revealed', 'is-visible');
-        if (el.dataset.target && !el.dataset.counted) {
-          el.dataset.counted = 'true';
-          const target = Number(el.dataset.target), suffix = el.dataset.suffix || '';
-          const start = performance.now();
-          const tick = (now: number) => {
-            const progress = Math.min((now - start) / 1200, 1);
-            el.textContent = `${Math.round(target * (1 - Math.pow(1 - progress, 3)))}${suffix}`;
-            if (progress < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-        observer.unobserve(el);
-      }), { threshold: .12, rootMargin: '0px 0px -48px' });
-      [...new Set([...revealElements, ...counterElements])].forEach((el) => observer.observe(el));
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }), { threshold: 0.12, rootMargin: '0px 0px -48px' });
+      revealElements.forEach((el) => observer.observe(el));
     }
 
+    // ─── FAQ acessível ───
     document.querySelectorAll<HTMLElement>('.faq-item').forEach((item, index) => {
       const button = item.querySelector<HTMLButtonElement>('.faq-question');
       const panel = item.querySelector<HTMLElement>('.faq-answer');
       if (!button || !panel) return;
       if (!panel.id) panel.id = `faq-panel-${index + 1}`;
+      if (!button.id) button.id = `faq-button-${index + 1}`;
       button.setAttribute('aria-controls', panel.id);
       panel.setAttribute('role', 'region');
-      panel.setAttribute('aria-labelledby', button.id || (button.id = `faq-button-${index + 1}`));
-      panel.hidden = button.getAttribute('aria-expanded') !== 'true';
-      button.addEventListener('click', () => {
-        const opening = button.getAttribute('aria-expanded') !== 'true';
-        button.setAttribute('aria-expanded', String(opening));
-        panel.hidden = !opening;
-        item.classList.toggle('open', opening);
-      });
+      panel.setAttribute('aria-labelledby', button.id);
+      const sync = (open: boolean) => {
+        button.setAttribute('aria-expanded', String(open));
+        item.classList.toggle('open', open);
+        panel.style.height = open ? `${panel.scrollHeight}px` : '0px';
+      };
+      sync(button.getAttribute('aria-expanded') === 'true');
+      button.addEventListener('click', () => sync(button.getAttribute('aria-expanded') !== 'true'));
     });
 
+    // ─── Vídeos sob demanda ───
     const activateVideo = (video: HTMLVideoElement) => {
-        if (!allowAutoplay) return;
-        if (!video.src) {
-          const source = video.dataset.src;
-          if (!source) return;
-          video.src = source;
-          video.load();
-        }
-        video.play().catch(() => {});
-      };
+      if (!allowAutoplay) return;
+      if (!video.src) {
+        const source = video.dataset.src;
+        if (!source) return;
+        video.src = source;
+        video.load();
+      }
+      video.play().catch(() => {});
+    };
     const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-src]')];
 
     videos.forEach((video) => {
@@ -267,45 +288,14 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
     });
 
     if (!('IntersectionObserver' in window)) {
-      videos
-        .filter((video) => video.matches('.hero-video-bg, .page-hero-video-bg'))
-        .forEach(activateVideo);
+      videos.forEach(activateVideo);
     } else {
       const mediaObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
         const video = entry.target as HTMLVideoElement;
         if (entry.isIntersecting) activateVideo(video);
         else video.pause();
-      }), { rootMargin: '180px 0px', threshold: .1 });
-
+      }), { rootMargin: '180px 0px', threshold: 0.1 });
       videos.forEach((video) => mediaObserver.observe(video));
-    }
-
-    // Editorial Page Transition (Curtain wipe)
-    const curtain = document.getElementById('page-curtain');
-    if (curtain && allowEffects) {
-      window.addEventListener('pageshow', () => {
-        curtain.classList.remove('active');
-      });
-
-      document.addEventListener('click', (e) => {
-        const target = (e.target as HTMLElement).closest('a');
-        if (!target) return;
-        const href = target.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || target.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey) return;
-
-        try {
-          const url = new URL(href, window.location.href);
-          if (url.origin === window.location.origin && (url.pathname !== window.location.pathname || url.search !== window.location.search)) {
-            e.preventDefault();
-            curtain.classList.add('active');
-            setTimeout(() => {
-              window.location.href = href;
-            }, 220);
-          }
-        } catch {
-          // If URL parsing fails, let standard navigation proceed
-        }
-      });
     }
   </script>
 

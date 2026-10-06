@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedHref, type Locale } from '../i18n/config';
+import { contact } from '../i18n/content/contact';
+import { ui, EMAIL, WHATSAPP_DISPLAY, whatsappLink } from '../i18n/ui';
+import '../styles/inner.css';
+import '../styles/manifesto.css';
+import '../styles/opera.css';
+import '../styles/contact.css';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = contact[locale];
+const pageUrl = `https://catalise.me${localizedHref('/contato', locale)}`;
+const whatsapp = whatsappLink(ui[locale].whatsappDiagnostic);
+const revenueValues = ['ate-50k', '50k-150k', '150k-500k', '500k-2m', 'acima-2m'];
+const sourceValues = ['indicacao', 'google', 'linkedin', 'evento', 'outro'];
+---
+
+<BaseLayout
+  title={t.meta.title}
+  description={t.meta.description}
+  ogDescription={t.meta.ogDescription}
+  ogUrl={pageUrl}
+  canonical={pageUrl}
+  pageType="inner"
+  showDock={false}
+  locale={locale}
+>
+
+  <header class="ct-hero" aria-labelledby="contato-heading">
+    <div class="container">
+      <span class="page-hero-eyebrow hero-animate-1">{t.hero.eyebrow}</span>
+      <h1 id="contato-heading" class="ct-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
+      <div class="ct-hero-foot hero-animate-3">
+        <p class="ct-hero-lede">{t.hero.lede}</p>
+        <span class="ct-hero-badge"><span aria-hidden="true"></span>{t.hero.badge}</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="formulario" class="ct-main" aria-labelledby="form-heading">
+    <div class="container ct-grid">
+
+      <div class="ct-form-card">
+        <h2 id="form-heading" class="ct-form-title">{t.form.title}</h2>
+
+        <form id="contact-form" class="ct-form" novalidate>
+          <div class="ct-row">
+            <div class="form-group">
+              <label class="form-label" for="field-name">{t.form.name} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required aria-describedby="error-name">
+              <span class="form-error" id="error-name" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-email">{t.form.email} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" required aria-describedby="error-email">
+              <span class="form-error" id="error-email" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="ct-row">
+            <div class="form-group">
+              <label class="form-label" for="field-company">{t.form.company} <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="text" id="field-company" name="company" autocomplete="organization-title" required aria-describedby="error-company">
+              <span class="form-error" id="error-company" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-revenue">{t.form.revenue} <span aria-hidden="true">*</span></label>
+              <select class="form-select" id="field-revenue" name="revenue" required aria-describedby="error-revenue">
+                <option value="" disabled selected>{t.form.revenuePrompt}</option>
+                {t.form.revenueOptions.map((label, i) => <option value={revenueValues[i]}>{label}</option>)}
+              </select>
+              <span class="form-error" id="error-revenue" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="ct-row">
+            <div class="form-group">
+              <label class="form-label" for="field-phone">{t.form.phone}</label>
+              <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel" aria-describedby="hint-phone">
+              <span class="form-hint" id="hint-phone">{t.form.phoneHint}</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-source">{t.form.source}</label>
+              <select class="form-select" id="field-source" name="source">
+                <option value="" disabled selected>{t.form.sourcePrompt}</option>
+                {t.form.sourceOptions.map((label, i) => <option value={sourceValues[i]}>{label}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-message">{t.form.message} <span aria-hidden="true">*</span></label>
+            <textarea class="form-textarea" id="field-message" name="message" required aria-describedby="error-message" placeholder={t.form.messagePlaceholder}></textarea>
+            <span class="form-error" id="error-message" aria-live="polite"></span>
+          </div>
+
+          <div class="ct-submit">
+            <button type="submit" class="btn btn-primary btn-lg" id="submit-btn" data-label={t.form.submit}>
+              <span data-submit-label>{t.form.submit}</span> <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+            <p class="ct-legal">{t.form.legal}</p>
+          </div>
+        </form>
+
+        <div class="ct-success" id="form-success" role="status" tabindex="-1" hidden>
+          <div class="modal-diag-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>{t.form.successTitle}</h3>
+          <p>{t.form.successText}</p>
+          <a class="btn btn-secondary" href={whatsapp} target="_blank" rel="noopener">{t.form.successCta} <span class="btn-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <aside class="ct-side" aria-label={t.channels.title}>
+        <h2 class="ct-side-title">{t.channels.title}</h2>
+        <div class="ct-channels">
+          <a class="ct-channel" href={whatsapp} target="_blank" rel="noopener" data-glow>
+            <span class="ct-channel-icon" aria-hidden="true"><i data-lucide="message-circle"></i></span>
+            <span class="ct-channel-body">
+              <strong>{t.channels.whatsapp.label}</strong>
+              <span>{t.channels.whatsapp.text}</span>
+              <span class="ct-channel-meta">{WHATSAPP_DISPLAY}</span>
+            </span>
+            <span class="ct-channel-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ct-channel" href={`mailto:${EMAIL}`} data-glow>
+            <span class="ct-channel-icon" aria-hidden="true"><i data-lucide="mail"></i></span>
+            <span class="ct-channel-body">
+              <strong>{t.channels.email.label}</strong>
+              <span>{t.channels.email.text}</span>
+              <span class="ct-channel-meta">{EMAIL}</span>
+            </span>
+            <span class="ct-channel-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="ct-next">
+          <h3>{t.next.title}</h3>
+          <ol role="list">
+            {t.next.steps.map((step, i) => (
+              <li>
+                <span class="ct-next-num">{String(i + 1).padStart(2, '0')}</span>
+                <span><strong>{step.title}</strong> {step.text}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="faq-contato" class="op-section op-faq" aria-labelledby="faq-contato-heading">
+    <div class="container op-faq-grid">
+      <div class="op-head">
+        <span class="mf-index">{t.faq.eyebrow}</span>
+        <h2 id="faq-contato-heading" class="mf-section-title" data-reveal set:html={t.faq.title} />
+      </div>
+      <div class="faq-list">
+        {t.faq.items.map((item) => (
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>{item.q}</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer"><p>{item.a}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulário de contato: validação acessível e envio para o webhook -->
+  <script>
+    import { submitLead } from '../scripts/leads';
+
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const successMsg = document.getElementById('form-success');
+    const submitBtn = form?.querySelector<HTMLButtonElement>('[type="submit"]') || null;
+    const submitLabel = submitBtn?.querySelector<HTMLElement>('[data-submit-label]') || null;
+    const language = document.documentElement.lang.startsWith('en') ? 'en' : document.documentElement.lang.startsWith('es') ? 'es' : 'pt';
+    const copy = {
+      pt: { name: 'Informe seu nome completo', email: 'Email inválido', company: 'Informe sua empresa e cargo', revenue: 'Selecione seu faturamento', message: 'Conte um pouco mais (mínimo de 10 caracteres)', sending: 'Enviando…', failure: 'Não foi possível enviar agora. Fale com a gente pelo WhatsApp: (75) 99187-9786' },
+      en: { name: 'Enter your full name', email: 'Enter a valid email address', company: 'Enter your company and role', revenue: 'Select your monthly revenue', message: 'Tell us a little more (at least 10 characters)', sending: 'Sending…', failure: 'We could not send it right now. Reach us on WhatsApp: (75) 99187-9786' },
+      es: { name: 'Indique su nombre completo', email: 'Ingrese un correo electrónico válido', company: 'Indique su empresa y cargo', revenue: 'Seleccione su facturación', message: 'Cuéntenos un poco más (mínimo 10 caracteres)', sending: 'Enviando…', failure: 'No pudimos enviarlo ahora. Escríbanos por WhatsApp: (75) 99187-9786' },
+    }[language];
+
+    const validators: Record<string, (v: string) => true | string> = {
+      name: (v) => v.trim().length >= 2 || copy.name,
+      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || copy.email,
+      company: (v) => v.trim().length >= 2 || copy.company,
+      revenue: (v) => !!v || copy.revenue,
+      message: (v) => v.trim().length >= 10 || copy.message,
+    };
+
+    const getField = (name: string) => form?.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${name}"]`) || null;
+
+    const setError = (field: Element, message: string) => {
+      const group = field.closest('.form-group');
+      group?.classList.toggle('has-error', Boolean(message));
+      field.setAttribute('aria-invalid', String(Boolean(message)));
+      const error = group?.querySelector('.form-error');
+      if (error) error.textContent = message;
+    };
+
+    const validateField = (name: string) => {
+      const field = getField(name);
+      const validator = validators[name];
+      if (!field || !validator) return true;
+      const result = validator(field.value);
+      setError(field, result === true ? '' : result);
+      return result === true;
+    };
+
+    Object.keys(validators).forEach((name) => {
+      const field = getField(name);
+      field?.addEventListener('blur', () => validateField(name));
+      field?.addEventListener('input', () => { if (field.closest('.has-error')) validateField(name); });
+    });
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const valid = Object.keys(validators).map(validateField).every(Boolean);
+      if (!valid) {
+        form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+        return;
+      }
+
+      const params = new URLSearchParams(location.search);
+      const data = {
+        name: getField('name')?.value.trim(),
+        email: getField('email')?.value.trim(),
+        company: getField('company')?.value.trim(),
+        revenue: getField('revenue')?.value || '',
+        message: getField('message')?.value.trim(),
+        phone: getField('phone')?.value.trim() || '',
+        source: getField('source')?.value || '',
+        page_url: location.href,
+        referrer: document.referrer || '',
+        utm_source: params.get('utm_source') || '',
+        utm_medium: params.get('utm_medium') || '',
+        utm_campaign: params.get('utm_campaign') || '',
+        submitted_at: new Date().toISOString(),
+      };
+
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitLabel) submitLabel.textContent = copy.sending;
+
+      try {
+        await submitLead(data);
+        form.hidden = true;
+        if (successMsg) {
+          successMsg.hidden = false;
+          successMsg.focus();
+        }
+        try {
+          (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'form_submit', { event_category: 'contact', event_label: 'diagnostico' });
+        } catch { /* analytics opcional */ }
+      } catch (error) {
+        console.error(error);
+        if (submitBtn) submitBtn.disabled = false;
+        if (submitLabel) submitLabel.textContent = submitBtn?.dataset.label || '';
+        alert(copy.failure);
+      }
+    });
+  </script>
+
+</BaseLayout>

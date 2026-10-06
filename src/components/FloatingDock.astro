@@ -1,96 +1,61 @@
 ---
-interface Props {
-  locale?: string;
-}
+import type { Locale } from '../i18n/config';
+import { ui } from '../i18n/ui';
 
+interface Props { locale?: Locale; }
 const { locale = 'pt' } = Astro.props;
-
-const texts = {
-  pt: {
-    badge: '⚡ OPERA OS',
-    label: 'Diagnóstico Gratuito: descubra gargalos automatizáveis.',
-    cta: 'Agendar Sessão',
-    close: 'Fechar aviso',
-  },
-  en: {
-    badge: '⚡ OPERA OS',
-    label: 'Free Diagnosis: discover automatable bottlenecks.',
-    cta: 'Book Session',
-    close: 'Close notification',
-  },
-  es: {
-    badge: '⚡ OPERA OS',
-    label: 'Diagnóstico Gratuito: descubra cuellos de botella automatizables.',
-    cta: 'Agendar Sesión',
-    close: 'Cerrar aviso',
-  },
-}[locale as 'pt' | 'en' | 'es'] || {
-  badge: '⚡ OPERA OS',
-  label: 'Diagnóstico Gratuito: descubra gargalos automatizáveis.',
-  cta: 'Agendar Sessão',
-  close: 'Fechar aviso',
-};
+const t = ui[locale];
 ---
 
-<aside class="floating-dock-wrap" id="floating-action-dock" aria-label="Ação rápida de diagnóstico" role="complementary">
+<aside class="floating-dock-wrap" id="floating-action-dock" aria-label={t.dockAria}>
   <div class="floating-dock-pill">
-    <div class="dock-badge">
+    <span class="dock-badge">
       <span class="dock-badge-pulse" aria-hidden="true"></span>
-      <span class="dock-badge-text">{texts.badge}</span>
-    </div>
-    
-    <p class="dock-label">
-      {texts.label}
-    </p>
+      {t.dockBadge}
+    </span>
 
-    <div class="dock-actions">
-      <button
-        type="button"
-        class="dock-cta-btn btn-primary"
-        data-open-modal
-        id="dock-cta-trigger"
-      >
-        <span>{texts.cta}</span>
-        <span class="btn-arrow" aria-hidden="true">→</span>
-      </button>
+    <p class="dock-label">{t.dockLabel}</p>
 
-      <button
-        type="button"
-        class="dock-close-btn"
-        id="dock-dismiss-btn"
-        aria-label={texts.close}
-        title={texts.close}
-      >
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
+    <button type="button" class="dock-cta-btn" data-open-modal>
+      <span>{t.dockCta}</span>
+      <span class="btn-arrow" aria-hidden="true">→</span>
+    </button>
+
+    <button type="button" class="dock-close-btn" id="dock-dismiss-btn" aria-label={t.dockClose} title={t.dockClose}>
+      <span aria-hidden="true">×</span>
+    </button>
   </div>
 </aside>
 
 <script>
   const dock = document.getElementById('floating-action-dock');
   const dismissBtn = document.getElementById('dock-dismiss-btn');
+  const KEY = 'cx-dock-dismissed';
+
+  try {
+    if (sessionStorage.getItem(KEY)) dock?.setAttribute('data-dismissed', '');
+  } catch { /* storage indisponível: o dock apenas reaparece */ }
 
   dismissBtn?.addEventListener('click', () => {
-    if (!dock) return;
-    dock.style.display = 'none';
+    dock?.setAttribute('data-dismissed', '');
+    try { sessionStorage.setItem(KEY, '1'); } catch { /* sem persistência */ }
   });
 </script>
 
 <style>
   .floating-dock-wrap {
     position: fixed;
-    bottom: 24px;
+    bottom: 20px;
     left: 50%;
-    /* Centraliza com a propriedade translate: o motion anima só o transform (y) */
+    /* Centraliza com translate: o motion anima apenas o transform (y) */
     translate: -50% 0;
-    transform: translateY(60px);
+    transform: translateY(80px);
     opacity: 0;
     pointer-events: none;
-    z-index: 900;
+    z-index: var(--z-dock);
     width: max-content;
-    max-width: calc(100vw - 32px);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: calc(100vw - 24px);
+    transition: transform 0.5s var(--ease-out), opacity 0.4s var(--ease-out);
   }
 
   .floating-dock-wrap.is-visible {
@@ -99,86 +64,79 @@ const texts = {
     pointer-events: auto;
   }
 
+  .floating-dock-wrap[data-dismissed] {
+    display: none;
+  }
+
   .floating-dock-pill {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 8px 10px 8px 16px;
-    background: rgba(10, 10, 14, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 9999px;
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    gap: 14px;
+    padding: 7px 7px 7px 8px;
+    background: rgba(9, 9, 11, 0.92);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-full);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.12);
+    color: #ffffff;
   }
 
   .dock-badge {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 9999px;
-    font-size: 11px;
-    font-weight: 600;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.6875rem;
+    font-weight: 700;
     letter-spacing: 0.06em;
-    color: #ffffff;
+    text-transform: uppercase;
     white-space: nowrap;
   }
 
   .dock-badge-pulse {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-    animation: dockPulse 2s ease-in-out infinite;
+    background: var(--lime);
+    animation: dockPulse 2.2s ease-out infinite;
   }
 
   @keyframes dockPulse {
-    0%, 100% { transform: scale(1); opacity: 0.9; }
-    50% { transform: scale(1.3); opacity: 0.4; }
+    0% { box-shadow: 0 0 0 0 rgba(138, 243, 52, 0.6); }
+    70%, 100% { box-shadow: 0 0 0 8px rgba(138, 243, 52, 0); }
   }
 
   .dock-label {
     margin: 0;
-    font-size: 13.5px;
-    font-weight: 450;
-    color: rgba(255, 255, 255, 0.85);
-    letter-spacing: -0.01em;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.78);
     white-space: nowrap;
-  }
-
-  .dock-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
   }
 
   .dock-cta-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 9999px;
-    background: #ffffff;
-    color: #070709;
-    border: 1px solid #ffffff;
-    cursor: pointer;
-    box-shadow: 0 2px 12px rgba(255, 255, 255, 0.15);
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease;
+    padding: 10px 18px;
+    border-radius: var(--radius-full);
+    background: var(--lime);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background var(--duration-fast) ease;
   }
 
   .dock-cta-btn:hover {
-    background: #f4f4f5;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+    background: #a3ff5c;
   }
 
   .dock-cta-btn .btn-arrow {
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--duration-fast) var(--ease-out);
   }
 
   .dock-cta-btn:hover .btn-arrow {
@@ -186,54 +144,29 @@ const texts = {
   }
 
   .dock-close-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: #6b7280;
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    transition: color 0.15s ease, background 0.15s ease;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: color var(--duration-fast) ease, background var(--duration-fast) ease;
   }
 
   .dock-close-btn:hover {
-    color: #e5e7eb;
+    color: #ffffff;
     background: rgba(255, 255, 255, 0.08);
   }
 
   @media (max-width: 820px) {
     .floating-dock-wrap {
-      bottom: 16px;
-      width: calc(100vw - 24px);
-    }
-
-    .floating-dock-pill {
-      padding: 6px 8px 6px 12px;
-      gap: 10px;
+      bottom: 12px;
     }
 
     .dock-label {
-      display: none; /* Hide label on mobile to keep compact pill */
-    }
-
-    .dock-cta-btn {
-      padding: 8px 14px;
-      font-size: 12.5px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .floating-dock-wrap {
-      transition: opacity 0.2s linear;
-    }
-    .dock-badge-pulse {
-      animation: none;
+      display: none;
     }
   }
 </style>

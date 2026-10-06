@@ -20,6 +20,8 @@ export interface ConsultableFlags {
   motion: boolean;
   /** Efeitos de ponteiro fino (hover, tilt). */
   pointer: boolean;
+  /** Instância do Lenis, quando o scroll suave está ativo. */
+  lenis?: { velocity: number } | null;
 }
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
@@ -108,7 +110,7 @@ function initQueryConsole(flags: ConsultableFlags) {
       if (counterEl) counterEl.textContent = String((index % queries.length) + 1).padStart(2, '0');
 
       await motionAnimate([answerRow, actionRow], { opacity: 0, y: 6 }, { duration: 0.3 });
-      status('Consultando a empresa', true);
+      status(consoleEl.dataset.busy || '', true);
 
       // Pergunta digitada com scramble (anime.js)
       await animate(questionEl, {
@@ -118,7 +120,7 @@ function initQueryConsole(flags: ConsultableFlags) {
 
       answerEl.textContent = item.a;
       actionEl.textContent = item.act;
-      status('Resposta + ação executada', false);
+      status(consoleEl.dataset.done || '', false);
       await motionAnimate(answerRow, { opacity: [0, 1], y: [10, 0] }, { type: 'spring', stiffness: 260, damping: 24 });
       if (checkDrawable) animate(checkDrawable, { draw: ['0 0', '0 1'], duration: 520, ease: 'outQuad' });
       await motionAnimate(actionRow, { opacity: [0, 1], y: [10, 0] }, { type: 'spring', stiffness: 260, damping: 24 });
@@ -482,6 +484,133 @@ function initShift() {
   });
 }
 
+
+/* ──────────────────────────────────────────────────────────
+   TÍTULOS DE HERO (Sobre, Opera OS) · palavras sobem de máscaras
+────────────────────────────────────────────────────────── */
+function initHeroTitles() {
+  document.querySelectorAll<HTMLElement>('[data-mf-title]').forEach((title) => {
+    if (title.closest('[data-mf-hero]')) return;
+    const words = splitWords(title, { mask: true });
+    gsap.fromTo(words, { yPercent: 115, rotate: 3 }, { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.07, ease: 'expo.out', delay: 0.12 });
+  });
+}
+
+/* Itens riscados em sequência quando entram na tela */
+function initStrikeItems() {
+  const items = [...document.querySelectorAll<HTMLElement>('[data-strike-item]')];
+  if (!items.length) return;
+  inView(items[0].closest('ul') || items[0], () => {
+    gsap.to(items, { backgroundSize: '100% 1px', duration: 0.8, stagger: 0.25, ease: 'power2.inOut', delay: 0.3 });
+  }, { amount: 0.5 });
+}
+
+/* ──────────────────────────────────────────────────────────
+   OPERA OS · método com letra fixa e cronograma sincronizado
+────────────────────────────────────────────────────────── */
+function initMethod() {
+  const section = document.querySelector<HTMLElement>('[data-method]');
+  if (!section) return;
+  const phases = [...section.querySelectorAll<HTMLElement>('[data-phase]')];
+  const letter = section.querySelector<HTMLElement>('[data-method-letter]');
+  const name = section.querySelector<HTMLElement>('[data-method-name]');
+  const rows = [...section.querySelectorAll<HTMLElement>('[data-gantt-row]')];
+  let current = -1;
+
+  const activate = (index: number) => {
+    if (index === current || index < 0) return;
+    const direction = index > current ? 1 : -1;
+    current = index;
+    const phase = phases[index];
+    phases.forEach((p, i) => p.classList.toggle('is-current', i === index));
+    rows.forEach((row, i) => {
+      row.classList.toggle('is-active', i === index);
+      row.classList.toggle('is-done', i < index);
+    });
+    if (letter) {
+      gsap.timeline()
+        .to(letter, { yPercent: -100 * direction, opacity: 0, duration: 0.25, ease: 'power2.in' })
+        .add(() => { letter.textContent = phase.dataset.letter || ''; })
+        .fromTo(letter, { yPercent: 100 * direction, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: 'expo.out' });
+    }
+    if (name) animate(name, { innerHTML: scrambleText({ text: phase.dataset.title || '', chars: 'lowercase', revealRate: 50, settleDuration: 200 }) });
+  };
+
+  phases.forEach((phase, i) => {
+    ScrollTrigger.create({
+      trigger: phase,
+      start: 'top 55%',
+      end: 'bottom 55%',
+      onToggle: (self) => { if (self.isActive) activate(i); },
+    });
+  });
+  activate(0);
+}
+
+/* Tela do Opera OS: leve inclinação com o ponteiro e letras O-P-E-R-A acendendo em sequência */
+function initOperaScreen(flags: ConsultableFlags) {
+  const screen = document.querySelector<HTMLElement>('[data-op-screen]');
+  if (!screen) return;
+  const letters = [...screen.querySelectorAll<HTMLElement>('.op-screen-letters li')];
+  if (letters.length) {
+    let index = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      index = (index + 1) % letters.length;
+      letters.forEach((li, i) => {
+        const on = i === index;
+        li.style.background = on ? 'var(--lime)' : '';
+        li.style.borderColor = on ? 'var(--lime)' : '';
+        li.style.color = on ? 'var(--ink)' : '';
+      });
+      animate(letters[index], { scale: [0.82, 1], duration: 600, ease: 'outBack(2)' });
+    }, 1600);
+  }
+  if (!flags.pointer) return;
+  const tiltX = gsap.quickTo(screen, 'rotationY', { duration: 0.8, ease: 'power3.out' });
+  const tiltY = gsap.quickTo(screen, 'rotationX', { duration: 0.8, ease: 'power3.out' });
+  gsap.set(screen, { transformPerspective: 1600, rotationY: -6, rotationX: 2 });
+  screen.addEventListener('pointermove', (event) => {
+    const rect = screen.getBoundingClientRect();
+    tiltX(((event.clientX - rect.left) / rect.width - 0.5) * 10 - 4);
+    tiltY(-((event.clientY - rect.top) / rect.height - 0.5) * 6 + 1);
+  });
+  screen.addEventListener('pointerleave', () => { tiltX(-6); tiltY(2); });
+}
+
+/* ──────────────────────────────────────────────────────────
+   RODAPÉ · faixa que acelera com o scroll e wordmark que sobe
+────────────────────────────────────────────────────────── */
+function initFooter(flags: ConsultableFlags) {
+  const track = document.querySelector<HTMLElement>('[data-marquee-track]');
+  if (track) {
+    const loop = gsap.to(track, { xPercent: -50, duration: 40, ease: 'none', repeat: -1 });
+    let direction = 1;
+    let lastY = scrollY;
+    ScrollTrigger.create({
+      trigger: track,
+      start: 'top bottom',
+      end: 'bottom top',
+      onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
+    });
+    gsap.ticker.add(() => {
+      const velocity = flags.lenis?.velocity ?? (scrollY - lastY);
+      lastY = scrollY;
+      if (Math.abs(velocity) > 0.5) direction = velocity > 0 ? 1 : -1;
+      const boost = 1 + Math.min(Math.abs(velocity) / 6, 6);
+      loop.timeScale(gsap.utils.interpolate(loop.timeScale(), direction * boost, 0.08));
+    });
+  }
+
+  const wordmark = document.querySelector<HTMLElement>('[data-footer-wordmark]');
+  if (wordmark) {
+    gsap.fromTo(wordmark, { yPercent: 60, scaleY: 1.25 }, {
+      yPercent: 0, scaleY: 1, ease: 'none',
+      scrollTrigger: { trigger: wordmark, start: 'top bottom', end: 'bottom bottom', scrub: 0.6 },
+    });
+  }
+}
+
 /* Cartões com brilho que segue o ponteiro (apenas ponteiro fino) */
 function initPointerGlow() {
   document.querySelectorAll<HTMLElement>('[data-glow]').forEach((card) => {
@@ -508,6 +637,11 @@ export function initConsultable(flags: ConsultableFlags) {
     initSignature();
     initReveals();
     initShift();
+    initHeroTitles();
+    initStrikeItems();
+    initMethod();
+    initOperaScreen(flags);
+    initFooter(flags);
     ScrollTrigger.refresh();
   }
 

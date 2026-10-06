@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
 import test from 'node:test';
+import { checkDictionaries } from '../scripts/i18n-check.mjs';
 
-const run = promisify(execFile);
 const readText = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
+const pages = ['index', 'sobre', 'manifesto', 'opera-os', 'contato'];
+const views = { index: 'HomeView', sobre: 'AboutView', manifesto: 'ManifestoView', 'opera-os': 'OperaView', contato: 'ContactView' };
 
 test('sistema i18n preserva páginas estáticas e SEO por locale', async () => {
   const [layout, head, nav, routes] = await Promise.all([
@@ -33,43 +33,45 @@ test('menu mantém apenas navegação e seletor de idioma', async () => {
   assert.doesNotMatch(styles, /\.nav-cta\b|\.nav-mobile-cta\b/);
 });
 
-test('gerador faz diagnóstico sem chave de API nem escrita de páginas', async () => {
-  const { stdout } = await run(process.execPath, ['scripts/translate-pages.mjs', '--dry-run'], {
-    cwd: new URL('..', import.meta.url),
-    env: { ...process.env, OPENAI_API_KEY: '' },
-  });
-
-  assert.match(stdout, /i18n: \d+ TM hits, \d+ misses, 0 localized pages planned\./);
+test('todas as páginas existem nos três idiomas e renderizam a view com o locale certo', async () => {
+  for (const [prefix, locale] of [['src/pages', 'pt'], ['src/pages/en', 'en'], ['src/pages/es', 'es']]) {
+    for (const page of pages) {
+      const source = await readText(`${prefix}/${page}.astro`);
+      assert.match(source, new RegExp(`<${views[page]} locale="${locale}" />`), `${prefix}/${page}.astro`);
+    }
+  }
 });
 
-test('páginas localizadas mantêm CTAs, WhatsApp e cópia no próprio idioma', async () => {
-  const [generator, sourceContact, englishHome, spanishHome, englishOpera, spanishOpera, englishContact, spanishContact] = await Promise.all([
-    readText('scripts/translate-pages.mjs'),
-    readText('src/pages/contato.astro'),
-    readText('src/pages/en/index.astro'),
-    readText('src/pages/es/index.astro'),
-    readText('src/pages/en/opera-os.astro'),
-    readText('src/pages/es/opera-os.astro'),
-    readText('src/pages/en/contato.astro'),
-    readText('src/pages/es/contato.astro'),
+test('dicionários têm a mesma estrutura em pt, en e es', async () => {
+  const { files, problems } = await checkDictionaries();
+  assert.ok(files.length >= 5, 'esperava ao menos 5 dicionários de conteúdo');
+  assert.deepEqual(problems, []);
+});
+
+test('cópia, CTAs e WhatsApp ficam no próprio idioma', async () => {
+  const [{ home }, { manifesto }, { opera }, { ui }] = await Promise.all([
+    import('../src/i18n/content/home.ts'),
+    import('../src/i18n/content/manifesto.ts'),
+    import('../src/i18n/content/opera.ts'),
+    import('../src/i18n/ui.ts'),
   ]);
 
-  assert.match(generator, /SCRIPT_BLOCK/);
-  assert.match(englishHome, /href="\/en\/contato"/);
-  assert.match(englishHome, /href="\/en\/opera-os"/);
-  assert.match(spanishHome, /href="\/es\/contato"/);
-  assert.match(spanishHome, /href="\/es\/opera-os"/);
-  assert.doesNotMatch(englishOpera, /text=Olá/);
-  assert.doesNotMatch(spanishOpera, /text=Olá/);
-  assert.match(englishHome, /working alongside your business\./);
-  assert.match(spanishHome, /trabajan junto a su negocio\./);
-  assert.match(englishHome, /<BaseLayout[^]*title="Catalise\.me: AI systems and agents working alongside your business\."/);
-  assert.match(spanishHome, /<BaseLayout[^]*title="Catalise\.me: Sistemas y agentes de IA que trabajan junto a su negocio\."/);
-  assert.match(englishOpera, /transforms how your business operates\./);
-  assert.match(spanishOpera, /transforma la forma en que opera su negocio\./);
-  const sourceScript = sourceContact.match(/<script>[\s\S]*<\/script>/)?.[0];
-  assert.equal(englishContact.match(/<script>[\s\S]*<\/script>/)?.[0], sourceScript);
-  assert.equal(spanishContact.match(/<script>[\s\S]*<\/script>/)?.[0], sourceScript);
+  assert.match(home.en.heading, /queryable/);
+  assert.match(home.es.heading, /consultables/);
+  assert.match(manifesto.en.hero.title, /Queryable/);
+  assert.match(manifesto.es.hero.title, /consultables/);
+  assert.match(opera.en.product.title, /transforms how your business operates\./);
+  assert.match(opera.es.product.title, /transforma la forma en que opera su negocio\./);
+  assert.doesNotMatch(ui.en.whatsappOpera, /Olá/);
+  assert.doesNotMatch(ui.es.whatsappOpera, /Olá/);
+  assert.match(ui.en.whatsappDiagnostic, /Hello/);
+  assert.match(ui.es.whatsappDiagnostic, /Hola/);
+
+  // Links internos usam o prefixo do idioma (localizedHref) nas views.
+  for (const view of Object.values(views)) {
+    const source = await readText(`src/views/${view}.astro`);
+    assert.doesNotMatch(source, /href="\/(sobre|manifesto|opera-os|contato)"/, `${view} tem link interno fixo em pt`);
+  }
 });
 
 test('modal de diagnóstico resolve todos os textos pelo idioma do documento', async () => {
@@ -81,4 +83,10 @@ test('modal de diagnóstico resolve todos os textos pelo idioma do documento', a
   assert.match(modal, /accent: 'gratuita'/);
   assert.match(modal, /Please review the highlighted required fields/);
   assert.match(modal, /Revise los campos obligatorios resaltados/);
+});
+
+test('todo CTA com data-open-modal é atendido pelo modal', async () => {
+  const modal = await readText('src/components/ModalDiagnostico.astro');
+  assert.match(modal, /'\[data-open-modal\]'/);
+  assert.match(modal, /closest\(TRIGGER_SELECTORS/);
 });

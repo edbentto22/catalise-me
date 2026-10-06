@@ -116,55 +116,6 @@ section.inner-section {
   font-style: italic;
 }
 
-/* ─── Principles / Cards List (Kokonut UI / Manus style) ─── */
-.principles-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.principle-item {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 24px;
-  padding: clamp(24px, 4vw, 36px);
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: var(--radius-lg, 24px);
-  transition: all var(--duration-fast, 180ms) var(--ease-out);
-}
-
-.principle-item:hover {
-  border-color: #000000;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-}
-
-.principle-num {
-  font-family: var(--font-display, 'Archivo');
-  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
-  font-weight: 700;
-  color: #09090b;
-  line-height: 1;
-}
-
-.principle-content h3 {
-  font-family: var(--font-display, 'Archivo');
-  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #09090b;
-  margin-bottom: 8px;
-}
-
-.principle-content p {
-  font-family: var(--font-body, 'Manrope');
-  font-size: var(--text-base, 1rem);
-  color: #52525b;
-  line-height: 1.65;
-  margin: 0;
-}
-
 /* ─── How Items (Clean Grid) ─── */
 .how-grid {
   display: grid;
@@ -214,92 +165,6 @@ section.inner-section {
   font-size: 0.9375rem;
   color: #52525b;
   line-height: 1.6;
-  margin: 0;
-}
-
-/* ─── CTA Section ─── */
-.cta-section {
-  padding: clamp(72px, 12vw, 140px) 0;
-  background: #fafafa;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.cta-section .container {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.cta-section h2 {
-  font-family: var(--font-display, 'Archivo');
-  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  color: #09090b;
-  margin-bottom: var(--space-4, 1rem);
-  text-wrap: balance;
-}
-
-.cta-section p {
-  font-family: var(--font-body, 'Manrope');
-  font-size: clamp(1rem, 1.3vw, 1.15rem);
-  color: #52525b;
-  line-height: 1.65;
-  margin: 0 auto var(--space-8, 2rem);
-}
-
-.cta-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-/* ─── Manifesto Dedicated Layout ─── */
-.manifesto-container {
-  max-width: 820px;
-  margin: 0 auto;
-}
-
-.manifesto-statement {
-  font-family: var(--font-display, 'Archivo');
-  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -0.025em;
-  color: #09090b;
-  padding: 36px 0;
-  border-top: 2px solid #000000;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: 48px;
-}
-
-.manifesto-body {
-  font-family: var(--font-body, 'Manrope');
-}
-
-.manifesto-entry {
-  padding: 32px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.manifesto-entry:last-child {
-  border-bottom: none;
-}
-
-.manifesto-entry h3 {
-  font-family: var(--font-display, 'Archivo');
-  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
-  font-weight: 600;
-  color: #09090b;
-  margin-bottom: 12px;
-}
-
-.manifesto-entry p {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: #3f3f46;
   margin: 0;
 }
 
@@ -698,7 +563,7 @@ section.inner-section {
   }
 
   .shift-before::before {
-    content: 'Hoje: ';
+    content: attr(data-label);
     font-weight: 600;
   }
 
@@ -719,18 +584,4 @@ section.inner-section {
     grid-template-columns: 1fr;
   }
 
-  .principle-item {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .cta-buttons .btn {
-    width: 100%;
-    justify-content: center;
-  }
 }

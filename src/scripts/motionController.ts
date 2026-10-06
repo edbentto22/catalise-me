@@ -44,6 +44,9 @@ export function initMotion() {
       cursor.classList.remove('is-down');
     });
 
+    document.documentElement.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
+    document.documentElement.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
+
     // Detect interactive elements for hover states
     const interactiveSelector = 'a, button, input, select, textarea, [data-cursor], [data-magnetic]';
 
@@ -494,7 +497,7 @@ export function initMotion() {
 
     const checkDockVisibility = () => {
       const scrollY = window.scrollY;
-      const footer = document.querySelector<HTMLElement>('.footer');
+      const footer = document.querySelector<HTMLElement>('.site-footer, .cta-section');
       const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
       const windowHeight = window.innerHeight;
 

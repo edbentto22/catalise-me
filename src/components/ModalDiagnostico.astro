@@ -3,6 +3,7 @@
 ---
 
 <script>
+import { submitLead } from '../scripts/leads';
 /* =========================================
    CATALISE.ME — MODAL DIAGNÓSTICO GRATUITO
    ES Module — compatível com Astro build
@@ -10,6 +11,7 @@
 
 /* ─── Seletores de botões que devem abrir o modal ─── */
 const TRIGGER_SELECTORS = [
+  '[data-open-modal]',
   '#hero-cta-primary',
   '#final-cta-primary',
   '#opera-hero-cta',
@@ -25,13 +27,13 @@ const TRIGGER_SELECTORS = [
 const locale = document.documentElement.lang.startsWith('en') ? 'en' : document.documentElement.lang.startsWith('es') ? 'es' : 'pt';
 const copy = {
   pt: {
-    close: 'Fechar', title: 'Diagnóstico', accent: 'Gratuito', name: 'Nome completo', namePlaceholder: 'Seu nome', company: 'Empresa e cargo', companyPlaceholder: 'Nome da empresa', email: 'E-mail', emailPlaceholder: 'seu@email.com', phone: 'Telefone / WhatsApp', phonePlaceholder: '(00) 90000-0000', revenue: 'Faturamento médio mensal', revenuePrompt: 'Selecione uma faixa', revenueOptions: ['Até R$ 50 mil', 'R$ 50 mil – R$ 150 mil', 'R$ 150 mil – R$ 500 mil', 'R$ 500 mil – R$ 2 milhões', 'Acima de R$ 2 milhões'], source: 'Como ficou sabendo sobre nós?', sourcePrompt: 'Selecione uma opção', referral: 'Indicação', other: 'Outro', submit: 'SOLICITAR DIAGNÓSTICO GRATUITO →', footer: 'Sem compromisso · Resposta em até 24h', network: 'Não foi possível concluir o envio agora. Seus dados continuam preenchidos.', whatsapp: 'Falar pelo WhatsApp', successTitle: 'Solicitação encaminhada', success: 'Seu navegador encaminhou os dados. Se não receber nosso contato em até 24 horas, fale com a gente pelo WhatsApp.', required: 'Campo obrigatório.', minChars: 'Informe pelo menos 2 caracteres.', phoneError: 'Informe um telefone com DDD.', review: 'Revise os campos obrigatórios destacados.', sending: 'Enviando…', sendError: 'Erro ao enviar — tente novamente', discard: 'Descartar os dados preenchidos?',
+    close: 'Fechar', eyebrow: 'Diagnóstico gratuito', title: 'Vamos tornar sua empresa', accent: 'consultável.', lede: 'Em 45 minutos mapeamos onde estão as respostas da sua operação e o que ela já poderia executar sozinha.', name: 'Nome completo', namePlaceholder: 'Seu nome', company: 'Empresa e cargo', companyPlaceholder: 'Nome da empresa', email: 'E-mail', emailPlaceholder: 'seu@email.com', phone: 'Telefone / WhatsApp', phonePlaceholder: '(00) 90000-0000', revenue: 'Faturamento médio mensal', revenuePrompt: 'Selecione uma faixa', revenueOptions: ['Até R$ 50 mil', 'R$ 50 mil – R$ 150 mil', 'R$ 150 mil – R$ 500 mil', 'R$ 500 mil – R$ 2 milhões', 'Acima de R$ 2 milhões'], source: 'Como ficou sabendo sobre nós?', sourcePrompt: 'Selecione uma opção', referral: 'Indicação', other: 'Outro', submit: 'SOLICITAR DIAGNÓSTICO GRATUITO →', footer: 'Sem compromisso · Resposta em até 24h', network: 'Não foi possível concluir o envio agora. Seus dados continuam preenchidos.', whatsapp: 'Falar pelo WhatsApp', successTitle: 'Solicitação encaminhada', success: 'Seu navegador encaminhou os dados. Se não receber nosso contato em até 24 horas, fale com a gente pelo WhatsApp.', required: 'Campo obrigatório.', minChars: 'Informe pelo menos 2 caracteres.', phoneError: 'Informe um telefone com DDD.', review: 'Revise os campos obrigatórios destacados.', sending: 'Enviando…', sendError: 'Erro ao enviar — tente novamente', discard: 'Descartar os dados preenchidos?',
   },
   en: {
-    close: 'Close', title: 'Free', accent: 'Diagnostic Session', name: 'Full name', namePlaceholder: 'Your name', company: 'Company and role', companyPlaceholder: 'Company name', email: 'Email', emailPlaceholder: 'you@example.com', phone: 'Phone / WhatsApp', phonePlaceholder: '+1 000 000 0000', revenue: 'Average monthly revenue', revenuePrompt: 'Select a range', revenueOptions: ['Up to R$ 50k', 'R$ 50k – R$ 150k', 'R$ 150k – R$ 500k', 'R$ 500k – R$ 2m', 'Over R$ 2m'], source: 'How did you hear about us?', sourcePrompt: 'Select an option', referral: 'Referral', other: 'Other', submit: 'REQUEST A FREE DIAGNOSTIC SESSION →', footer: 'No commitment · Response within 24 hours', network: 'We could not complete the submission. Your information is still filled in.', whatsapp: 'Talk on WhatsApp', successTitle: 'Request received', success: 'Your browser sent the information. If you do not hear from us within 24 hours, contact us on WhatsApp.', required: 'This field is required.', minChars: 'Enter at least 2 characters.', phoneError: 'Enter a phone number with area code.', review: 'Please review the highlighted required fields.', sending: 'Sending…', sendError: 'Could not send — please try again', discard: 'Discard the information you entered?',
+    close: 'Close', eyebrow: 'Free diagnostic session', title: "Let's make your company", accent: 'queryable.', lede: 'In 45 minutes we map where the answers of your operation live, and what it could already execute on its own.', name: 'Full name', namePlaceholder: 'Your name', company: 'Company and role', companyPlaceholder: 'Company name', email: 'Email', emailPlaceholder: 'you@example.com', phone: 'Phone / WhatsApp', phonePlaceholder: '+1 000 000 0000', revenue: 'Average monthly revenue', revenuePrompt: 'Select a range', revenueOptions: ['Up to R$ 50k', 'R$ 50k – R$ 150k', 'R$ 150k – R$ 500k', 'R$ 500k – R$ 2m', 'Over R$ 2m'], source: 'How did you hear about us?', sourcePrompt: 'Select an option', referral: 'Referral', other: 'Other', submit: 'REQUEST A FREE DIAGNOSTIC SESSION →', footer: 'No commitment · Response within 24 hours', network: 'We could not complete the submission. Your information is still filled in.', whatsapp: 'Talk on WhatsApp', successTitle: 'Request received', success: 'Your browser sent the information. If you do not hear from us within 24 hours, contact us on WhatsApp.', required: 'This field is required.', minChars: 'Enter at least 2 characters.', phoneError: 'Enter a phone number with area code.', review: 'Please review the highlighted required fields.', sending: 'Sending…', sendError: 'Could not send — please try again', discard: 'Discard the information you entered?',
   },
   es: {
-    close: 'Cerrar', title: 'Sesión de diagnóstico', accent: 'gratuita', name: 'Nombre completo', namePlaceholder: 'Su nombre', company: 'Empresa y cargo', companyPlaceholder: 'Nombre de la empresa', email: 'Correo electrónico', emailPlaceholder: 'usted@ejemplo.com', phone: 'Teléfono / WhatsApp', phonePlaceholder: '+00 000 000 0000', revenue: 'Facturación mensual promedio', revenuePrompt: 'Seleccione un rango', revenueOptions: ['Hasta R$ 50 mil', 'R$ 50 mil – R$ 150 mil', 'R$ 150 mil – R$ 500 mil', 'R$ 500 mil – R$ 2 millones', 'Más de R$ 2 millones'], source: '¿Cómo nos conoció?', sourcePrompt: 'Seleccione una opción', referral: 'Recomendación', other: 'Otro', submit: 'SOLICITAR SESIÓN DE DIAGNÓSTICO GRATUITA →', footer: 'Sin compromiso · Respuesta en hasta 24 horas', network: 'No pudimos completar el envío. Sus datos siguen completos.', whatsapp: 'Hablar por WhatsApp', successTitle: 'Solicitud recibida', success: 'Su navegador envió la información. Si no recibe respuesta en hasta 24 horas, contáctenos por WhatsApp.', required: 'Este campo es obligatorio.', minChars: 'Ingrese al menos 2 caracteres.', phoneError: 'Ingrese un teléfono con código de área.', review: 'Revise los campos obligatorios resaltados.', sending: 'Enviando…', sendError: 'No se pudo enviar — intente nuevamente', discard: '¿Descartar los datos ingresados?',
+    close: 'Cerrar', eyebrow: 'Diagnóstico gratuito', title: 'Sesión de diagnóstico', accent: 'gratuita', lede: 'En 45 minutos mapeamos dónde están las respuestas de su operación y lo que ya podría ejecutar por sí sola.', name: 'Nombre completo', namePlaceholder: 'Su nombre', company: 'Empresa y cargo', companyPlaceholder: 'Nombre de la empresa', email: 'Correo electrónico', emailPlaceholder: 'usted@ejemplo.com', phone: 'Teléfono / WhatsApp', phonePlaceholder: '+00 000 000 0000', revenue: 'Facturación mensual promedio', revenuePrompt: 'Seleccione un rango', revenueOptions: ['Hasta R$ 50 mil', 'R$ 50 mil – R$ 150 mil', 'R$ 150 mil – R$ 500 mil', 'R$ 500 mil – R$ 2 millones', 'Más de R$ 2 millones'], source: '¿Cómo nos conoció?', sourcePrompt: 'Seleccione una opción', referral: 'Recomendación', other: 'Otro', submit: 'SOLICITAR SESIÓN DE DIAGNÓSTICO GRATUITA →', footer: 'Sin compromiso · Respuesta en hasta 24 horas', network: 'No pudimos completar el envío. Sus datos siguen completos.', whatsapp: 'Hablar por WhatsApp', successTitle: 'Solicitud recibida', success: 'Su navegador envió la información. Si no recibe respuesta en hasta 24 horas, contáctenos por WhatsApp.', required: 'Este campo es obligatorio.', minChars: 'Ingrese al menos 2 caracteres.', phoneError: 'Ingrese un teléfono con código de área.', review: 'Revise los campos obligatorios resaltados.', sending: 'Enviando…', sendError: 'No se pudo enviar — intente nuevamente', discard: '¿Descartar los datos ingresados?',
   },
 }[locale];
 
@@ -46,11 +48,16 @@ function createModal() {
   el.setAttribute('hidden', '');
   el.innerHTML = `
     <div class="modal-diag-box" role="document">
-      <button class="modal-diag-close" id="modal-diag-close" aria-label="${copy.close}">✕</button>
-      <p class="modal-diag-brand">CATALISE.ME</p>
-      <h2 id="modal-diag-title" class="modal-diag-title" tabindex="-1">
-        ${copy.title} <span>${copy.accent}</span>
-      </h2>
+      <button type="button" class="modal-diag-close" id="modal-diag-close" aria-label="${copy.close}">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+      </button>
+      <header class="modal-diag-head">
+        <p class="modal-diag-brand"><span aria-hidden="true"></span>${copy.eyebrow}</p>
+        <h2 id="modal-diag-title" class="modal-diag-title" tabindex="-1">
+          ${copy.title} <em>${copy.accent}</em>
+        </h2>
+        <p class="modal-diag-lede">${copy.lede}</p>
+      </header>
       <form id="modal-diag-form" class="modal-diag-form" novalidate aria-describedby="modal-diag-status">
         <p id="modal-diag-status" class="visually-hidden" aria-live="polite"></p>
         <div class="modal-diag-row">
@@ -101,7 +108,7 @@ function createModal() {
           <span class="modal-diag-error" id="diag-source-error" aria-live="polite"></span>
         </div>
         <button type="submit" class="modal-diag-submit" id="modal-diag-submit">
-          ${copy.submit}
+          <span data-submit-label>${copy.submit}</span>
         </button>
         <p class="modal-diag-footer">${copy.footer}</p>
         <div class="modal-diag-network-error" id="modal-diag-network-error" role="alert" hidden>
@@ -110,10 +117,10 @@ function createModal() {
         </div>
       </form>
       <div class="modal-diag-success" id="modal-diag-success" role="status" aria-live="polite" tabindex="-1" hidden>
-        <div class="modal-diag-success-icon">✓</div>
+        <div class="modal-diag-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3 tabindex="-1">${copy.successTitle}</h3>
         <p>${copy.success}</p>
-        <button class="modal-diag-submit" id="modal-diag-success-close" style="margin-top:24px">${copy.close}</button>
+        <button type="button" class="modal-diag-submit" id="modal-diag-success-close">${copy.close}</button>
       </div>
     </div>
   `;
@@ -139,8 +146,9 @@ function openModal() {
   if (networkError) networkError.hidden = true;
   if (submit) {
     submit.disabled = false;
-    submit.textContent = copy.submit;
-    submit.removeAttribute('style');
+    submit.classList.remove('is-error');
+    const label = submit.querySelector<HTMLElement>('[data-submit-label]');
+    if (label) label.textContent = copy.submit;
   }
   modal.removeAttribute('hidden');
   document.body.classList.add('modal-open');
@@ -205,40 +213,29 @@ async function handleSubmit(e: Event) {
   }
   if (!btn) return;
 
-  btn.textContent = copy.sending;
+  const label = btn.querySelector<HTMLElement>('[data-submit-label]') || btn;
+  label.textContent = copy.sending;
   btn.disabled = true;
+  btn.classList.add('is-sending');
   const networkError = form.querySelector<HTMLElement>('#modal-diag-network-error');
   if (networkError) networkError.hidden = true;
 
-  const data = new FormData(form);
-  const body = Object.fromEntries(data.entries());
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), 15000);
+  const body = { ...Object.fromEntries(new FormData(form).entries()), page_url: location.href, submitted_at: new Date().toISOString() };
 
   try {
-    await fetch(
-      'https://triviumlabs.sg.larksuite.com/base/automation/webhook/event/THgIaGzH4wWd2lhVeDtlC4D5gAh',
-      {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      }
-    );
+    await submitLead(body);
     form.hidden = true;
     const success = document.getElementById('modal-diag-success')!;
     success.hidden = false;
     success.focus();
   } catch (err) {
     console.error('[Modal Diagnóstico] Erro ao enviar:', err);
-    btn.textContent = copy.sendError;
+    label.textContent = copy.sendError;
     btn.disabled = false;
-    btn.style.background = '#e53e3e';
-    btn.style.color = '#fff';
+    btn.classList.add('is-error');
     if (networkError) networkError.hidden = false;
   } finally {
-    clearTimeout(timeoutId);
+    btn.classList.remove('is-sending');
   }
 }
 
@@ -260,15 +257,6 @@ function trapFocus(e: KeyboardEvent) {
   if (e.key === 'Escape') closeModal();
 }
 
-/* ─── Helper: intercepta clique e abre modal ─── */
-function intercept(el: Element) {
-  el.addEventListener('click', (e) => {
-    if (e instanceof MouseEvent && (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return;
-    e.preventDefault();
-    openModal();
-  });
-}
-
 /* ─── Inicialização ─── */
 function init() {
   modal = createModal();
@@ -281,9 +269,14 @@ function init() {
   maskPhone(modal.querySelector<HTMLInputElement>('#diag-phone')!);
   document.addEventListener('keydown', trapFocus);
 
-  // 1) Intercepta por ID/classe explícita
-  TRIGGER_SELECTORS.forEach(sel => {
-    document.querySelectorAll(sel).forEach(intercept);
+  // Delegação: cobre [data-open-modal] e os seletores legados, inclusive elementos criados depois.
+  document.addEventListener('click', (e) => {
+    const target = (e.target as Element | null)?.closest(TRIGGER_SELECTORS.join(','));
+    if (!target) return;
+    if (e instanceof MouseEvent && (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return;
+    e.preventDefault();
+    document.dispatchEvent(new CustomEvent('cx:menu-close'));
+    openModal();
   });
 
   // Links comuns continuam apontando para /contato como fallback progressivo.

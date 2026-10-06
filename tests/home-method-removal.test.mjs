@@ -27,7 +27,7 @@ const methodAssets = [
 ];
 
 test('Home é single-section estilo Brabaflow e remove seções antigas do método', async () => {
-  const home = await readText('src/pages/index.astro');
+  const [home, copy] = await Promise.all([readText('src/views/HomeView.astro'), readText('src/i18n/content/home.ts')]);
 
   assert.doesNotMatch(home, /id=["']opera["']/);
   assert.doesNotMatch(home, /class=["'][^"']*method-/);
@@ -36,7 +36,7 @@ test('Home é single-section estilo Brabaflow e remove seções antigas do méto
 
   // Home tem apenas 1 section e a chamada da tese "Empresas consultáveis"
   assert.match(home, /<section class="hero-editorial"/);
-  assert.match(home, /Construímos empresas <em>consultáveis<\/em>\./);
+  assert.match(copy, /Construímos empresas <em>consultáveis<\/em>\./);
   assert.equal((home.match(/<section\b/g) || []).length, 1, 'Home deve conter apenas uma section');
 });
 
@@ -71,10 +71,11 @@ test('dez assets saem de public e são preservados em _source-assets', async () 
 });
 
 test('página OPERA e fases permanecem disponíveis no repositório', async () => {
-  const opera = await readText('src/pages/opera-os.astro');
+  const [view, copy] = await Promise.all([readText('src/views/OperaView.astro'), readText('src/i18n/content/opera.ts')]);
 
   for (const phase of ['Organização', 'Planejamento', 'Estratégia', 'Realização', 'Afinação']) {
-    assert.match(opera, new RegExp(`<h3 class="opera-phase-title">${phase}<\\/h3>`));
+    assert.match(copy, new RegExp(`title: '${phase}'`));
   }
-  assert.match(opera, /data-src=["']\/assets\/system\.mp4["']/);
+  assert.match(view, /<h3 class="opera-phase-title">\{phase\.title\}<\/h3>/);
+  assert.match(view, /data-src=["']\/assets\/system\.mp4["']/);
 });

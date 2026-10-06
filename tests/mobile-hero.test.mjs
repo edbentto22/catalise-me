@@ -77,7 +77,7 @@ test('conteúdo das Heroes é visível por padrão e anima apenas com motion ful
 });
 
 test('Hero principal utiliza componente de background animado HeroBackground', async () => {
-  const page = await readText('src/pages/index.astro');
+  const page = await readText('src/views/HomeView.astro');
   const home = await readText('src/styles/home.css');
 
   assert.match(page, /import HeroBackground from ['"]\.\.\/components\/HeroBackground\.astro['"]/);

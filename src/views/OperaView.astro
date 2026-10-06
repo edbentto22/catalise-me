@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedHref, type Locale } from '../i18n/config';
+import { opera } from '../i18n/content/opera';
+import { ui, whatsappLink } from '../i18n/ui';
+import '../styles/inner.css';
+import '../styles/manifesto.css';
+import '../styles/opera.css';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = opera[locale];
+const pageUrl = `https://catalise.me${localizedHref('/opera-os', locale)}`;
+const whatsapp = whatsappLink(ui[locale].whatsappOpera);
+const scopeIcons = ['globe', 'bot', 'layout-grid', 'workflow', 'message-square', 'activity', 'bar-chart-3', 'users'];
+const totalWeeks = 10;
+---
+
+<BaseLayout
+  title={t.meta.title}
+  description={t.meta.description}
+  ogTitle={t.meta.ogTitle}
+  ogDescription={t.meta.ogDescription}
+  ogUrl={pageUrl}
+  canonical={pageUrl}
+  bodyClass="page-opera"
+  pageType="inner"
+  locale={locale}
+>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <header class="op-hero" aria-labelledby="opera-hero-heading">
+    <div class="container op-hero-grid">
+      <div class="op-hero-copy">
+        <span class="page-hero-eyebrow hero-animate-1">{t.hero.eyebrow}</span>
+        <h1 id="opera-hero-heading" class="op-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
+        <p class="op-hero-lede hero-animate-3">{t.hero.lede}</p>
+        <div class="op-hero-ctas hero-animate-4">
+          <button type="button" class="btn btn-primary btn-lg" data-open-modal data-magnetic>
+            {t.hero.ctaPrimary} <span class="btn-arrow" aria-hidden="true">→</span>
+          </button>
+          <a href="#metodo" class="btn btn-secondary btn-lg">{t.hero.ctaSecondary}</a>
+        </div>
+      </div>
+
+      <figure class="op-screen" data-media-frame data-cx-fade data-op-screen>
+        <div class="op-screen-bar" aria-hidden="true">
+          <span class="op-screen-dots"><i></i><i></i><i></i></span>
+          <span class="op-screen-url">opera.catalise.me</span>
+          <span class="op-screen-live"><span></span>live</span>
+        </div>
+        <div class="op-screen-body">
+          <video class="op-screen-video" data-src="/assets/system.mp4" poster="/assets/system-poster.jpg" loop muted playsinline preload="none" aria-hidden="true"></video>
+          <div class="op-screen-shade" aria-hidden="true"></div>
+          <ol class="op-screen-letters" aria-hidden="true">
+            {t.method.phases.map((phase) => <li>{phase.letter}</li>)}
+          </ol>
+          <ul class="op-screen-chips" aria-hidden="true">
+            {[1, 2, 4].map((i) => (
+              <li><span class="op-chip-dot"></span>{t.scope.items[i].title}</li>
+            ))}
+          </ul>
+        </div>
+        <figcaption class="visually-hidden">{t.hero.videoLabel}</figcaption>
+      </figure>
+    </div>
+
+    <dl class="container op-specs hero-animate-4">
+      {t.hero.specs.map((spec) => (
+        <div class="op-spec">
+          <dt>{spec.label}</dt>
+          <dd>{spec.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </header>
+
+  <!-- ══════════════ SINTOMAS ══════════════ -->
+  <section id="sintomas" class="op-section" aria-labelledby="sintomas-heading">
+    <div class="container">
+      <div class="op-head">
+        <span class="mf-index">{t.symptoms.eyebrow}</span>
+        <h2 id="sintomas-heading" class="mf-section-title" data-reveal set:html={t.symptoms.title} />
+        <p class="op-head-lede" data-reveal>{t.symptoms.lede}</p>
+      </div>
+
+      <ol class="op-symptoms" role="list" data-reveal-group>
+        {t.symptoms.items.map((item, i) => (
+          <li class="op-symptom">
+            <span class="op-symptom-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{item.title}</h3>
+            <p set:html={item.text} />
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════ PRODUTO ══════════════ -->
+  <section id="o-que-e" class="op-section op-product" aria-labelledby="o-que-e-heading">
+    <div class="container op-product-grid">
+      <div>
+        <span class="mf-index">{t.product.eyebrow}</span>
+        <h2 id="o-que-e-heading" class="mf-section-title" data-reveal set:html={t.product.title} />
+        <div class="op-product-copy" data-reveal-group>
+          {t.product.paragraphs.map((paragraph) => <p set:html={paragraph} />)}
+        </div>
+      </div>
+
+      <div class="op-not-card" data-glow>
+        <h3 set:html={t.product.notTitle} />
+        <ul role="list" class="op-not-list">
+          {t.product.not.map((item) => (
+            <li><span class="op-not-x" aria-hidden="true">×</span><span class="op-not-text" data-strike-item>{item}</span></li>
+          ))}
+        </ul>
+        <p class="op-yes"><span class="op-yes-check" aria-hidden="true"><i data-lucide="check"></i></span>{t.product.yes}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ MÉTODO OPERA ══════════════ -->
+  <section id="metodo" class="op-section op-method" data-method aria-labelledby="metodo-heading">
+    <div class="container">
+      <div class="op-head">
+        <span class="mf-index">{t.method.eyebrow}</span>
+        <h2 id="metodo-heading" class="mf-section-title" data-reveal set:html={t.method.title} />
+        <p class="op-head-lede" data-reveal>{t.method.lede}</p>
+      </div>
+
+      <div class="op-method-grid">
+        <aside class="op-method-sticky" aria-hidden="true">
+          <div class="op-method-letter-wrap">
+            <span class="op-method-letter" data-method-letter>{t.method.phases[0].letter}</span>
+          </div>
+          <p class="op-method-name" data-method-name>{t.method.phases[0].title}</p>
+
+          <div class="op-gantt" style={`--weeks:${totalWeeks}`}>
+            <div class="op-gantt-scale">
+              {Array.from({ length: totalWeeks }, (_, i) => <span>{i + 1}</span>)}
+            </div>
+            {t.method.phases.map((phase, i) => (
+              <div class:list={['op-gantt-row', { 'is-active': i === 0 }]} data-gantt-row>
+                <span class="op-gantt-letter">{phase.letter}</span>
+                <span class="op-gantt-track">
+                  <span class="op-gantt-bar" style={`--start:${phase.start}; --end:${phase.end}`}></span>
+                </span>
+              </div>
+            ))}
+            <span class="op-gantt-caption">{t.method.weeksLabel}</span>
+          </div>
+        </aside>
+
+        <ol class="op-phases" role="list">
+          {t.method.phases.map((phase) => (
+            <li class="opera-phase" data-phase data-letter={phase.letter} data-title={phase.title}>
+              <div class="opera-phase-head">
+                <span class="opera-phase-letter" aria-hidden="true">{phase.letter}</span>
+                <div>
+                  <h3 class="opera-phase-title">{phase.title}</h3>
+                  <span class="opera-phase-weeks">{phase.weeks}</span>
+                </div>
+              </div>
+              <p class="opera-phase-text">{phase.text}</p>
+              <div class="opera-phase-deliverable">
+                <span>{t.method.deliverableLabel}</span>
+                <p>{phase.deliverable}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ ESCOPO ══════════════ -->
+  <section id="inclui" class="op-section op-scope" aria-labelledby="inclui-heading">
+    <div class="container">
+      <div class="op-head op-head-center">
+        <span class="mf-index">{t.scope.eyebrow}</span>
+        <h2 id="inclui-heading" class="mf-section-title" data-reveal set:html={t.scope.title} />
+        <p class="op-head-lede" data-reveal>{t.scope.lede}</p>
+      </div>
+
+      <ul class="op-scope-grid" role="list" data-reveal-group>
+        {t.scope.items.map((item, i) => (
+          <li class="op-scope-item" data-glow>
+            <span class="op-scope-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="op-scope-icon" aria-hidden="true"><i data-lucide={scopeIcons[i]}></i></span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════════ QUALIFICAÇÃO ══════════════ -->
+  <section id="qualificacao" class="op-section op-fit" aria-labelledby="qual-heading">
+    <div class="container">
+      <div class="op-head">
+        <span class="mf-index">{t.fit.eyebrow}</span>
+        <h2 id="qual-heading" class="mf-section-title" data-reveal set:html={t.fit.title} />
+      </div>
+
+      <div class="op-fit-grid" data-reveal-group>
+        <div class="op-fit-col op-fit-yes">
+          <span class="op-fit-badge">{t.fit.yesLabel}</span>
+          <ul role="list">
+            {t.fit.yes.map((item) => (
+              <li><span class="op-fit-icon" aria-hidden="true"><i data-lucide="check"></i></span><p><strong>{item.strong}</strong> {item.text}</p></li>
+            ))}
+          </ul>
+        </div>
+        <div class="op-fit-col op-fit-no">
+          <span class="op-fit-badge">{t.fit.noLabel}</span>
+          <ul role="list">
+            {t.fit.no.map((item) => (
+              <li><span class="op-fit-icon" aria-hidden="true"><i data-lucide="x"></i></span><p><strong>{item.strong}</strong> {item.text}</p></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ INVESTIMENTO ══════════════ -->
+  <section id="investimento" class="op-section op-pricing" aria-labelledby="pricing-heading">
+    <div class="container">
+      <div class="op-pricing-head">
+        <div>
+          <span class="mf-index">{t.pricing.eyebrow}</span>
+          <h2 id="pricing-heading" class="mf-section-title" data-reveal set:html={t.pricing.title} />
+          <p class="op-head-lede" data-reveal>{t.pricing.lede}</p>
+        </div>
+        <figure class="op-proposal" data-reveal>
+          <picture>
+            <source srcset="/assets/proposta-catalise.webp" type="image/webp" />
+            <img src="/assets/proposta-catalise.jpg" alt="" width="1280" height="832" loading="lazy" decoding="async" />
+          </picture>
+        </figure>
+      </div>
+
+      <div class="op-plans" data-reveal-group>
+        {t.pricing.plans.map((plan) => (
+          <article class:list={['op-plan', { 'op-plan-featured': plan.featured }]}>
+            <span class="op-plan-badge">{plan.badge}</span>
+            <h3 class="op-plan-name">{plan.name}</h3>
+            <p class="op-plan-price">{plan.price}</p>
+            <p class="op-plan-period">{plan.period}</p>
+            <ul role="list" class="op-plan-features">
+              {plan.features.map((feature) => <li><i data-lucide="check" aria-hidden="true"></i>{feature}</li>)}
+            </ul>
+            <button type="button" class:list={['btn', plan.featured ? 'btn-lime' : 'btn-secondary', 'op-plan-cta']} data-open-modal>
+              {plan.cta} <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ COMO COMEÇAR ══════════════ -->
+  <section id="como-comecar" class="op-section op-start" aria-labelledby="comecar-heading">
+    <div class="container">
+      <div class="op-head">
+        <span class="mf-index">{t.start.eyebrow}</span>
+        <h2 id="comecar-heading" class="mf-section-title" data-reveal set:html={t.start.title} />
+      </div>
+
+      <div class="op-steps-wrap">
+        <svg class="op-steps-line" viewBox="0 0 1000 2" preserveAspectRatio="none" aria-hidden="true" data-draw-on-view>
+          <path data-draw d="M0 1 H1000" />
+        </svg>
+        <ol class="op-steps" role="list" data-reveal-group>
+          {t.start.steps.map((step, i) => (
+            <li class="op-step">
+              <span class="op-step-node">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ FAQ ══════════════ -->
+  <section id="faq" class="op-section op-faq" aria-labelledby="faq-heading">
+    <div class="container op-faq-grid">
+      <div class="op-head">
+        <span class="mf-index">{t.faq.eyebrow}</span>
+        <h2 id="faq-heading" class="mf-section-title" data-reveal set:html={t.faq.title} />
+      </div>
+
+      <div class="faq-list">
+        {t.faq.items.map((item) => (
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>{item.q}</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer">
+              <p>{item.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CTA FINAL ══════════════ -->
+  <section class="cta-section" aria-labelledby="opera-cta-heading">
+    <div class="container">
+      <span class="page-hero-eyebrow">{t.cta.eyebrow}</span>
+      <h2 id="opera-cta-heading" set:html={t.cta.title} />
+      <p>{t.cta.text}</p>
+      <div class="cta-buttons">
+        <button type="button" class="btn btn-primary btn-lg" data-open-modal data-magnetic>
+          {t.cta.primary} <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-secondary btn-lg">{t.cta.secondary}</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

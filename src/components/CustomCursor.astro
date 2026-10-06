@@ -1,5 +1,5 @@
 ---
-// CustomCursor.astro — Award-winning Minimalist Magnetic Cursor (BASIC/DEPT® + Artistsweb style)
+// Cursor editorial: ponto e anel em mix-blend-mode difference (inverte sobre branco e preto).
 ---
 
 <div class="custom-cursor" id="custom-cursor" aria-hidden="true">
@@ -15,93 +15,70 @@
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 99999;
-    will-change: transform;
+    z-index: var(--z-cursor);
     display: none;
   }
 
-  @media (pointer: fine) {
-    .custom-cursor {
-      display: block;
-    }
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    html.js-enabled .custom-cursor { display: block; }
   }
 
-  .cursor-dot {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 6px;
-    background: #ffffff;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
-  }
-
+  .cursor-dot,
   .cursor-ring {
     position: absolute;
     top: 0;
     left: 0;
-    width: 36px;
-    height: 36px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    will-change: transform;
+  }
+
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background: #ffffff;
+    mix-blend-mode: difference;
+    transition: opacity 0.2s ease, scale 0.25s var(--ease-out);
+  }
+
+  .cursor-ring {
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    border: 1px solid #ffffff;
+    mix-blend-mode: difference;
+    display: grid;
+    place-items: center;
     transition:
-      width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-      height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      scale 0.35s var(--ease-out),
       background 0.25s ease,
       border-color 0.25s ease;
   }
 
   .cursor-label {
-    color: #070709;
-    font-family: var(--font-body, sans-serif);
-    font-size: 10px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.625rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
     white-space: nowrap;
-    user-select: none;
+    transition: opacity 0.2s ease;
   }
 
-  /* Interactive States */
-  .custom-cursor.is-hover .cursor-dot {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-  }
+  .custom-cursor.is-hover .cursor-dot { opacity: 0; scale: 0.3; }
+  .custom-cursor.is-hover .cursor-ring { scale: 1.6; background: #ffffff; }
 
-  .custom-cursor.is-hover .cursor-ring {
-    width: 54px;
-    height: 54px;
-    border-color: #ffffff;
-    background: rgba(255, 255, 255, 0.12);
-  }
-
-  .custom-cursor.has-label .cursor-dot {
-    opacity: 0;
-  }
-
+  .custom-cursor.has-label .cursor-dot { opacity: 0; }
   .custom-cursor.has-label .cursor-ring {
-    width: 90px;
-    height: 90px;
-    background: #ffffff;
-    border-color: #ffffff;
-    box-shadow: 0 0 32px rgba(255, 255, 255, 0.35);
+    scale: 2.4;
+    background: var(--lime);
+    border-color: var(--lime);
+    mix-blend-mode: normal;
   }
+  .custom-cursor.has-label .cursor-label { opacity: 1; scale: calc(1 / 2.4); }
 
-  .custom-cursor.has-label .cursor-label {
-    opacity: 1;
-  }
-
-  .custom-cursor.is-down .cursor-ring {
-    transform: translate(-50%, -50%) scale(0.85);
-  }
+  .custom-cursor.is-down .cursor-ring { scale: 0.8; }
+  .custom-cursor.is-hidden { opacity: 0; }
 </style>
