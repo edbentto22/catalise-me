@@ -11,9 +11,9 @@ export type Locale = keyof typeof locales;
 export const defaultLocale: Locale = 'pt';
 
 export const navigation = {
-  pt: { home: 'Home', about: 'Sobre', opera: 'Opera OS', contact: 'Contato', cta: 'Diagnóstico gratuito' },
-  en: { home: 'Home', about: 'About', opera: 'Opera OS', contact: 'Contact', cta: 'Free diagnostic' },
-  es: { home: 'Inicio', about: 'Nosotros', opera: 'Opera OS', contact: 'Contacto', cta: 'Diagnóstico gratuito' },
+  pt: { home: 'Home', about: 'Sobre', manifesto: 'Manifesto', opera: 'Opera OS', contact: 'Contato', cta: 'Diagnóstico gratuito' },
+  en: { home: 'Home', about: 'About', manifesto: 'Manifesto', opera: 'Opera OS', contact: 'Contact', cta: 'Free diagnostic' },
+  es: { home: 'Inicio', about: 'Nosotros', manifesto: 'Manifiesto', opera: 'Opera OS', contact: 'Contacto', cta: 'Diagnóstico gratuito' },
 } as const;
 
 export const footer = {

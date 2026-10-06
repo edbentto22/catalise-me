@@ -3,6 +3,8 @@ import SEOHead from '../components/SEOHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import ModalDiagnostico from '../components/ModalDiagnostico.astro';
+import FloatingDock from '../components/FloatingDock.astro';
+import CustomCursor from '../components/CustomCursor.astro';
 import type { Locale } from '../i18n/config';
 import { translatedLocales } from '../i18n/routes';
 
@@ -87,11 +89,15 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
 
   {showFooter && <Footer locale={locale} />}
   {showModal && <ModalDiagnostico />}
+  <FloatingDock locale={locale} />
+  <CustomCursor />
+  <div class="page-curtain" id="page-curtain" aria-hidden="true"></div>
 
 
 <!-- Um único controlador progressivo para navegação, movimento e componentes. -->
   <script>
     import Lenis from 'lenis';
+    import { initMotion } from '../scripts/motionController';
     import {
       createIcons, Zap, Clock, RefreshCw, Globe, LayoutGrid, Monitor, PenTool,
       MessageSquare, Activity, BarChart3, Users, Search, ClipboardList, Flag,
@@ -114,6 +120,8 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
       Lock, Target, Hotel, Hospital, Building2, Car, Scale, GraduationCap,
       Network, CalendarCheck, Compass, Rocket, Sliders, BrainCircuit, Magnet,
       HelpCircle, MousePointerClick, HeartHandshake, Check, X } });
+
+    initMotion();
 
     if (allowEffects) {
       const lenis = new Lenis({ duration: 1, smoothWheel: true, smoothTouch: false });
@@ -252,6 +260,34 @@ const allLocalizedPaths = localizedPaths || generatedPaths;
       }), { rootMargin: '180px 0px', threshold: .1 });
 
       videos.forEach((video) => mediaObserver.observe(video));
+    }
+
+    // Editorial Page Transition (Curtain wipe)
+    const curtain = document.getElementById('page-curtain');
+    if (curtain && allowEffects) {
+      window.addEventListener('pageshow', () => {
+        curtain.classList.remove('active');
+      });
+
+      document.addEventListener('click', (e) => {
+        const target = (e.target as HTMLElement).closest('a');
+        if (!target) return;
+        const href = target.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || target.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey) return;
+
+        try {
+          const url = new URL(href, window.location.href);
+          if (url.origin === window.location.origin && (url.pathname !== window.location.pathname || url.search !== window.location.search)) {
+            e.preventDefault();
+            curtain.classList.add('active');
+            setTimeout(() => {
+              window.location.href = href;
+            }, 220);
+          }
+        } catch {
+          // If URL parsing fails, let standard navigation proceed
+        }
+      });
     }
   </script>
 

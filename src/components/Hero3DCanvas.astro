@@ -1,0 +1,50 @@
+---
+// Componente de Canvas 3D Interativo para o Hero (inspirado em humanacademy.ai)
+---
+
+<div class="hero-3d-container" id="hero-3d-container" aria-hidden="true">
+  <canvas class="hero-3d-canvas" id="hero-3d-canvas"></canvas>
+</div>
+
+<script>
+  import { initHero3D } from '../scripts/hero3d';
+
+  const container = document.getElementById('hero-3d-container');
+  const canvas = document.getElementById('hero-3d-canvas') as HTMLCanvasElement | null;
+
+  if (container && canvas) {
+    // Only initialize when document is ready
+    const start = () => {
+      initHero3D({ canvas, container });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start, { once: true });
+    } else {
+      start();
+    }
+  }
+</script>
+
+<style>
+  .hero-3d-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-3d-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    outline: none;
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.58;
+  }
+</style>

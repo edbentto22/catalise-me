@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroBackground from '../../components/HeroBackground.astro';
 import '../../styles/home.css';
 ---
 
 <BaseLayout locale="es" localizedPaths={{ pt: '/', en: '/en', es: '/es' }}
   title="Catalise.me: Sistemas y agentes de IA que trabajan junto a su negocio."
-  description="Catalise.me conecta todos sus sectores en una sola inteligencia que atiende, vende y opera procesos 24 horas al día. En 10 a 12 semanas."
+  description="Catalise.me conecta todos sus sectores en una sola inteligencia que atiende, vende e opera procesos 24 horas al día. En 10 a 12 semanas."
   ogTitle="Catalise.me: Sistemas y agentes de IA que trabajan junto a su negocio."
-  ogDescription="Más velocidad, menos costos, más resultados. Sistema operativo con IA en 10-12 semanas." ogUrl="https://catalise.me/es" canonical="https://catalise.me/es"
+  ogDescription="Más velocidad, menos costos, mais resultados. Sistema operativo con IA en 10-12 semanas." ogUrl="https://catalise.me/es" canonical="https://catalise.me/es"
   keywords="inteligencia artificial para empresas, agentes de IA, automatización de procesos, Opera OS, Catalise.me"
   pageType="home"
 >
@@ -15,12 +16,8 @@ import '../../styles/home.css';
     <!-- ══════════════ HERO — EDITORIAL FULLSCREEN ══════════════ -->
     <section class="hero-editorial" aria-labelledby="hero-heading" id="hero">
 
-      <!-- BG Layer: vídeo + dark overlay -->
-      <div class="hero-bg-layer" aria-hidden="true" data-media-frame>
-        <video class="hero-video-bg" id="hero-bg-video" data-src="/assets/background-looping-video.mp4?v=20260715" poster="/assets/background-looping-video-poster.jpg" loop muted playsinline preload="none"></video>
-        <div class="hero-bg-overlay"></div>
-        <div class="hero-bg-grain"></div>
-      </div>
+      <!-- BG Layer: Noise Dark Blue Gradient with Squares -->
+      <HeroBackground className="hero-bg-layer" />
 
       <!-- Grid decoration: cruzes + nos pontos do grid -->
       <div class="hero-grid-crosses" aria-hidden="true">
@@ -177,22 +174,26 @@ import '../../styles/home.css';
           <div class="stats-arpeggio-header">
             <span class="stats-arpeggio-eyebrow">El Costo Oculto de la Descoordinación</span>
           </div>
-          <div class="stats-arpeggio-grid">
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Horas perdidas en<br>sistemas desconectados</span>
+          <div class="stats-arpeggio-grid skew-on-scroll">
+            <div class="stat-item-arpeggio" data-cursor-text="Cuello">
+              <span class="stat-index-mono">{'{01}'}</span>
               <span class="stat-number-arpeggio" data-target="286" data-suffix="h">286h</span>
+              <span class="stat-label-arpeggio">Horas perdidas en<br>sistemas desconectados</span>
             </div>
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Tiempo de operación<br>en tareas manuales</span>
+            <div class="stat-item-arpeggio" data-cursor-text="Cuello">
+              <span class="stat-index-mono">{'{02}'}</span>
               <span class="stat-number-arpeggio" data-target="51" data-suffix="%">51%</span>
+              <span class="stat-label-arpeggio">Tiempo de operación<br>en tareas manuales</span>
             </div>
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Decisiones tomadas<br>sin dato actualizado</span>
+            <div class="stat-item-arpeggio" data-cursor-text="Cuello">
+              <span class="stat-index-mono">{'{03}'}</span>
               <span class="stat-number-arpeggio" data-target="67" data-suffix="%">67%</span>
+              <span class="stat-label-arpeggio">Decisiones tomadas<br>sin dato actualizado</span>
             </div>
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Caída de conversión<br>después de 15 minutos</span>
+            <div class="stat-item-arpeggio" data-cursor-text="Cuello">
+              <span class="stat-index-mono">{'{04}'}</span>
               <span class="stat-number-arpeggio" data-target="80" data-suffix="%">80%</span>
+              <span class="stat-label-arpeggio">Caída de conversión<br>después de 15 minutos</span>
             </div>
           </div>
         </div>
@@ -237,9 +238,9 @@ import '../../styles/home.css';
           <p style="margin-top: 12px;">Los sectores comienzan a compartir datos en tiempo real. Los agentes atienden clientes, organizan el embudo y ejecutan procesos. Y el sistema mejora con cada operación. <strong>Llamamos a esta capa Opera.</strong></p>
         </div>
 
-        <div class="solucao-editorial-table reveal">
+        <div class="solucao-editorial-table reveal skew-on-scroll">
           
-          <div class="solucao-editorial-row">
+          <div class="solucao-editorial-row" data-cursor-text="Explorar">
             <div class="ser-col ser-index">{'{01}'}</div>
             <div class="ser-col ser-category">Marketing</div>
             <div class="ser-col ser-desc">Toma una decisión y ventas, finanzas y operación son notificados automáticamente. Antes de la próxima reunión.</div>
@@ -249,7 +250,7 @@ import '../../styles/home.css';
             </div>
           </div>
 
-          <div class="solucao-editorial-row">
+          <div class="solucao-editorial-row" data-cursor-text="Explorar">
             <div class="ser-col ser-index">{'{02}'}</div>
             <div class="ser-col ser-category">Operación</div>
             <div class="ser-col ser-desc">Detecta un cuello de botella y el sistema reorganiza prioridades de toda la empresa. Sin reunión, sin acta, sin fricción.</div>
@@ -259,7 +260,7 @@ import '../../styles/home.css';
             </div>
           </div>
 
-          <div class="solucao-editorial-row">
+          <div class="solucao-editorial-row" data-cursor-text="Explorar">
             <div class="ser-col ser-index">{'{03}'}</div>
             <div class="ser-col ser-category">Atención</div>
             <div class="ser-col ser-desc">Recibe una queja y toda la inteligencia aprende de ella. El próximo cliente no pasa por el mismo problema.</div>
@@ -272,28 +273,48 @@ import '../../styles/home.css';
         </div>
 
         <!-- Diagrama camada agêntica -->
-        <div class="agentic-diagram reveal" style="transition-delay: 200ms;">
-          <p class="agentic-diagram-title">cómo la capa agéntica conecta su empresa</p>
+        <div class="agentic-diagram reveal reveal-scale" style="transition-delay: 150ms;">
+          <p class="agentic-diagram-title">Cómo la capa agéntica conecta su empresa en tiempo real</p>
           <div class="agentic-system">
             
             <div class="agentic-layer top-layer">
-              <div class="agentic-node">Marketing</div>
-              <div class="agentic-node">Ventas / CRM</div>
-              <div class="agentic-node">Atención</div>
+              <div class="agentic-node" data-cursor-text="Conectar">
+                <i data-lucide="target" class="node-icon" aria-hidden="true"></i>
+                <span>Marketing</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Conectar">
+                <i data-lucide="mouse-pointer-click" class="node-icon" aria-hidden="true"></i>
+                <span>Ventas / CRM</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Conectar">
+                <i data-lucide="message-square" class="node-icon" aria-hidden="true"></i>
+                <span>Atención</span>
+              </div>
             </div>
 
             <div class="agentic-core-wrapper">
               <div class="agentic-core-glow"></div>
-              <div class="agentic-core">
+              <div class="agentic-core" data-cursor-text="Inteligencia">
                 <span class="core-pulse"></span>
-                Opera OS
+                <i data-lucide="brain-circuit" class="core-icon" aria-hidden="true"></i>
+                <span class="core-title">OPERA OS</span>
+                <span class="core-badge">Inteligencia Central</span>
               </div>
             </div>
 
             <div class="agentic-layer bottom-layer">
-              <div class="agentic-node">Operación</div>
-              <div class="agentic-node">Financiero</div>
-              <div class="agentic-node">Dashboard</div>
+              <div class="agentic-node" data-cursor-text="Conectar">
+                <i data-lucide="sliders" class="node-icon" aria-hidden="true"></i>
+                <span>Operación</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Conectar">
+                <i data-lucide="bar-chart-3" class="node-icon" aria-hidden="true"></i>
+                <span>Financiero</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Conectar">
+                <i data-lucide="layout-grid" class="node-icon" aria-hidden="true"></i>
+                <span>Dashboard</span>
+              </div>
             </div>
             
           </div>
@@ -304,7 +325,7 @@ import '../../styles/home.css';
         </p>
 
         <div class="reveal" style="text-align: center; margin-top: 48px;">
-          <a href="/es/opera-os" class="btn btn-secondary">
+          <a href="/es/opera-os" class="btn btn-secondary" data-cursor-text="Ver Método">
             Cómo funciona, en la práctica <span class="btn-arrow">→</span>
           </a>
         </div>
@@ -317,12 +338,12 @@ import '../../styles/home.css';
         <div class="section-header reveal">
           <p class="eyebrow">La Diferencia</p>
           <h2 id="diferencial-heading">Trabajamos para <em>no ser necesarios</em>.</h2>
-          <p>La mayoría intenta resolver comprando otra cosa más. Agencia, consultoría, software. Cada una entrega solo una parte.</p>
+          <p>La maioria intenta resolver comprando otra cosa más. Agencia, consultoría, software. Cada una entrega solo una parte.</p>
         </div>
 
         <!-- Tabela editorial de comparação -->
         <div class="dif-versus reveal">
-          <div class="dif-versus-others">
+          <div class="dif-versus-others" data-cursor-text="Otros">
             <div class="dif-versus-row">
               <span class="dif-versus-label">Agencia</span>
               <span class="dif-versus-result">entrega campaña. Y se va cuando termina el contrato.</span>
@@ -336,35 +357,36 @@ import '../../styles/home.css';
               <span class="dif-versus-result">entrega acceso. Otro sistema desconectado de los demás.</span>
             </div>
           </div>
-          <div class="dif-versus-catalise">
+          <div class="dif-versus-catalise" data-cursor-text="Catalise.me">
+            <span class="dif-versus-catalise-label">OPERA OS</span>
             <p class="dif-versus-catalise-desc"><strong>Hacemos que el sistema agéntico coopere con su negocio:</strong> construido, integrado, equipo entrenado y evolucionando en el tiempo.</p>
           </div>
         </div>
 
         <!-- Grade numerada de diferenciais -->
-        <div class="dif-grid reveal">
-          <div class="dif-item">
+        <div class="dif-grid reveal skew-on-scroll">
+          <div class="dif-item" data-cursor-text="Diferencial">
             <span class="dif-num">01</span>
             <div class="dif-body">
               <h3>Implementación completa, no recomendación.</h3>
               <p>Cuando nos vamos, está funcionando. No entregamos un plan para que usted ejecute.</p>
             </div>
           </div>
-          <div class="dif-item">
+          <div class="dif-item" data-cursor-text="Diferencial">
             <span class="dif-num">02</span>
             <div class="dif-body">
               <h3>Sistema propietario, no reventa.</h3>
               <p>Opera y CRM Matika son nuestros. No dependen de terceros que cambian con cada actualización.</p>
             </div>
           </div>
-          <div class="dif-item">
+          <div class="dif-item" data-cursor-text="Diferencial">
             <span class="dif-num">03</span>
             <div class="dif-body">
               <h3>Memoria permanente y auto-mejora.</h3>
               <p>El sistema registra cada decisión y se vuelve más inteligente cada semana. No es una automatización congelada.</p>
             </div>
           </div>
-          <div class="dif-item">
+          <div class="dif-item" data-cursor-text="Diferencial">
             <span class="dif-num">04</span>
             <div class="dif-body">
               <h3>Método y evolución continua.</h3>
@@ -383,8 +405,8 @@ import '../../styles/home.css';
           <h2 id="resultados-heading">Lo que cambia en <em>90 días</em>.</h2>
         </div>
 
-        <div class="before-after reveal">
-          <div class="before-col">
+        <div class="before-after reveal skew-on-scroll">
+          <div class="before-col" data-cursor-text="Antes">
             <div class="before-after-label">
               <span>✕</span> Antes de Catalise.me
             </div>
@@ -397,7 +419,7 @@ import '../../styles/home.css';
               <li><span class="list-icon">✕</span> No sabe qué canal trae más ROI</li>
             </ul>
           </div>
-          <div class="after-col">
+          <div class="after-col" data-cursor-text="90 Días">
             <div class="before-after-label">
               <span>✓</span> Después de Catalise.me (90 días)
             </div>
@@ -422,8 +444,8 @@ import '../../styles/home.css';
           <h2 id="para-quem-heading">Para quién Opera OS <em>funciona</em>.</h2>
         </div>
 
-        <div class="qual-grid reveal">
-          <div class="qual-col yes">
+        <div class="qual-grid reveal skew-on-scroll">
+          <div class="qual-col yes" data-cursor-text="Compatible">
             <div class="qual-header">
               <span class="qual-badge">Es para usted</span>
             </div>
@@ -450,7 +472,7 @@ import '../../styles/home.css';
               </li>
             </ul>
           </div>
-          <div class="qual-col no">
+          <div class="qual-col no" data-cursor-text="Incompatible">
             <div class="qual-header">
               <span class="qual-badge">No es para usted</span>
             </div>
@@ -485,12 +507,12 @@ import '../../styles/home.css';
         </h2>
         <p>En 45 minutos, ayudaremos a identificar cuellos de botella operativos, impactos financieros estimados y diseñar un plan de implementación personalizado para su contexto.</p>
         <div class="cta-buttons">
-          <a href="/es/contato" class="btn btn-primary btn-lg" id="final-cta-primary">
+          <a href="/es/contato" class="btn btn-primary btn-lg" id="final-cta-primary" data-cursor-text="Agendar">
             Agendar diagnóstico gratuito
             <span class="btn-arrow">→</span>
           </a>
           <a href="https://wa.me/5575991879786?text=%C2%A1Hola!%20Quiero%20saber%20m%C3%A1s%20sobre%20el%20diagn%C3%B3stico%20gratuito%20de%20Catalise.me."
-            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp">
+            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp" data-cursor-text="WhatsApp">
             Hablar por WhatsApp
           </a>
         </div>

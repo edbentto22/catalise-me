@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroBackground from '../../components/HeroBackground.astro';
 import '../../styles/home.css';
 ---
 
@@ -15,12 +16,8 @@ import '../../styles/home.css';
     <!-- ══════════════ HERO — EDITORIAL FULLSCREEN ══════════════ -->
     <section class="hero-editorial" aria-labelledby="hero-heading" id="hero">
 
-      <!-- BG Layer: vídeo + dark overlay -->
-      <div class="hero-bg-layer" aria-hidden="true" data-media-frame>
-        <video class="hero-video-bg" id="hero-bg-video" data-src="/assets/background-looping-video.mp4?v=20260715" poster="/assets/background-looping-video-poster.jpg" loop muted playsinline preload="none"></video>
-        <div class="hero-bg-overlay"></div>
-        <div class="hero-bg-grain"></div>
-      </div>
+      <!-- BG Layer: Noise Dark Blue Gradient with Squares -->
+      <HeroBackground className="hero-bg-layer" />
 
       <!-- Grid decoration: cruzes + nos pontos do grid -->
       <div class="hero-grid-crosses" aria-hidden="true">
@@ -177,22 +174,26 @@ import '../../styles/home.css';
           <div class="stats-arpeggio-header">
             <span class="stats-arpeggio-eyebrow">The Hidden Cost of Discoordination</span>
           </div>
-          <div class="stats-arpeggio-grid">
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Hours lost in<br>disconnected systems</span>
+          <div class="stats-arpeggio-grid skew-on-scroll">
+            <div class="stat-item-arpeggio" data-cursor-text="Bottleneck">
+              <span class="stat-index-mono">{'{01}'}</span>
               <span class="stat-number-arpeggio" data-target="286" data-suffix="h">286h</span>
+              <span class="stat-label-arpeggio">Hours lost in<br>disconnected systems</span>
             </div>
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Operation time<br>on manual tasks</span>
+            <div class="stat-item-arpeggio" data-cursor-text="Bottleneck">
+              <span class="stat-index-mono">{'{02}'}</span>
               <span class="stat-number-arpeggio" data-target="51" data-suffix="%">51%</span>
+              <span class="stat-label-arpeggio">Operation time<br>on manual tasks</span>
             </div>
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Decisions made<br>without updated data</span>
+            <div class="stat-item-arpeggio" data-cursor-text="Bottleneck">
+              <span class="stat-index-mono">{'{03}'}</span>
               <span class="stat-number-arpeggio" data-target="67" data-suffix="%">67%</span>
+              <span class="stat-label-arpeggio">Decisions made<br>without updated data</span>
             </div>
-            <div class="stat-item-arpeggio">
-              <span class="stat-label-arpeggio">Conversion drop<br>after 15 minutes</span>
+            <div class="stat-item-arpeggio" data-cursor-text="Bottleneck">
+              <span class="stat-index-mono">{'{04}'}</span>
               <span class="stat-number-arpeggio" data-target="80" data-suffix="%">80%</span>
+              <span class="stat-label-arpeggio">Conversion drop<br>after 15 minutes</span>
             </div>
           </div>
         </div>
@@ -237,9 +238,9 @@ import '../../styles/home.css';
           <p style="margin-top: 12px;">Departments start sharing data in real time. Agents serve customers, organize the funnel, and execute processes. The system improves with every operation. <strong>We call this layer Opera.</strong></p>
         </div>
 
-        <div class="solucao-editorial-table reveal">
+        <div class="solucao-editorial-table reveal skew-on-scroll">
           
-          <div class="solucao-editorial-row">
+          <div class="solucao-editorial-row" data-cursor-text="Explore">
             <div class="ser-col ser-index">{'{01}'}</div>
             <div class="ser-col ser-category">Marketing</div>
             <div class="ser-col ser-desc">Makes a decision and sales, finance, and operations are automatically notified. Before the next meeting.</div>
@@ -249,7 +250,7 @@ import '../../styles/home.css';
             </div>
           </div>
 
-          <div class="solucao-editorial-row">
+          <div class="solucao-editorial-row" data-cursor-text="Explore">
             <div class="ser-col ser-index">{'{02}'}</div>
             <div class="ser-col ser-category">Operations</div>
             <div class="ser-col ser-desc">Detects a bottleneck and the system reorganizes priorities across the company. No meetings, no minutes, no friction.</div>
@@ -259,7 +260,7 @@ import '../../styles/home.css';
             </div>
           </div>
 
-          <div class="solucao-editorial-row">
+          <div class="solucao-editorial-row" data-cursor-text="Explore">
             <div class="ser-col ser-index">{'{03}'}</div>
             <div class="ser-col ser-category">Customer Service</div>
             <div class="ser-col ser-desc">Receives a complaint and the entire intelligence learns from it. The next customer won’t face the same issue.</div>
@@ -272,28 +273,48 @@ import '../../styles/home.css';
         </div>
 
         <!-- Diagrama camada agêntica -->
-        <div class="agentic-diagram reveal" style="transition-delay: 200ms;">
-          <p class="agentic-diagram-title">how the agent layer connects your company</p>
+        <div class="agentic-diagram reveal reveal-scale" style="transition-delay: 150ms;">
+          <p class="agentic-diagram-title">How the agent layer connects your company in real time</p>
           <div class="agentic-system">
             
             <div class="agentic-layer top-layer">
-              <div class="agentic-node">Marketing</div>
-              <div class="agentic-node">Sales / CRM</div>
-              <div class="agentic-node">Customer Service</div>
+              <div class="agentic-node" data-cursor-text="Connect">
+                <i data-lucide="target" class="node-icon" aria-hidden="true"></i>
+                <span>Marketing</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Connect">
+                <i data-lucide="mouse-pointer-click" class="node-icon" aria-hidden="true"></i>
+                <span>Sales / CRM</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Connect">
+                <i data-lucide="message-square" class="node-icon" aria-hidden="true"></i>
+                <span>Customer Service</span>
+              </div>
             </div>
 
             <div class="agentic-core-wrapper">
               <div class="agentic-core-glow"></div>
-              <div class="agentic-core">
+              <div class="agentic-core" data-cursor-text="Intelligence">
                 <span class="core-pulse"></span>
-                Opera OS
+                <i data-lucide="brain-circuit" class="core-icon" aria-hidden="true"></i>
+                <span class="core-title">OPERA OS</span>
+                <span class="core-badge">Central Intelligence</span>
               </div>
             </div>
 
             <div class="agentic-layer bottom-layer">
-              <div class="agentic-node">Operations</div>
-              <div class="agentic-node">Finance</div>
-              <div class="agentic-node">Dashboard</div>
+              <div class="agentic-node" data-cursor-text="Connect">
+                <i data-lucide="sliders" class="node-icon" aria-hidden="true"></i>
+                <span>Operations</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Connect">
+                <i data-lucide="bar-chart-3" class="node-icon" aria-hidden="true"></i>
+                <span>Finance</span>
+              </div>
+              <div class="agentic-node" data-cursor-text="Connect">
+                <i data-lucide="layout-grid" class="node-icon" aria-hidden="true"></i>
+                <span>Dashboard</span>
+              </div>
             </div>
             
           </div>
@@ -304,7 +325,7 @@ import '../../styles/home.css';
         </p>
 
         <div class="reveal" style="text-align: center; margin-top: 48px;">
-          <a href="/en/opera-os" class="btn btn-secondary">
+          <a href="/en/opera-os" class="btn btn-secondary" data-cursor-text="View Method">
             How it works, in practice <span class="btn-arrow">→</span>
           </a>
         </div>
@@ -322,7 +343,7 @@ import '../../styles/home.css';
 
         <!-- Tabela editorial de comparação -->
         <div class="dif-versus reveal">
-          <div class="dif-versus-others">
+          <div class="dif-versus-others" data-cursor-text="Others">
             <div class="dif-versus-row">
               <span class="dif-versus-label">Agency</span>
               <span class="dif-versus-result">delivers campaign. Then leaves when contract ends.</span>
@@ -336,35 +357,36 @@ import '../../styles/home.css';
               <span class="dif-versus-result">delivers login. Another disconnected system.</span>
             </div>
           </div>
-          <div class="dif-versus-catalise">
+          <div class="dif-versus-catalise" data-cursor-text="Catalise.me">
+            <span class="dif-versus-catalise-label">OPERA OS</span>
             <p class="dif-versus-catalise-desc"><strong>We make the agent system co-operate with your business:</strong> built, integrated, team trained and evolving over time.</p>
           </div>
         </div>
 
         <!-- Grade numerada de diferenciais -->
-        <div class="dif-grid reveal">
-          <div class="dif-item">
+        <div class="dif-grid reveal skew-on-scroll">
+          <div class="dif-item" data-cursor-text="Advantage">
             <span class="dif-num">01</span>
             <div class="dif-body">
               <h3>Complete implementation, not recommendation.</h3>
               <p>When we leave, it’s working. We don’t deliver a plan for you to execute.</p>
             </div>
           </div>
-          <div class="dif-item">
+          <div class="dif-item" data-cursor-text="Advantage">
             <span class="dif-num">02</span>
             <div class="dif-body">
               <h3>Proprietary system, not resale.</h3>
               <p>Opera and Matika CRM are ours. They don’t depend on third parties changing with every update.</p>
             </div>
           </div>
-          <div class="dif-item">
+          <div class="dif-item" data-cursor-text="Advantage">
             <span class="dif-num">03</span>
             <div class="dif-body">
               <h3>Permanent memory and self-improvement.</h3>
               <p>The system records every decision and gets smarter every week. It’s not frozen automation.</p>
             </div>
           </div>
-          <div class="dif-item">
+          <div class="dif-item" data-cursor-text="Advantage">
             <span class="dif-num">04</span>
             <div class="dif-body">
               <h3>Method and continuous evolution.</h3>
@@ -383,8 +405,8 @@ import '../../styles/home.css';
           <h2 id="resultados-heading">What changes in <em>90 days</em>.</h2>
         </div>
 
-        <div class="before-after reveal">
-          <div class="before-col">
+        <div class="before-after reveal skew-on-scroll">
+          <div class="before-col" data-cursor-text="Before">
             <div class="before-after-label">
               <span>✕</span> Before Catalise.me
             </div>
@@ -397,7 +419,7 @@ import '../../styles/home.css';
               <li><span class="list-icon">✕</span> Doesn’t know which channel brings more ROI</li>
             </ul>
           </div>
-          <div class="after-col">
+          <div class="after-col" data-cursor-text="90 Days">
             <div class="before-after-label">
               <span>✓</span> After Catalise.me (90 days)
             </div>
@@ -422,8 +444,8 @@ import '../../styles/home.css';
           <h2 id="para-quem-heading">For whom Opera OS <em>works</em>.</h2>
         </div>
 
-        <div class="qual-grid reveal">
-          <div class="qual-col yes">
+        <div class="qual-grid reveal skew-on-scroll">
+          <div class="qual-col yes" data-cursor-text="Fit">
             <div class="qual-header">
               <span class="qual-badge">It’s for you</span>
             </div>
@@ -450,7 +472,7 @@ import '../../styles/home.css';
               </li>
             </ul>
           </div>
-          <div class="qual-col no">
+          <div class="qual-col no" data-cursor-text="Unfit">
             <div class="qual-header">
               <span class="qual-badge">It’s not for you</span>
             </div>
@@ -485,12 +507,12 @@ import '../../styles/home.css';
         </h2>
         <p>In 45 minutes, we’ll help identify operational bottlenecks, estimated financial impacts, and design a personalized implementation plan for your context.</p>
         <div class="cta-buttons">
-          <a href="/en/contato" class="btn btn-primary btn-lg" id="final-cta-primary">
+          <a href="/en/contato" class="btn btn-primary btn-lg" id="final-cta-primary" data-cursor-text="Schedule">
             Schedule free diagnosis
             <span class="btn-arrow">→</span>
           </a>
           <a href="https://wa.me/5575991879786?text=Hello!%20I%20would%20like%20to%20learn%20more%20about%20Catalise.me's%20free%20diagnostic%20session."
-            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp">
+            target="_blank" rel="noopener" class="btn btn-secondary btn-lg" id="final-cta-whatsapp" data-cursor-text="WhatsApp">
             Chat on WhatsApp
           </a>
         </div>

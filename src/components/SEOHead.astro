@@ -36,7 +36,7 @@ const alternateEntries = localizedPaths ? Object.entries(localizedPaths) as Arra
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a09">
+<meta name="theme-color" content="#ffffff">
 
 <!-- SEO -->
 <title>{title}</title>
@@ -65,9 +65,10 @@ const alternateEntries = localizedPaths ? Object.entries(localizedPaths) as Arra
 ))}
 {localizedPaths?.pt && <link rel="alternate" hreflang="x-default" href={new URL(localizedPaths.pt, canonicalOrigin).toString()} />}
 
-<!-- Preload critical fonts -->
-<link rel="preload" href="/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-book.otf" as="font" type="font/otf" crossorigin>
-<link rel="preload" href="/FONTES/pp-neue-montreal-cufonfonts/ppneuemontreal-medium.otf" as="font" type="font/otf" crossorigin>
+<!-- Google Fonts: Archivo (Display) & Manrope (Body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="/assets/favicon-site.png">

@@ -11,8 +11,7 @@ const { currentPath = '/', locale = 'pt', localizedPaths } = Astro.props;
 const links = [
   { href: '/', label: navigation[locale].home },
   { href: '/sobre', label: navigation[locale].about },
-  { href: '/opera-os', label: navigation[locale].opera },
-  { href: '/contato', label: navigation[locale].contact },
+  { href: '/manifesto', label: navigation[locale].manifesto },
 ];
 
 const currentBasePath = locale === 'pt' ? currentPath : currentPath.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/';
@@ -21,15 +20,13 @@ function isActive(linkHref: string): boolean {
   if (linkHref === '/') return currentBasePath === '/' || currentBasePath === '/index.html';
   return currentBasePath === linkHref || currentBasePath.startsWith(`${linkHref}/`);
 }
-
-const needsWhiteLogo = currentPath.includes('/contato') || currentPath.includes('/sobre');
 ---
 
 <!-- NAV -->
 <nav class="nav" aria-label="Navegação principal">
   <div class="nav-inner">
     <a href={localizedHref('/', locale)} class="nav-logo" aria-label="Catalise.me">
-      <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" class={`nav-logo-img ${needsWhiteLogo ? 'invert-logo' : ''}`} width="420" height="84">
+      <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" class="nav-logo-img" width="420" height="84">
     </a>
 
     <ul class="nav-links" role="list">
@@ -38,17 +35,26 @@ const needsWhiteLogo = currentPath.includes('/contato') || currentPath.includes(
       ))}
     </ul>
 
-    {localizedPaths && (
-      <div class="nav-language" aria-label="Language selector">
-        {(Object.keys(localizedPaths) as Locale[]).map((language) => (
-          <a href={localizedPaths[language]} hreflang={locales[language].code} lang={locales[language].code} aria-current={language === locale ? 'true' : undefined}>{locales[language].label}</a>
-        ))}
-      </div>
-    )}
+    <div class="nav-right">
+      {localizedPaths && (
+        <div class="nav-language" aria-label="Language selector">
+          {(Object.keys(localizedPaths) as Locale[]).map((language) => (
+            <a href={localizedPaths[language]} hreflang={locales[language].code} lang={locales[language].code} aria-current={language === locale ? 'true' : undefined}>{locales[language].label}</a>
+          ))}
+        </div>
+      )}
 
-    <button class="nav-hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" id="hamburger-btn">
-      <span></span><span></span><span></span>
-    </button>
+      <button type="button" class="nav-contact-btn" data-open-modal aria-label="Abrir diagnóstico e contato">
+        <span>{navigation[locale].contact}</span>
+        <svg class="nav-btn-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <button class="nav-hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -57,4 +63,7 @@ const needsWhiteLogo = currentPath.includes('/contato') || currentPath.includes(
   {links.map(link => (
     <a href={localizedHref(link.href, locale)} aria-current={isActive(link.href) ? 'page' : undefined}>{link.label}</a>
   ))}
+  <button type="button" class="mobile-contact-btn" data-open-modal>
+    {navigation[locale].contact}
+  </button>
 </nav>

@@ -26,7 +26,7 @@ const methodAssets = [
   'afinamento.png',
 ];
 
-test('Home remove integralmente a seção exclusiva do método', async () => {
+test('Home é single-section estilo Brabaflow e remove seções antigas do método', async () => {
   const home = await readText('src/pages/index.astro');
 
   assert.doesNotMatch(home, /id=["']opera["']/);
@@ -34,11 +34,10 @@ test('Home remove integralmente a seção exclusiva do método', async () => {
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinacao)\.mp4/);
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinamento)\.png/);
 
-  const diferenciais = home.indexOf('Método e evolução contínua.');
-  const resultados = home.indexOf('<section id="resultados"');
-  assert.ok(diferenciais >= 0, 'conteúdo de diferenciais deve ser preservado');
-  assert.ok(resultados > diferenciais, '“O Que Muda” deve seguir os diferenciais');
-  assert.doesNotMatch(home.slice(diferenciais, resultados), /<section\b/);
+  // Home tem apenas 1 section e a chamada solicitada
+  assert.match(home, /<section class="hero-editorial"/);
+  assert.match(home, /Transformamos empresas em sistemas inteligentes consultáveis por IA/);
+  assert.equal((home.match(/<section\b/g) || []).length, 1, 'Home deve conter apenas uma section');
 });
 
 test('CSS exclusivo method-* não permanece órfão na Home', async () => {
@@ -71,11 +70,9 @@ test('dez assets saem de public e são preservados em _source-assets', async () 
   }
 });
 
-test('página OPERA e CTA da Home permanecem disponíveis', async () => {
-  const home = await readText('src/pages/index.astro');
+test('página OPERA e fases permanecem disponíveis no repositório', async () => {
   const opera = await readText('src/pages/opera-os.astro');
 
-  assert.match(home, /href=["']\/opera-os["'][^>]*>[\s\S]*?Conhecer o método OPERA/);
   for (const phase of ['Organização', 'Planejamento', 'Estratégia', 'Realização', 'Afinação']) {
     assert.match(opera, new RegExp(`<h3 class="opera-phase-title">${phase}<\\/h3>`));
   }

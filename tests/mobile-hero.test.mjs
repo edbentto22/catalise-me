@@ -76,21 +76,13 @@ test('conteúdo das Heroes é visível por padrão e anima apenas com motion ful
   assert.doesNotMatch(home, /(^|\n)\.hero-animate-[1-4]\s*\{[\s\S]*?opacity:\s*0;/);
 });
 
-test('Hero principal declara poster local estável e estado carregado', async () => {
+test('Hero principal utiliza componente de background animado HeroBackground', async () => {
   const page = await readText('src/pages/index.astro');
   const home = await readText('src/styles/home.css');
-  const poster = await readBinary('public/assets/background-looping-video-poster.jpg');
 
-  assert.match(page, /data-src="\/assets\/background-looping-video\.mp4\?v=20260715"/);
-  assert.match(page, /<video[^>]+poster="\/assets\/background-looping-video-poster\.jpg"[^>]*>/);
-  assert.match(home, /\.hero-bg-layer::before\s*\{[\s\S]*?background-image:\s*url\(['"]\/assets\/background-looping-video-poster\.jpg['"]\)[\s\S]*?opacity:\s*0\.55;/);
-  assert.match(home, /\.hero-bg-layer\.media-loaded::before\s*\{[\s\S]*?opacity:\s*0;/);
-  assert.match(home, /\.hero-video-bg\s*\{[\s\S]*?opacity:\s*0;/);
-  assert.match(home, /\.hero-video-bg\.loaded\s*\{[\s\S]*?opacity:\s*0\.55;/);
-  const layout = await readText('src/layouts/BaseLayout.astro');
-  assert.match(layout, /const mediaFrame = video\.closest<HTMLElement>\('\[data-media-frame\]'\)/);
-  assert.match(layout, /mediaFrame\?\.classList\.add\('media-loaded'\)/);
-  assert.deepEqual(jpegDimensions(poster), { width: 1920, height: 1080 });
+  assert.match(page, /import HeroBackground from ['"]\.\.\/components\/HeroBackground\.astro['"]/);
+  assert.match(page, /<HeroBackground/);
+  assert.match(home, /\.hero-bg-layer\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?z-index:\s*0;/);
 });
 
 test('MP4 permanece H.264 e tem moov antes de mdat para fast-start', async () => {

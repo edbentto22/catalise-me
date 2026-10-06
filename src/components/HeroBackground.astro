@@ -1,0 +1,262 @@
+---
+// HeroBackground.astro - Native high-performance canvas implementation of noise-dark-blue-gradient-with-squares
+interface Props {
+  className?: string;
+  squareSize?: number;
+  speed?: number;
+  direction?: 'diagonal' | 'right' | 'left' | 'up' | 'down';
+  borderColor?: string;
+  hoverFillColor?: string;
+  hoverStrokeColor?: string;
+  hoverGlowColor?: string;
+}
+
+const {
+  className = '',
+  squareSize = 44,
+  speed = 0.6,
+  direction = 'diagonal',
+  borderColor = 'rgba(0,0,0,0.06)',
+  hoverFillColor = 'rgba(0,0,0,0.03)',
+  hoverStrokeColor = 'rgba(0,0,0,0.30)',
+  hoverGlowColor = 'rgba(0,0,0,0.10)',
+} = Astro.props;
+---
+
+<div
+  class={`hero-squares-bg overflow-hidden absolute inset-0 z-0 pointer-events-auto ${className}`}
+  data-square-size={squareSize}
+  data-speed={speed}
+  data-direction={direction}
+  data-border-color={borderColor}
+  data-hover-fill={hoverFillColor}
+  data-hover-stroke={hoverStrokeColor}
+  data-hover-glow={hoverGlowColor}
+  style="background-color: #ffffff;"
+>
+  <!-- grid layer -->
+  <div class="hero-squares-grid-layer absolute inset-0 z-10" style="position: absolute; inset: 0; z-index: 10;">
+    <canvas class="hero-grid-canvas" style="display: block; width: 100%; height: 100%; border: none;"></canvas>
+  </div>
+
+  <!-- interactive hover cell -->
+  <div class="hero-squares-hover-layer absolute inset-0 z-20" style="position: absolute; inset: 0; z-index: 20;">
+    <canvas class="hero-hover-canvas" style="display: block; width: 100%; height: 100%; border: none; cursor: crosshair; pointer-events: auto;"></canvas>
+  </div>
+</div>
+
+<script>
+  function initHeroSquaresBg() {
+    const root = document.querySelector<HTMLElement>('.hero-squares-bg');
+    if (!root) return;
+
+    const squareSize = parseInt(root.dataset.squareSize || '44', 10);
+    const speed = parseFloat(root.dataset.speed || '0.6');
+    const direction = root.dataset.direction || 'diagonal';
+    const borderColor = root.dataset.borderColor || 'rgba(255,255,255,0.08)';
+    const hoverFillColor = root.dataset.hoverFill || 'rgba(255,255,255,0.05)';
+    const hoverStrokeColor = root.dataset.hoverStroke || 'rgba(255,255,255,0.40)';
+    const hoverGlowColor = root.dataset.hoverGlow || 'rgba(255,255,255,0.20)';
+
+    const gridCanvas = root.querySelector<HTMLCanvasElement>('.hero-grid-canvas');
+    const hoverCanvas = root.querySelector<HTMLCanvasElement>('.hero-hover-canvas');
+    const noiseCanvas = root.querySelector<HTMLCanvasElement>('.hero-noise-canvas');
+
+    if (!gridCanvas || !hoverCanvas || !noiseCanvas) return;
+
+    const gridCtx = gridCanvas.getContext('2d');
+    const hoverCtx = hoverCanvas.getContext('2d');
+    const noiseCtx = noiseCanvas.getContext('2d', { alpha: true });
+
+    if (!gridCtx || !hoverCtx || !noiseCtx) return;
+
+    const gridOffset = { x: 0, y: 0 };
+    let hoveredCell: { x: number; y: number } | null = null;
+
+    const originFromOffset = (offset: { x: number; y: number }, cell: number) => ({
+      x: -((offset.x % cell) + cell) % cell,
+      y: -((offset.y % cell) + cell) % cell,
+    });
+
+    const setHiDPICanvas = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+      const parent = canvas.parentElement;
+      const cw = (parent?.clientWidth ?? window.innerWidth) | 0;
+      const ch = (parent?.clientHeight ?? window.innerHeight) | 0;
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
+      canvas.width = Math.floor(cw * dpr);
+      canvas.height = Math.floor(ch * dpr);
+      canvas.style.width = cw + 'px';
+      canvas.style.height = ch + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    // 1. Setup HiDPI sizing
+    const resizeAll = () => {
+      setHiDPICanvas(gridCanvas, gridCtx);
+      setHiDPICanvas(hoverCanvas, hoverCtx);
+
+      // Noise fixed size
+      const S = 1024;
+      noiseCanvas.width = S;
+      noiseCanvas.height = S;
+      noiseCanvas.style.width = '100%';
+      noiseCanvas.style.height = '100%';
+    };
+
+    resizeAll();
+    window.addEventListener('resize', resizeAll, { passive: true });
+
+    // 2. Noise drawing loop
+    let noiseFrame = 0;
+    const noiseS = 1024;
+    const drawNoise = () => {
+      const img = noiseCtx.createImageData(noiseS, noiseS);
+      const d = img.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const v = Math.random() * 255;
+        d[i] = v;
+        d[i + 1] = v;
+        d[i + 2] = v;
+        d[i + 3] = 18; // alpha 18
+      }
+      noiseCtx.putImageData(img, 0, 0);
+    };
+
+    // 3. Mouse listener on window bounded to hoverCanvas
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = hoverCanvas.getBoundingClientRect();
+      if (
+        e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom
+      ) {
+        hoveredCell = null;
+        return;
+      }
+
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const origin = originFromOffset(gridOffset, squareSize);
+      const gx = Math.floor((mouseX - origin.x) / squareSize);
+      const gy = Math.floor((mouseY - origin.y) / squareSize);
+      hoveredCell = { x: gx, y: gy };
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    hoverCanvas.addEventListener('mouseleave', () => {
+      hoveredCell = null;
+    });
+
+    // 4. Main animation loop
+    let isVisible = true;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        isVisible = e.isIntersecting;
+      });
+    }, { threshold: 0.05 });
+    observer.observe(root);
+
+    const tick = () => {
+      if (!isVisible) {
+        requestAnimationFrame(tick);
+        return;
+      }
+
+      // Offset update
+      const v = Math.max(speed, 0.1);
+      const s = squareSize;
+      switch (direction) {
+        case 'right':
+          gridOffset.x = (gridOffset.x - v + s) % s;
+          break;
+        case 'left':
+          gridOffset.x = (gridOffset.x + v + s) % s;
+          break;
+        case 'up':
+          gridOffset.y = (gridOffset.y + v + s) % s;
+          break;
+        case 'down':
+          gridOffset.y = (gridOffset.y - v + s) % s;
+          break;
+        case 'diagonal':
+        default:
+          gridOffset.x = (gridOffset.x - v + s) % s;
+          gridOffset.y = (gridOffset.y - v + s) % s;
+          break;
+      }
+
+      // Draw Grid
+      const cw = gridCanvas.clientWidth;
+      const ch = gridCanvas.clientHeight;
+      gridCtx.clearRect(0, 0, cw, ch);
+
+      const origin = originFromOffset(gridOffset, squareSize);
+
+      gridCtx.strokeStyle = borderColor;
+      gridCtx.lineWidth = 1;
+
+      // Vertical lines
+      for (let x = origin.x; x < cw + squareSize; x += squareSize) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(x + 0.5, 0);
+        gridCtx.lineTo(x + 0.5, ch);
+        gridCtx.stroke();
+      }
+
+      // Horizontal lines
+      for (let y = origin.y; y < ch + squareSize; y += squareSize) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(0, y + 0.5);
+        gridCtx.lineTo(cw, y + 0.5);
+        gridCtx.stroke();
+      }
+
+      // Draw Hover Canvas
+      hoverCtx.clearRect(0, 0, cw, ch);
+      if (hoveredCell) {
+        const { x: gx, y: gy } = hoveredCell;
+        const cellX = origin.x + gx * squareSize;
+        const cellY = origin.y + gy * squareSize;
+
+        // Glow + fill
+        hoverCtx.save();
+        hoverCtx.shadowBlur = 18;
+        hoverCtx.shadowColor = hoverGlowColor;
+        hoverCtx.fillStyle = hoverFillColor;
+        hoverCtx.fillRect(cellX, cellY, squareSize, squareSize);
+        hoverCtx.restore();
+
+        // Border
+        hoverCtx.lineWidth = 1.25;
+        hoverCtx.strokeStyle = hoverStrokeColor;
+        hoverCtx.strokeRect(cellX + 0.5, cellY + 0.5, squareSize - 1, squareSize - 1);
+
+        // Inner sheen
+        const sheenGrad = hoverCtx.createLinearGradient(cellX, cellY, cellX, cellY + squareSize);
+        sheenGrad.addColorStop(0, 'rgba(255,255,255,0.20)');
+        sheenGrad.addColorStop(1, 'rgba(255,255,255,0.05)');
+        hoverCtx.fillStyle = sheenGrad;
+        hoverCtx.fillRect(cellX, cellY, squareSize, squareSize);
+      }
+
+      // Draw Noise every 2 frames
+      if (noiseFrame % 2 === 0) {
+        drawNoise();
+      }
+      noiseFrame++;
+
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroSquaresBg, { once: true });
+  } else {
+    initHeroSquaresBg();
+  }
+</script>

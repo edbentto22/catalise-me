@@ -37,84 +37,81 @@
 }
 
 :root {
-  /* ─── Core Palette — Monolith Premium Light ─── */
-  --bg-base:       #f3f4f1;
-  --bg-surface:    #e7eae5;
-  --bg-elevated:   #fafbf8;
-  --bg-card:       rgba(20, 20, 18, 0.02);
-  --bg-card-hover: rgba(107, 158, 17, 0.04);
-  --bg-glass:      rgba(250, 251, 248, 0.78);
-  --bg-glass-light: rgba(20, 20, 18, 0.03);
+  /* ─── Core Palette — Clean White & Black Lines (Manus.im, Kokonut UI, Brabaflow) ─── */
+  --bg-canvas:        #ffffff;
+  --bg-base:          #ffffff;
+  --bg-surface:       #fafafa;
+  --bg-elevated:      #f4f4f5;
+  --bg-card:          #ffffff;
+  --bg-card-hover:    #f9fafb;
+  --bg-glass:         rgba(255, 255, 255, 0.88);
+  --bg-glass-light:   rgba(255, 255, 255, 0.70);
 
-  /* ─── Dark Mode Palette — Deep Mineral Blue-Black (Human Academy Inspired) ─── */
-  --bg-dark-base:     #0b0f16;
-  --bg-dark-surface:  #121824;
-  --bg-dark-elevated: #192231;
-  --bg-dark-glass:    rgba(11, 15, 22, 0.72);
-  --bg-dark-card:     rgba(255, 255, 255, 0.02);
+  /* Monochromatic High-Contrast Accents */
+  --green:            #000000;
+  --green-glow:       rgba(0, 0, 0, 0.08);
+  --green-deep:       #ffffff;
+  --green-dim:        rgba(0, 0, 0, 0.04);
+  --green-border:     rgba(0, 0, 0, 0.12);
+  --green-mid:        rgba(0, 0, 0, 0.20);
+  --green-bright:     #000000;
+  --green-neon:       #8AF334; /* Catalise.me brand signature accent */
 
-  /* Accent — construction green, adapted for light contrast (darker acid/olive green) */
-  --green:         #79b81c;
-  --green-glow:    #537f12;
-  --green-deep:    #4c7510;
-  --green-dim:     rgba(107, 158, 17, 0.08);
-  --green-border:  rgba(107, 158, 17, 0.22);
-  --green-mid:     rgba(107, 158, 17, 0.45);
-  --green-bright:  rgba(107, 158, 17, 0.85);
-  --green-neon:    #8dcf28;
+  /* Monochromatic Neutrals & Mineral Scale */
+  --warm-100:         #ffffff;
+  --warm-200:         #fafafa;
+  --warm-300:         #f4f4f5;
+  --warm-500:         #a1a1aa;
+  --warm-700:         #71717a;
+  --warm-800:         #27272a;
+  --warm-900:         #09090b;
 
-  /* Warm neutrals — coherent temperature for light mode */
-  --warm-100:      #141412;
-  --warm-200:      #252421;
-  --warm-300:      #3a3935;
-  --warm-500:      #7a7972;
-  --warm-700:      #c8c7bf;
-  --warm-800:      #e0dfd9;
-  --warm-900:      #f5f4ef;
+  /* Deep surface */
+  --deep-green:       #18181b;
 
-  /* Deep surface for hero contrast */
-  --deep-green:    #eef2ec;
+  /* Text — Pure Black & High Editorial Contrast */
+  --text-primary:     #09090b;
+  --text-secondary:   #4b5563;
+  --text-muted:       #71717a;
+  --text-green:       #09090b;
+  --text-dim:         #9ca3af;
+  --text-main:        var(--text-primary);
+  --text-on-dark:     #ffffff;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.70);
 
-  /* Text */
-  --text-primary:   #151713;
-  --text-secondary: rgba(21, 23, 19, 0.76);
-  --text-muted:     rgba(21, 23, 19, 0.62);
-  --text-green:     #4c7510;
-  --text-dim:       rgba(20, 20, 18, 0.35);
-  --text-main:      var(--text-primary);
-  --text-on-dark:   #f7f8f4;
-  --text-on-dark-muted: rgba(247, 248, 244, 0.68);
-
-  /* Borders — visible seams */
-  --border-subtle:       rgba(20, 20, 18, 0.06);
-  --border-mid:          rgba(20, 20, 18, 0.11);
-  --border-strong:       rgba(20, 20, 18, 0.20);
-  --border-green:        rgba(107, 158, 17, 0.22);
-  --border-green-strong: rgba(107, 158, 17, 0.50);
+  /* Borders — Razor-sharp 1px Black & Hairline Lines */
+  --line-hairline:       rgba(0, 0, 0, 0.08);
+  --line-black:          #000000;
+  --border-subtle:       rgba(0, 0, 0, 0.08);
+  --border-mid:          rgba(0, 0, 0, 0.15);
+  --border-strong:       #000000;
+  --border-green:        rgba(0, 0, 0, 0.12);
+  --border-green-strong: #000000;
 
   /* Borders (Dark Section) */
-  --border-dark-subtle:  rgba(255, 255, 255, 0.06);
-  --border-dark-mid:     rgba(255, 255, 255, 0.12);
-  --border-dark-strong:  rgba(255, 255, 255, 0.20);
+  --border-dark-subtle:  rgba(255, 255, 255, 0.08);
+  --border-dark-mid:     rgba(255, 255, 255, 0.16);
+  --border-dark-strong:  rgba(255, 255, 255, 0.40);
 
-  /* ─── Gradients ─── */
-  --grad-green:    linear-gradient(135deg, #6b9e11 0%, #55800a 100%);
-  --grad-dark:     linear-gradient(180deg, #f5f6f5 0%, #eef2ec 100%);
-  --grad-glow:     radial-gradient(ellipse 70% 45% at 50% 0%, rgba(107, 158, 17, 0.08) 0%, transparent 65%);
-  --grad-hero:     radial-gradient(ellipse 100% 70% at 50% -10%, rgba(107, 158, 17, 0.07) 0%, transparent 60%);
-  --grad-mineral:  radial-gradient(ellipse 80% 60% at 50% 50%, rgba(107, 158, 17, 0.04) 0%, rgba(245, 246, 245, 0) 70%);
-  --grad-cta:      radial-gradient(ellipse 900px 600px at 50% 50%, rgba(107, 158, 17, 0.05) 0%, transparent 70%);
-  --grad-section:  linear-gradient(180deg, transparent 0%, rgba(107, 158, 17, 0.015) 50%, transparent 100%);
-  /* Radial glow for dark sections */
-  --grad-dark-glow: radial-gradient(circle at 50% 30%, rgba(124, 189, 18, 0.08) 0%, transparent 70%);
+  /* ─── Gradients — Monochromatic Clean Light ─── */
+  --grad-green:       linear-gradient(135deg, #09090b 0%, #27272a 100%);
+  --grad-dark:        linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+  --grad-glow:        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(0, 0, 0, 0.04) 0%, transparent 65%);
+  --grad-hero:        radial-gradient(ellipse 100% 70% at 50% -10%, rgba(0, 0, 0, 0.03) 0%, transparent 60%);
+  --grad-mineral:     radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 0, 0, 0.02) 0%, transparent 70%);
+  --grad-cta:         radial-gradient(ellipse 900px 600px at 50% 50%, rgba(0, 0, 0, 0.03) 0%, transparent 70%);
+  --grad-section:     linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 50%, transparent 100%);
+  --grad-dark-glow:   radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 0.04) 0%, transparent 70%);
 
-  /* ─── Typography ─── */
-  --font-display: 'PP Neue Montreal', 'Inter', -apple-system, sans-serif;
-  --font-body:    'PP Neue Montreal', 'Inter', -apple-system, sans-serif;
+  /* ─── Typography (Archivo & Manrope · conforme proposta-jordan) ─── */
+  --font-display: 'Archivo', sans-serif;
+  --font-body:    'Manrope', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+  --display:      'Archivo', sans-serif;
+  --body:         'Manrope', sans-serif;
 
   /* Heading weights */
-  --weight-thin:   200;
+  --weight-thin:   100;
   --weight-extra-light: 200;
   --weight-light:  300;
   --weight-book:   400;
@@ -126,18 +123,19 @@
    * Base: 16px mobile → 17px desktop (set on html element)
    * All values use rem so they scale with the html root.
    */
-  --text-xs:      0.875rem;                         /* 14px — labels, captions, metadata */
-  --text-sm:      0.875rem;                         /* 14px — secondary body, footnotes */
+  --text-2xs:     0.6875rem;                        /* 11px — micro labels, status tags, badges */
+  --text-xs:      0.75rem;                          /* 12px — eyebrows, kicker labels */
+  --text-sm:      0.875rem;                         /* 14px — secondary body, captions, notes */
   --text-base:    1rem;                             /* 16px — primary body copy */
-  --text-md:      clamp(1rem, 1.15vw, 1.125rem);    /* 16→18px — lead paragraphs */
-  --text-lg:      clamp(1.125rem, 1.4vw, 1.25rem);  /* 18→20px — subheadings, callouts */
-  --text-xl:      1.5rem;                           /* 24px — section intro, card titles */
-  --text-2xl:     1.875rem;                         /* 30px — h3 headings */
-  --text-3xl:     clamp(1.875rem, 3.5vw, 2.5rem);   /* 30→40px — h2 small */
-  --text-4xl:     clamp(2.25rem,  4.5vw, 3.25rem);  /* 36→52px — h2 standard */
-  --text-5xl:     clamp(2.75rem,  5.5vw, 4.5rem);   /* 44→72px — hero supporting */
-  --text-hero:    clamp(3.25rem,  7vw,   6.25rem);  /* 52→100px — primary hero h1 */
-  --text-display: clamp(4rem,     9vw,   8rem);     /* 64→128px — decorative wordmarks */
+  --text-md:      clamp(1.0625rem, 1.15vw, 1.125rem); /* 17→18px — lead paragraphs */
+  --text-lg:      clamp(1.125rem, 1.35vw, 1.25rem);   /* 18→20px — subheadings, callouts */
+  --text-xl:      clamp(1.25rem, 1.6vw, 1.5rem);      /* 20→24px — section intro, card titles */
+  --text-2xl:     clamp(1.5rem, 2.2vw, 1.875rem);     /* 24→30px — h3 headings */
+  --text-3xl:     clamp(1.875rem, 3.2vw, 2.5rem);     /* 30→40px — h2 section headers */
+  --text-4xl:     clamp(2.35rem,  4.2vw, 3.25rem);    /* 38→52px — h2 editorial / large */
+  --text-5xl:     clamp(2.85rem,  5.5vw, 4.25rem);    /* 46→68px — hero supporting */
+  --text-hero:    clamp(2.85rem,  6.2vw, 5.5rem);     /* 46→88px — primary hero h1 */
+  --text-display: clamp(3.5rem,   8vw,   7.5rem);     /* 56→120px — decorative wordmarks */
 
   /* ─── Spacing ─── */
   --space-1:  0.25rem;
@@ -155,8 +153,9 @@
   --space-32: 8rem;
   --space-40: 10rem;
 
-  /* ─── Radius — Monolith Premium: Elegant Rounded Corner Radius ─── */
-  --radius-sm:   8px;
+  /* ─── Radius — Monolith Premium: Harmonized Geometric Scale ─── */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
   --radius-md:   16px;
   --radius-lg:   24px;
   --radius-xl:   32px;
@@ -176,30 +175,32 @@
   --focus-ring-dark: #0b0f16;
   --focus-ring-light: #f7f8f4;
 
-  /* ─── Glassmorphism ─── */
-  --glass-blur:  blur(24px) saturate(180%);
-  --glass-blur-heavy: blur(48px) saturate(200%);
-  --glass-bg:    rgba(245, 246, 245, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.4);
+  /* ─── Glassmorphism — Dark Obsidian Glass ─── */
+  --glass-blur:       blur(24px) saturate(160%);
+  --glass-blur-heavy: blur(48px) saturate(180%);
+  --glass-bg:         rgba(10, 10, 14, 0.78);
+  --glass-border:     rgba(255, 255, 255, 0.12);
 
-  /* ─── Shadows — mineral depth ─── */
-  --glow-green-sm: 0 0 12px rgba(107, 158, 17, 0.15);
-  --glow-green-md: 0 0 28px rgba(107, 158, 17, 0.22), 0 0 56px rgba(107, 158, 17, 0.06);
-  --glow-green-lg: 0 0 56px rgba(107, 158, 17, 0.30), 0 0 112px rgba(107, 158, 17, 0.10);
-  --shadow-card:   0 1px 3px rgba(20, 20, 18, 0.08), 0 8px 24px rgba(20, 20, 18, 0.04);
-  --shadow-float:  0 20px 60px rgba(20, 20, 18, 0.12), 0 8px 20px rgba(20, 20, 18, 0.06);
-  --shadow-warm:   0 2px 8px rgba(20, 20, 18, 0.06);
+  /* ─── Shadows — tactile elevation, obsidian depth & white highlights ─── */
+  --glow-green-sm:     0 0 16px rgba(255, 255, 255, 0.12);
+  --glow-green-md:     0 0 32px rgba(255, 255, 255, 0.18), 0 0 64px rgba(255, 255, 255, 0.06);
+  --glow-green-lg:     0 0 64px rgba(255, 255, 255, 0.25), 0 0 128px rgba(255, 255, 255, 0.08);
+  --shadow-sm:         0 1px 2px rgba(0, 0, 0, 0.6);
+  --shadow-card:       0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-subtle);
+  --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--border-strong);
+  --shadow-float:      0 24px 64px rgba(0, 0, 0, 0.75), 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-warm:       0 2px 8px rgba(0, 0, 0, 0.5);
 
-  /* ─── Motion — precise, purposeful ─── */
-  --ease-out:      cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-spring:   cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* ─── Motion — precise, purposeful & cinematic ─── */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-sharp:    cubic-bezier(0.4, 0, 0.2, 1);
   --ease-smooth:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 180ms;
-  --duration-base: 220ms;
-  --duration-slow: 700ms;
-  --duration-xslow: 1000ms;
+  --duration-base: 260ms;
+  --duration-slow: 600ms;
+  --duration-xslow: 900ms;
 
   /* ─── Layout ─── */
   --container:    1320px;
@@ -212,12 +213,12 @@
   --seam-green: 1px solid var(--border-green);
 
   /* ─── Legacy aliases — compatibility with existing components ─── */
-  --charcoal:    #141412;
-  --white:       #141412;
-  --slate:       #eceeec;
-  --slate-light: #e2e4e2;
-  --gray-dark:   #7a7972;
-  --gray:        #7a7972;
-  --gray-light:  #c8c7bf;
-  --light-gray:  #eceeec;
+  --charcoal:    #070709;
+  --white:       #ffffff;
+  --slate:       #121217;
+  --slate-light: #1b1b22;
+  --gray-dark:   #27272e;
+  --gray:        #71717a;
+  --gray-light:  #a1a1aa;
+  --light-gray:  #121217;
 }

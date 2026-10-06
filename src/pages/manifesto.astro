@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/inner.css';
+---
+
+<BaseLayout
+  title="Manifesto · Catalise.me"
+  description="O manifesto da Catalise.me sobre inteligência artificial para empresas: menos piloto, mais IA em produção."
+  ogTitle="Manifesto · Catalise.me"
+  ogDescription="O manifesto da Catalise.me: princípios de sistemas inteligentes e governança operacional."
+  ogUrl="https://catalise.me/manifesto"
+  canonical="https://catalise.me/manifesto"
+  pageType="inner"
+>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <header class="page-hero" aria-labelledby="manifesto-heading">
+    <div class="container manifesto-container">
+      <span class="page-hero-eyebrow">Manifesto // Catalise.me</span>
+      <h1 id="manifesto-heading" class="page-hero-title">
+        Menos piloto.<br>
+        <em>Mais IA em produção.</em>
+      </h1>
+      <p class="page-hero-lede">
+        Acreditamos que a inteligência artificial não existe para gerar mais protótipos decorativos ou apresentações teóricas. Ela existe para estruturar sistemas que operam, respondem e geram valor diário e mensurável para empresas reais.
+      </p>
+    </div>
+  </header>
+
+  <!-- ══════════════ CORPO DO MANIFESTO ══════════════ -->
+  <section class="inner-section" aria-labelledby="principios-heading">
+    <div class="container manifesto-container">
+
+      <!-- Declaração de Abertura / Statement -->
+      <blockquote class="manifesto-statement">
+        “Transformamos empresas em sistemas inteligentes consultáveis por IA. Não para substituir a visão humana, mas para libertá-la da fricção operacional e torná-la exponencial.”
+      </blockquote>
+
+      <div class="principles-list">
+
+        <article class="principle-item">
+          <span class="principle-num" aria-hidden="true">01</span>
+          <div class="principle-content">
+            <h3>Sistema vence esforço isolado</h3>
+            <p>
+              Toda empresa que cresce de forma sustentável depende menos do esforço heróico e exaustivo de indivíduos e mais da robustez do seu sistema operacional. Construímos para a autonomia e fluidez do seu negócio, não para criar dependências.
+            </p>
+          </div>
+        </article>
+
+        <article class="principle-item">
+          <span class="principle-num" aria-hidden="true">02</span>
+          <div class="principle-content">
+            <h3>Adoção real supera qualquer modelo</h3>
+            <p>
+              O melhor modelo de inteligência artificial do mundo não gera retorno se não estiver conectado às rotinas diárias da sua equipe, aos canais de comunicação com clientes e aos bancos de dados onde o negócio realmente acontece.
+            </p>
+          </div>
+        </article>
+
+        <article class="principle-item">
+          <span class="principle-num" aria-hidden="true">03</span>
+          <div class="principle-content">
+            <h3>Implementação concreta, não relatórios</h3>
+            <p>
+              Consultorias tradicionais transferem o peso da execução de volta para o cliente com apresentações teóricas. Nosso contrato é de engenharia: entregamos sistemas agênticos instalados, testados e funcionando em produção.
+            </p>
+          </div>
+        </article>
+
+        <article class="principle-item">
+          <span class="principle-num" aria-hidden="true">04</span>
+          <div class="principle-content">
+            <h3>Governança e controle como premissa</h3>
+            <p>
+              Agentes sem limites e sem supervisão são passivos operacionais. Desenhamos fluxos com trilha de auditoria, limites claros de autonomia e intervenção humana fluida onde o julgamento crítico for necessário.
+            </p>
+          </div>
+        </article>
+
+        <article class="principle-item">
+          <span class="principle-num" aria-hidden="true">05</span>
+          <div class="principle-content">
+            <h3>Evolução contínua em produção</h3>
+            <p>
+              Um sistema com inteligência artificial não é um produto fechado que se entrega e esquece. As regras de negócio mudam, novos canais surgem e a operação se expande. Acompanhamos a calibração contínua para que a inteligência cresça junto com a empresa.
+            </p>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ CTA FINAL ══════════════ -->
+  <section class="cta-section" aria-labelledby="manifesto-cta-heading">
+    <div class="container manifesto-container">
+      <span class="page-hero-eyebrow">Próximo Passo</span>
+      <h2 id="manifesto-cta-heading">Pronto para colocar IA em produção?</h2>
+      <p>
+        Agende uma conversa técnica com nossos especialistas e descubra como transformar a rotina da sua empresa em um sistema inteligente.
+      </p>
+      <div class="cta-buttons">
+        <button type="button" class="btn btn-primary btn-lg" data-open-modal aria-label="Entrar em contato">
+          Entrar em Contato <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <a href="/" class="btn btn-secondary btn-lg" aria-label="Voltar para a Home">
+          Voltar para a Home
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
