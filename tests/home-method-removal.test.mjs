@@ -26,7 +26,7 @@ const methodAssets = [
   'afinamento.png',
 ];
 
-test('Home tem hero e faixa de caminhos, sem as seções antigas do método', async () => {
+test('Home tem apenas o hero, sem as seções antigas do método', async () => {
   const [home, copy] = await Promise.all([readText('src/views/HomeView.astro'), readText('src/i18n/content/home.ts')]);
 
   assert.doesNotMatch(home, /id=["']opera["']/);
@@ -34,11 +34,12 @@ test('Home tem hero e faixa de caminhos, sem as seções antigas do método', as
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinacao)\.mp4/);
   assert.doesNotMatch(home, /\/assets\/(?:organizacao|planejamento|estrategia|realizacao|afinamento)\.png/);
 
-  // Home: hero com a tese "Empresas consultáveis" e uma faixa de caminhos (Opera OS e projetos sob medida)
+  // Home: dobra única com o título rotativo e a tese "consultável para IA"
   assert.match(home, /<section class="hero-editorial"/);
-  assert.match(home, /<section class="home-paths"/);
-  assert.match(copy, /Construímos empresas <em>consultáveis<\/em>\./);
-  assert.equal((home.match(/<section\b/g) || []).length, 2, 'Home deve conter o hero e a faixa de caminhos');
+  assert.match(home, /data-hero-rotator/);
+  assert.match(copy, /headingThesis: 'Seu negócio precisa ser consultável para IA\./);
+  assert.doesNotMatch(home, /query-console|home-paths/);
+  assert.equal((home.match(/<section\b/g) || []).length, 1, 'Home deve conter apenas o hero');
 });
 
 test('CSS exclusivo method-* não permanece órfão na Home', async () => {
@@ -69,14 +70,4 @@ test('dez assets saem de public e são preservados em _source-assets', async () 
       assert.equal(await exists(`_source-assets/${asset}`), true, `${asset} não foi preservado`);
     }
   }
-});
-
-test('página OPERA e fases permanecem disponíveis no repositório', async () => {
-  const [view, copy] = await Promise.all([readText('src/views/OperaView.astro'), readText('src/i18n/content/opera.ts')]);
-
-  for (const phase of ['Organização', 'Planejamento', 'Estratégia', 'Realização', 'Afinação']) {
-    assert.match(copy, new RegExp(`title: '${phase}'`));
-  }
-  assert.match(view, /<h3 class="opera-phase-title">\{phase\.title\}<\/h3>/);
-  assert.match(view, /data-src=["']\/assets\/system\.mp4["']/);
 });

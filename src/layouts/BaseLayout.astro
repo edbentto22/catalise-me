@@ -87,6 +87,18 @@ const t = ui[locale];
   />
   <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin>
   <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin>
+  <!-- Aplica o tema salvo antes do primeiro paint (sem piscar em claro). Padrão: claro. -->
+  <script is:inline>
+    (function () {
+      var theme = 'light';
+      try { if (localStorage.getItem('cx-theme') === 'dark') theme = 'dark'; } catch (e) {}
+      document.documentElement.dataset.theme = theme;
+      if (theme === 'dark') {
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', '#0b0b0d');
+      }
+    })();
+  </script>
   <!-- Decide o modo de movimento antes do primeiro paint e esconde só o que será coreografado. -->
   <script is:inline>
     (function () {
@@ -112,7 +124,7 @@ const t = ui[locale];
     <slot />
   </main>
 
-  {showFooter && <Footer locale={locale} showApps={pageType !== 'home'} />}
+  {showFooter && <Footer locale={locale} />}
   {showModal && <ModalDiagnostico />}
   {showDock && <FloatingDock locale={locale} />}
   <CustomCursor />
@@ -124,6 +136,7 @@ const t = ui[locale];
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { initMotion } from '../scripts/motionController';
     import { initConsultable } from '../scripts/consultable';
+    import { initThemeToggle } from '../scripts/theme';
     import {
       createIcons, Activity, BarChart3, BookOpen, Bot, Brain, Check, Clock, Compass, Database,
       FileText, Globe, LayoutGrid, Layers, Lock, Mail, MessageCircle, MessageSquare, MessagesSquare,
@@ -150,6 +163,7 @@ const t = ui[locale];
     } });
 
     root.classList.add('js-enabled');
+    initThemeToggle();
     initMotion();
 
     let lenis: Lenis | null = null;

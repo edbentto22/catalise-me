@@ -4,8 +4,8 @@ import test from 'node:test';
 import { checkDictionaries } from '../scripts/i18n-check.mjs';
 
 const readText = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const pages = ['index', 'sobre', 'manifesto', 'opera-os', 'contato'];
-const views = { index: 'HomeView', sobre: 'AboutView', manifesto: 'ManifestoView', 'opera-os': 'OperaView', contato: 'ContactView' };
+const pages = ['index', 'sobre', 'manifesto', 'contato'];
+const views = { index: 'HomeView', sobre: 'AboutView', manifesto: 'ManifestoView', contato: 'ContactView' };
 
 test('sistema i18n preserva páginas estáticas e SEO por locale', async () => {
   const [layout, head, nav, routes] = await Promise.all([
@@ -49,28 +49,23 @@ test('dicionários têm a mesma estrutura em pt, en e es', async () => {
 });
 
 test('cópia, CTAs e WhatsApp ficam no próprio idioma', async () => {
-  const [{ home }, { manifesto }, { opera }, { ui }] = await Promise.all([
+  const [{ home }, { manifesto }, { ui }] = await Promise.all([
     import('../src/i18n/content/home.ts'),
     import('../src/i18n/content/manifesto.ts'),
-    import('../src/i18n/content/opera.ts'),
     import('../src/i18n/ui.ts'),
   ]);
 
-  assert.match(home.en.heading, /queryable/);
-  assert.match(home.es.heading, /consultables/);
+  assert.match(home.en.headingThesis, /queryable/);
+  assert.match(home.es.headingThesis, /consultable/);
   assert.match(manifesto.en.hero.title, /Queryable/);
   assert.match(manifesto.es.hero.title, /consultables/);
-  assert.match(opera.en.product.title, /transforms how your business operates\./);
-  assert.match(opera.es.product.title, /transforma la forma en que opera su negocio\./);
-  assert.doesNotMatch(ui.en.whatsappOpera, /Olá/);
-  assert.doesNotMatch(ui.es.whatsappOpera, /Olá/);
   assert.match(ui.en.whatsappDiagnostic, /Hello/);
   assert.match(ui.es.whatsappDiagnostic, /Hola/);
 
   // Links internos usam o prefixo do idioma (localizedHref) nas views.
   for (const view of Object.values(views)) {
     const source = await readText(`src/views/${view}.astro`);
-    assert.doesNotMatch(source, /href="\/(sobre|manifesto|opera-os|contato)"/, `${view} tem link interno fixo em pt`);
+    assert.doesNotMatch(source, /href="\/(sobre|manifesto|contato)"/, `${view} tem link interno fixo em pt`);
   }
 });
 
@@ -102,7 +97,7 @@ test('modal e Contato usam os mesmos campos, regras e política de privacidade',
     assert.equal(leadForm[locale].revenueOptions.length, revenueValues.length);
     assert.equal(leadForm[locale].sourceOptions.length, sourceValues.length);
   }
-  assert.equal(leadForm.pt.submit, 'Agendar diagnóstico gratuito');
+  assert.equal(leadForm.pt.submit, 'Enviar mensagem');
   assert.equal(leadForm.en.errors.review, 'Please review the highlighted fields.');
 });
 

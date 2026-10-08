@@ -1,0 +1,143 @@
+---
+// HeroGraph · a empresa consultável como árvore radial em vidro: núcleo, hubs por domínio, leques de contas.
+// Letras e nomes dos hubs são HTML (nítidos e traduzíveis); esferas, contas, linhas e anéis são WebGL.
+// As sombras ficam atrás do canvas, para o vidro "pousar" no fundo branco.
+// Um SVG estático mantém a ideia visível quando WebGL não está disponível.
+interface Props {
+  core: string;
+  hubs: string[];
+  note: string;
+  aria: string;
+  /** Textos dos controles de zoom, já traduzidos. */
+  controls: { zoomIn: string; zoomOut: string; reset: string; hint: string; hubAction: string };
+  /** Legenda das formas, na ordem do vocabulário (dados, tarefa, decisão, execução, rotina, processo). */
+  legend: { label: string; items: string[] };
+  /** Hub em foco para cada palavra do título rotativo (índice da palavra → índice do hub). */
+  focusMap?: number[];
+}
+const { core, hubs, note, aria, controls, legend, focusMap = [] } = Astro.props;
+
+// Vocabulário de formas (índices usados em heroGraph.ts):
+// 0 esfera = dados · 1 cubo = tarefa · 2 losango = decisão · 3 pirâmide = execução · 4 anel = rotina · 5 cápsula = processo
+// Cada pilar mistura as formas em faixas concêntricas da sua cúpula, do centro para a borda: [forma, peso].
+const HUBS = [
+  { tone: '#18181b', size: 62, mix: [[0, 4], [5, 2], [2, 2], [1, 2]] }, // conhecimento: dados, processos, regras, tarefas
+  { tone: '#3f3f46', size: 56, mix: [[5, 3.5], [4, 2.5], [1, 2.5], [2, 1.5]] }, // processos: fluxos, rotinas, tarefas, decisões
+  { tone: '#27272a', size: 52, mix: [[1, 3.5], [0, 2.5], [4, 2], [5, 2]] }, // sistemas: tarefas, dados, rotinas, processos
+  { tone: '#52525b', size: 48, mix: [[3, 4], [4, 2], [1, 2], [2, 2]] }, // agentes: execuções, rotinas, tarefas, decisões
+];
+const SHAPE_ICONS = [
+  '<circle cx="8" cy="8" r="5.5" />',
+  '<rect x="2.75" y="2.75" width="10.5" height="10.5" rx="2" />',
+  '<path d="M8 1.75 14.25 8 8 14.25 1.75 8Z" />',
+  '<path d="M8 2.25 14 13.5H2Z" />',
+  '<circle cx="8" cy="8" r="5.25" fill="none" stroke-width="2.5" />',
+  '<rect x="1.75" y="5" width="12.5" height="6" rx="3" />',
+];
+const items = hubs.map((name, i) => ({ name, letter: name.charAt(0).toUpperCase(), ...HUBS[i % HUBS.length] }));
+const legendItems = legend.items.map((label, kind) => ({ label, icon: SHAPE_ICONS[kind] }));
+const fallbackAngles = items.map((_, i) => Math.PI * 0.75 - (i / items.length) * Math.PI * 2);
+---
+
+<div class="hero-graph" data-hero-graph data-focus-map={JSON.stringify(focusMap)} role="group" aria-label={aria}>
+  <svg class="hero-graph-fallback" viewBox="-200 -200 400 400" fill="none" aria-hidden="true">
+    <defs>
+      <radialGradient id="hg-glass" cx="36%" cy="30%" r="78%">
+        <stop offset="0" stop-color="#a1a1aa" />
+        <stop offset="0.4" stop-color="#3f3f46" />
+        <stop offset="1" stop-color="#09090b" />
+      </radialGradient>
+      <radialGradient id="hg-lime" cx="36%" cy="30%" r="78%">
+        <stop offset="0" stop-color="#e4fbcf" />
+        <stop offset="0.45" stop-color="#8af334" />
+        <stop offset="1" stop-color="#4d8f17" />
+      </radialGradient>
+    </defs>
+    <circle r="150" stroke="#18181b" stroke-width="1" opacity="0.18" />
+    <circle r="176" stroke="#18181b" stroke-width="1" opacity="0.1" />
+    {fallbackAngles.map((a, i) => {
+      const x = Math.cos(a) * 100, y = -Math.sin(a) * 100;
+      const spokes = [-0.6, -0.3, 0, 0.3, 0.6].map((d) => ({ x2: x + Math.cos(a + d) * 54, y2: y - Math.sin(a + d) * 54 }));
+      return (
+        <g>
+          <line x1="0" y1="0" x2={x} y2={y} stroke="#52525b" stroke-width="1" opacity="0.5" />
+          {spokes.map((s) => (<g><line x1={x} y1={y} x2={s.x2} y2={s.y2} stroke="#a1a1aa" stroke-width="1" /><circle cx={s.x2} cy={s.y2} r="4" fill="url(#hg-glass)" opacity="0.8" /></g>))}
+          <circle cx={x} cy={y} r="11" fill="url(#hg-glass)" />
+        </g>
+      );
+    })}
+    <circle r="20" stroke="#18181b" stroke-width="1.5" />
+    <circle r="9" fill="url(#hg-lime)" />
+  </svg>
+
+  <div class="hero-graph-shadows" aria-hidden="true">
+    {items.map(() => (<span class="hero-graph-shadow" data-graph-shadow></span>))}
+    <span class="hero-graph-shadow hero-graph-shadow-core"></span>
+  </div>
+
+  <canvas class="hero-graph-canvas" aria-hidden="true"></canvas>
+
+  <div class="hero-graph-labels">
+    {items.map((hub) => (
+      <button type="button" class="hero-graph-hub" data-graph-hub data-tone={hub.tone} data-size={hub.size} data-mix={JSON.stringify(hub.mix)} aria-label={`${controls.hubAction} ${hub.name}`} aria-pressed="false">
+        <b class="hero-graph-hub-letter" aria-hidden="true">{hub.letter}</b>
+        <span class="hero-graph-hub-name" aria-hidden="true">{hub.name}</span>
+      </button>
+    ))}
+  </div>
+  <span class="hero-graph-core" aria-hidden="true"><i></i>{core}</span>
+  <span class="hero-graph-note" aria-hidden="true">{note}</span>
+
+  <div class="hero-graph-controls">
+    <button type="button" class="hero-graph-control" data-graph-zoom="out" aria-label={controls.zoomOut}>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" /></svg>
+    </button>
+    <button type="button" class="hero-graph-control" data-graph-zoom="in" aria-label={controls.zoomIn}>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" /></svg>
+    </button>
+    <button type="button" class="hero-graph-control hero-graph-reset" data-graph-reset>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M4 9V4h5M20 15v5h-5M4 4l6 6M20 20l-6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <span>{controls.reset}</span>
+    </button>
+  </div>
+  <p class="hero-graph-hint" data-graph-hint role="status" data-visible="0">{controls.hint}</p>
+
+  <ul class="hero-graph-legend" aria-label={legend.label}>
+    {legendItems.map((item) => (
+      <li><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" set:html={item.icon} />{item.label}</li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  import { hasHardwareWebGL } from '../scripts/gpu';
+
+  const container = document.querySelector<HTMLElement>('[data-hero-graph]');
+  const canvas = container?.querySelector<HTMLCanvasElement>('canvas');
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const slow = Boolean(connection?.saveData) || ['2g', 'slow-2g'].includes(connection?.effectiveType || '');
+
+  if (container && canvas && !slow && hasHardwareWebGL()) {
+    const start = () => Promise.all([import('../scripts/heroGraph'), import('motion')]).then(([{ initHeroGraph }, { animate }]) => {
+      let focusMap: number[] = [];
+      try { focusMap = JSON.parse(container.dataset.focusMap || '[]'); } catch { focusMap = []; }
+      const dispose = initHeroGraph({
+        canvas,
+        container,
+        hubs: [...container.querySelectorAll<HTMLElement>('[data-graph-hub]')],
+        shadows: [...container.querySelectorAll<HTMLElement>('[data-graph-shadow]')],
+        focusMap,
+        rotator: document.querySelector<HTMLElement>('[data-hero-rotator]'),
+        pointerTarget: container.closest<HTMLElement>('.hero-editorial'),
+      });
+      if (!dispose) return;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      animate(canvas, { opacity: [0, 1], filter: ['blur(14px)', 'blur(0px)'] }, { duration: reduced ? 0 : 1.6, ease: [0.16, 1, 0.3, 1] });
+      addEventListener('pagehide', (event) => { if (!event.persisted) dispose(); });
+    }).catch(() => { container.dataset.state = 'off'; });
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 900 });
+    else setTimeout(start, 200);
+  } else if (container) {
+    container.dataset.state = 'off';
+  }
+</script>

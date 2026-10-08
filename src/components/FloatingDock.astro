@@ -5,19 +5,37 @@ import { ui } from '../i18n/ui';
 interface Props { locale?: Locale; }
 const { locale = 'pt' } = Astro.props;
 const t = ui[locale];
+
+// Duas órbitas inclinadas em torno do núcleo, no mesmo vocabulário do grafo da Home.
+const ORBIT_A = 'M 35.53 13.09 A 17 6.5 -24 1 1 4.47 26.91 A 17 6.5 -24 1 1 35.53 13.09';
+const ORBIT_B = 'M 32.72 27.95 A 15 5 32 1 1 7.28 12.05 A 15 5 32 1 1 32.72 27.95';
 ---
 
 <aside class="floating-dock-wrap" id="floating-action-dock" inert aria-label={t.dockAria}>
   <div class="floating-dock-pill">
+    <span class="dock-core" aria-hidden="true">
+      <svg class="dock-core-rings" viewBox="0 0 40 40" width="40" height="40">
+        <path d={ORBIT_A} />
+        <path d={ORBIT_B} />
+      </svg>
+      <span class="dock-core-bead"></span>
+      <span class="dock-core-sat dock-core-sat--a" style={`offset-path: path('${ORBIT_A}')`}></span>
+      <span class="dock-core-sat dock-core-sat--b" style={`offset-path: path('${ORBIT_B}')`}></span>
+    </span>
+
     <p class="dock-label">{t.dockLabel}</p>
 
     <button type="button" class="dock-cta-btn" data-open-modal>
       <span>{t.dockCta}</span>
-      <span class="btn-arrow" aria-hidden="true">→</span>
+      <svg class="dock-cta-arrow" viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true">
+        <path d="M3 8h9.5M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
     </button>
 
     <button type="button" class="dock-close-btn" id="dock-dismiss-btn" aria-label={t.dockClose} title={t.dockClose}>
-      <span aria-hidden="true">×</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
+        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
     </button>
   </div>
 </aside>
@@ -40,7 +58,7 @@ const t = ui[locale];
 <style>
   .floating-dock-wrap {
     position: fixed;
-    bottom: 20px;
+    bottom: 22px;
     left: 50%;
     /* Centraliza com translate: o motion anima apenas o transform (y) */
     translate: -50% 0;
@@ -63,27 +81,103 @@ const t = ui[locale];
     display: none;
   }
 
+  /* Vidro claro: o mesmo material dos objetos 3D, com luz vinda de cima */
   .floating-dock-pill {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 7px 7px 7px 8px;
-    background: rgba(9, 9, 11, 0.92);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 12px;
+    padding: 6px 6px 6px 8px;
+    background: rgb(var(--paper-rgb) / 0.74);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgb(var(--ink-rgb) / 0.08);
     border-radius: var(--radius-full);
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.12);
-    color: #ffffff;
+    box-shadow: inset 0 1px 0 var(--glass-highlight),
+      inset 0 -1px 0 rgba(9, 9, 11, 0.04),
+      0 20px 48px -14px rgba(9, 9, 11, 0.24),
+      0 4px 14px -4px rgba(9, 9, 11, 0.08);
+    color: var(--ink);
   }
 
+  /* Núcleo lima com duas órbitas: a assinatura do grafo da Home em miniatura */
+  .dock-core {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 40px;
+  }
 
+  .dock-core-rings {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: visible;
+  }
+
+  .dock-core-rings path {
+    fill: none;
+    stroke: rgb(var(--ink-rgb) / 0.22);
+    stroke-width: 0.75;
+  }
+
+  .dock-core-bead {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    width: 15px;
+    height: 15px;
+    margin: -7.5px 0 0 -7.5px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.95) 0 9%, rgba(255, 255, 255, 0) 30%),
+      radial-gradient(circle at 50% 55%, #b9ff80 0%, var(--lime) 48%, #4d9a12 100%);
+    box-shadow:
+      inset 0 -2px 3px rgba(40, 90, 0, 0.35),
+      0 3px 8px -2px rgba(77, 154, 18, 0.55);
+    animation: dock-breathe 3.2s var(--ease-in-out) infinite;
+  }
+
+  .dock-core-sat {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    offset-anchor: center;
+    offset-rotate: 0deg;
+    background: radial-gradient(circle at 35% 30%, #ffffff 0 18%, var(--graphite) 70%);
+    box-shadow: 0 1px 2px rgba(9, 9, 11, 0.3);
+  }
+
+  .dock-core-sat--a { animation: dock-orbit 5.6s linear infinite; }
+  .dock-core-sat--b {
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle at 35% 30%, #ffffff 0 18%, #6bc21f 75%);
+    animation: dock-orbit 7.8s linear infinite -2.4s;
+  }
+
+  /* Metade da volta à frente do núcleo, metade atrás */
+  @keyframes dock-orbit {
+    0%     { offset-distance: 0%;   z-index: 3; scale: 1.15; }
+    49.9%  { z-index: 3; }
+    50%    { z-index: 1; scale: 0.8; }
+    100%   { offset-distance: 100%; z-index: 1; scale: 1.15; }
+  }
+
+  @keyframes dock-breathe {
+    0%, 100% { scale: 1; }
+    50%      { scale: 1.08; }
+  }
 
   .dock-label {
     margin: 0;
-    font-size: 0.84rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--ink);
     white-space: nowrap;
   }
 
@@ -91,49 +185,60 @@ const t = ui[locale];
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 18px;
+    min-height: 44px;
+    padding: 0 16px 0 20px;
     border-radius: var(--radius-full);
-    background: var(--lime);
-    color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
     font-size: 0.8125rem;
     font-weight: 700;
     white-space: nowrap;
-    transition: background var(--duration-fast) ease;
+    box-shadow: 0 6px 16px -6px rgba(9, 9, 11, 0.45);
+    transition: background var(--duration-fast) ease, box-shadow var(--duration-base) var(--ease-out);
   }
 
   .dock-cta-btn:hover {
-    background: #a3ff5c;
+    background: var(--ink-3);
+    box-shadow: 0 10px 22px -8px rgba(9, 9, 11, 0.5);
   }
 
-  .dock-cta-btn .btn-arrow {
-    transition: transform var(--duration-fast) var(--ease-out);
+  .dock-cta-arrow {
+    transition: transform var(--duration-base) var(--ease-out);
   }
 
-  .dock-cta-btn:hover .btn-arrow {
+  .dock-cta-btn:hover .dock-cta-arrow {
     transform: translateX(3px);
   }
 
   .dock-close-btn {
     display: grid;
     place-items: center;
+    flex: none;
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 1.15rem;
-    line-height: 1;
+    color: var(--subtle);
     transition: color var(--duration-fast) ease, background var(--duration-fast) ease;
   }
 
   .dock-close-btn:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.08);
+    color: var(--ink);
+    background: rgb(var(--ink-rgb) / 0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dock-core-bead,
+    .dock-core-sat { animation: none; }
+    .dock-core-sat--a { offset-distance: 12%; z-index: 3; }
+    .dock-core-sat--b { offset-distance: 64%; z-index: 1; }
   }
 
   @media (max-width: 820px) {
     .floating-dock-wrap {
       bottom: max(12px, env(safe-area-inset-bottom));
     }
+
+    .floating-dock-pill { gap: 8px; }
 
     .dock-label {
       display: none;

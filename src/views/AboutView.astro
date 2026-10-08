@@ -1,15 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Ambient3D from '../components/Ambient3D.astro';
+import GlassScene from '../components/GlassScene.astro';
+import GlassIcon from '../components/GlassIcon.astro';
 import { localizedHref, type Locale } from '../i18n/config';
 import { about } from '../i18n/content/about';
 import '../styles/inner.css';
 import '../styles/manifesto.css';
+import '../styles/about.css';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = about[locale];
 const pageUrl = `https://catalise.me${localizedHref('/sobre', locale)}`;
+
+// Forma de cada entrega, no vocabulário do site: 0 dados · 1 tarefa · 2 decisão · 3 execução · 4 rotina · 5 processo
+const deliverKinds = [3, 0, 0, 5, 4, 2, 1, 1];
+// Entregas em destaque ocupam duas colunas no bento.
+const deliverWide = new Set([0, 5, 6, 7]);
+
+const apps = [
+  { src: '/assets/apps/logo-app-opera.png', alt: 'Opera aiOS', cls: 'app-logo-opera', w: 57, h: 24 },
+  { src: '/assets/apps/logo-app-matika.png', alt: 'Matika AI CRM', cls: 'app-logo-matika', w: 81, h: 22 },
+  { src: '/assets/apps/logo-app-brandquest.png', alt: 'BrandQuest by catalise.me', cls: 'app-logo-brandquest', w: 97, h: 20 },
+  { src: '/assets/apps/logo-app-yugen.png', alt: 'Yugen', cls: 'app-logo-yugen', w: 75, h: 21 },
+];
 ---
 
 <BaseLayout
@@ -23,76 +37,71 @@ const pageUrl = `https://catalise.me${localizedHref('/sobre', locale)}`;
   locale={locale}
 >
 
-  <!-- ══════════════ HERO ══════════════ -->
-  <header class="page-hero about-hero" aria-labelledby="sobre-heading">
-    <Ambient3D variant="strata" />
-    <div class="container">
-      <h1 id="sobre-heading" class="page-hero-title about-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
-      <p class="page-hero-lede hero-animate-3">{t.hero.lede}</p>
-      <p class="about-hero-stance hero-animate-4">
-        {t.hero.facts.map((fact) => <span set:html={fact} />)}
-        <strong>{t.hero.factYes}</strong>
-      </p>
+  <!-- ══════════════ HERO · o que fazemos, em uma frase ══════════════ -->
+  <header class="ab-hero" aria-labelledby="sobre-heading">
+    <GlassScene variant="stack" class="ab-hero-scene">
+      <ul class="ab-stack-labels" role="list" aria-label={t.hero.stackAria}>
+        {t.hero.stack.map((label) => (
+          <li class="mf-g-label ab-stack-label" data-g-stack>{label}</li>
+        ))}
+      </ul>
+    </GlassScene>
+
+    <div class="container ab-hero-inner">
+      <h1 id="sobre-heading" class="ab-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
+      <p class="ab-hero-lede hero-animate-3">{t.hero.lede}</p>
+      <p class="ab-hero-stance hero-animate-4"><strong>{t.hero.stance}</strong></p>
     </div>
   </header>
 
-  <!-- ══════════════ A ORIGEM ══════════════ -->
-  <section id="origem" class="inner-section" aria-labelledby="origem-heading">
-    <div class="container about-origin">
-      <div class="section-header about-origin-head">
-        <h2 id="origem-heading" set:html={t.origin.title} />
-      </div>
-
-      <div class="prose" data-reveal-group>
-        {t.origin.paragraphs.map((paragraph) => <p set:html={paragraph} />)}
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════ A CAMADA ══════════════ -->
-  <section id="camada" class="inner-section about-layer" aria-labelledby="camada-heading">
+  <!-- ══════════════ O QUE ENTREGAMOS ══════════════ -->
+  <section id="entregas" class="ab-section" aria-labelledby="entregas-heading">
     <div class="container">
-      <div class="section-header">
-        <h2 id="camada-heading" set:html={t.layer.title} />
+      <div class="ab-head">
+        <h2 id="entregas-heading" class="ab-title" data-reveal set:html={t.deliver.title} />
+        <p class="ab-lede" data-reveal>{t.deliver.lede}</p>
       </div>
 
-      <div class="about-layer-rail" aria-hidden="true" data-draw-on-view>
-        <svg viewBox="0 0 1000 24" preserveAspectRatio="none"><path data-draw d="M0 12 H1000" /></svg>
-      </div>
-
-      <ol class="about-layer-grid" role="list" data-reveal-group>
-        {t.layer.items.map((layer, i) => (
-          <li class="about-layer-item" data-glow>
-            <span class="about-layer-node" aria-hidden="true"></span>
-            <span class="about-layer-num">{String(i + 1).padStart(2, '0')}</span>
-            <h3>{layer.title}</h3>
-            <p>{layer.text}</p>
+      <ul class="ab-bento" role="list" data-reveal-group>
+        {t.deliver.items.map((item, i) => (
+          <li class:list={['ab-card ab-deliver', { 'is-wide': deliverWide.has(i) }]} data-glow>
+            <GlassIcon kind={deliverKinds[i]} size={deliverWide.has(i) ? 64 : 52} class="ab-deliver-icon" />
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
           </li>
         ))}
-      </ol>
+      </ul>
+
+      <ul class="ab-legend" role="list" aria-label={t.deliver.legendLabel}>
+        {t.deliver.legend.map((label, kind) => (
+          <li><GlassIcon kind={kind} size={18} />{label}</li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <!-- ══════════════ ANTES → DEPOIS ══════════════ -->
-  <section id="mudanca" class="inner-section about-shift" aria-labelledby="mudanca-heading">
+  <!-- ══════════════ ANTES E DEPOIS ══════════════ -->
+  <section id="resultados" class="ab-section ab-shift" aria-labelledby="mudanca-heading">
     <div class="container">
-      <div class="section-header">
-        <h2 id="mudanca-heading" set:html={t.shift.title} />
+      <div class="ab-head">
+        <h2 id="mudanca-heading" class="ab-title" data-reveal set:html={t.shift.title} />
       </div>
 
-      <div class="shift-table" data-shift role="table" aria-label={t.shift.tableAria}>
-        <div class="shift-row shift-head" role="row">
-          <span role="columnheader"><span class="visually-hidden">{t.shift.colQuestion}</span></span>
+      <div class="ab-shift-table" data-shift role="table" aria-label={t.shift.tableAria}>
+        <div class="ab-shift-row ab-shift-headrow" role="row">
+          <span role="columnheader">{t.shift.colArea}</span>
           <span role="columnheader">{t.shift.colBefore}</span>
           <span role="columnheader" aria-hidden="true"></span>
           <span role="columnheader">{t.shift.colAfter}</span>
         </div>
         {t.shift.rows.map((row) => (
-          <div class="shift-row" role="row" data-shift-row>
-            <span class="shift-q" role="rowheader">{row.q}</span>
-            <span class="shift-before" role="cell" data-shift-before data-label={t.shift.todayLabel}>{row.before}</span>
-            <span class="shift-arrow" aria-hidden="true" data-shift-arrow>→</span>
-            <span class="shift-after" role="cell" data-shift-after>{row.after}</span>
+          <div class="ab-shift-row" role="row" data-shift-row>
+            <span class="ab-shift-area" role="rowheader">{row.q}</span>
+            <span class="ab-shift-before" role="cell" data-shift-before data-label={t.shift.todayLabel}>{row.before}</span>
+            <span class="ab-shift-arrow" aria-hidden="true" data-shift-arrow>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+            <span class="ab-shift-after" role="cell" data-shift-after data-label={t.shift.afterLabel}>{row.after}</span>
           </div>
         ))}
       </div>
@@ -100,17 +109,17 @@ const pageUrl = `https://catalise.me${localizedHref('/sobre', locale)}`;
   </section>
 
   <!-- ══════════════ COMO TRABALHAMOS ══════════════ -->
-  <section id="como-trabalhamos" class="inner-section" aria-labelledby="como-heading">
+  <section id="como-trabalhamos" class="ab-section" aria-labelledby="como-heading">
     <div class="container">
-      <div class="section-header about-practices-head">
-        <h2 id="como-heading" set:html={t.practices.title} />
-        <p class="about-practices-lede">{t.practices.ledePre} <a href={localizedHref('/manifesto', locale)}>{t.practices.ledeLink}</a>.</p>
+      <div class="ab-head">
+        <h2 id="como-heading" class="ab-title" data-reveal set:html={t.practices.title} />
+        <p class="ab-lede" data-reveal>{t.practices.ledePre} <a href={localizedHref('/manifesto', locale)}>{t.practices.ledeLink}</a>.</p>
       </div>
 
-      <div class="how-grid how-bento" data-reveal-group>
-        {t.practices.items.map((item, i) => (
-          <article class="how-item" data-glow>
-            <span class="how-tag">{item.tag}</span>
+      <div class="ab-practices" data-reveal-group>
+        {t.practices.items.map((item) => (
+          <article class="ab-card ab-practice" data-glow>
+            <span class="ab-tag"><span class="ab-bead" aria-hidden="true"></span>{item.tag}</span>
             <h3>{item.title}</h3>
             <p>{item.text}</p>
           </article>
@@ -119,8 +128,26 @@ const pageUrl = `https://catalise.me${localizedHref('/sobre', locale)}`;
     </div>
   </section>
 
+  <!-- ══════════════ APLICAÇÕES PRÓPRIAS ══════════════ -->
+  <section class="ab-apps" aria-labelledby="apps-heading">
+    <div class="container ab-apps-inner">
+      <div>
+        <h2 id="apps-heading" class="ab-apps-title" set:html={t.apps.title} />
+        <p class="ab-apps-text">{t.apps.text}</p>
+      </div>
+      <ul class="ab-apps-list" role="list" aria-label={t.apps.aria}>
+        {apps.map((app) => (
+          <li class="app-logo-item">
+            <img src={app.src} alt={app.alt} class:list={['app-logo-img', 'theme-light-only', app.cls]} width={app.w} height={app.h} loading="lazy" decoding="async" />
+            <img src={app.src.replace('.png', '-on-dark.png')} alt={app.alt} class:list={['app-logo-img', 'theme-dark-only', app.cls]} width={app.w} height={app.h} loading="lazy" decoding="async" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <!-- ══════════════ CTA FINAL ══════════════ -->
-  <section class="cta-section" aria-labelledby="sobre-cta-heading">
+  <section class="cta-section ab-cta" aria-labelledby="sobre-cta-heading">
     <div class="container">
       <h2 id="sobre-cta-heading">{t.cta.title}</h2>
       <p>{t.cta.text}</p>
