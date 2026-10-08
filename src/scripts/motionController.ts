@@ -101,6 +101,7 @@ export function initMotion() {
         } else if (node.nodeType === Node.ELEMENT_NODE) {
           const el = node as HTMLElement;
           if (el.tagName === 'BR') element.appendChild(document.createElement('br'));
+          else if (el.hasAttribute('data-no-split') || el.hasAttribute('data-hero-rotator')) element.appendChild(el);
           else {
             splitIntoWords(el);
             element.appendChild(el);

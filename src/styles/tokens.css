@@ -1,6 +1,7 @@
 /* =========================================
    CATALISE.ME — DESIGN TOKENS v4
-   Empresas consultáveis · editorial claro, linhas pretas, acento lima
+   Empresas consultáveis · editorial claro, linhas pretas, acento lima.
+   O modo escuro redefine os mesmos tokens no fim do arquivo.
    ========================================= */
 
 :root {
@@ -20,10 +21,25 @@
   --line-mid:    rgba(0, 0, 0, 0.12);
   --line-strong: rgba(0, 0, 0, 0.2);
   --lime:        #8af334;
+  --on-lime:     #09090b;
   --lime-soft:   rgba(138, 243, 52, 0.18);
   --lime-mid:    rgba(138, 243, 52, 0.45);
   --danger:      #b91c1c;
   --danger-soft: #fff5f5;
+
+  /* Canais RGB para transparências que acompanham o tema: rgb(var(--ink-rgb) / 0.08) */
+  --ink-rgb:     9 9 11;
+  --paper-rgb:   255 255 255;
+  --surface-rgb: 250 250 250;
+  --quiet:       #71717a;
+  --line-soft:   rgba(0, 0, 0, 0.05);
+  --dim-text:    #8e8e96; /* texto ainda apagado na leitura progressiva (3:1 no fundo) */
+  --struck-text: #7c7c85; /* palavra riscada */
+
+  /* Vidro: brilho no topo das superfícies e preenchimento de pílulas e controles */
+  --glass-highlight: #ffffff;
+  --glass-top:       rgba(255, 255, 255, 0.86);
+  --glass-bottom:    rgba(244, 244, 245, 0.7);
 
   /* Aliases semânticos usados pelos componentes */
   --bg-base:        var(--paper);
@@ -133,3 +149,49 @@
 @media (max-width: 767px) {
   :root { --nav-height: 72px; }
 }
+
+/* ─── Modo escuro: mesmo vidro e mesmo lima, sobre grafite profundo ───
+   Ativado pelo botão de tema no menu (data-theme="dark" no <html>). */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --ink:        #f4f4f5;
+  --ink-2:      #e4e4e7;
+  --ink-3:      #d4d4d8;
+  --graphite:   #c4c4cc;
+  --muted:      #a1a1aa;
+  --subtle:     #9a9aa4;
+  --quiet:      #8b8b95;
+  --dim-text:    #686871;
+  --struck-text: #6e6e77;
+  --faint:      #63636d;
+  --mist:       #2e2e34;
+  --paper:      #0b0b0d;
+  --surface:    #111114;
+  --surface-2:  #19191d;
+  --line:        rgba(255, 255, 255, 0.09);
+  --line-mid:    rgba(255, 255, 255, 0.14);
+  --line-strong: rgba(255, 255, 255, 0.24);
+  --line-soft:   rgba(255, 255, 255, 0.06);
+  --lime-soft:   rgba(138, 243, 52, 0.16);
+  --lime-mid:    rgba(138, 243, 52, 0.4);
+  --danger:      #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.1);
+
+  --ink-rgb:     244 244 245;
+  --paper-rgb:   11 11 13;
+  --surface-rgb: 22 22 26;
+
+  --glass-highlight: rgba(255, 255, 255, 0.07);
+  --glass-top:       rgba(39, 39, 44, 0.82);
+  --glass-bottom:    rgba(22, 22, 26, 0.74);
+
+  --bg-glass:    rgba(17, 17, 20, 0.8);
+  --green-dim:   rgba(255, 255, 255, 0.04);
+
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
+  --shadow-md:    0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg:    0 24px 60px rgba(0, 0, 0, 0.55);
+  --shadow-float: 0 30px 80px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+

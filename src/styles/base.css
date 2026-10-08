@@ -41,8 +41,23 @@ button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: 0; cursor: pointer; }
 ul[role='list'], ol[role='list'] { list-style: none; }
 
+/* ─── Tema: imagens com versão clara e escura ─── */
+.theme-dark-only { display: none !important; }
+:root[data-theme='dark'] .theme-dark-only { display: block !important; }
+:root[data-theme='dark'] .theme-light-only { display: none !important; }
+
+/* Troca de tema: o novo tema se abre em círculo a partir do botão (View Transitions).
+   Só vale durante a troca; a transição entre páginas continua com o próprio efeito. */
+html.cx-theme-switch::view-transition-old(root),
+html.cx-theme-switch::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html.cx-theme-switch::view-transition-new(root) { z-index: 2; }
+html.cx-theme-switch .nav { view-transition-name: none; }
+
 /* ─── Seleção e foco ─── */
-::selection { background: var(--lime); color: var(--ink); }
+::selection { background: var(--lime); color: var(--on-lime); }
 
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--ink);

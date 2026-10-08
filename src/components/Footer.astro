@@ -1,84 +1,14 @@
 ---
-import { localizedHref, navigation, type Locale } from '../i18n/config';
-import { ui, EMAIL, WHATSAPP_DISPLAY, whatsappLink } from '../i18n/ui';
+import { localizedHref, type Locale } from '../i18n/config';
+import { ui } from '../i18n/ui';
 
-interface Props { locale?: Locale; showApps?: boolean; }
-const { locale = 'pt', showApps = true } = Astro.props;
+interface Props { locale?: Locale; }
+const { locale = 'pt' } = Astro.props;
 const t = ui[locale];
-const nav = navigation[locale];
-
-const pages = [
-  { href: '/', label: nav.home },
-  { href: '/opera-os', label: nav.opera },
-  { href: '/manifesto', label: nav.manifesto },
-  { href: '/sobre', label: nav.about },
-  { href: '/contato', label: nav.contact },
-];
-
-const apps = [
-  { src: '/assets/apps/logo-app-opera.png', alt: 'Opera aiOS', cls: 'app-logo-opera', w: 57, h: 24 },
-  { src: '/assets/apps/logo-app-matika.png', alt: 'Matika AI CRM', cls: 'app-logo-matika', w: 81, h: 22 },
-  { src: '/assets/apps/logo-app-brandquest.png', alt: 'BrandQuest by catalise.me', cls: 'app-logo-brandquest', w: 97, h: 20 },
-  { src: '/assets/apps/logo-app-yugen.png', alt: 'Yugen', cls: 'app-logo-yugen', w: 75, h: 21 },
-];
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer" role="contentinfo">
-  <!-- Faixa com a tese, acelera com a velocidade do scroll -->
-  <div class="footer-marquee" aria-hidden="true" data-marquee>
-    <div class="footer-marquee-track" data-marquee-track>
-      {Array.from({ length: 6 }).map(() => (
-        <span class="footer-marquee-item">{t.footerMarquee}<span class="footer-marquee-star">✱</span></span>
-      ))}
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href={localizedHref('/', locale)} class="footer-logo" aria-label="Catalise.me">
-          <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" width="140" height="28" loading="lazy">
-        </a>
-        <p>{t.footerDescription}</p>
-      </div>
-
-      <nav class="footer-col" aria-label={t.footerPages}>
-        <h2 class="footer-heading">{t.footerPages}</h2>
-        <ul role="list">
-          {pages.map((page) => (
-            <li><a class="link-roll" href={localizedHref(page.href, locale)}><span class="roll" data-text={page.label}><span>{page.label}</span></span></a></li>
-          ))}
-        </ul>
-      </nav>
-
-      <div class="footer-col">
-        <h2 class="footer-heading">{t.footerContact}</h2>
-        <ul role="list">
-          <li><a class="link-roll" href={whatsappLink(t.whatsappDiagnostic)} target="_blank" rel="noopener"><span class="roll" data-text={`WhatsApp ${WHATSAPP_DISPLAY}`}><span>WhatsApp {WHATSAPP_DISPLAY}</span></span></a></li>
-          <li><a class="link-roll" href={`mailto:${EMAIL}`}><span class="roll" data-text={EMAIL}><span>{EMAIL}</span></span></a></li>
-        </ul>
-      </div>
-    </div>
-
-    {showApps && (
-    <div class="footer-apps">
-      <span class="footer-apps-label">{t.footerApps}</span>
-      <ul class="footer-apps-list" role="list">
-        {apps.map((app) => (
-          <li class="app-logo-item" title={app.alt}>
-            <img src={app.src} alt={app.alt} class:list={['app-logo-img', app.cls]} width={app.w} height={app.h} loading="lazy" decoding="async" />
-          </li>
-        ))}
-      </ul>
-    </div>
-    )}
-  </div>
-
-  <div class="footer-wordmark" aria-hidden="true">
-    <span data-footer-wordmark>Catalise<span class="footer-wordmark-dot">.</span>me</span>
-  </div>
-
   <div class="container footer-bottom">
     <p>© {year} Catalise.me · {t.footerRights} · <a href={localizedHref('/privacidade', locale)}>{t.footerPrivacy}</a></p>
     <a href="#main-content" class="footer-top link-roll" data-scroll-top>

@@ -1,0 +1,81 @@
+---
+// Ícone de vidro em SVG: o mesmo vocabulário de formas das cenas 3D (Home e Manifesto).
+// 0 esfera = dados · 1 cubo = tarefa · 2 losango = decisão · 3 pirâmide = execução · 4 anel = rotina · 5 cápsula = processo
+interface Props {
+  kind: number;
+  size?: number;
+  class?: string;
+}
+const { kind, size = 48, class: className = '' } = Astro.props;
+const id = `gi${kind}${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg class:list={['glass-icon', className]} viewBox="0 0 48 48" width={size} height={size} aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id={`${id}-ball`} cx="34%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.16" stop-color="#e4e4e7" />
+      <stop offset="0.55" stop-color="#52525b" />
+      <stop offset="1" stop-color="#09090b" />
+    </radialGradient>
+    <linearGradient id={`${id}-light`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fafafa" />
+      <stop offset="1" stop-color="#a1a1aa" />
+    </linearGradient>
+    <linearGradient id={`${id}-mid`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a1a1aa" />
+      <stop offset="1" stop-color="#3f3f46" />
+    </linearGradient>
+    <linearGradient id={`${id}-dark`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#52525b" />
+      <stop offset="1" stop-color="#09090b" />
+    </linearGradient>
+    <linearGradient id={`${id}-band`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f4f5" />
+      <stop offset="0.45" stop-color="#71717a" />
+      <stop offset="1" stop-color="#18181b" />
+    </linearGradient>
+  </defs>
+
+  {kind === 0 && (
+    <g>
+      <circle cx="24" cy="24" r="15" fill={`url(#${id}-ball)`} />
+      <ellipse cx="19" cy="17.5" rx="5.2" ry="2.8" fill="#ffffff" opacity="0.8" transform="rotate(-32 19 17.5)" />
+      <circle cx="24" cy="24" r="15" fill="none" stroke="#09090b" stroke-opacity="0.18" />
+    </g>
+  )}
+  {kind === 1 && (
+    <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="0.8" stroke-linejoin="round">
+      <path d="M24 8 38 16 24 24 10 16Z" fill={`url(#${id}-light)`} />
+      <path d="M10 16 24 24V40L10 32Z" fill={`url(#${id}-mid)`} />
+      <path d="M24 24 38 16V32L24 40Z" fill={`url(#${id}-dark)`} />
+    </g>
+  )}
+  {kind === 2 && (
+    <g stroke="#ffffff" stroke-opacity="0.5" stroke-width="0.8" stroke-linejoin="round">
+      <path d="M24 5 10 24 24 28Z" fill={`url(#${id}-light)`} />
+      <path d="M24 5 38 24 24 28Z" fill={`url(#${id}-mid)`} />
+      <path d="M10 24 24 43 24 28Z" fill={`url(#${id}-mid)`} />
+      <path d="M38 24 24 43 24 28Z" fill={`url(#${id}-dark)`} />
+    </g>
+  )}
+  {kind === 3 && (
+    <g stroke="#ffffff" stroke-opacity="0.5" stroke-width="0.8" stroke-linejoin="round">
+      <path d="M24 6 8 36 28 41Z" fill={`url(#${id}-light)`} />
+      <path d="M24 6 28 41 40 31Z" fill={`url(#${id}-dark)`} />
+    </g>
+  )}
+  {kind === 4 && (
+    <g>
+      <ellipse cx="24" cy="24" rx="15" ry="10" fill="none" stroke={`url(#${id}-band)`} stroke-width="6.5" />
+      <path d="M11.5 20.5C14 16.5 19 14.5 24 14.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.85" />
+    </g>
+  )}
+  {kind === 5 && (
+    <g transform="rotate(-35 24 24)">
+      <rect x="8" y="17" width="32" height="14" rx="7" fill={`url(#${id}-band)`} />
+      <path d="M13 20.5H33" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.8" />
+      <rect x="8" y="17" width="32" height="14" rx="7" fill="none" stroke="#09090b" stroke-opacity="0.2" />
+    </g>
+  )}
+</svg>

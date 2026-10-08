@@ -14,7 +14,6 @@ const nav = navigation[locale];
 
 const links = [
   { href: '/', label: nav.home },
-  { href: '/opera-os', label: nav.opera },
   { href: '/manifesto', label: nav.manifesto },
   { href: '/sobre', label: nav.about },
 ];
@@ -31,7 +30,8 @@ function isActive(linkHref: string): boolean {
 <header class="nav" data-nav>
   <nav class="nav-inner" aria-label={t.navLabel}>
     <a href={localizedHref('/', locale)} class="nav-logo" aria-label="Catalise.me">
-      <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" class="nav-logo-img" width="420" height="84">
+      <img src="/assets/logo-catalise-me.svg" alt="Catalise.me" class="nav-logo-img theme-light-only" width="420" height="84">
+      <img src="/assets/logo-catalise-me-on-dark.svg" alt="Catalise.me" class="nav-logo-img theme-dark-only" width="420" height="84">
     </a>
 
     <ul class="nav-links" role="list">
@@ -56,6 +56,12 @@ function isActive(linkHref: string): boolean {
           ))}
         </div>
       )}
+
+      <button type="button" class="theme-toggle nav-theme" role="switch" aria-checked="false" aria-label={t.themeLabel} title={t.themeLabel} data-theme-toggle>
+        <span class="theme-toggle-thumb" aria-hidden="true"></span>
+        <svg class="theme-toggle-icon theme-toggle-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.6" /><path d="M12 3v1.8M12 19.2V21M5.64 5.64l1.27 1.27M17.09 17.09l1.27 1.27M3 12h1.8M19.2 12H21M5.64 18.36l1.27-1.27M17.09 6.91l1.27-1.27" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+        <svg class="theme-toggle-icon theme-toggle-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M19.5 14.6A7.6 7.6 0 0 1 9.4 4.5a7.6 7.6 0 1 0 10.1 10.1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+      </button>
 
       <a href={localizedHref('/contato', locale)} class="nav-contact-btn">
         <span class="roll" data-text={t.contactCta}><span>{t.contactCta}</span></span>
@@ -101,13 +107,20 @@ function isActive(linkHref: string): boolean {
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           <a href={whatsappLink(t.whatsappDiagnostic)} target="_blank" rel="noopener">WhatsApp ↗</a>
         </div>
-        {localizedPaths && (
-          <div class="nav-mobile-language" role="group" aria-label={t.languageLabel}>
-            {(Object.keys(localizedPaths) as Locale[]).map((language) => (
-              <a href={localizedPaths[language]} hreflang={locales[language].code} lang={locales[language].code} aria-current={language === locale ? 'true' : undefined}>{locales[language].label}</a>
-            ))}
-          </div>
-        )}
+        <div class="nav-mobile-prefs">
+          <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label={t.themeLabel} title={t.themeLabel} data-theme-toggle>
+            <span class="theme-toggle-thumb" aria-hidden="true"></span>
+            <svg class="theme-toggle-icon theme-toggle-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.6" /><path d="M12 3v1.8M12 19.2V21M5.64 5.64l1.27 1.27M17.09 17.09l1.27 1.27M3 12h1.8M19.2 12H21M5.64 18.36l1.27-1.27M17.09 6.91l1.27-1.27" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+            <svg class="theme-toggle-icon theme-toggle-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M19.5 14.6A7.6 7.6 0 0 1 9.4 4.5a7.6 7.6 0 1 0 10.1 10.1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+          </button>
+          {localizedPaths && (
+            <div class="nav-mobile-language" role="group" aria-label={t.languageLabel}>
+              {(Object.keys(localizedPaths) as Locale[]).map((language) => (
+                <a href={localizedPaths[language]} hreflang={locales[language].code} lang={locales[language].code} aria-current={language === locale ? 'true' : undefined}>{locales[language].label}</a>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <p class="nav-mobile-tagline">{t.menuTagline}</p>

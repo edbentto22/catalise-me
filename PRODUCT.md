@@ -25,7 +25,7 @@ Não é agência, não é consultoria de slides, não é software de prateleira:
 
 ## Operating Context
 
-- Primeiro contato pelo site, WhatsApp ou email; diagnóstico gratuito de 45 minutos para perfis qualificados; proposta com escopo, prazos e investimento; implantação.
+- Primeiro contato pelo site, WhatsApp ou email; conversa de diagnóstico para perfis qualificados; proposta com escopo, prazos e investimento; implantação. O site não divulga gratuidade, duração da conversa nem prazo de resposta.
 - Produto principal: **Opera OS**, implantação em 10 a 12 semanas pelo método OPERA (Organização, Planejamento, Estratégia, Realização, Afinação), seguido opcionalmente do Retainer de Evolução.
 - Leads do site vão para uma automação na base Lark (webhook).
 
@@ -40,9 +40,10 @@ Não é agência, não é consultoria de slides, não é software de prateleira:
 
 - Nome sempre **Catalise.me** (nunca só "Catalise").
 - Tese e assinatura: "Empresas consultáveis." (EN: "Queryable companies.", ES: "Empresas consultables.").
-- Princípios do manifesto: IA é meio; específico vence genérico; implementamos; evoluímos; sistema vence esforço.
+- Princípios do manifesto: IA é parte da operação (não mera ferramenta); específico vence genérico; implementamos; evoluímos; sistema vence esforço.
 - Logo e símbolo (asterisco) em `public/assets/logo-catalise-me.svg` e `LOGO/`; acento lima `#8af334`.
 - Tom: direto, editorial, sem jargão vazio; espanhol em tratamento formal (usted).
+- Posicionamento premium em todo o texto: nada de urgência (prazos de resposta, "em até 24 horas"), oferta gratuita ou "sem compromisso". Dizer o essencial, com calma e segurança; menos informação, não mais.
 
 ## Evidence on Hand
 

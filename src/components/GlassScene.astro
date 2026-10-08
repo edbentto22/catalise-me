@@ -1,0 +1,48 @@
+---
+// Cena de vidro das páginas internas (Manifesto, Sobre e Contato), no mesmo material da Home (kit em scripts/glassKit.ts).
+// three.js só é baixado quando a cena chega perto da tela; fora dela, o loop pausa.
+// Rótulos entram pelo slot e são projetados sobre os pontos 3D; sem WebGL, ficam nas posições do CSS.
+interface Props {
+  variant: 'thesis' | 'layer' | 'cycle' | 'stack' | 'orbit';
+  class?: string;
+}
+const { variant, class: className = '' } = Astro.props;
+---
+
+<div class:list={['mf-glass', `mf-glass-${variant}`, className]} data-glass={variant}>
+  <canvas class="mf-glass-canvas" aria-hidden="true"></canvas>
+  <slot />
+</div>
+
+<script>
+  import { hasHardwareWebGL } from '../scripts/gpu';
+  import type { GlassVariant } from '../scripts/glassScenes';
+
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const slow = Boolean(connection?.saveData) || ['2g', 'slow-2g'].includes(connection?.effectiveType || '');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    observer.unobserve(entry.target);
+    const container = entry.target as HTMLElement;
+    const canvas = container.querySelector<HTMLCanvasElement>('canvas');
+    if (!canvas || container.dataset.state) return;
+    container.dataset.state = 'loading';
+    Promise.all([import('../scripts/glassScenes'), import('motion')]).then(([{ initGlassScene }, { animate }]) => {
+      const dispose = initGlassScene(container.dataset.glass as GlassVariant, {
+        canvas,
+        container,
+        section: container.closest<HTMLElement>('section, header'),
+      });
+      if (!dispose) return;
+      animate(canvas, { opacity: [0, 1], filter: ['blur(12px)', 'blur(0px)'] }, { duration: reduced ? 0 : 1.4, ease: [0.16, 1, 0.3, 1] });
+      addEventListener('pagehide', (event) => { if (!event.persisted) dispose(); });
+    }).catch(() => { container.dataset.state = 'off'; });
+  }), { rootMargin: '300px 0px' });
+
+  document.querySelectorAll<HTMLElement>('[data-glass]').forEach((container) => {
+    if (!slow && hasHardwareWebGL()) observer.observe(container);
+    else container.dataset.state = 'off';
+  });
+</script>

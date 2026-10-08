@@ -43,7 +43,9 @@ const { className = '', squareSize = 56 } = Astro.props;
       fit(grid, gridCtx);
       fit(trail, trailCtx);
       gridCtx.clearRect(0, 0, width, height);
-      gridCtx.strokeStyle = 'rgba(0, 0, 0, 0.055)';
+      // A grade acompanha o tema: traço escuro no papel, traço claro no grafite.
+      const dark = document.documentElement.dataset.theme === 'dark';
+      gridCtx.strokeStyle = dark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.055)';
       gridCtx.lineWidth = 1;
       gridCtx.beginPath();
       for (let x = 0; x <= width; x += size) { gridCtx.moveTo(x + 0.5, 0); gridCtx.lineTo(x + 0.5, height); }
@@ -57,7 +59,7 @@ const { className = '', squareSize = 56 } = Astro.props;
         const [cx, cy] = key.split(':').map(Number);
         trailCtx.fillStyle = `rgba(138, 243, 52, ${alpha * 0.22})`;
         trailCtx.fillRect(cx * size + 1, cy * size + 1, size - 1, size - 1);
-        trailCtx.strokeStyle = `rgba(9, 9, 11, ${alpha * 0.22})`;
+        trailCtx.strokeStyle = document.documentElement.dataset.theme === 'dark' ? `rgba(244, 244, 245, ${alpha * 0.22})` : `rgba(9, 9, 11, ${alpha * 0.22})`;
         trailCtx.strokeRect(cx * size + 0.5, cy * size + 0.5, size, size);
         const next = alpha * 0.93;
         if (next < 0.02) cells.delete(key);
@@ -68,6 +70,7 @@ const { className = '', squareSize = 56 } = Astro.props;
 
     drawGrid();
     new ResizeObserver(drawGrid).observe(root);
+    addEventListener('cx:theme', drawGrid);
 
     if (!interactive) return;
     addEventListener('pointermove', (event) => {
@@ -90,7 +93,7 @@ const { className = '', squareSize = 56 } = Astro.props;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    background: #ffffff;
+    background: var(--paper);
     /* A grade some nas bordas e atrás do texto principal */
     mask-image: radial-gradient(ellipse 85% 75% at 70% 45%, #000 20%, transparent 85%);
     -webkit-mask-image: radial-gradient(ellipse 85% 75% at 70% 45%, #000 20%, transparent 85%);

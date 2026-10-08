@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GlassScene from '../components/GlassScene.astro';
 import { localizedHref, type Locale } from '../i18n/config';
 import { contact } from '../i18n/content/contact';
 import { leadForm, revenueValues, sourceValues } from '../i18n/content/leadForm';
 import { ui, EMAIL, WHATSAPP_DISPLAY, whatsappLink } from '../i18n/ui';
 import '../styles/inner.css';
 import '../styles/manifesto.css';
-import '../styles/opera.css';
 import '../styles/contact.css';
 
 interface Props { locale: Locale; }
@@ -28,18 +28,17 @@ const f = leadForm[locale];
   locale={locale}
 >
 
-  <header class="ct-hero" aria-labelledby="contato-heading">
-    <div class="container">
-      <h1 id="contato-heading" class="ct-hero-title" data-mf-title data-cx-hero set:html={t.hero.title} />
-      <div class="ct-hero-foot hero-animate-3">
-        <p class="ct-hero-lede">{t.hero.lede}</p>
-        <span class="ct-hero-badge"><span aria-hidden="true"></span>{t.hero.badge}</span>
-      </div>
-    </div>
-  </header>
+  <!-- ══════════════ CONTATO · uma dobra: título e canais à esquerda, formulário à direita ══════════════ -->
+  <section id="formulario" class="ct-page" aria-labelledby="contato-heading">
+    <div class="container ct-layout">
 
-  <section id="formulario" class="ct-main" aria-labelledby="form-heading">
-    <div class="container ct-grid">
+      <div class="ct-head">
+        <div class="ct-head-row">
+          <h1 id="contato-heading" class="ct-title" data-mf-title data-cx-hero set:html={t.hero.title} />
+          <GlassScene variant="orbit" class="ct-orbit" />
+        </div>
+        <p class="ct-lede hero-animate-3">{t.hero.lede}</p>
+      </div>
 
       <div class="ct-form-card">
         <h2 id="form-heading" class="ct-form-title">{t.form.title}</h2>
@@ -118,62 +117,31 @@ const f = leadForm[locale];
         </div>
       </div>
 
-      <aside class="ct-side" aria-label={t.channels.title}>
-        <h2 class="ct-side-title">{t.channels.title}</h2>
+      <div class="ct-channels-block">
+        <h2 class="ct-block-title">{t.channels.title}</h2>
         <div class="ct-channels">
           <a class="ct-channel" href={whatsapp} target="_blank" rel="noopener" data-glow>
             <span class="ct-channel-icon" aria-hidden="true"><i data-lucide="message-circle"></i></span>
             <span class="ct-channel-body">
               <strong>{t.channels.whatsapp.label}</strong>
-              <span>{t.channels.whatsapp.text}</span>
               <span class="ct-channel-meta">{WHATSAPP_DISPLAY}</span>
             </span>
-            <span class="ct-channel-arrow" aria-hidden="true">↗</span>
+            <svg class="ct-channel-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </a>
           <a class="ct-channel" href={`mailto:${EMAIL}`} data-glow>
             <span class="ct-channel-icon" aria-hidden="true"><i data-lucide="mail"></i></span>
             <span class="ct-channel-body">
               <strong>{t.channels.email.label}</strong>
-              <span>{t.channels.email.text}</span>
               <span class="ct-channel-meta">{EMAIL}</span>
             </span>
-            <span class="ct-channel-arrow" aria-hidden="true">↗</span>
+            <svg class="ct-channel-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </a>
         </div>
+      </div>
 
-        <div class="ct-next">
-          <h3>{t.next.title}</h3>
-          <ol role="list">
-            {t.next.steps.map((step, i) => (
-              <li>
-                <span class="ct-next-num">{String(i + 1).padStart(2, '0')}</span>
-                <span><strong>{step.title}</strong> {step.text}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </aside>
     </div>
   </section>
 
-  <section id="faq-contato" class="op-section op-faq" aria-labelledby="faq-contato-heading">
-    <div class="container op-faq-grid">
-      <div class="op-head">
-        <h2 id="faq-contato-heading" class="mf-section-title" data-reveal set:html={t.faq.title} />
-      </div>
-      <div class="faq-list">
-        {t.faq.items.map((item) => (
-          <div class="faq-item">
-            <button type="button" class="faq-question" aria-expanded="false">
-              <span>{item.q}</span>
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-answer"><div class="faq-answer-inner"><p>{item.a}</p></div></div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <!-- Formulário de contato: mesmas regras do modal, envio para o webhook -->
   <script>

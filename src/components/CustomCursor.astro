@@ -56,7 +56,7 @@
   }
 
   .cursor-label {
-    color: var(--ink);
+    color: var(--on-lime);
     font-family: var(--font-body);
     font-size: 0.625rem;
     font-weight: 700;
@@ -67,8 +67,9 @@
     transition: opacity 0.2s ease;
   }
 
+  /* Sobre links e botões: só o contorno cresce, sem preenchimento; o ponto some. */
   .custom-cursor.is-hover .cursor-dot { opacity: 0; scale: 0.3; }
-  .custom-cursor.is-hover .cursor-ring { scale: 1.6; background: #ffffff; }
+  .custom-cursor.is-hover .cursor-ring { scale: 1.35; }
 
   .custom-cursor.has-label .cursor-dot { opacity: 0; }
   .custom-cursor.has-label .cursor-ring {

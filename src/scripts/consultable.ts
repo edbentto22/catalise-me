@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { animate as motionAnimate, inView, stagger as motionStagger } from 'motion';
-import { animate, createDrawable, createMotionPath, createTimeline, scrambleText, stagger } from 'animejs';
+import { animate, createDrawable, createTimeline, stagger } from 'animejs';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,66 +67,69 @@ function splitWords(el: HTMLElement, { mask = false } = {}): HTMLElement[] {
 }
 
 /* ──────────────────────────────────────────────────────────
-   HOME · Console "Pergunte à sua empresa"
+   HOME · Título rotativo "Sua empresa não precisa de …"
+   Digita e apaga cada termo; com motion reduzido, apenas troca.
 ────────────────────────────────────────────────────────── */
-interface Query { q: string; a: string; act: string; }
+function initHeroRotator(flags: ConsultableFlags) {
+  const rotator = document.querySelector<HTMLElement>('[data-hero-rotator]');
+  if (!rotator) return;
+  let words: string[];
+  try { words = JSON.parse(rotator.dataset.words || '[]'); } catch { return; }
+  const target = rotator.querySelector<HTMLElement>('[data-rotator-word]');
+  if (!target || words.length < 2) return;
 
-function initQueryConsole(flags: ConsultableFlags) {
-  const consoleEl = document.querySelector<HTMLElement>('[data-query-console]');
-  if (!consoleEl) return;
-  let queries: Query[];
-  try { queries = JSON.parse(consoleEl.dataset.queries || '[]'); } catch { return; }
-  const question = consoleEl.querySelector<HTMLElement>('[data-query-q]');
-  const answer = consoleEl.querySelector<HTMLElement>('[data-query-a]');
-  const action = consoleEl.querySelector<HTMLElement>('[data-query-act]');
-  const rows = [...consoleEl.querySelectorAll<HTMLElement>('[data-query-answer], [data-query-action]')];
-  const counter = consoleEl.querySelector<HTMLElement>('[data-query-index]');
-  const announcement = consoleEl.querySelector<HTMLElement>('[data-query-announcement]');
-  const status = consoleEl.querySelector<HTMLElement>('[data-query-status]');
-  const controls = consoleEl.querySelector<HTMLElement>('[data-query-controls]');
-  const buttons = [...consoleEl.querySelectorAll<HTMLButtonElement>('[data-query-prev], [data-query-next]')];
-  const check = consoleEl.querySelector<SVGPathElement>('[data-query-check]');
-  if (!question || !answer || !action || queries.length < 2) return;
-  const [drawable] = check ? createDrawable(check) : [];
-  if (drawable) animate(drawable, { draw: '0 1', duration: 0 });
-  if (controls) controls.hidden = false;
+  const typing = flags.motion && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HOLD = 2300, TYPE = 46, ERASE = 26, PAUSE = 320;
   let index = 0;
-  let busy = false;
-  const select = async (direction: number) => {
-    if (busy) return;
-    busy = true;
-    buttons.forEach(button => { button.disabled = true; });
-    const motion = flags.motion && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    try {
-      index = (index + direction + queries.length) % queries.length;
-      const item = queries[index];
-      if (motion) await motionAnimate(rows, { opacity: 0, y: 4 }, { duration: 0.12 });
-      question.textContent = item.q;
-      answer.textContent = item.a;
-      action.textContent = item.act;
-      if (counter) counter.textContent = String(index + 1).padStart(2, '0');
-      if (motion) {
-        if (status) status.textContent = consoleEl.dataset.busy || '';
-        document.dispatchEvent(new CustomEvent('cx:query'));
-        const networkPath = consoleEl.querySelector<SVGPathElement>('[data-network-link]');
-        if (networkPath) {
-          animate(createDrawable(networkPath), { draw: ['0 0', '0 1'], duration: 650, ease: 'outQuad' });
-        }
-        await motionAnimate(rows, { opacity: [0, 1], y: [6, 0] }, { duration: 0.3, delay: motionStagger(0.16), ease: EASE_OUT });
-        if (drawable) await animate(drawable, { draw: ['0 0', '0 1'], duration: 220, ease: 'outQuad' });
-      }
-      if (status) status.textContent = consoleEl.dataset.done || '';
-      if (announcement) announcement.textContent = `${item.q} ${item.a}. ${item.act}.`;
-    } finally {
-      // Interrupted motion must never leave the simulated answers invisible.
-      rows.forEach(row => { row.style.opacity = '1'; row.style.transform = ''; });
-      buttons.forEach(button => { button.disabled = false; });
-      busy = false;
+  let timer = 0;
+  const schedule = (fn: () => void, ms: number) => { window.clearTimeout(timer); timer = window.setTimeout(fn, ms); };
+  // A rede do hero escuta a palavra atual para acender o hub correspondente.
+  const announce = () => {
+    rotator.dataset.index = String(index);
+    document.dispatchEvent(new CustomEvent('cx:rotator', { detail: { index } }));
+  };
+  announce();
+
+  if (!typing) {
+    rotator.dataset.state = 'static';
+    const swap = () => { index = (index + 1) % words.length; target.textContent = words[index]; announce(); schedule(swap, HOLD + 900); };
+    schedule(swap, HOLD + 900);
+    return;
+  }
+
+  const type = () => {
+    const word = words[index];
+    const text = target.textContent || '';
+    if (text.length < word.length) {
+      rotator.dataset.state = 'typing';
+      target.textContent = word.slice(0, text.length + 1);
+      schedule(type, TYPE + Math.random() * 38);
+    } else {
+      rotator.dataset.state = 'hold';
+      schedule(erase, HOLD);
     }
   };
-  buttons.forEach(button => button.addEventListener('click', () => {
-    void select(button.hasAttribute('data-query-prev') ? -1 : 1);
-  }));
+  const erase = () => {
+    const text = target.textContent || '';
+    if (text.length) {
+      rotator.dataset.state = 'erasing';
+      target.textContent = text.slice(0, -1);
+      schedule(erase, ERASE);
+    } else {
+      index = (index + 1) % words.length;
+      announce();
+      schedule(type, PAUSE);
+    }
+  };
+
+  rotator.dataset.state = 'hold';
+  schedule(erase, HOLD);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { window.clearTimeout(timer); return; }
+    target.textContent = words[index];
+    rotator.dataset.state = 'hold';
+    schedule(erase, HOLD);
+  });
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -150,7 +153,7 @@ function initManifestoHero() {
   if (fades.length) tl.fromTo(fades, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.1, stagger: 0.12 }, 0.45);
   if (strike && strikeLine) {
     tl.fromTo(strikeLine, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.inOut' }, 1.35)
-      .to(strike, { color: '#7c7c85', duration: 0.5, ease: 'power1.out' }, 1.75);
+      .to(strike, { '--struck': 1, duration: 0.5, ease: 'power1.out' }, 1.75);
   }
   if (scramble) {
     tl.add(() => {
@@ -174,9 +177,10 @@ function initManifestoHero() {
 function initScrubText() {
   document.querySelectorAll<HTMLElement>('[data-scrub]').forEach((el) => {
     const words = splitWords(el);
-    // Cinza → preto (não opacidade): o texto grande mantém contraste mínimo de 3:1 desde o início.
-    gsap.fromTo(words, { color: '#8e8e96' }, {
-      color: '#09090b', ease: 'none', stagger: 0.12,
+    // Cinza → tinta (não opacidade): o texto grande mantém contraste mínimo de 3:1 desde o início.
+    // O script move só a proporção (--lit); as cores vêm do tema, então a troca claro/escuro não quebra.
+    gsap.fromTo(words, { '--lit': 0 }, {
+      '--lit': 1, ease: 'none', stagger: 0.12,
       scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 42%', scrub: 0.5 },
     });
     const marks = el.querySelectorAll('mark');
@@ -279,51 +283,6 @@ function initScatterScene() {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
-   DIAGRAMA DA CAMADA · linhas desenhadas e pulsos em duas direções
-────────────────────────────────────────────────────────── */
-function initLayerDiagram() {
-  document.querySelectorAll<HTMLElement>('[data-layer]').forEach((diagram) => {
-    const paths = [...diagram.querySelectorAll<SVGPathElement>('[data-layer-path]')];
-    const nodes = [...diagram.querySelectorAll<HTMLElement>('[data-layer-node]')];
-    const bar = diagram.querySelector<HTMLElement>('[data-layer-bar]');
-    const upPulses = [...diagram.querySelectorAll<SVGCircleElement>('[data-pulse-up]')];
-    const downPulses = [...diagram.querySelectorAll<SVGCircleElement>('[data-pulse-down]')];
-    const routesUp = [...diagram.querySelectorAll<SVGPathElement>('[data-route-up]')];
-    const routesDown = [...diagram.querySelectorAll<SVGPathElement>('[data-route-down]')];
-
-    const drawables = paths.flatMap((path) => createDrawable(path));
-    animate(drawables, { draw: '0 0', duration: 0 });
-    nodes.forEach((node) => { node.style.opacity = '0'; });
-    if (bar) bar.style.opacity = '0';
-    [...upPulses, ...downPulses].forEach((pulse) => { pulse.style.opacity = '0'; });
-
-    const loops: ReturnType<typeof animate>[] = [];
-    let started = false;
-
-    inView(diagram, () => {
-      if (!started) {
-        started = true;
-        motionAnimate(nodes, { opacity: [0, 1], y: [14, 0] }, { delay: motionStagger(0.08), duration: 0.8, ease: EASE_OUT });
-        if (bar) motionAnimate(bar, { opacity: [0, 1], scaleX: [0.6, 1] }, { duration: 1, delay: 0.35, ease: EASE_OUT });
-        createTimeline({ defaults: { ease: 'inOutQuart' } })
-          .add(drawables, { draw: ['0 0', '0 1'], duration: 1100, delay: stagger(110) }, 300)
-          .call(() => {
-            const travel = (pulse: SVGCircleElement, route: SVGPathElement | undefined, i: number, duration: number) => {
-              if (!route) return;
-              pulse.style.opacity = '1';
-              loops.push(animate(pulse, { ...createMotionPath(route), duration, delay: i * 420, loop: true, ease: 'inOutSine' }));
-            };
-            upPulses.forEach((pulse, i) => travel(pulse, routesUp[i], i, 2600));
-            downPulses.forEach((pulse, i) => travel(pulse, routesDown[i], i + 0.5, 3000));
-          });
-      } else {
-        loops.forEach((loop) => loop.play());
-      }
-      return () => loops.forEach((loop) => loop.pause());
-    }, { amount: 0.35 });
-  });
-}
 
 /* ──────────────────────────────────────────────────────────
    CRENÇAS · a negação é riscada, a afirmação sobe com mola
@@ -342,7 +301,7 @@ function initBeliefs() {
     if (not) tl.fromTo(not, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0);
     if (not) {
       tl.add(() => { not.classList.add('is-struck'); }, 0.5)
-        .to(not, { color: '#62626b', duration: 0.3 }, 0.5);
+        .to(not, { color: '#71717a', duration: 0.3 }, 0.5);
     }
     tl.to(yesWords, { yPercent: 0, duration: 1, stagger: 0.07, ease: 'expo.out' }, 0.9);
 
@@ -350,65 +309,6 @@ function initBeliefs() {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
-   CICLO · entender → decidir → executar → medir → aprender → evoluir
-────────────────────────────────────────────────────────── */
-function initLoop() {
-  const loop = document.querySelector<HTMLElement>('[data-loop]');
-  if (!loop) return;
-
-  const ring = loop.querySelector<SVGPathElement>('[data-loop-ring]');
-  const traveler = loop.querySelector<SVGCircleElement>('[data-loop-traveler]');
-  const items = [...loop.querySelectorAll<HTMLElement>('[data-loop-item]')];
-  const nodes = [...loop.querySelectorAll<SVGCircleElement>('[data-loop-node]')];
-  const labels = [...loop.querySelectorAll<HTMLElement>('[data-loop-label]')];
-  const word = loop.querySelector<HTMLElement>('[data-loop-word]');
-  const count = loop.querySelector<HTMLElement>('[data-loop-count]');
-  if (!ring || !traveler || items.length === 0) return;
-
-  const [ringDrawable] = createDrawable(ring);
-  animate(ringDrawable, { draw: '0 0', duration: 0 });
-  traveler.style.opacity = '0';
-
-  let current = -1;
-  const activate = (index: number) => {
-    if (index === current) return;
-    current = index;
-    items.forEach((item, i) => item.classList.toggle('is-active', i === index));
-    nodes.forEach((node, i) => node.classList.toggle('is-active', i === index));
-    labels.forEach((label, i) => label.classList.toggle('is-active', i === index));
-    if (count) count.textContent = String(index + 1).padStart(2, '0');
-    const nextWord = items[index]?.dataset.word || '';
-    if (word) animate(word, { innerHTML: scrambleText({ text: nextWord, chars: 'lowercase', revealRate: 40, settleDuration: 220 }) });
-  };
-
-  let travel: ReturnType<typeof animate> | null = null;
-  inView(loop, () => {
-    if (!travel) {
-      animate(ringDrawable, { draw: ['0 0', '0 1'], duration: 1600, ease: 'inOutQuart' });
-      motionAnimate(items, { opacity: [0, 1], x: [-14, 0] }, { delay: motionStagger(0.07), duration: 0.7, ease: EASE_OUT });
-      motionAnimate(labels, { opacity: [0, 1] }, { delay: motionStagger(0.1, { startDelay: 0.6 }), duration: 0.6 });
-      traveler.style.opacity = '1';
-      travel = animate(traveler, {
-        ...createMotionPath(ring),
-        duration: 12000,
-        delay: 900,
-        loop: true,
-        ease: 'linear',
-        onUpdate: (self) => activate(Math.min(items.length - 1, Math.floor(self.iterationProgress * items.length))),
-      });
-    } else {
-      travel.play();
-    }
-    return () => travel?.pause();
-  }, { amount: 0.4 });
-
-  // Hover em um item fixa o ciclo naquele passo
-  items.forEach((item, i) => {
-    item.addEventListener('mouseenter', () => { travel?.pause(); activate(i); });
-    item.addEventListener('mouseleave', () => travel?.play());
-  });
-}
 
 /* ──────────────────────────────────────────────────────────
    ASSINATURA · "Catalise.me" letra a letra
@@ -463,16 +363,16 @@ function initShift() {
       const after = row.querySelector<HTMLElement>('[data-shift-after]');
       const arrow = row.querySelector<HTMLElement>('[data-shift-arrow]');
       const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 82%', end: 'top 52%', scrub: 0.6 } });
-      if (before) tl.fromTo(before, { color: '#3f3f46' }, { color: '#71717a', ease: 'none' }, 0);
+      if (before) tl.fromTo(before, { '--dim': 0 }, { '--dim': 1, ease: 'none' }, 0);
       if (arrow) tl.fromTo(arrow, { x: -12, opacity: 0 }, { x: 0, opacity: 1, ease: 'none' }, 0);
-      if (after) tl.fromTo(after, { color: '#71717a', x: 16 }, { color: '#09090b', x: 0, ease: 'none' }, 0.1);
+      if (after) tl.fromTo(after, { '--lit': 0, x: 16 }, { '--lit': 1, x: 0, ease: 'none' }, 0.1);
     });
   });
 }
 
 
 /* ──────────────────────────────────────────────────────────
-   TÍTULOS DE HERO (Sobre, Opera OS) · palavras sobem de máscaras
+   TÍTULOS DE HERO (Sobre, Contato) · palavras sobem de máscaras
 ────────────────────────────────────────────────────────── */
 function initHeroTitles() {
   document.querySelectorAll<HTMLElement>('[data-mf-title]').forEach((title) => {
@@ -480,97 +380,6 @@ function initHeroTitles() {
     const words = splitWords(title, { mask: true });
     gsap.fromTo(words, { yPercent: 115, rotate: 3 }, { yPercent: 0, rotate: 0, duration: 0.65, stagger: { amount: 0.18 }, ease: 'expo.out', delay: 0.12 });
   });
-}
-
-/* ──────────────────────────────────────────────────────────
-   OPERA OS · método com letra fixa e cronograma sincronizado
-────────────────────────────────────────────────────────── */
-function initMethod() {
-  const section = document.querySelector<HTMLElement>('[data-method]');
-  if (!section) return;
-  const phases = [...section.querySelectorAll<HTMLElement>('[data-phase]')];
-  const letter = section.querySelector<HTMLElement>('[data-method-letter]');
-  const name = section.querySelector<HTMLElement>('[data-method-name]');
-  const rows = [...section.querySelectorAll<HTMLElement>('[data-gantt-row]')];
-  let current = -1;
-  let letterMotion: gsap.core.Timeline | undefined;
-
-  const activate = (index: number) => {
-    if (index === current || index < 0) return;
-    const direction = index > current ? 1 : -1;
-    current = index;
-    const phase = phases[index];
-    phases.forEach((p, i) => p.classList.toggle('is-current', i === index));
-    rows.forEach((row, i) => {
-      row.classList.toggle('is-active', i === index);
-      row.classList.toggle('is-done', i < index);
-    });
-    if (letter) {
-      letterMotion?.kill();
-      letterMotion = gsap.timeline()
-        .to(letter, { yPercent: -100 * direction, opacity: 0, duration: 0.25, ease: 'power2.in' })
-        .add(() => { letter.textContent = phase.dataset.letter || ''; })
-        .fromTo(letter, { yPercent: 100 * direction, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: 'expo.out' });
-    }
-    if (name) name.textContent = phase.dataset.title || '';
-  };
-
-  phases.forEach((phase, i) => {
-    ScrollTrigger.create({
-      trigger: phase,
-      start: 'top 55%',
-      end: 'bottom 55%',
-      onToggle: (self) => { if (self.isActive) activate(i); },
-    });
-  });
-  activate(0);
-}
-
-/* Tela do Opera OS: leve inclinação com o ponteiro e letras O-P-E-R-A acendendo em sequência */
-function initOperaScreen(flags: ConsultableFlags) {
-  const screen = document.querySelector<HTMLElement>('[data-op-screen]');
-  if (!screen) return;
-  const letters = [...screen.querySelectorAll<HTMLElement>('.op-screen-letters li')];
-  if (letters.length) {
-    ScrollTrigger.create({
-      trigger: screen, start: 'top 85%', end: 'bottom 20%',
-      onUpdate: ({ progress }) => {
-        const index = Math.min(letters.length - 1, Math.floor(progress * letters.length));
-        letters.forEach((letter, i) => letter.classList.toggle('is-active', i === index));
-      },
-    });
-  }
-  if (!flags.pointer) return;
-  const tiltX = gsap.quickTo(screen, 'rotationY', { duration: 0.8, ease: 'power3.out' });
-  const tiltY = gsap.quickTo(screen, 'rotationX', { duration: 0.8, ease: 'power3.out' });
-  gsap.set(screen, { transformPerspective: 1600, rotationY: -6, rotationX: 2 });
-  screen.addEventListener('pointermove', (event) => {
-    const rect = screen.getBoundingClientRect();
-    tiltX(((event.clientX - rect.left) / rect.width - 0.5) * 10 - 4);
-    tiltY(-((event.clientY - rect.top) / rect.height - 0.5) * 6 + 1);
-  });
-  screen.addEventListener('pointerleave', () => { tiltX(-6); tiltY(2); });
-}
-
-/* ──────────────────────────────────────────────────────────
-   RODAPÉ · faixa que acelera com o scroll e wordmark que sobe
-────────────────────────────────────────────────────────── */
-function initFooter() {
-  const track = document.querySelector<HTMLElement>('[data-marquee-track]');
-  if (track) {
-    gsap.fromTo(track, { xPercent: 0 }, {
-      xPercent: -8, ease: 'none',
-      scrollTrigger: { trigger: track, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
-    });
-  }
-
-  const wordmark = document.querySelector<HTMLElement>('[data-footer-wordmark]');
-  if (wordmark) {
-    gsap.fromTo(wordmark, { yPercent: 60, scaleY: 1.25 }, {
-      yPercent: 0, scaleY: 1, ease: 'none',
-      scrollTrigger: { trigger: wordmark, start: 'top bottom', end: 'bottom bottom', scrub: 0.6 },
-    });
-  }
 }
 
 /* Cartões com brilho que segue o ponteiro (apenas ponteiro fino) */
@@ -595,7 +404,7 @@ export async function initConsultable(flags: ConsultableFlags) {
   const root = document.documentElement;
 
   // 1 · O que está acima da dobra entra primeiro, numa tarefa curta.
-  initQueryConsole(flags);
+  initHeroRotator(flags);
   if (flags.motion) {
     initManifestoHero();
     initHeroTitles();
@@ -608,8 +417,8 @@ export async function initConsultable(flags: ConsultableFlags) {
 
   // 2 · O restante da coreografia é montado em tarefas pequenas.
   const steps = [
-    initScrubText, initScatterScene, initLayerDiagram, initBeliefs, initLoop, initSignature,
-    initReveals, initShift, initMethod, () => initOperaScreen(flags), initFooter,
+    initScrubText, initScatterScene, initBeliefs, initSignature,
+    initReveals, initShift,
   ];
   for (const step of steps) {
     await yieldToMain();
