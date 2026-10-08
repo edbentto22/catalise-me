@@ -35,7 +35,7 @@
   width: 100%;
   max-width: var(--container, 1320px);
   margin: 0 auto;
-  padding: clamp(32px, 5vh, 64px) var(--gutter);
+  padding: clamp(20px, 3.5vh, 48px) var(--gutter);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
   align-items: center;
@@ -159,7 +159,8 @@ html[data-motion="full"] .hero-rotator[data-state="hold"] .hero-rotator-plus { f
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  max-height: min(720px, calc(100svh - 200px));
+  /* Cabe na dobra junto com a faixa de setores e a barra inferior. */
+  max-height: min(680px, calc(100svh - 300px));
   margin-inline: auto;
   overflow: hidden;
   /* Vertical continua rolando a página; horizontal e pinça ficam com a rede. */
@@ -466,6 +467,88 @@ html[data-motion="full"] .hero-rotator[data-state="hold"] .hero-rotator-plus { f
 .hero-graph:not([data-state='ready']) .hero-graph-legend { display: none; }
 
 /* ─────────────────────────────────────────
+   SETORES · faixa contínua acima da barra inferior
+───────────────────────────────────────── */
+.hero-sectors {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.08);
+  background: var(--paper);
+}
+
+.hero-sectors-inner {
+  max-width: var(--container, 1320px);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+}
+
+.hero-sectors-label {
+  font-family: var(--font-body, 'Manrope', sans-serif);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--quiet);
+  white-space: nowrap;
+}
+
+.hero-sectors-viewport {
+  overflow: hidden;
+  /* As pontas dissolvem: a faixa parece não ter começo nem fim. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.hero-sectors-track {
+  display: flex;
+  width: max-content;
+  animation: heroSectors 46s linear infinite;
+}
+
+.hero-sectors:hover .hero-sectors-track { animation-play-state: paused; }
+
+.hero-sectors-group {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-sector {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 44px 13px 0;
+  font-family: var(--font-display, 'Archivo', sans-serif);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.hero-sector-icon {
+  flex: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
+}
+
+/* Duas cópias idênticas lado a lado: andar metade da trilha fecha o laço sem salto. */
+@keyframes heroSectors {
+  to { transform: translateX(-50%); }
+}
+
+html[data-motion='reduced'] .hero-sectors-track { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sectors-track { animation: none; }
+}
+
+/* ─────────────────────────────────────────
    BARRA INFERIOR · status, pilares, aplicações
 ───────────────────────────────────────── */
 .hero-bottom-bar {
@@ -548,6 +631,13 @@ html[data-motion="full"] .hero-rotator[data-state="hold"] .hero-rotator-plus { f
     row-gap: 14px;
   }
   .hero-bottom-pillars { grid-column: 1 / -1; justify-content: flex-start; }
+  /* A barra inferior ganha uma segunda linha aqui: a rede cede essa altura para caber na dobra. */
+  .hero-graph { max-height: min(680px, calc(100svh - 340px)); }
+}
+
+@media (max-width: 600px) {
+  .hero-sectors-inner { grid-template-columns: 1fr; gap: 0; padding-top: 12px; }
+  .hero-sector { padding-block: 8px 12px; padding-right: 32px; }
 }
 
 @media (max-width: 900px) {

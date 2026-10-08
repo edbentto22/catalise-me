@@ -21,6 +21,7 @@ export const home = {
     pillars: ['Conhecimento', 'Processos', 'Sistemas', 'Agentes'],
     graph: { core: 'Sua empresa', note: 'Simulação ilustrativa', aria: 'Rede ilustrativa: conhecimento, processos, sistemas e agentes conectados ao núcleo da empresa', controls: { zoomIn: 'Aproximar', zoomOut: 'Afastar', reset: 'Visão geral', hint: 'Use pinça ou Ctrl + rolagem para dar zoom', hubAction: 'Aproximar de' }, legend: { label: 'Legenda das formas', items: ['Dados', 'Tarefas', 'Decisões', 'Execuções', 'Rotinas', 'Processos'] } },
     appsAria: 'Aplicações desenvolvidas pela Catalise.me',
+    sectors: { label: 'Atendemos', items: ['Hotelaria', 'Imobiliárias', 'Clínicas', 'Educação'] },
   },
   en: {
     meta: {
@@ -41,6 +42,7 @@ export const home = {
     pillars: ['Knowledge', 'Processes', 'Systems', 'Agents'],
     graph: { core: 'Your company', note: 'Illustrative simulation', aria: 'Illustrative network: knowledge, processes, systems and agents connected to the company core', controls: { zoomIn: 'Zoom in', zoomOut: 'Zoom out', reset: 'Overview', hint: 'Pinch or Ctrl + scroll to zoom', hubAction: 'Zoom into' }, legend: { label: 'Shape legend', items: ['Data', 'Tasks', 'Decisions', 'Executions', 'Routines', 'Processes'] } },
     appsAria: 'Applications built by Catalise.me',
+    sectors: { label: 'We serve', items: ['Hospitality', 'Real estate', 'Clinics', 'Education'] },
   },
   es: {
     meta: {
@@ -61,5 +63,6 @@ export const home = {
     pillars: ['Conocimiento', 'Procesos', 'Sistemas', 'Agentes'],
     graph: { core: 'Su empresa', note: 'Simulación ilustrativa', aria: 'Red ilustrativa: conocimiento, procesos, sistemas y agentes conectados al núcleo de la empresa', controls: { zoomIn: 'Acercar', zoomOut: 'Alejar', reset: 'Vista general', hint: 'Use pellizco o Ctrl + desplazamiento para acercar', hubAction: 'Acercar a' }, legend: { label: 'Leyenda de las formas', items: ['Datos', 'Tareas', 'Decisiones', 'Ejecuciones', 'Rutinas', 'Procesos'] } },
     appsAria: 'Aplicaciones desarrolladas por Catalise.me',
+    sectors: { label: 'Atendemos', items: ['Hotelería', 'Inmobiliarias', 'Clínicas', 'Educación'] },
   },
 } satisfies Record<Locale, unknown>;
