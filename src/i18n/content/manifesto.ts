@@ -38,6 +38,15 @@ export const manifesto = {
         'A Catalise.me existe para <em>mudar isso.</em>',
       ],
       fragments: ['Na cabeça das pessoas', 'Nos sistemas', 'Nas conversas', 'Nas planilhas', 'Nos documentos', 'Em processos que ninguém escreveu'],
+      bench: {
+        title: 'Bancada de arquivo',
+        hint: 'Role para conectar as fontes',
+        label: 'Bancada de arquivo. Seis bandejas de fichas, em alturas diferentes, guardam o que a empresa sabe: na cabeça das pessoas, nos sistemas, nas conversas, nas planilhas, nos documentos e em processos que ninguém escreveu. Um pórtico com garra leva cada maço de fichas para uma única gaveta de índice. Na frente, um leitor com lente verde, a IA, só consegue ler o que já está na gaveta.',
+        scattered: '{total} fontes · nenhuma consultável',
+        connecting: 'Conectando: {source}',
+        filed: '{n} de {total} fontes na camada',
+        queryable: 'Camada única · a IA lê: {source}',
+      },
       core: 'Catalise.me',
     },
     layer: {
@@ -116,6 +125,15 @@ export const manifesto = {
         'Catalise.me exists to <em>change that.</em>',
       ],
       fragments: ["In people's heads", 'In the systems', 'In conversations', 'In spreadsheets', 'In documents', 'In processes no one wrote down'],
+      bench: {
+        title: 'Filing bench',
+        hint: 'Scroll to connect the sources',
+        label: "Filing bench. Six card trays, at different heights, hold what the company knows: in people's heads, in systems, in conversations, in spreadsheets, in documents and in processes no one wrote down. A gantry with a gripper carries each packet of cards into one index drawer. In front, a reader with a green lens, the AI, can only read what is already in the drawer.",
+        scattered: '{total} sources · none queryable',
+        connecting: 'Connecting: {source}',
+        filed: '{n} of {total} sources in the layer',
+        queryable: 'One layer · the AI reads: {source}',
+      },
       core: 'Catalise.me',
     },
     layer: {
@@ -194,6 +212,15 @@ export const manifesto = {
         'Catalise.me existe para <em>cambiar eso.</em>',
       ],
       fragments: ['En la cabeza de las personas', 'En los sistemas', 'En las conversaciones', 'En las planillas', 'En los documentos', 'En procesos que nadie escribió'],
+      bench: {
+        title: 'Banco de archivo',
+        hint: 'Desplácese para conectar las fuentes',
+        label: 'Banco de archivo. Seis bandejas de fichas, a distintas alturas, guardan lo que la empresa sabe: en la cabeza de las personas, en los sistemas, en las conversaciones, en las planillas, en los documentos y en procesos que nadie escribió. Un pórtico con pinza lleva cada paquete de fichas a un único cajón de índice. Al frente, un lector con lente verde, la IA, solo puede leer lo que ya está en el cajón.',
+        scattered: '{total} fuentes · ninguna consultable',
+        connecting: 'Conectando: {source}',
+        filed: '{n} de {total} fuentes en la capa',
+        queryable: 'Una sola capa · la IA lee: {source}',
+      },
       core: 'Catalise.me',
     },
     layer: {
