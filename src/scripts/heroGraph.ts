@@ -1,13 +1,18 @@
 import {
-  BufferAttribute, BufferGeometry, Color, DynamicDrawUsage, Euler, Group, InstancedMesh, LineBasicMaterial, LineLoop,
-  LineSegments, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Points, PointsMaterial, Quaternion, Scene,
-  ShaderMaterial, SphereGeometry, SRGBColorSpace, TorusGeometry, Vector3,
+  BufferAttribute, BufferGeometry, Color, DynamicDrawUsage, Euler, Fog, Group, InstancedMesh, Mesh, MeshBasicMaterial,
+  Object3D, PerspectiveCamera, Points, PointsMaterial, Quaternion, Raycaster, Scene, ShaderMaterial, SphereGeometry,
+  SRGBColorSpace, TorusGeometry, Vector2, Vector3,
 } from 'three';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
+import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { gsap } from 'gsap';
 import {
   LIME, SHAPE, clamp01, createGlassRenderer, createShapeGeometries, createStudio, easeOut, glassMaterial as makeGlass,
-  gray, hexToRgb, inkRingMaterial, isCoarsePointer, limeCoreMaterial, makeGlowTexture, obsidianMaterial, orientShape,
-  rethemeScene, seeded,
+  glassTheme, gray, hexToRgb, inkRingMaterial, isCoarsePointer, limeCoreMaterial, makeGlowTexture, obsidianMaterial,
+  orientShape, rethemeScene, seeded,
 } from './glassKit';
 import { runScene } from './sceneLifecycle';
 import { onThemeChange } from './theme';
@@ -15,8 +20,9 @@ import { onThemeChange } from './theme';
 /**
  * Rede da empresa consultável (hero da Home) · árvore radial de objetos de vidro.
  *
- * Núcleo em vidro lima no centro. Nas diagonais, quatro hubs em vidro fumê (os pilares), cada um abrindo
- * uma cúpula 3D de objetos de vidro (duas camadas numa calota esférica), ligados ao hub como raios.
+ * Núcleo em vidro lima no centro, envolvido por uma esfera de objetos de vidro em duas cascas (a mesma
+ * organização esferoidal do Manifesto). Nas diagonais, quatro hubs em vidro fumê (os pilares) assentam na
+ * casca externa; cada objeto pertence ao hub mais próximo e se liga a ele por um raio.
  * Mesma escala e material da esfera do Manifesto: objetos grandes o bastante para o vidro se ler.
  * As formas são um vocabulário: esfera = dados, cubo = tarefa, losango = decisão, pirâmide = execução,
  * anel = rotina, cápsula = processo. Cada pilar mistura as formas em setores do leque, com proporções
@@ -25,7 +31,12 @@ import { onThemeChange } from './theme';
  * - Objetos: InstancedMesh com vidro físico (transmissão, dispersão, iridescência) e ambiente de estúdio.
  *   Eles escrevem profundidade e as linhas ficam atrás: o vidro sempre aparece por cima.
  * - Linhas são opacas (fade feito em direção ao branco), por isso aparecem refratadas dentro do vidro.
- * - O hub em foco segue o título rotativo ou o mouse.
+ *   São linhas "gordas" (LineMaterial) com largura em pixels e borda suavizada: nítidas em qualquer densidade.
+ * - Névoa leve na cor do fundo: o que está atrás recua, o que está na frente avança.
+ * - O hub em foco segue o título rotativo ou o mouse. Passar o mouse sobre um objeto o destaca e dispara
+ *   uma pergunta (pulso) dele até o núcleo.
+ * - Robustez: qualidade adaptativa (reduz resolução e depois a transmissão se os quadros atrasarem),
+ *   recuperação de perda de contexto WebGL (tratada no componente) e navegação por teclado entre hubs.
  * - Interação: clique num hub (ou no seu leque) e a câmera voa até ele; pinça, Ctrl/⌘ + rolagem e os
  *   botões dão zoom; arrastar gira a rede. Clique no núcleo, no mesmo hub ou Esc volta à visão geral.
  */
@@ -42,7 +53,16 @@ export interface HeroGraphOptions {
   pointerTarget?: HTMLElement | null;
 }
 
-const HUB_RADIUS = 1.85;
+/**
+ * A rede é uma esfera, como a do Manifesto: duas cascas de objetos de vidro em volta do núcleo.
+ * Os quatro hubs (pilares) assentam na casca externa e cada objeto pertence ao hub mais próximo,
+ * de modo que a esfera se divide em quatro gomos.
+ */
+const SHELLS = [
+  { radius: 2.0, share: 0.7, size: 0.215, tint: 0.3 }, // casca externa
+  { radius: 1.4, share: 0.3, size: 0.165, tint: 0.18 }, // casca interna, mais escura
+];
+const HUB_RADIUS = SHELLS[0].radius;
 const HUB_R = 0.235;
 const CORE_R = 0.27;
 /**
@@ -107,6 +127,10 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
   }
 
   const scene = new Scene();
+  // Névoa na cor do papel: dá profundidade sem escurecer. Os limites seguem a distância da câmera.
+  const fogColor = () => (glassTheme.dark ? 0x0b0b0d : 0xffffff);
+  const fog = new Fog(fogColor(), 9, 16);
+  scene.fog = fog;
   const camera = new PerspectiveCamera(34, 1, 0.1, 80);
   camera.position.set(0, 0, 10.2);
   const root = new Group();
@@ -143,7 +167,7 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     const angle = Math.PI * 0.75 - (i / hubCount) * Math.PI * 2;
     const dir = new Vector3(Math.cos(angle), Math.sin(angle), 0);
     hubDirs.push(dir);
-    hubTargets.push(new Vector3(dir.x * HUB_RADIUS, dir.y * HUB_RADIUS, i % 2 ? -0.24 : 0.24));
+    hubTargets.push(new Vector3(dir.x * HUB_RADIUS, dir.y * HUB_RADIUS, 0));
     hubTones.push(hexToRgb(parseInt((el.dataset.tone || '#18181b').replace('#', ''), 16)));
     hubSizes.push(Math.max(8, Math.round(parseInt(el.dataset.size || '60', 10) * (isCoarse ? 0.55 : 1))));
     let mix: [number, number][] = [[0, 1]];
@@ -167,7 +191,7 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
   // Anel de foco em lima ao redor do hub destacado.
   const haloGeo = track(new TorusGeometry(1, 0.035, 12, 96));
   const halos = hubMeshes.map(() => {
-    const mat = track(new MeshBasicMaterial({ color: LIME, transparent: true, opacity: 0, depthWrite: false }));
+    const mat = track(new MeshBasicMaterial({ color: LIME, transparent: true, opacity: 0, depthWrite: false, fog: false }));
     const halo = new Mesh(haloGeo, mat);
     root.add(halo);
     return halo;
@@ -185,59 +209,63 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     hub: number; row: number; angle: number; r: number; normal: Vector3; theta: number; phase: number; tint: number;
     // nó de anel
     ring: number; ringAngle: number;
+    /** Índice do arco hub → objeto (só a casca externa tem arco; -1 = nenhum). */
+    line: number;
   }
+  /** Cada arco é uma polilinha de ARC_SEGS segmentos sobre a superfície da esfera. */
+  const ARC_SEGS = 10;
+  let lineCount = 0;
   const items: Item[] = [];
   const kindCount = SHAPES.map(() => 0);
   const addItem = (partial: Partial<Item> & { kind: number; size: number }) => {
     const item: Item = {
       slot: kindCount[partial.kind]++,
-      hub: -1, row: 0, angle: 0, r: 0, normal: UP, theta: 0, phase: rand() * Math.PI * 2, tint: 0.4, ring: -1, ringAngle: 0,
+      hub: -1, row: 0, angle: 0, r: 0, normal: UP, theta: 0, phase: rand() * Math.PI * 2, tint: 0.4, ring: -1, ringAngle: 0, line: -1,
       ...partial,
     };
     items.push(item);
     return item;
   };
 
-  /* Cúpulas: cada pilar abre uma calota esférica de objetos, voltada para fora e um pouco para a câmera. */
+  /* Esfera: pontos de Fibonacci em duas cascas; cada ponto pertence ao hub mais próximo (gomos). */
   const hubLeafStart: number[] = [];
   const hubLeafCount: number[] = [];
   const golden = Math.PI * (3 - Math.sqrt(5));
-  const SHELLS = [
-    { share: 0.68, radius: 1.16, cap: 1.2, size: 0.23, tint: 0.28 }, // camada externa
-    { share: 0.32, radius: 0.74, cap: 1.0, size: 0.17, tint: 0.16 }, // camada interna, mais escura
-  ];
-  hubDirs.forEach((dir, i) => {
-    const count = hubSizes[i];
-    const axis = new Vector3(dir.x, dir.y, 0.55).normalize();
-    // Base ortonormal da cúpula (u, v, eixo) para distribuir em espiral de Fibonacci na calota.
-    const u = new Vector3().crossVectors(axis, new Vector3(0, 0, 1)).normalize();
-    const v = new Vector3().crossVectors(axis, u).normalize();
+  const total = hubSizes.reduce((sum, n) => sum + n, 0);
+  const hubAxes = hubTargets.map((target) => target.clone().normalize());
+  const seeds: { normal: Vector3; shell: number; hub: number; theta: number }[] = [];
+  SHELLS.forEach((shell, shellIndex) => {
+    const n = Math.round(total * shell.share);
+    for (let j = 0; j < n; j++) {
+      const y = 1 - (2 * (j + 0.5)) / n;
+      const ring = Math.sqrt(Math.max(0, 1 - y * y));
+      const phi = j * golden + shellIndex * 1.3;
+      const normal = new Vector3(Math.cos(phi) * ring, y, Math.sin(phi) * ring);
+      // Janela voltada para a câmera: o núcleo e o seu rótulo ficam à vista dentro da esfera.
+      if (normal.z > (shellIndex === 0 ? 0.6 : 0.42)) continue;
+      let hub = 0, best = -Infinity;
+      hubAxes.forEach((axis, h) => { const d = axis.dot(normal); if (d > best) { best = d; hub = h; } });
+      seeds.push({ normal, shell: shellIndex, hub, theta: Math.acos(Math.max(-1, Math.min(1, best))) });
+    }
+  });
+  // Itens contíguos por hub (os pulsos sorteiam dentro do gomo em foco) e, dentro do gomo, do hub para a borda.
+  seeds.sort((a, b) => a.hub - b.hub || a.theta - b.theta);
+  hubDirs.forEach((_, i) => {
+    const mine = seeds.filter((seed) => seed.hub === i);
     hubLeafStart[i] = items.length;
-    SHELLS.forEach((shell, shellIndex) => {
-      const n = shellIndex === 0 ? Math.round(count * shell.share) : count - Math.round(count * SHELLS[0].share);
-      const cosCap = Math.cos(shell.cap);
-      for (let j = 0; j < n; j++) {
-        const cosT = 1 - (1 - cosCap) * ((j + 0.5) / n);
-        const sinT = Math.sqrt(Math.max(0, 1 - cosT * cosT));
-        const phi = j * golden + shellIndex * 0.9;
-        const normal = new Vector3()
-          .addScaledVector(u, Math.cos(phi) * sinT)
-          .addScaledVector(v, Math.sin(phi) * sinT)
-          .addScaledVector(axis, cosT)
-          .normalize();
-        const theta = Math.acos(cosT);
-        // Faixas concêntricas (do centro da cúpula para a borda): cada forma ocupa uma faixa de área proporcional ao peso.
-        const fraction = (j + 0.5) / n;
-        const kind = (hubMixes[i].find((sector) => fraction <= sector.until) ?? hubMixes[i][hubMixes[i].length - 1]).kind;
-        const edge = theta / shell.cap;
-        addItem({
-          kind, hub: i, row: shellIndex, normal, theta,
-          angle: Math.atan2(normal.y, normal.x),
-          r: shell.radius * (0.97 + rand() * 0.06),
-          size: shell.size * (1 - edge * 0.22) * (0.92 + rand() * 0.16),
-          tint: Math.min(0.7, shell.tint + edge * 0.24),
-        });
-      }
+    mine.forEach((seed, j) => {
+      const shell = SHELLS[seed.shell];
+      // Faixas concêntricas (do hub para a borda do gomo): cada forma ocupa uma faixa proporcional ao peso.
+      const fraction = (j + 0.5) / mine.length;
+      const kind = (hubMixes[i].find((sector) => fraction <= sector.until) ?? hubMixes[i][hubMixes[i].length - 1]).kind;
+      const edge = clamp01(seed.theta / (Math.PI * 0.5));
+      addItem({
+        kind, hub: i, row: seed.shell, normal: seed.normal, theta: seed.theta, line: seed.shell === 0 ? lineCount++ : -1,
+        angle: Math.atan2(seed.normal.y, seed.normal.x),
+        r: shell.radius * (0.97 + rand() * 0.06),
+        size: shell.size * (1 - edge * 0.18) * (0.9 + rand() * 0.2),
+        tint: Math.min(0.7, shell.tint + edge * 0.2),
+      });
     });
     hubLeafCount[i] = items.length - hubLeafStart[i];
   });
@@ -255,6 +283,8 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     }
   });
 
+  const slotToItem = SHAPES.map((_, kind) => new Int32Array(Math.max(1, kindCount[kind])).fill(-1));
+  items.forEach((item, n) => { slotToItem[item.kind][item.slot] = n; });
   const meshes = SHAPES.map((geo, kind) => {
     const mesh = new InstancedMesh(geo, glassMaterial(), Math.max(1, kindCount[kind]));
     mesh.count = kindCount[kind];
@@ -268,35 +298,58 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
   const itemPos = new Float32Array(items.length * 3);
 
   /* ── Linhas (opacas: aparecem refratadas dentro do vidro) ───── */
-  const leafLinePos = new Float32Array(leafCount * 6);
-  const leafLineCol = new Float32Array(leafCount * 6);
-  const leafLineGeo = track(new BufferGeometry());
-  leafLineGeo.setAttribute('position', new BufferAttribute(leafLinePos, 3).setUsage(DynamicDrawUsage));
-  leafLineGeo.setAttribute('color', new BufferAttribute(leafLineCol, 3).setUsage(DynamicDrawUsage));
-  root.add(new LineSegments(leafLineGeo, track(new LineBasicMaterial({ vertexColors: true }))));
+  // Linhas com largura em pixels e borda suavizada por cobertura (MSAA): não serram nem somem em telas densas.
+  const lineMaterials: LineMaterial[] = [];
+  const lineMaterial = (options: ConstructorParameters<typeof LineMaterial>[0]) => {
+    const material = track(new LineMaterial({ worldUnits: false, alphaToCoverage: true, fog: true, ...options }));
+    lineMaterials.push(material);
+    return material;
+  };
+  /** Geometria de segmentos cujos buffers são os nossos arrays: atualizar é só marcar `needsUpdate`. */
+  const segmentsGeometry = (positions: Float32Array, colors?: Float32Array) => {
+    const geometry = track(new LineSegmentsGeometry());
+    geometry.setPositions(positions);
+    if (colors) geometry.setColors(colors);
+    return geometry;
+  };
+  const touchSegments = (geometry: LineSegmentsGeometry, colors = true) => {
+    (geometry.attributes.instanceStart as { data: { needsUpdate: boolean } }).data.needsUpdate = true;
+    if (colors) (geometry.attributes.instanceColorStart as { data: { needsUpdate: boolean } }).data.needsUpdate = true;
+  };
+  const addLines = (geometry: LineSegmentsGeometry | LineGeometry, material: LineMaterial, closed = false) => {
+    const object = closed ? new Line2(geometry as LineGeometry, material) : new LineSegments2(geometry, material);
+    object.frustumCulled = false;
+    root.add(object);
+    return object;
+  };
+
+  // Arcos orbitais hub → objeto: finos e claros, seguem a curvatura da esfera.
+  const leafLinePos = new Float32Array(Math.max(1, lineCount) * ARC_SEGS * 6);
+  const leafLineCol = new Float32Array(Math.max(1, lineCount) * ARC_SEGS * 6);
+  const leafLineGeo = segmentsGeometry(leafLinePos, leafLineCol);
+  addLines(leafLineGeo, lineMaterial({ vertexColors: true, linewidth: 0.75 }));
 
   const hubLinePos = new Float32Array(hubCount * 6);
   const hubLineCol = new Float32Array(hubCount * 6);
-  const hubLineGeo = track(new BufferGeometry());
-  hubLineGeo.setAttribute('position', new BufferAttribute(hubLinePos, 3));
-  hubLineGeo.setAttribute('color', new BufferAttribute(hubLineCol, 3));
-  root.add(new LineSegments(hubLineGeo, track(new LineBasicMaterial({ vertexColors: true }))));
+  const hubLineGeo = segmentsGeometry(hubLinePos, hubLineCol);
+  addLines(hubLineGeo, lineMaterial({ vertexColors: true, linewidth: 1.25 }));
 
   const spokePts: Vector3[] = [];
   hubDirs.forEach((dir, i) => spokePts.push(
     hubTargets[i].clone().setZ(hubTargets[i].z - LINE_BACK),
     new Vector3(dir.x * RINGS[0].r, dir.y * RINGS[0].r, -LINE_BACK),
   ));
-  const spokeMat = track(new LineBasicMaterial({ color: 0xffffff }));
-  root.add(new LineSegments(track(new BufferGeometry().setFromPoints(spokePts)), spokeMat));
+  const spokeMat = lineMaterial({ color: 0xffffff, linewidth: 1 });
+  addLines(segmentsGeometry(new Float32Array(spokePts.flatMap((p) => [p.x, p.y, p.z]))), spokeMat);
 
   const ringLines = RINGS.map((spec) => {
-    const pts: Vector3[] = [];
-    for (let i = 0; i < 180; i++) { const a = (i / 180) * Math.PI * 2; pts.push(new Vector3(Math.cos(a) * spec.r, Math.sin(a) * spec.r, -LINE_BACK)); }
-    const mat = track(new LineBasicMaterial({ color: 0xffffff }));
-    const loop = new LineLoop(track(new BufferGeometry().setFromPoints(pts)), mat);
+    const pts: number[] = [];
+    for (let i = 0; i <= 180; i++) { const a = (i / 180) * Math.PI * 2; pts.push(Math.cos(a) * spec.r, Math.sin(a) * spec.r, -LINE_BACK); }
+    const mat = lineMaterial({ color: 0xffffff, linewidth: 0.9 });
+    const geometry = track(new LineGeometry());
+    geometry.setPositions(pts);
+    const loop = addLines(geometry, mat, true);
     loop.rotation.copy(spec.tilt);
-    root.add(loop);
     return { loop, mat, spec };
   });
 
@@ -328,7 +381,7 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     return { pivot, bead, spec, phase: spec.r * 9 };
   });
   const coreGeo = track(new BufferGeometry().setFromPoints([new Vector3()]));
-  const coreGlowMat = track(new PointsMaterial({ size: 3, map: glowTex, color: LIME, transparent: true, opacity: 0, depthWrite: false }));
+  const coreGlowMat = track(new PointsMaterial({ size: 3, map: glowTex, color: LIME, transparent: true, opacity: 0, depthWrite: false, fog: false }));
   root.add(new Points(coreGeo, coreGlowMat));
 
   /* ── Pulsos: objeto → hub → núcleo (pergunta) e o caminho inverso (ação) ── */
@@ -343,12 +396,45 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     vertexShader: BEAD_VERT, fragmentShader: BEAD_FRAG, transparent: true, depthWrite: false,
   }));
   root.add(new Points(pulseGeo, pulseMat));
-  const pulseGlowMat = track(new PointsMaterial({ size: 0.42, map: glowTex, color: LIME, transparent: true, opacity: 0, depthWrite: false }));
+  const pulseGlowMat = track(new PointsMaterial({ size: 0.42, map: glowTex, color: LIME, transparent: true, opacity: 0, depthWrite: false, fog: false }));
   root.add(new Points(pulseGeo, pulseGlowMat));
   const pulses = Array.from({ length: pulseCount }, (_, i) => ({
     leaf: Math.floor(rand() * leafCount), t: rand(), speed: 0.3 + rand() * 0.22, inward: i % 3 !== 2,
   }));
   let coreBeat = 0;
+  /** Dispara uma pergunta a partir de um objeto: o pulso mais adiantado recomeça nele. */
+  const askFrom = (leaf: number) => {
+    const pulse = pulses.filter((candidate) => candidate.inward).sort((a, b) => b.t - a.t)[0];
+    if (!pulse) return;
+    pulse.leaf = leaf; pulse.t = 0;
+  };
+
+  /* ── Hover por objeto: o objeto sob o mouse cresce e manda uma pergunta ao núcleo ── */
+  const raycaster = new Raycaster();
+  const pointerNdc = new Vector2();
+  const lifts = new Float32Array(items.length);
+  let hoverItem = -1;
+  let pointerMoved = false;
+  const pickItem = () => {
+    pointerMoved = false;
+    if (pointer.px < 0) { hoverItem = -1; return; }
+    const width = container.clientWidth || 1, height = container.clientHeight || 1;
+    pointerNdc.set((pointer.px / width) * 2 - 1, -((pointer.py / height) * 2 - 1));
+    raycaster.setFromCamera(pointerNdc, camera);
+    let best = -1, bestDist = Infinity;
+    meshes.forEach((mesh, kind) => {
+      if (!mesh.count) return;
+      const hits = raycaster.intersectObject(mesh, false);
+      if (hits.length && hits[0].distance < bestDist && hits[0].instanceId !== undefined) {
+        bestDist = hits[0].distance;
+        best = slotToItem[kind][hits[0].instanceId];
+      }
+    });
+    if (best !== hoverItem) {
+      hoverItem = best;
+      if (best >= 0) askFrom(best);
+    }
+  };
 
   /* ── Foco: título rotativo e mouse ─────────────────────────────── */
   let rotatorIndex = Number(rotator?.dataset.index ?? 0);
@@ -369,8 +455,9 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     pointer.py = event.clientY - rect.top;
     pointer.tx = Math.max(-1, Math.min(1, (pointer.px / rect.width) * 2 - 1));
     pointer.ty = Math.max(-1, Math.min(1, (pointer.py / rect.height) * 2 - 1));
+    pointerMoved = true;
   };
-  const onLeave = () => { pointer.tx = 0; pointer.ty = 0; pointer.px = pointer.py = -1e4; };
+  const onLeave = () => { pointer.tx = 0; pointer.ty = 0; pointer.px = pointer.py = -1e4; pointerMoved = true; };
   const pointerEl = pointerTarget || container;
   if (!isCoarse) {
     pointerEl.addEventListener('pointermove', onMove);
@@ -392,6 +479,7 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     }
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
+    lineMaterials.forEach((material) => material.resolution.set(width, height));
     root.scale.setScalar(width < 420 ? 0.94 : 1);
     const focal = height / (2 * Math.tan((camera.fov * Math.PI) / 360));
     pixelScale.value = focal * renderer.getPixelRatio();
@@ -450,6 +538,18 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
   const tint = new Color();
   const tmp = new Vector3();
   const ringPoint = new Vector3();
+  const arcDir = new Vector3();
+  const limeLinear = new Color(LIME);
+  /** Ponto do arco hub → objeto em t ∈ [0, 1]: grande círculo entre as duas direções, raio interpolado com leve bojo. */
+  const arcPoint = (item: Item, hubLen: number, r: number, t: number, out: Vector3) => {
+    const axis = hubAxes[item.hub];
+    const sinT = Math.sin(item.theta);
+    if (sinT > 1e-4) {
+      const wa = Math.sin((1 - t) * item.theta) / sinT, wb = Math.sin(t * item.theta) / sinT;
+      out.set(axis.x * wa + item.normal.x * wb, axis.y * wa + item.normal.y * wb, axis.z * wa + item.normal.z * wb);
+    } else out.copy(item.normal);
+    return out.multiplyScalar((hubLen * (1 - t) + r * t) * (1 + Math.sin(t * Math.PI) * 0.05));
+  };
   /** Linha que "aparece" do branco: opaca, com a cor puxada para o branco enquanto não revelada. */
   const shadeToward = (value: number, reveal: number) => 1 - (1 - value) * reveal;
 
@@ -472,6 +572,8 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     view.pitch = smooth(view.pitch, goal.pitch, dt, reduced ? 1e6 : 6);
     camera.position.set(view.x, view.y, view.dist);
     camera.updateMatrixWorld();
+    fog.near = view.dist - 0.2;
+    fog.far = view.dist + 6.2;
     const engagedMix = clamp01((baseDist - view.dist) / (baseDist * 0.35));
     const engaged = zoomHub >= 0 || goal.dist < baseDist - 0.05 || Math.abs(goal.yaw) > 0.01 || Math.abs(goal.pitch) > 0.01;
     if ((container.dataset.engaged === '1') !== engaged) container.dataset.engaged = engaged ? '1' : '0';
@@ -481,8 +583,8 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     pointer.y = smooth(pointer.y, pointer.ty, dt);
     const sway = (reduced ? 0 : 1) * (1 - engagedMix);
     const parallax = 1 - engagedMix * 0.7;
-    root.rotation.y = Math.sin(time * 0.21) * 0.12 * sway + pointer.x * 0.26 * parallax + view.yaw;
-    root.rotation.x = Math.sin(time * 0.16) * 0.06 * sway - pointer.y * 0.18 * parallax + view.pitch;
+    root.rotation.y = Math.sin(time * 0.19) * 0.2 * sway + pointer.x * 0.26 * parallax + view.yaw;
+    root.rotation.x = Math.sin(time * 0.15) * 0.09 * sway - pointer.y * 0.18 * parallax + view.pitch;
     root.updateMatrixWorld();
     key.position.set(-3 + pointer.x * 3, 4 - pointer.y * 2.5, 6);
     const m = root.matrixWorld.elements;
@@ -490,7 +592,9 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
 
     // Foco: hub aproximado > mouse sobre um hub > palavra do título.
     const hover = hubAt(pointer.px, pointer.py, 2.4);
-    if ((container.dataset.hover === '1') !== (hover >= 0)) container.dataset.hover = hover >= 0 ? '1' : '0';
+    if (pointerMoved && !reduced) pickItem();
+    const pointing = hover >= 0 || hoverItem >= 0;
+    if ((container.dataset.hover === '1') !== pointing) container.dataset.hover = pointing ? '1' : '0';
     const rotatorFocus = focusMap.length ? focusMap[rotatorIndex % focusMap.length] ?? -1 : -1;
     const nextFocus = zoomHub >= 0 ? zoomHub : reduced ? rotatorFocus : (hover >= 0 ? hover : rotatorFocus);
     if (nextFocus !== focus) {
@@ -517,11 +621,10 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
       (halo.material as MeshBasicMaterial).opacity = emphasis[i] * 0.95 * h;
       hubLinePos.set([0, 0, -LINE_BACK, mesh.position.x, mesh.position.y, mesh.position.z - LINE_BACK], i * 6);
       // Caminho em foco: escuro; demais: grafite claro.
-      const shade = gray(shadeToward(0.66 - emphasis[i] * 0.56 + focusMix * (1 - emphasis[i]) * 0.12, lineReveal), true);
+      const shade = gray(shadeToward(0.74 - emphasis[i] * 0.5 + focusMix * (1 - emphasis[i]) * 0.1, lineReveal), true);
       hubLineCol.set([shade, shade, shade, shade, shade, shade], i * 6);
     }
-    hubLineGeo.attributes.position.needsUpdate = true;
-    hubLineGeo.attributes.color.needsUpdate = true;
+    touchSegments(hubLineGeo);
 
     // Objetos: leques florescem para fora do hub e se curvam para trás; anéis orbitam.
     const leafLineReveal = clamp01((k - 0.3) / 0.6);
@@ -532,25 +635,43 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
       const tone = item.hub >= 0 ? hubTones[item.hub] : hexToRgb(0x52525b);
       if (item.hub >= 0) {
         const e = emphasis[item.hub];
-        // A cúpula floresce do centro para a borda e da camada interna para a externa.
-        const bloom = easeOut((k - 0.28 - item.hub * 0.045 - item.theta * 0.12 - item.row * 0.04) / 0.45);
+        // A esfera floresce do núcleo para fora: do hub para a borda do gomo, da casca interna para a externa.
+        const bloom = easeOut((k - 0.24 - item.hub * 0.04 - item.theta * 0.1 - item.row * 0.05) / 0.5);
         const breathe = reduced ? 0 : Math.sin(time * 0.7 + item.phase) * 0.012;
-        const r = item.r * bloom * (1 + breathe + e * 0.05);
+        const r = item.r * bloom * (1 + breathe + e * 0.04);
         const hub = hubMeshes[item.hub].position;
-        x = hub.x + item.normal.x * r;
-        y = hub.y + item.normal.y * r;
-        z = hub.z + item.normal.z * r;
+        x = item.normal.x * r;
+        y = item.normal.y * r;
+        z = item.normal.z * r;
         scale = item.size * Math.max(0.001, bloom) * (1 + e * 0.12);
         fade = clamp01(item.tint * (1 - e * 0.35) + (1 - front(x, y, z)) * 0.26 + focusMix * (1 - e) * 0.16);
 
-        // Linha hub → objeto: escura junto ao hub, dissolve rumo ao objeto.
-        leafLinePos.set([hub.x, hub.y, hub.z - LINE_BACK, x, y, z - LINE_BACK], n * 6);
-        const near = shadeToward(clamp01(0.5 + fade * 0.35 - e * 0.25), leafLineReveal);
-        const far = shadeToward(clamp01(0.8 + fade * 0.16 - e * 0.18), leafLineReveal);
-        leafLineCol.set([
-          gray(tone[0] + (1 - tone[0]) * near, true), gray(tone[1] + (1 - tone[1]) * near, true), gray(tone[2] + (1 - tone[2]) * near, true),
-          gray(tone[0] + (1 - tone[0]) * far, true), gray(tone[1] + (1 - tone[1]) * far, true), gray(tone[2] + (1 - tone[2]) * far, true),
-        ], n * 6);
+        // Arco hub → objeto sobre a esfera (grande círculo, com leve bojo): claro junto ao hub, dissolve rumo ao objeto.
+        if (item.line >= 0) {
+          const near = shadeToward(clamp01(0.66 + fade * 0.26 - e * 0.24), leafLineReveal);
+          const far = shadeToward(clamp01(0.9 + fade * 0.1 - e * 0.14), leafLineReveal);
+          const hubLen = hub.length();
+          const base = item.line * ARC_SEGS * 6;
+          // Fluxo de energia: um pacote lima percorre o arco do objeto ao hub, cada arco no seu próprio ritmo,
+          // com uma pausa entre passagens (o pacote fica fora do arco parte do ciclo).
+          const cycle = reduced ? -1 : ((time * (0.16 + e * 0.1) + item.phase / (Math.PI * 2)) % 1) * 1.6 - 0.3;
+          const packet = 1 - cycle; // t = 1 é o objeto, t = 0 é o hub: o pacote anda rumo ao hub
+          const glow = leafLineReveal * (0.55 + e * 0.45);
+          for (let sIndex = 0; sIndex <= ARC_SEGS; sIndex++) {
+            const t = sIndex / ARC_SEGS;
+            arcPoint(item, hubLen, r, t, arcDir);
+            const px = arcDir.x, py = arcDir.y, pz = arcDir.z - LINE_BACK;
+            const v = near + (far - near) * t;
+            const d = (t - packet) / 0.11;
+            const spark = cycle < 0 ? 0 : Math.exp(-d * d) * glow;
+            const cr = gray(tone[0] + (1 - tone[0]) * v, true) * (1 - spark) + limeLinear.r * spark;
+            const cg = gray(tone[1] + (1 - tone[1]) * v, true) * (1 - spark) + limeLinear.g * spark;
+            const cb = gray(tone[2] + (1 - tone[2]) * v, true) * (1 - spark) + limeLinear.b * spark;
+            // Cada ponto interno fecha um segmento e abre o seguinte.
+            if (sIndex > 0) { const at = base + (sIndex - 1) * 6 + 3; leafLinePos[at] = px; leafLinePos[at + 1] = py; leafLinePos[at + 2] = pz; leafLineCol[at] = cr; leafLineCol[at + 1] = cg; leafLineCol[at + 2] = cb; }
+            if (sIndex < ARC_SEGS) { const at = base + sIndex * 6; leafLinePos[at] = px; leafLinePos[at + 1] = py; leafLinePos[at + 2] = pz; leafLineCol[at] = cr; leafLineCol[at + 1] = cg; leafLineCol[at + 2] = cb; }
+          }
+        }
       } else {
         const spec = RINGS[item.ring];
         const a = item.ringAngle + (reduced ? 0 : time * spec.speed);
@@ -560,6 +681,9 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
         fade = clamp01(item.tint + (1 - front(x, y, z)) * 0.25);
       }
       itemPos[n * 3] = x; itemPos[n * 3 + 1] = y; itemPos[n * 3 + 2] = z;
+      // Objeto sob o mouse: cresce e escurece (vidro mais denso), com suavidade.
+      const lift = (lifts[n] = reduced ? 0 : smooth(lifts[n], n === hoverItem ? 1 : 0, dt, 9));
+      if (lift > 0.001) { scale *= 1 + lift * 0.4; fade *= 1 - lift * 0.6; }
 
       dummy.position.set(x, y, z);
       // Postura por forma + giro em onda que sai do hub fileira por fileira: a luz varre as facetas.
@@ -583,8 +707,7 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
       mesh.instanceMatrix.needsUpdate = true;
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     });
-    leafLineGeo.attributes.position.needsUpdate = true;
-    leafLineGeo.attributes.color.needsUpdate = true;
+    touchSegments(leafLineGeo);
 
     const spokeShade = gray(shadeToward(0.86, clamp01((k - 0.55) / 0.45)));
     spokeMat.color.setRGB(spokeShade, spokeShade, spokeShade, SRGBColorSpace);
@@ -601,16 +724,21 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
         pulse.t += pulse.speed * dt;
         if (pulse.t >= 1) {
           pulse.t = 0;
-          pulse.leaf = focus >= 0 && rand() < 0.7
-            ? hubLeafStart[focus] + Math.floor(rand() * hubLeafCount[focus])
-            : Math.floor(rand() * leafCount);
+          for (let attempt = 0; attempt < 6; attempt++) {
+            pulse.leaf = focus >= 0 && rand() < 0.7
+              ? hubLeafStart[focus] + Math.floor(rand() * hubLeafCount[focus])
+              : Math.floor(rand() * leafCount);
+            if (items[pulse.leaf].line >= 0) break;
+          }
           if (pulse.inward) coreBeat = 1;
         }
       }
-      const hub = hubMeshes[items[pulse.leaf].hub].position;
-      const lx = itemPos[pulse.leaf * 3], ly = itemPos[pulse.leaf * 3 + 1], lz = itemPos[pulse.leaf * 3 + 2];
+      const leafItem = items[pulse.leaf];
+      const hub = hubMeshes[leafItem.hub].position;
+      const leafR = Math.hypot(itemPos[pulse.leaf * 3], itemPos[pulse.leaf * 3 + 1], itemPos[pulse.leaf * 3 + 2]);
       const t = pulse.inward ? pulse.t : 1 - pulse.t;
-      if (t < 0.5) { const u = easeOut(t * 2); tmp.set(lx + (hub.x - lx) * u, ly + (hub.y - ly) * u, lz + (hub.z - lz) * u); }
+      // Primeiro trecho pelo arco (objeto → hub), depois em linha reta até o núcleo.
+      if (t < 0.5) arcPoint(leafItem, hub.length(), leafR, 1 - easeOut(t * 2), tmp);
       else { const u = (t - 0.5) * 2; tmp.copy(hub).multiplyScalar(1 - u); }
       pulsePos.set([tmp.x, tmp.y, tmp.z - LINE_BACK * 0.5], n * 3);
     });
@@ -642,6 +770,32 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
 
     placeHubs(k);
     renderer.render(scene, camera);
+    watchBudget(dt, k);
+  };
+
+  /* ── Qualidade adaptativa: se os quadros atrasarem, baixa a resolução; se insistirem, tira a transmissão ── */
+  let qualityTier = 0;
+  let slowSeconds = 0;
+  let graceSeconds = 2;
+  const watchBudget = (dt: number, k: number) => {
+    if (qualityTier >= 2 || k < 1) return; // a entrada é mais cara por natureza
+    graceSeconds -= dt;
+    if (graceSeconds > 0) return;
+    const budget = (isCoarse ? 1 / 30 : 1 / 60) * 1.75;
+    slowSeconds = dt > budget ? slowSeconds + dt : Math.max(0, slowSeconds - dt * 2);
+    if (slowSeconds < 1.2) return;
+    qualityTier += 1;
+    slowSeconds = 0;
+    graceSeconds = 3;
+    if (qualityTier === 1) {
+      renderer.setPixelRatio(Math.min(renderer.getPixelRatio(), 1.25));
+      renderer.transmissionResolutionScale = 0.5;
+    } else {
+      // Vidro sem transmissão: continua brilhante e polido, sem o custo da refração.
+      meshes.forEach((mesh) => { mesh.material = track(makeGlass(false)); });
+    }
+    container.dataset.quality = String(qualityTier);
+    resize();
   };
 
   /* ── Interação: clique para aproximar, zoom, giro ─────────────── */
@@ -783,7 +937,9 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
     }
   };
   const onKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') { overview(); return; }
+    if (event.key === 'Escape' || event.key === 'Home') { overview(); return; }
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') { event.preventDefault(); flyTo((zoomHub + 1 + hubCount) % hubCount); return; }
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') { event.preventDefault(); flyTo((zoomHub <= 0 ? hubCount : zoomHub) - 1); return; }
     const cx = container.clientWidth / 2, cy = container.clientHeight / 2;
     if (event.key === '+' || event.key === '=') { event.preventDefault(); zoomAt(cx, cy, 0.72); }
     if (event.key === '-' || event.key === '_') { event.preventDefault(); zoomAt(cx, cy, 1 / 0.72); }
@@ -815,7 +971,7 @@ export function initHeroGraph({ canvas, container, hubs, shadows, focusMap = [],
   sceneLoop = stop;
   container.dataset.state = 'ready';
   // Troca de tema: materiais e luzes mudam na hora; as cores de linha e vidro seguem no próximo quadro.
-  const offTheme = onThemeChange(() => { rethemeScene(scene); redraw(); });
+  const offTheme = onThemeChange(() => { rethemeScene(scene); fog.color.setHex(fogColor()); redraw(); });
 
   return () => {
     stop();

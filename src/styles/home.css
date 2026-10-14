@@ -190,12 +190,13 @@ html[data-motion="full"] .hero-rotator[data-state="hold"] .hero-rotator-plus { f
   display: block;
 }
 .hero-graph-canvas { opacity: 0; }
+/* O desenho estático só aparece quando não há WebGL: a rede entra direto da animação 3D. */
+.hero-graph-fallback { opacity: 0; visibility: hidden; }
 .hero-graph[data-interactive='1'] { cursor: grab; }
 .hero-graph[data-interactive='1'][data-hover='1'] { cursor: pointer; }
 .hero-graph[data-interactive='1'][data-dragging='1'] { cursor: grabbing; }
 .hero-graph[data-state='ready'] .hero-graph-canvas { opacity: 1; }
-.hero-graph[data-state='ready'] .hero-graph-fallback { visibility: hidden; }
-.hero-graph[data-state='off'] .hero-graph-fallback { opacity: 0.9; }
+.hero-graph[data-state='off'] .hero-graph-fallback { opacity: 0.9; visibility: visible; }
 
 /* Sombras de contato: atrás do canvas, aparecem sob as esferas */
 .hero-graph-shadows { position: absolute; inset: 0; pointer-events: none; }
