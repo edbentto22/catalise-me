@@ -377,109 +377,109 @@ html[data-motion='reduced'] .mf-read-progress {
   transform: scaleX(0);
 }
 
+/* Fig. 1 · bancada de arquivo (figura isométrica, kit Anatomy).
+   O papel da figura é o fundo da seção; a única peça acesa é a lente lima do leitor (a IA). */
 .mf-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 0.92;
-  max-height: 72svh;
 }
 
-.mf-stage-lines {
+.mf-bench.iso {
+  --anatomy-card: var(--surface);
+  --anatomy-paper: var(--surface);
+  --anatomy-face: #8af334;
+  --anatomy-top: #ffffff;
+  --anatomy-shade-0: #d6d6d6;
+  --anatomy-shade-1: #e0e0e0;
+  --anatomy-shade-2: #e9e9ea;
+  --anatomy-shade-3: #f2f2f3;
+  --anatomy-lit: #3f7d0c;
+  --anatomy-lit-top: #b6f77c;
+  --anatomy-lit-shade: #78d126;
+  --anatomy-hi: #18181b;
+  --anatomy-mid: #6b6b72;
+  --anatomy-lo: #a1a1aa;
+  --anatomy-faint: #d0d0d4;
+  --anatomy-weight: 0.7px;
+  --anatomy-halo: #8a8a80;
+  --anatomy-halo-opacity: 0.32;
+  --anatomy-dot: #3a3a3e;
+  display: block;
+  padding: clamp(28px, 3.4vw, 40px) 0;
+  outline-offset: 6px;
+  border-radius: var(--radius-lg);
+}
+
+:root[data-theme='dark'] .mf-bench.iso {
+  --anatomy-top: #1f1f23;
+  --anatomy-shade-0: #121215;
+  --anatomy-shade-1: #151518;
+  --anatomy-shade-2: #18181c;
+  --anatomy-shade-3: #1c1c20;
+  --anatomy-lit: #c8ff9a;
+  --anatomy-lit-top: #a6f564;
+  --anatomy-lit-shade: #6fc41f;
+  --anatomy-hi: #d4d4d8;
+  --anatomy-mid: #6c6c72;
+  --anatomy-lo: #45454b;
+  --anatomy-faint: #2d2d32;
+  --anatomy-halo: #000000;
+  --anatomy-halo-opacity: 0.85;
+  --anatomy-dot: #e4e4e7;
+}
+
+.mf-bench .iso-svg { width: 100%; height: auto; }
+
+/* Fichas já arquivadas na gaveta ficam lima: a informação agora está organizada. */
+.mf-bench [data-bench='drawer-packet'] {
+  --anatomy-paper: #a6f564;
+  --anatomy-top: #c9fb9c;
+  --anatomy-shade-0: #6fcf22;
+  --anatomy-shade-1: #7bdc2a;
+  --anatomy-shade-2: #8af334;
+  --anatomy-shade-3: #9cf54e;
+  --anatomy-hi: #2f5f0a;
+  --anatomy-lo: #4f9a15;
+}
+:root[data-theme='dark'] .mf-bench [data-bench='drawer-packet'] {
+  --anatomy-paper: #5fae1c;
+  --anatomy-top: #8af334;
+  --anatomy-shade-0: #3f7d0c;
+  --anatomy-shade-1: #4a8c12;
+  --anatomy-shade-2: #569c18;
+  --anatomy-shade-3: #62ab1e;
+  --anatomy-hi: #c9fb9c;
+  --anatomy-lo: #8af334;
+}
+
+/* Os quatro cantos do cartão: número, título, dica e leitura ao vivo */
+.mf-bench-corner {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.mf-stage-lines line {
-  stroke: var(--ink);
-  stroke-width: 1;
-  opacity: 0.35;
-}
-
-.mf-core {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 24px;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-display, 'Archivo');
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  box-shadow: 0 0 0 10px rgba(138, 243, 52, 0.18), 0 18px 48px rgba(0, 0, 0, 0.18);
-  z-index: 2;
-}
-
-.mf-core-mark {
-  color: #8af334;
-  font-size: 1.1rem;
-  animation: mfSpin 9s linear infinite;
-}
-
-@keyframes mfSpin {
-  to { transform: rotate(360deg); }
-}
-
-.mf-frags {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.mf-frag {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  translate: -50% -50%;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px 10px 10px;
-  max-width: 230px;
-  background: var(--paper);
-  border: 1px solid rgb(var(--ink-rgb) / 0.1);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   font-family: var(--font-body, 'Manrope');
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  line-height: 1.25;
+  letter-spacing: 0.01em;
+  color: var(--quiet);
+  white-space: nowrap;
+}
+.mf-bench-corner[data-corner='tl'] { top: 0; left: 0; color: var(--ink-3); }
+.mf-bench-corner[data-corner='tr'] { top: 0; right: 0; }
+.mf-bench-corner[data-corner='bl'] { bottom: 0; left: 0; }
+.mf-bench-corner[data-corner='br'] {
+  bottom: 0;
+  right: 0;
   color: var(--ink-2);
-  z-index: 3;
+  font-variant-numeric: tabular-nums;
 }
-
-.mf-frag-icon {
-  flex: none;
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  background: var(--surface-2);
-  color: var(--ink);
-}
-
-.mf-frag-icon svg {
-  width: 16px;
-  height: 16px;
-  stroke-width: 1.75;
-}
-
-.mf-frag-dot {
-  flex: none;
-  width: 7px;
-  height: 7px;
+.mf-bench-corner[data-corner='br']::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 7px;
   border-radius: 50%;
-  background: #8af334;
-  margin-left: 2px;
+  background: var(--lime);
+  vertical-align: 1px;
 }
 
 /* ══════════════ 03 · CAMADA ══════════════ */
@@ -963,48 +963,7 @@ html:not(.cx-ready) .mf-loop-item,
     display: none;
   }
 
-  .mf-stage {
-    aspect-ratio: auto;
-    max-height: none;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  .mf-stage-lines {
-    display: none;
-  }
-
-  .mf-core {
-    position: relative;
-    left: auto;
-    top: auto;
-    translate: none;
-    order: 2;
-    align-self: center;
-    margin: 14px 0;
-  }
-
-  .mf-frags {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    order: 1;
-  }
-
-  .mf-frag {
-    position: relative;
-    left: auto;
-    top: auto;
-    translate: none;
-    max-width: none;
-    font-size: 0.8125rem;
-  }
-
-  .mf-frag-dot {
-    margin-left: auto;
-  }
+  .mf-bench-corner[data-corner='bl'] { display: none; }
 
   .mf-layer-diagram {
     aspect-ratio: 4 / 5;

@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlassScene from '../components/GlassScene.astro';
+import { buildBench, readoutOf } from '../figures/knowledgeBench.ts';
 import { localizedHref, type Locale } from '../i18n/config';
 import { manifesto } from '../i18n/content/manifesto';
 import '../styles/inner.css';
+import '../figures/iso.css';
 import '../styles/manifesto.css';
 
 interface Props { locale: Locale; }
@@ -13,15 +15,10 @@ const pageUrl = `https://catalise.me${localizedHref('/manifesto', locale)}`;
 
 // Onde a inteligência da empresa vive hoje. x/y = posição conectada (anel);
 // sx/sy/sr = deslocamento quando ainda está espalhada (fração do palco e rotação).
-const fragmentLayout = [
-  { icon: 'brain', x: 50, y: 11, sx: -0.28, sy: 0.13, sr: -7 },
-  { icon: 'database', x: 83, y: 30, sx: -0.09, sy: -0.16, sr: 6 },
-  { icon: 'messages-square', x: 83, y: 70, sx: -0.53, sy: -0.08, sr: -4 },
-  { icon: 'sheet', x: 50, y: 89, sx: 0.3, sy: -0.37, sr: 9 },
-  { icon: 'file-text', x: 17, y: 70, sx: 0.43, sy: 0.16, sr: -11 },
-  { icon: 'workflow', x: 17, y: 30, sx: 0.29, sy: 0.08, sr: 7 },
-];
-const fragments = fragmentLayout.map((f, i) => ({ ...f, label: t.scatter.fragments[i] }));
+// Fig. 1 · bancada de arquivo: o SVG sai pronto do build; a página só move as peças.
+const benchCopy = { sources: [...t.scatter.fragments], ...t.scatter.bench };
+const bench = buildBench(t.scatter.bench.label, 0);
+const benchStart = readoutOf(bench.start, benchCopy);
 
 // Tons dos pilares na cena da camada (os mesmos hubs de vidro fumê da Home).
 const pillarTones = ['#18181b', '#3f3f46', '#27272a', '#52525b'];
@@ -103,27 +100,26 @@ const pillarTones = ['#18181b', '#3f3f46', '#27272a', '#52525b'];
         <div class="mf-scatter-track" aria-hidden="true"><span data-scatter-progress></span></div>
       </div>
 
-      <div class="mf-stage" data-stage>
-        <svg class="mf-stage-lines" aria-hidden="true">
-          {fragments.map((f) => (
-            <line data-link x1="50%" y1="50%" x2={`${f.x}%`} y2={`${f.y}%`} />
-          ))}
-        </svg>
-
-        <div class="mf-core" data-core>
-          <span class="mf-core-mark" aria-hidden="true">✱</span>
-          <span>{t.scatter.core}</span>
-        </div>
-
-        <ul class="mf-frags" role="list">
-          {fragments.map((f) => (
-            <li class="mf-frag" data-frag data-sx={f.sx} data-sy={f.sy} data-sr={f.sr} style={`--x:${f.x}%; --y:${f.y}%`}>
-              <span class="mf-frag-icon"><i data-lucide={f.icon} aria-hidden="true"></i></span>
-              <span class="mf-frag-label">{f.label}</span>
-              <span class="mf-frag-dot" aria-hidden="true"></span>
-            </li>
-          ))}
-        </ul>
+      <div
+        class="mf-stage mf-bench iso"
+        data-stage
+        data-bench-stage
+        data-copy={JSON.stringify(benchCopy)}
+        tabindex="0"
+        role="slider"
+        aria-label={`${t.scatter.bench.title}. ${t.scatter.bench.hint}.`}
+        aria-describedby="mf-bench-caption"
+        aria-valuemin="0"
+        aria-valuemax="7"
+        aria-valuenow="0"
+        aria-valuetext={benchStart}
+      >
+        <span class="mf-bench-corner" data-corner="tl" aria-hidden="true">Fig. 1</span>
+        <span class="mf-bench-corner" data-corner="tr" aria-hidden="true">{t.scatter.bench.title}</span>
+        <Fragment set:html={bench.svg} />
+        <span class="mf-bench-corner" data-corner="bl" aria-hidden="true">{t.scatter.bench.hint}</span>
+        <span class="mf-bench-corner" data-corner="br" data-bench-readout aria-live="polite">{benchStart}</span>
+        <p id="mf-bench-caption" class="visually-hidden">{t.scatter.bench.label}</p>
       </div>
     </div>
   </section>

@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { animate as motionAnimate, inView, stagger as motionStagger } from 'motion';
-import { animate, createDrawable, createTimeline, stagger } from 'animejs';
+import { animate, createDrawable, stagger } from 'animejs';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -206,80 +206,54 @@ function initScrubText() {
 }
 
 /* ──────────────────────────────────────────────────────────
-   CENA "ESPALHADA" · fragmentos isolados → conectados à camada
+   CENA "ESPALHADA" · a bancada de arquivo (Fig. 1 do Manifesto)
+   Seis bandejas → uma gaveta de índice → o leitor (a IA) lê.
+   No desktop o scroll fixado comanda o progresso; no celular, um passeio automático.
 ────────────────────────────────────────────────────────── */
-function initScatterScene() {
+function initScatterScene(flags: ConsultableFlags) {
   const section = document.querySelector<HTMLElement>('[data-scatter]');
-  if (!section) return;
-
-  const stage = section.querySelector<HTMLElement>('[data-stage]');
-  const frags = [...section.querySelectorAll<HTMLElement>('[data-frag]')];
-  const dots = frags.map((frag) => frag.querySelector<HTMLElement>('.mf-frag-dot'));
+  const stage = section?.querySelector<HTMLElement>('[data-bench-stage]');
+  if (!section || !stage) return;
   const steps = [...section.querySelectorAll<HTMLElement>('[data-step]')];
-  const core = section.querySelector<HTMLElement>('[data-core]');
-  const lines = [...section.querySelectorAll<SVGLineElement>('[data-link]')];
   const progressBar = section.querySelector<HTMLElement>('[data-scatter-progress]');
-  if (!stage || frags.length === 0) return;
-
-  const drawables = lines.flatMap((line) => createDrawable(line));
-  // Linhas controladas pelo scroll: anime.js desenha, GSAP comanda o tempo.
-  const linesTimeline = createTimeline({ autoplay: false, defaults: { ease: 'inOutSine' } })
-    .add(drawables, { draw: ['0 0', '0 1'], duration: 600, delay: stagger(90) });
-
   const setStep = (active: number) => steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
 
-  const mm = gsap.matchMedia();
+  import('../figures/knowledgeBenchLive.ts').then(({ mountBench }) => {
+    let copy;
+    try { copy = JSON.parse(stage.dataset.copy || '{}'); } catch { return; }
+    const bench = mountBench(stage, copy);
+    if (!bench) return;
 
-  mm.add('(min-width: 961px)', () => {
-    const scatter = (frag: HTMLElement, axis: 'sx' | 'sy') =>
-      parseFloat(frag.dataset[axis] || '0') * (axis === 'sx' ? stage.offsetWidth : stage.offsetHeight);
+    if (!flags.motion) {
+      steps.forEach((step) => step.classList.add('is-active'));
+      bench.tour(true); // sem movimento: mostra direto a camada pronta
+      return;
+    }
 
-    const proxy = { p: 0 };
-    const tl = gsap.timeline({
-      defaults: { ease: 'power2.inOut' },
-      scrollTrigger: {
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 961px)', () => {
+      const trigger = ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        end: '+=240%',
+        end: '+=320%',
         pin: true,
-        scrub: 0.8,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          setStep(self.progress < 0.36 ? 0 : self.progress < 0.62 ? 1 : 2);
-          if (progressBar) progressBar.style.transform = `scaleX(${self.progress})`;
+          const progress = self.progress;
+          // Os dois primeiros passos mostram o problema parado; o terceiro põe a bancada para trabalhar.
+          setStep(progress < 0.16 ? 0 : progress < 0.32 ? 1 : 2);
+          if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
+          bench.setTarget(Math.max(0, Math.min(1, (progress - 0.32) / 0.62)) * 7);
         },
-      },
+      });
+      ScrollTrigger.refresh();
+      return () => trigger.kill();
     });
-
-    // 1 · Os fragmentos surgem espalhados
-    tl.fromTo(frags,
-      { x: (_i, el) => scatter(el, 'sx'), y: (_i, el) => scatter(el, 'sy'), rotate: (_i, el) => parseFloat(el.dataset.sr || '0'), opacity: 0, scale: 0.9, filter: 'blur(6px)' },
-      { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1, stagger: 0.12, ease: 'power3.out' }, 0);
-
-    // 2 · "Mas não conversa": isolamento (pontos cinza, leve tremor)
-    tl.to(frags, { opacity: 0.55, duration: 0.6, stagger: 0.04 }, 1.4)
-      .to(dots, { backgroundColor: '#d4d4d8', duration: 0.4 }, 1.4)
-      .to(frags, { y: (_i, el) => scatter(el, 'sy') + 10, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 1.4);
-
-    // 3 · A Catalise.me conecta: tudo converge para a camada
-    tl.to(frags, { x: 0, y: 0, rotate: 0, opacity: 1, duration: 1.3, stagger: 0.05, ease: 'expo.inOut' }, 2.8)
-      .fromTo(core, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'expo.out' }, 3.3)
-      .to(dots, { backgroundColor: '#8af334', duration: 0.3, stagger: 0.05 }, 3.7)
-      .fromTo(proxy, { p: 0 }, { p: 1, duration: 1.1, ease: 'none', onUpdate: () => { linesTimeline.seek(linesTimeline.duration * proxy.p); } }, 3.6)
-      .to({}, { duration: 0.6 });
-
-    return () => { linesTimeline.seek(linesTimeline.duration); };
-  });
-
-  mm.add('(max-width: 960px)', () => {
-    setStep(2);
-    steps.forEach((step) => step.classList.add('is-active'));
-    inView(stage, () => {
-      motionAnimate(frags, { opacity: [0, 1], y: [16, 0] }, { delay: motionStagger(0.08), duration: 0.7, ease: EASE_OUT });
-      if (core) motionAnimate(core, { opacity: [0, 1], scale: [0.6, 1] }, { duration: 0.7, ease: EASE_OUT, delay: 0.3 });
-      animate(drawables, { draw: ['0 0', '0 1'], duration: 700, delay: stagger(80, { start: 500 }), ease: 'inOutSine' });
-      motionAnimate(dots.filter(Boolean) as HTMLElement[], { backgroundColor: '#8af334' }, { delay: motionStagger(0.08, { startDelay: 0.8 }) });
-    }, { amount: 0.3 });
+    mm.add('(max-width: 960px)', () => {
+      steps.forEach((step) => step.classList.add('is-active'));
+      bench.tour(true);
+      return () => bench.tour(false);
+    });
   });
 }
 
@@ -411,13 +385,14 @@ export async function initConsultable(flags: ConsultableFlags) {
   }
   root.classList.remove('cx-preload');
   root.classList.add('cx-ready');
+  initScatterScene(flags);
 
   if (flags.pointer) initPointerGlow();
   if (!flags.motion) return;
 
   // 2 · O restante da coreografia é montado em tarefas pequenas.
   const steps = [
-    initScrubText, initScatterScene, initBeliefs, initSignature,
+    initScrubText, initBeliefs, initSignature,
     initReveals, initShift,
   ];
   for (const step of steps) {
