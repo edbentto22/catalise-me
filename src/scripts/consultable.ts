@@ -1,7 +1,5 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { animate as motionAnimate, inView, stagger as motionStagger } from 'motion';
-import { animate, createDrawable, stagger } from 'animejs';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +22,23 @@ export interface ConsultableFlags {
   lenis?: { velocity: number } | null;
 }
 
-const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+/** Executa `callback` uma vez quando `el` entra na tela (fração `amount` visível). */
+function whenInView(el: Element, callback: () => void, amount = 0.2) {
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    observer.disconnect();
+    callback();
+  }, { threshold: amount });
+  observer.observe(el);
+}
+
+/** Prepara um traço SVG para ser "desenhado": escondido pelo próprio comprimento. */
+function hideStroke(path: SVGGeometryElement) {
+  const length = path.getTotalLength();
+  gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+}
+const drawStroke = (paths: SVGGeometryElement | SVGGeometryElement[], duration: number, stagger = 0) =>
+  gsap.to(paths, { strokeDashoffset: 0, duration, stagger, ease: 'power2.inOut' });
 
 /** Quebra o texto em palavras preservando elementos internos (em, strong, mark). */
 function splitWords(el: HTMLElement, { mask = false } = {}): HTMLElement[] {
@@ -157,7 +171,7 @@ function initManifestoHero() {
   }
   if (scramble) {
     tl.add(() => {
-      animate(scramble, { opacity: [0.65, 1], duration: 350, ease: 'outQuad' });
+      gsap.fromTo(scramble, { opacity: 0.65 }, { opacity: 1, duration: 0.35, ease: 'power2.out' });
     }, 1.9);
   }
 
@@ -198,9 +212,8 @@ function initScrubText() {
     const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 80%' } });
     tl.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out' });
     if (underline) {
-      const [drawable] = createDrawable(underline);
-      animate(drawable, { draw: '0 0', duration: 0 });
-      tl.add(() => { animate(drawable, { draw: ['0 0', '0 1'], duration: 900, ease: 'inOutQuart' }); }, 0.5);
+      hideStroke(underline);
+      tl.add(() => { drawStroke(underline, 0.9); }, 0.5);
     }
   });
 }
@@ -216,20 +229,14 @@ function initScatterScene(flags: ConsultableFlags) {
   if (!section || !stage) return;
   const steps = [...section.querySelectorAll<HTMLElement>('[data-step]')];
   const progressBar = section.querySelector<HTMLElement>('[data-scatter-progress]');
+  const holder = stage.querySelector<HTMLElement>('[data-bench-svg]');
   const setStep = (active: number) => steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
 
-  import('../figures/knowledgeBenchLive.ts').then(({ mountBench }) => {
-    let copy;
-    try { copy = JSON.parse(stage.dataset.copy || '{}'); } catch { return; }
-    const bench = mountBench(stage, copy);
-    if (!bench) return;
-
-    if (!flags.motion) {
-      steps.forEach((step) => step.classList.add('is-active'));
-      bench.tour(true); // sem movimento: mostra direto a camada pronta
-      return;
-    }
-
+  // O pin e os passos valem desde já; a figura recebe o estado pendente assim que montar.
+  let bench: import('../figures/knowledgeBenchLive.ts').BenchHandle | null = null;
+  let wantTarget = 0;
+  let wantTour = false;
+  if (flags.motion) {
     const mm = gsap.matchMedia();
     mm.add('(min-width: 961px)', () => {
       const trigger = ScrollTrigger.create({
@@ -243,7 +250,8 @@ function initScatterScene(flags: ConsultableFlags) {
           // Os dois primeiros passos mostram o problema parado; o terceiro põe a bancada para trabalhar.
           setStep(progress < 0.16 ? 0 : progress < 0.32 ? 1 : 2);
           if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
-          bench.setTarget(Math.max(0, Math.min(1, (progress - 0.32) / 0.62)) * 7);
+          wantTarget = Math.max(0, Math.min(1, (progress - 0.32) / 0.62)) * 7;
+          bench?.setTarget(wantTarget);
         },
       });
       ScrollTrigger.refresh();
@@ -251,10 +259,49 @@ function initScatterScene(flags: ConsultableFlags) {
     });
     mm.add('(max-width: 960px)', () => {
       steps.forEach((step) => step.classList.add('is-active'));
-      bench.tour(true);
-      return () => bench.tour(false);
+      wantTour = true;
+      bench?.tour(true);
+      return () => { wantTour = false; bench?.tour(false); };
     });
+  } else {
+    steps.forEach((step) => step.classList.add('is-active'));
+    wantTour = true; // sem movimento: mostra direto a camada pronta
+  }
+
+  // O SVG (centenas de KB de caminhos) fica fora do HTML: chega por fetch quando a seção se aproxima.
+  // Espera a linha principal ficar livre antes de um trabalho pesado (analisar o SVG, montar a figura).
+  const whenIdle = () => new Promise<void>((resolve) => {
+    if ('requestIdleCallback' in window) requestIdleCallback(() => resolve(), { timeout: 1500 });
+    else setTimeout(resolve, 0);
   });
+  const load = async () => {
+    try {
+      const [markup, { mountBench }] = await Promise.all([
+        holder && !holder.querySelector('svg') ? fetch(holder.dataset.benchSvg || '').then((response) => { if (!response.ok) throw new Error(String(response.status)); return response.text(); }) : Promise.resolve(''),
+        import('../figures/knowledgeBenchLive.ts'),
+      ]);
+      if (markup && holder) {
+        await whenIdle();
+        performance.mark('bench-inject-start');
+        holder.innerHTML = markup;
+        holder.querySelector('svg')?.setAttribute('aria-hidden', 'true');
+        performance.mark('bench-inject-end');
+      }
+      await whenIdle();
+      performance.mark('bench-mount-start');
+      bench = mountBench(stage, JSON.parse(stage.dataset.copy || '{}'));
+      performance.mark('bench-mount-end');
+      if (!bench) return;
+      if (wantTour) bench.tour(true);
+      else bench.setTarget(wantTarget);
+    } catch { /* sem figura: a seção continua legível pelo texto */ }
+  };
+  const near = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    near.disconnect();
+    load();
+  }, { rootMargin: '1200px 0px' });
+  near.observe(section);
 }
 
 
@@ -293,9 +340,9 @@ function initSignature() {
     brand.innerHTML = `<span class="visually-hidden">${text}</span>` + [...text].map((char) => `<span class="cx-char${char === '.' ? ' cx-char-dot' : ''}" aria-hidden="true">${char}</span>`).join('');
     const chars = brand.querySelectorAll<HTMLElement>('.cx-char');
     gsap.set(chars, { yPercent: 100, opacity: 0 });
-    inView(brand, () => {
-      animate(chars, { translateY: ['100%', '0%'], opacity: [0, 1], duration: 1200, delay: stagger(55), ease: 'outExpo' });
-    }, { amount: 0.5 });
+    whenInView(brand, () => {
+      gsap.to(chars, { yPercent: 0, opacity: 1, duration: 1.2, stagger: 0.055, ease: 'expo.out' });
+    }, 0.5);
   });
 }
 
@@ -306,25 +353,22 @@ function initReveals() {
   document.querySelectorAll<HTMLElement>('[data-reveal-group]').forEach((group) => {
     const children = [...group.children] as HTMLElement[];
     children.forEach((child) => { child.style.opacity = '0'; });
-    inView(group, () => {
-      motionAnimate(children, { opacity: [0, 1], y: [14, 0] }, { delay: motionStagger(Math.min(0.06, 0.2 / Math.max(children.length - 1, 1))), duration: 0.5, ease: EASE_OUT });
-    }, { amount: 'some' });
+    whenInView(group, () => {
+      gsap.fromTo(children, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, stagger: Math.min(0.06, 0.2 / Math.max(children.length - 1, 1)), ease: 'expo.out', clearProps: 'transform' });
+    }, 0.01);
   });
 
   document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
     el.style.opacity = '0';
-    inView(el, () => {
-      motionAnimate(el, { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, ease: EASE_OUT });
-    }, { amount: 'some' });
+    whenInView(el, () => {
+      gsap.fromTo(el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out', clearProps: 'transform' });
+    }, 0.01);
   });
 
   document.querySelectorAll<HTMLElement>('[data-draw-on-view]').forEach((svgEl) => {
     const paths = [...svgEl.querySelectorAll<SVGGeometryElement>('[data-draw]')];
-    const drawables = paths.flatMap((path) => createDrawable(path));
-    animate(drawables, { draw: '0 0', duration: 0 });
-    inView(svgEl, () => {
-      animate(drawables, { draw: ['0 0', '0 1'], duration: 1400, delay: stagger(120), ease: 'inOutQuart' });
-    }, { amount: 0.4 });
+    paths.forEach(hideStroke);
+    whenInView(svgEl, () => { drawStroke(paths, 1.4, 0.12); }, 0.4);
   });
 }
 

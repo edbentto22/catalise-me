@@ -24,9 +24,22 @@ const FOOT_H = 5;
 
 /** Centro em x de cada coluna: bandeja i, seção i da gaveta e parada i do pórtico ficam alinhadas. */
 export const COLUMN = Array.from({ length: SOURCES }, (_, i) => -100 + 40 * i);
-/** Alturas das bandejas: o conhecimento espalhado não fica nem no mesmo nível. */
-export const TRAY_H = [16, 30, 22, 36, 12, 26];
-export const TRAY_Y = -54; // centro em y do maço na bandeja
+/**
+ * Bandejas: cada uma na sua altura, fora de linha e torta (yaw), com fichas em número e inclinação
+ * diferentes e, às vezes, uma caída de lado. O conhecimento espalhado não é só distante: é desarrumado.
+ * A gaveta, em contraste, recebe maços certinhos e iguais.
+ */
+export interface Card { dx: number; dy: number; yaw: number; flat?: boolean }
+export interface Tray { x: number; y: number; h: number; yaw: number; cards: Card[] }
+export const TRAYS: Tray[] = [
+  { x: -104, y: -62, h: 16, yaw: -0.24, cards: [{ dx: -6, dy: 0.5, yaw: 0.12 }, { dx: -1.5, dy: -1, yaw: -0.32 }, { dx: 4, dy: 1, yaw: 0.2 }, { dx: 5, dy: -1.5, yaw: 0.9, flat: true }] },
+  { x: -58, y: -44, h: 30, yaw: 0.18, cards: [{ dx: -4, dy: 0, yaw: -0.14 }, { dx: 3.5, dy: 2, yaw: 0.36 }] },
+  { x: -18, y: -66, h: 22, yaw: 0.34, cards: [{ dx: -7, dy: 1, yaw: 0.08 }, { dx: -3, dy: -1.5, yaw: -0.22 }, { dx: 1, dy: 0.5, yaw: 0.3 }, { dx: 6, dy: -0.5, yaw: -0.1 }, { dx: -3, dy: 1.5, yaw: 1.3, flat: true }] },
+  { x: 24, y: -50, h: 36, yaw: -0.12, cards: [{ dx: -5, dy: -1, yaw: 0.4 }, { dx: 0.5, dy: 1.5, yaw: -0.36 }, { dx: 6, dy: 0, yaw: 0.16 }] },
+  { x: 64, y: -70, h: 12, yaw: 0.46, cards: [{ dx: -3, dy: 0, yaw: -0.28 }, { dx: 4.5, dy: -1, yaw: 0.22 }, { dx: 0, dy: 2, yaw: -0.7, flat: true }] },
+  { x: 102, y: -48, h: 26, yaw: -0.36, cards: [{ dx: -6.5, dy: 1, yaw: -0.08 }, { dx: -1, dy: -2, yaw: 0.44 }, { dx: 5.5, dy: 1.5, yaw: -0.3 }, { dx: 8, dy: 0, yaw: 0.05 }] },
+];
+export const TRAY_H = TRAYS.map((tray) => tray.h);
 
 const CARD = { w: 1.4, d: 22, h: 24 };
 const CARD_GAP = 5;
@@ -82,7 +95,10 @@ export interface BenchState {
   active: number; // fonte em movimento (para o texto)
 }
 
-const stopOf = (i: number) => COLUMN[i] - 10; // o carro pende do lado +x da travessa
+// O carro pende do lado +x da travessa: a parada é 10 unidades antes do alvo.
+const drawerStop = (i: number) => COLUMN[i] - 10;
+const trayStop = (i: number) => TRAYS[i].x - 10;
+const stopOf = drawerStop;
 
 /** Estado da bancada para p ∈ [0, 7]: seis arquivamentos e, no fim, a varredura do leitor. */
 export function benchState(raw: number): BenchState {
@@ -101,10 +117,13 @@ export function benchState(raw: number): BenchState {
   }
   const i = Math.floor(p);
   const t = p - i;
-  const from = i === 0 ? stopOf(0) : stopOf(i - 1);
-  const bx = lerp(from, stopOf(i), span(t, 0, 0.22));
-  const startY = i === 0 ? TRAY_Y : DRAWER_Y;
-  let cy = lerp(startY, TRAY_Y, span(t, 0, 0.22));
+  const tray = TRAYS[i];
+  const from = i === 0 ? trayStop(0) : drawerStop(i - 1);
+  // Vai até a bandeja (torta, fora da linha) e leva o maço até a seção certa da gaveta.
+  let bx = lerp(from, trayStop(i), span(t, 0, 0.22));
+  bx = lerp(bx, drawerStop(i), span(t, 0.5, 0.72));
+  const startY = i === 0 ? tray.y : DRAWER_Y;
+  let cy = lerp(startY, tray.y, span(t, 0, 0.22));
   cy = lerp(cy, DRAWER_Y, span(t, 0.5, 0.72));
   const top = TRAY_H[i];
   let pb = TRAVEL;
@@ -140,11 +159,11 @@ const halo = (plan: Plan, z: number, h: number, blur = 9) => `<path class="iso-h
 function base() {
   const out = [halo(BASE, -BASE_H - FOOT_H, BASE_H)];
   for (const [x, y] of byDepth(k.corners(BASE, 24))) {
-    out.push(S(k.cylinder(x, y, 8, -BASE_H - FOOT_H, 1.6, P, 32), { tone: 'lo' }));
-    out.push(S(k.cylinder(x, y, 6.2, -BASE_H - FOOT_H + 1.6, FOOT_H - 1.6, P, 32), { tone: 'mid' }));
+    out.push(S(k.cylinder(x, y, 8, -BASE_H - FOOT_H, 1.6, P, 20), { tone: 'lo' }));
+    out.push(S(k.cylinder(x, y, 6.2, -BASE_H - FOOT_H + 1.6, FOOT_H - 1.6, P, 20), { tone: 'mid' }));
   }
-  out.push(S(k.slabOf(BASE, -BASE_H, BASE_H, P, 10, 1.6), { tone: 'mid', inner: L(k.sideSeam(BASE, -BASE_H + 4, P, 10), { tone: 'faint' }) }));
-  out.push(L(k.planOutline(k.insetPlan(BASE, 5), 0, P, 10), { tone: 'lo' }));
+  out.push(S(k.slabOf(BASE, -BASE_H, BASE_H, P, 6, 1.6), { tone: 'mid', inner: L(k.sideSeam(BASE, -BASE_H + 4, P, 6), { tone: 'faint' }) }));
+  out.push(L(k.planOutline(k.insetPlan(BASE, 5), 0, P, 6), { tone: 'lo' }));
   // Canaletas gravadas: o caminho de cada fonte até a sua seção da gaveta
   out.push(L(COLUMN.map((c) => k.planOutline({ x: c - 5, y: -34, w: 10, d: 50, r: 5 }, 0, P, 8)).join(''), { tone: 'faint' }));
   out.push(D(COLUMN.flatMap((c) => [[c, -29, 0], [c, 11, 0]] as Point3[]), { size: 0.4, tone: 'lo' }));
@@ -198,6 +217,52 @@ function carriage() {
   return out.join('');
 }
 
+/** Caixa arredondada girada (yaw) em torno do seu centro: a liberdade que as bandejas tortas precisam. */
+const turnedRing = (cx: number, cy: number, w: number, d: number, r: number, yaw: number, steps = 2) => {
+  const c = Math.cos(yaw), sn = Math.sin(yaw);
+  return k.roundedPlan({ x: -w / 2, y: -d / 2, w, d, r }, steps).map(([x, y]) => [cx + x * c - y * sn, cy + x * sn + y * c] as [number, number]);
+};
+const turnedBox = (cx: number, cy: number, w: number, d: number, z: number, h: number, yaw: number, r = 0.6, steps = 2, bevel = 0) =>
+  k.extrude(turnedRing(cx, cy, w, d, r, yaw, steps), z, h, P, { convex: true, bevel });
+
+/** Ficha de pé, girada: corpo e aba. */
+function messyCard(cx: number, cy: number, z: number, yaw: number, tab: number) {
+  const out = [S(turnedBox(cx, cy, CARD.w, CARD.d, z, CARD.h, yaw, 0.4), { tone: 'hi', crease: 'lo' })];
+  const c = Math.cos(yaw), sn = Math.sin(yaw);
+  const ty = -CARD.d / 2 + 3 + tab;
+  out.push(S(turnedBox(cx - ty * sn, cy + ty * c, CARD.w, 6, z + CARD.h, 3, yaw, 0.3), { tone: 'hi', crease: 'lo' }));
+  return out.join('');
+}
+
+/** Ficha deitada (caiu de lado) sobre a bandeja. */
+function flatCard(cx: number, cy: number, z: number, yaw: number) {
+  const out = [S(turnedBox(cx, cy, CARD.h, CARD.d, z, CARD.w, yaw, 0.5, 3), { tone: 'hi', crease: 'lo' })];
+  // Três linhas de "texto" na face de cima (a única face que se vê)
+  const c = Math.cos(yaw), sn = Math.sin(yaw);
+  for (const dy of [-5, 0, 5]) {
+    const len = 14 - Math.abs(dy) * 0.6;
+    const a: [number, number] = [cx + (-len / 2) * c - dy * sn, cy + (-len / 2) * sn + dy * c];
+    const b: [number, number] = [cx + (len / 2) * c - dy * sn, cy + (len / 2) * sn + dy * c];
+    out.push(L(k.lineOnTop(a, b, z + CARD.w, P), { tone: 'lo', free: true }));
+  }
+  return out.join('');
+}
+
+/** O maço bagunçado de uma bandeja, construído no lugar da bandeja (as fichas giram com ela). */
+function messyPacket(i: number) {
+  const tray = TRAYS[i];
+  const c = Math.cos(tray.yaw), sn = Math.sin(tray.yaw);
+  const placed = tray.cards.map((card, j) => {
+    const x = tray.x + card.dx * c - card.dy * sn;
+    const y = tray.y + card.dx * sn + card.dy * c;
+    return { card, x, y, j, depth: k.depthOf([x, y, 0], P) };
+  });
+  placed.sort((a, b) => a.depth - b.depth);
+  return placed.map(({ card, x, y, j }) => (card.flat
+    ? flatCard(x, y, tray.h, tray.yaw + card.yaw)
+    : messyCard(x, y, tray.h, tray.yaw + card.yaw, 2 + ((i + j) % 3) * 6.5))).join('');
+}
+
 function card(plan: Plan, z: number, tab: number | null) {
   const out = [S(k.slabOf(plan, z, CARD.h, P, 2), { tone: 'hi', crease: 'lo' })];
   if (tab !== null) out.push(S(k.slabOf({ x: plan.x, y: plan.y + tab, w: plan.w, d: 6, r: 0.3 }, z + CARD.h, 3, P, 2), { tone: 'hi', crease: 'lo' }));
@@ -212,27 +277,37 @@ function packet(i: number, cx: number, cyC: number, z: number) {
     .join('');
 }
 
+/** Peça da bandeja girada: deslocamento (dx, dy) no referencial da bandeja. */
+function trayPart(tray: Tray, dx: number, dy: number, w: number, d: number, z: number, h: number, bevel = 0, steps = 2) {
+  const c = Math.cos(tray.yaw), sn = Math.sin(tray.yaw);
+  return turnedBox(tray.x + dx * c - dy * sn, tray.y + dx * sn + dy * c, w, d, z, h, tray.yaw, 0.6, steps, bevel);
+}
+const trayPoint = (tray: Tray, dx: number, dy: number, z: number): Point3 => {
+  const c = Math.cos(tray.yaw), sn = Math.sin(tray.yaw);
+  return [tray.x + dx * c - dy * sn, tray.y + dx * sn + dy * c, z];
+};
+
 function tray(i: number) {
-  const c = COLUMN[i];
-  const h = TRAY_H[i];
-  const out = [halo({ x: c - 12, y: TRAY_Y - 12, w: 24, d: 24, r: 8 }, 0, 0.2, 5)];
-  out.push(S(k.cylinder(c, TRAY_Y, 6.4, 0, 2, P, 28), { tone: 'lo' }));
-  out.push(S(k.cylinder(c, TRAY_Y, 3.4, 2, h - 5, P, 24), { tone: 'mid', crease: 'none' }));
-  if (h > 18) out.push(L(k.sideArc(c, TRAY_Y, 3.4, 2 + (h - 5) * 0.55, P, 16), { tone: 'faint' }));
-  const plate = { x: c - 14, y: TRAY_Y - 14, w: 28, d: 28, r: 2.5 };
-  out.push(S(k.slabOf(plate, h - 3, 3, P, 4, 0.6), { tone: 'mid' }));
-  out.push(S(k.slabOf({ x: c - 14, y: TRAY_Y - 14, w: 28, d: 2, r: 0.6 }, h, 10, P, 2, 0.4), { tone: 'mid' }));
-  out.push(D([[c - 10, TRAY_Y - 13, h + 10], [c + 10, TRAY_Y - 13, h + 10]], { size: 0.42 }));
-  out.push(S(k.slabOf({ x: c - 14, y: TRAY_Y - 12, w: 2, d: 24, r: 0.6 }, h, 4, P, 2), { tone: 'mid' }));
+  const t = TRAYS[i];
+  const h = t.h;
+  const out = [halo({ x: t.x - 13, y: t.y - 13, w: 26, d: 26, r: 9 }, 0, 0.2, 5)];
+  out.push(S(k.cylinder(t.x, t.y, 6.4, 0, 2, P, 18), { tone: 'lo' }));
+  out.push(S(k.cylinder(t.x, t.y, 3.4, 2, h - 5, P, 16), { tone: 'mid', crease: 'none' }));
+  if (h > 18) out.push(L(k.sideArc(t.x, t.y, 3.4, 2 + (h - 5) * 0.55, P, 16), { tone: 'faint' }));
+  out.push(S(trayPart(t, 0, 0, 28, 28, h - 3, 3, 0.6, 4), { tone: 'mid' }));
+  // A câmera olha de +x, +y: com giros abaixo de 45°, os lados -x e -y ficam atrás das fichas
+  // e os lados +x e +y na frente (trayFront), na ordem do pintor.
+  out.push(S(trayPart(t, 0, -13, 28, 2, h, 10, 0.4), { tone: 'mid' }));
+  out.push(D([trayPoint(t, -10, -13, h + 10), trayPoint(t, 10, -13, h + 10)], { size: 0.42 }));
+  out.push(S(trayPart(t, -13, 0, 2, 24, h, 4), { tone: 'mid' }));
   return out.join('');
 }
 
 function trayFront(i: number) {
-  const c = COLUMN[i];
-  const h = TRAY_H[i];
+  const t = TRAYS[i];
   return [
-    S(k.slabOf({ x: c + 12, y: TRAY_Y - 12, w: 2, d: 24, r: 0.6 }, h, 4, P, 2), { tone: 'mid' }),
-    S(k.slabOf({ x: c - 14, y: TRAY_Y + 12, w: 28, d: 2, r: 0.6 }, h, 3, P, 2), { tone: 'mid' }),
+    S(trayPart(t, 13, 0, 2, 24, t.h, 4), { tone: 'mid' }),
+    S(trayPart(t, 0, 13, 28, 2, t.h, 3), { tone: 'mid' }),
   ].join('');
 }
 
@@ -286,8 +361,8 @@ function reader() {
   out.push(S(k.slabOf(shoe, 3, 5, P, 4, 0.5), { tone: 'mid', inner: L(k.sideSeam(shoe, 5.5, P, 4), { tone: 'faint' }) }));
   out.push(S(k.cylinder(6, READER_Y + 2, 2.4, 8, 3.4, P, 20), { tone: 'mid' }));
   out.push(L(k.knurl(6, READER_Y + 2, 2.4, 8, 11.4, 16, P), { tone: 'lo' }));
-  out.push(S(k.cylinder(-2, READER_Y, 3.6, 8, 2, P, 24), { tone: 'mid' }));
-  out.push(S(k.cylinder(-2, READER_Y, 2, 10, 20, P, 20), { tone: 'mid', crease: 'none' }));
+  out.push(S(k.cylinder(-2, READER_Y, 3.6, 8, 2, P, 16), { tone: 'mid' }));
+  out.push(S(k.cylinder(-2, READER_Y, 2, 10, 20, P, 14), { tone: 'mid', crease: 'none' }));
   out.push(L(k.sideArc(-2, READER_Y, 2, 21, P, 14), { tone: 'faint' }));
   const head = { x: -8, y: READER_Y - 9, w: 12, d: 13, r: 2.4 };
   out.push(S(k.slabOf(head, 29, 8, P, 4, 0.6), { tone: 'hi', crease: 'lo', inner: L(k.sideSeam(head, 32, P, 4), { tone: 'faint' }) }));
@@ -341,10 +416,10 @@ export function buildBench(label: string, startAt = 0): BenchFigure {
   body.push(`<g data-bench="leg-back" transform="${t([s.bx, 0, 0])}">${leg(-98)}</g>`);
 
   // Bandejas de trás para a frente; cada maço fica entre a bandeja e as bordas da frente dela.
-  const trays = [...COLUMN.keys()].sort((a, b) => k.depthOf([COLUMN[a], TRAY_Y, 0], P) - k.depthOf([COLUMN[b], TRAY_Y, 0], P));
+  const trays = [...TRAYS.keys()].sort((a, b) => k.depthOf([TRAYS[a].x, TRAYS[a].y, 0], P) - k.depthOf([TRAYS[b].x, TRAYS[b].y, 0], P));
   for (const i of trays) {
     body.push(tray(i));
-    body.push(`<g data-bench="tray-packet" data-i="${i}"${s.held === i || s.inDrawer === i || i < s.filed ? ' display="none"' : ''}>${packet(i, COLUMN[i], TRAY_Y, TRAY_H[i])}</g>`);
+    body.push(`<g data-bench="tray-packet" data-i="${i}"${s.held === i || s.inDrawer === i || i < s.filed ? ' display="none"' : ''}>${messyPacket(i)}</g>`);
     body.push(trayFront(i));
   }
 
@@ -360,7 +435,8 @@ export function buildBench(label: string, startAt = 0): BenchFigure {
   body.push(drawerFront(), readerRail());
 
   // Garra: hastes de baixo, dedo de trás, maço levado, dedo da frente e cabeçote.
-  const held = COLUMN.map((c, i) => `<g data-bench="held-packet" data-i="${i}"${s.held === i ? '' : ' display="none"'} transform="${t(heldOffset(s, i))}">${packet(i, c, TRAY_Y, TRAY_H[i])}</g>`).join('');
+  // A garra leva o maço ainda bagunçado; ele só fica certinho quando assenta na gaveta.
+  const held = TRAYS.map((_, i) => `<g data-bench="held-packet" data-i="${i}"${s.held === i ? '' : ' display="none"'} transform="${t(heldOffset(s, i))}">${messyPacket(i)}</g>`).join('');
   body.push(`<g data-bench="gripper" transform="${t([s.bx, s.cy, s.pb])}">${g.far}</g>`);
   body.push(`<g data-bench="held">${held}</g>`);
   body.push(`<g data-bench="gripper" transform="${t([s.bx, s.cy, s.pb])}">${g.near}</g>`);
@@ -377,5 +453,5 @@ export function buildBench(label: string, startAt = 0): BenchFigure {
 
 /** Deslocamento do maço levado (construído na bandeja) até a posição atual da garra. */
 export function heldOffset(s: BenchState, i: number): Point3 {
-  return [0, s.cy - TRAY_Y, s.pb - TRAY_H[i]];
+  return [s.bx + 10 - TRAYS[i].x, s.cy - TRAYS[i].y, s.pb - TRAYS[i].h];
 }

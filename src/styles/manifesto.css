@@ -428,6 +428,7 @@ html[data-motion='reduced'] .mf-read-progress {
   --anatomy-dot: #e4e4e7;
 }
 
+.mf-bench-canvas { width: 100%; }
 .mf-bench .iso-svg { width: 100%; height: auto; }
 
 /* Fichas já arquivadas na gaveta ficam lima: a informação agora está organizada. */

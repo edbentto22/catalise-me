@@ -128,7 +128,7 @@ const fallbackAngles = items.map((_, i) => Math.PI * 0.75 - (i / items.length) *
       container.dataset.state = 'off';
     });
     canvas.addEventListener('webglcontextrestored', () => { if (!dispose) start(); });
-    const start = () => Promise.all([import('../scripts/heroGraph'), import('motion')]).then(([{ initHeroGraph }, { animate }]) => {
+    const start = () => import('../scripts/heroGraph').then(({ initHeroGraph }) => {
       let focusMap: number[] = [];
       try { focusMap = JSON.parse(container.dataset.focusMap || '[]'); } catch { focusMap = []; }
       dispose = initHeroGraph({
@@ -142,7 +142,7 @@ const fallbackAngles = items.map((_, i) => Math.PI * 0.75 - (i / items.length) *
       });
       if (!dispose) return;
       const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      animate(canvas, { opacity: [0, 1], filter: ['blur(14px)', 'blur(0px)'] }, { duration: reduced ? 0 : 1.6, ease: [0.16, 1, 0.3, 1] });
+      canvas.animate([{ opacity: 0, filter: 'blur(14px)' }, { opacity: 1, filter: 'blur(0px)' }], { duration: reduced ? 0 : 1600, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
       addEventListener('pagehide', (event) => { if (!event.persisted) dispose?.(); }, { once: true });
     }).catch(() => { container.dataset.state = 'off'; });
     if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 900 });

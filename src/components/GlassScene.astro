@@ -29,14 +29,14 @@ const { variant, class: className = '' } = Astro.props;
     const canvas = container.querySelector<HTMLCanvasElement>('canvas');
     if (!canvas || container.dataset.state) return;
     container.dataset.state = 'loading';
-    Promise.all([import('../scripts/glassScenes'), import('motion')]).then(([{ initGlassScene }, { animate }]) => {
+    import('../scripts/glassScenes').then(({ initGlassScene }) => {
       const dispose = initGlassScene(container.dataset.glass as GlassVariant, {
         canvas,
         container,
         section: container.closest<HTMLElement>('section, header'),
       });
       if (!dispose) return;
-      animate(canvas, { opacity: [0, 1], filter: ['blur(12px)', 'blur(0px)'] }, { duration: reduced ? 0 : 1.4, ease: [0.16, 1, 0.3, 1] });
+      canvas.animate([{ opacity: 0, filter: 'blur(12px)' }, { opacity: 1, filter: 'blur(0px)' }], { duration: reduced ? 0 : 1400, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
       addEventListener('pagehide', (event) => { if (!event.persisted) dispose(); });
     }).catch(() => { container.dataset.state = 'off'; });
   }), { rootMargin: '300px 0px' });
