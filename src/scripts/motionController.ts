@@ -1,6 +1,5 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { animate } from 'motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,8 +159,8 @@ export function initMotion() {
       visible = show;
       dock.classList.toggle('is-visible', show);
       if (!prefersReduced) {
-        animate(dock, show ? { y: [24, 0], opacity: [0, 1] } : { y: 24, opacity: 0 },
-          { duration: show ? 0.45 : 0.2, ease: [0.22, 1, 0.36, 1] });
+        if (show) gsap.fromTo(dock, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out', overwrite: 'auto' });
+        else gsap.to(dock, { y: 24, opacity: 0, duration: 0.2, ease: 'power2.out', overwrite: 'auto' });
       }
     };
     const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(check); } };

@@ -168,9 +168,18 @@ const t = ui[locale];
 
     let lenis: Lenis | null = null;
     if (allowEffects) {
-      lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        anchors: true,
+        autoRaf: false,
+      });
       lenis.on('scroll', ScrollTrigger.update);
-      // One clock for smooth scrolling and scroll-bound animation.
+      // One clock for smooth scrolling and scroll-bound animation. Without lag smoothing the scroll
+      // never "catches up" with a jump after a slow frame: it just keeps easing.
+      gsap.ticker.lagSmoothing(0);
       gsap.ticker.add((seconds: number) => { if (!document.hidden) lenis?.raf(seconds * 1000); });
       ScrollTrigger.addEventListener('refresh', () => lenis?.resize());
     }

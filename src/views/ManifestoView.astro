@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlassScene from '../components/GlassScene.astro';
-import { buildBench, readoutOf } from '../figures/knowledgeBench.ts';
+import { HEIGHT as BENCH_H, WIDTH as BENCH_W, benchState, buildBench, readoutOf } from '../figures/knowledgeBench.ts';
 import { localizedHref, type Locale } from '../i18n/config';
 import { manifesto } from '../i18n/content/manifesto';
 import '../styles/inner.css';
@@ -17,8 +17,10 @@ const pageUrl = `https://catalise.me${localizedHref('/manifesto', locale)}`;
 // sx/sy/sr = deslocamento quando ainda está espalhada (fração do palco e rotação).
 // Fig. 1 · bancada de arquivo: o SVG sai pronto do build; a página só move as peças.
 const benchCopy = { sources: [...t.scatter.fragments], ...t.scatter.bench };
-const bench = buildBench(t.scatter.bench.label, 0);
-const benchStart = readoutOf(bench.start, benchCopy);
+const benchStart = readoutOf(benchState(0), benchCopy);
+// O SVG fica em /figures/knowledge-bench.svg; a versão na URL renova o cache quando o desenho muda.
+const benchSvg = buildBench('', 0).svg;
+const benchVersion = [...benchSvg].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, benchSvg.length).toString(36);
 
 // Tons dos pilares na cena da camada (os mesmos hubs de vidro fumê da Home).
 const pillarTones = ['#18181b', '#3f3f46', '#27272a', '#52525b'];
@@ -116,7 +118,7 @@ const pillarTones = ['#18181b', '#3f3f46', '#27272a', '#52525b'];
       >
         <span class="mf-bench-corner" data-corner="tl" aria-hidden="true">Fig. 1</span>
         <span class="mf-bench-corner" data-corner="tr" aria-hidden="true">{t.scatter.bench.title}</span>
-        <Fragment set:html={bench.svg} />
+        <div class="mf-bench-canvas" data-bench-svg={`/figures/knowledge-bench.svg?v=${benchVersion}`} style={`aspect-ratio: ${BENCH_W} / ${BENCH_H}`}></div>
         <span class="mf-bench-corner" data-corner="bl" aria-hidden="true">{t.scatter.bench.hint}</span>
         <span class="mf-bench-corner" data-corner="br" data-bench-readout aria-live="polite">{benchStart}</span>
         <p id="mf-bench-caption" class="visually-hidden">{t.scatter.bench.label}</p>
